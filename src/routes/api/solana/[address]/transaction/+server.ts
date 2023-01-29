@@ -12,5 +12,5 @@ export async function GET({ params }: RequestEvent) {
 
     const data  = await response.json();
     
-    return json(data);
+    return json({ data });
 }

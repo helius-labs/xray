@@ -124,7 +124,7 @@
                 <img
                     class="h-5"
                     alt=""
-                    src="/helius.png">
+                    src="/media/helius/helius.png">
             </a>
         </div>
     </div>
