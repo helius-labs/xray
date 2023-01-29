@@ -2,13 +2,13 @@
     import { page } from "$app/stores";
     import { onMount } from "svelte";
 
-    import type { TokenInfo } from "@solana/spl-token-registry";
-
     import hljs from "highlight.js";
     import javascript from "highlight.js/lib/languages/javascript";
-
-    import tokenList from "$lib/stores/token-list";
     
+    import tokenRegistryQuery from "$lib/state/queries/solana-token-registry";
+
+    const tokenResgistry = tokenRegistryQuery();
+
     let metadataHTML = "";
 
     onMount(() => {
@@ -22,13 +22,13 @@
     $: fromAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange < 0);
     $: toAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange > 0);
     $: tokenAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange === 0);
-    $: tokenInfo = $tokenList?.find(({ address }) =>
+    $: tokenInfo = $tokenResgistry?.data?.find(({ address }) =>
         // console.log({ address });
 
         address === tokenAccount?.tokenBalanceChanges[0]?.mint
     );
 
-    $: console.log({ tokenInfo, tokenAccount }, $tokenList);
+    $: console.log({ tokenInfo, tokenAccount }, $tokenResgistry?.data);
 </script>
 
 <div class="card glass rounded-lg p-3 w-full">

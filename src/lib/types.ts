@@ -16,7 +16,6 @@ export {
     ProgramName,
 };
 
-// Types prefixed with UI are custom types used in the UI to manage state.
 export interface UIAccount {
     publicKey: string
     transactions: Array<any>

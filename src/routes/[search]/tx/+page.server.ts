@@ -1,9 +1,9 @@
-import getTransaction from "$lib/solana/get-transaction";
+import type { RequestEvent } from "../$types";
 
-export async function load({ params, url }) {
-    const [ transaction ] = await getTransaction(params.search);
+import getTransaction from "$lib/state/actions/get-solana-transaction";
 
-    return {
-        transaction,
-    };
+export async function load({ params } : RequestEvent) {
+    const transaction = await getTransaction(params.search);
+
+    return transaction;
 }
