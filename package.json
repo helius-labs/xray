@@ -42,7 +42,7 @@
     "@solana/spl-token-registry": "^0.2.4574",
     "@solana/web3.js": "^1.73.0",
     "@tanstack/svelte-query": "^4.22.4",
-    "helius-sdk": "file:../helius-sdk",
+    "helius-sdk": "^0.2.4",
     "highlight.js": "^11.7.0",
     "svelte-json-tree": "^1.0.0"
   }
