@@ -40,7 +40,10 @@ Start all packages and apps in dev mode with `npm run dev`. There are also more 
 Build all apps and packages for production with `npm run build`.
 **Note:** If you want to build with your local `.env` try `npm run env -- npm run build`
 
-# 📦 UI
+# 📦 UI & API
+The UI & backend exist as one SvelteKit app. Our bakckend endpoints are located in `./src/routes/api/*`. The rest of the routes should be used for pages.
+
+
 ## State Management
 
 State is primarily managed using Svelte Query. This library allows us to define bits of state that contain a Promise to fetch data and convinient ways to subscribe to the data. 
@@ -104,7 +107,7 @@ The following pattern will subscribe to the data in the solanaPrice query store 
 {/if}
 ```
 # 📦 @helius/xray-database
-[wip]
+A database for savaing anonymous data like trasaction views.
 
 # 📦 @helius/makeover
 [wip]
