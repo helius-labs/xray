@@ -40,11 +40,12 @@
             tokenType = "spl";
             console.log({ transaction });
         } else {
-            tokenType = "unknown";
+            tokenType = undefined;
         }
     }
 
-    $: ([ transfer ] = (tokenType === "sol" ? transaction?.nativeTransfers : transaction?.tokenTransfers)  || []);
+    $: ([ transfer ] = transaction?.tokenTransfers  || []);
+    $: ([ nativeTransfer ] = transaction?.nativeTransfers || []);
 </script>
 
 {#if tokenType === "sol" || (tokenType === "spl" && tokenInfo)}
@@ -99,9 +100,9 @@
                     class:text-neutral={transfer?.toUserAccount === address}>
                     {transfer?.fromUserAccount === address ? "-" : "+"}
 
-                    {#if tokenType === "sol"}
-                        {(transfer?.amount / LAMPORTS_PER_SOL).toFixed(5).toLocaleString("en-US")}
-                    {:else if tokenType === "spl"}
+                    {#if nativeTransfer && tokenType === "sol"}
+                        {(nativeTransfer?.amount / LAMPORTS_PER_SOL).toFixed(5).toLocaleString("en-US")}
+                    {:else if transfer && tokenType === "spl"}
                         {transfer?.tokenAmount.toFixed(2).toLocaleString("en-US")}
                     {/if}
                 </div>

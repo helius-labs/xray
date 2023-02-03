@@ -1,37 +1,37 @@
 <script lang="ts">
-    import { page } from "$app/stores";
-    import { onMount } from "svelte";
+// import { page } from "$app/stores";
+    // import { onMount } from "svelte";
 
-    import hljs from "highlight.js";
-    import javascript from "highlight.js/lib/languages/javascript";
+    // import hljs from "highlight.js";
+    // import javascript from "highlight.js/lib/languages/javascript";
     
-    import tokenRegistryQuery from "$lib/state/queries/solana-token-registry";
+    // import tokenRegistryQuery from "$lib/state/queries/solana-token-registry";
 
-    const tokenResgistry = tokenRegistryQuery();
+    // const tokenResgistry = tokenRegistryQuery();
 
-    let metadataHTML = "";
+    // let metadataHTML = "";
 
-    onMount(() => {
-        hljs.registerLanguage("javascript", javascript);
-    });
+    // onMount(() => {
+    //     hljs.registerLanguage("javascript", javascript);
+    // });
 
-    $: if($page.data.transaction) {
-        metadataHTML = hljs.highlight(JSON.stringify($page.data.transaction, null, 4), { language : "json" }).value;
-    }
+    // $: if($page.data.transaction) {
+    //     metadataHTML = hljs.highlight(JSON.stringify($page.data.transaction, null, 4), { language : "json" }).value;
+    // }
     
-    $: fromAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange < 0);
-    $: toAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange > 0);
-    $: tokenAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange === 0);
-    $: tokenInfo = $tokenResgistry?.data?.find(({ address }) =>
+// $: fromAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange < 0);
+    // $: toAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange > 0);
+    // $: tokenAccount = $page.data.transaction.accountData.find(({ nativeBalanceChange }) => nativeBalanceChange === 0);
+    // $: tokenInfo = $tokenResgistry?.data?.find(({ address }) =>
         // console.log({ address });
 
-        address === tokenAccount?.tokenBalanceChanges[0]?.mint
-    );
+    //     address === tokenAccount?.tokenBalanceChanges[0]?.mint
+    // );
 
-    $: console.log({ tokenInfo, tokenAccount }, $tokenResgistry?.data);
+    // $: console.log({ tokenInfo, tokenAccount }, $tokenResgistry?.data);
 </script>
 
-<div class="card glass rounded-lg p-3 w-full">
+<!-- <div class="card glass rounded-lg p-3 w-full">
     <div class="flex justify-center my-4">
         <img
             class="h-32 rounded-full"
@@ -52,7 +52,7 @@
     <p class="text-xs font-bold text-primary">Transaction</p>
     <p class="text-xs font-bold text-gray-900">{$page.data.transaction?.signature}</p>
 
-</div>
+</div> -->
 
 <!--
 <a
