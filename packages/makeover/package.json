@@ -1,0 +1,17 @@
+{
+  "name": "@helius/makeover",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc index.ts --watch",
+    "build": "tsc index.ts"
+  },
+  "devDependencies": {
+    "tsconfig": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}

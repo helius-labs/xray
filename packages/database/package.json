@@ -1,0 +1,24 @@
+{
+  "name": "@helius/xray-database",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "echo \"Dev\"",
+    "build": "tsc index.ts",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push --skip-generate",
+    "db:pull": "prisma db pull"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "prisma": "^4.8.1",
+    "tsconfig": "*"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.8.1"
+  }
+}

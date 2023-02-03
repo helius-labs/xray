@@ -11,14 +11,8 @@
 		"source.fixAll.eslint": true,
   },
   "cSpell.words": [
-    "deez",
-    "MATR",
-    "mucs",
-    "solana",
-    "sveltejs",
-    "sveltekit",
-    "TOTP",
-    "uuidv"
+    "HELIUS",
+    "lamports",
+    "solana"
   ],
-  "dotenv.enableAutocloaking": false,
 }

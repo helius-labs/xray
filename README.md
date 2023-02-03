@@ -1,38 +1,72 @@
-# create-svelte
+![](/doc/xray.png)
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+# Project X-Ray
+An intuitive Solana transaction explorer powered by Helius.
 
-## Creating a project
+### Tech Stack
+Here are the runtimes, key tools, libraries, and resources used in this project.
+- [Node](https://nodejs.org/en/)
+- [Prisma](https://www.prisma.io/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [SvelteKit](https://kit.svelte.dev/)
+- [TanStack Query](https://tanstack.com/query/latest/docs/svelte/overview)
+- [Tailwind](https://tailwindcss.com/)
+- [DaisyUI Components](https://daisyui.com/)
 
-If you're seeing this, you've probably already done this step. Congrats!
+### APIs
+Various APIs we use
+- [Solana JSON RPC API Docs](https://docs.solana.com/api)
+- [Helius API Docs](https://docs.helius.xyz/welcome/what-is-helius)
+- [Birdeye API Docs](https://birdeye.so/api)
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+## Runbook
+#### Setup Environment
+In the root of the proejct, create a `.env` file with the values mentioned in `.env.template`.
 
-# create a new project in my-app
-npm create svelte@latest my-app
+#### Install
+From the root of the proejct, run `npm install` the first time running the proejct to install dependencies. 
+
+#### Dev
+Start the dev server with `npm run dev`.
+
+#### Build
+Build for production with `npm run build`.
+
+#### Preview/Serve Production Build
+You can preview a production build just generated from the build command using `npm run preview`.
+
+## State Management
+
+State is primarily managed using Svelte Query. This library allows us to define bits of state that contain a Promise to fetch data and convinient ways to subscribe to the data. 
+
+### Actions
+📂 `./src/lib/state/actions`
+Actions are the Promises to fetch data often ran client side. These can reach out to 3rd parties directly or hit interal endpoints in order to proxy services that require authentication like Helius. 
+
+##### Example Action
+`./src/lib/state/actions/get-my-thing.ts`
+```js
+export default async () => {
+    const response = await fetch("my-thing");
+
+    const { data } = await response.json();
+
+    return data;
+};
 ```
 
-## Developing
+### Queries
+🔍 `./src/lib/state/actions`
+Queries 
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+##### Example Query
+`./src/lib/state/actions/my-thing.ts`
+```js
+export default async () => {
+    const response = await fetch("my-thing");
 
-```bash
-npm run dev
+    const { data } = await response.json();
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+    return data;
+};
 ```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
