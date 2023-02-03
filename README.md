@@ -6,6 +6,7 @@ An intuitive Solana transaction explorer powered by Helius.
 ### Tech Stack
 Here are the runtimes, key tools, libraries, and resources used in this project.
 - [Node](https://nodejs.org/en/)
+- [TurboRepo](https://turbo.build/repo)
 - [Prisma](https://www.prisma.io/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [SvelteKit](https://kit.svelte.dev/)
@@ -14,32 +15,33 @@ Here are the runtimes, key tools, libraries, and resources used in this project.
 - [DaisyUI Components](https://daisyui.com/)
 
 ### APIs
-Various APIs we use
+Various APIs we use.
 - [Solana JSON RPC API Docs](https://docs.solana.com/api)
 - [Helius API Docs](https://docs.helius.xyz/welcome/what-is-helius)
 - [Birdeye API Docs](https://birdeye.so/api)
 
-## Runbook
+## 🏃🏽‍♂️ Runbook
+This is a TurboRepo monorepo that can run and build all apps/packages in parallel. Apps like the UI are located in `/apps`. Packages used across apps are located in `/packages`.
+
 #### Setup Environment
 In the root of the proejct, create a `.env` file with the values mentioned in `.env.template`.
 
 #### Install
-From the root of the proejct, run `npm install` the first time running the proejct to install dependencies. 
+From the root of the proejct, run `npm install` to install dependencies for all apps and packages. 
 
 #### Dev
-Start the dev server with `npm run dev`.
+Start all packages and apps in dev mode with `npm run dev`. There are also more scripts in `package.json` of examples showing how to start a sigle app or package.
 
 #### Build
-Build for production with `npm run build`.
+Build all apps and packages for production with `npm run build`.
+**Note:** If you want to build with your local `.env` try `npm run env -- npm run build`
 
-#### Preview/Serve Production Build
-You can preview a production build just generated from the build command using `npm run preview`.
-
+# 📦 UI
 ## State Management
 
 State is primarily managed using Svelte Query. This library allows us to define bits of state that contain a Promise to fetch data and convinient ways to subscribe to the data. 
 
-### Actions
+### ⚡️ Actions
 📂 `./src/lib/state/actions`
 Actions are the Promises to fetch data often ran client side. These can reach out to 3rd parties directly or hit interal endpoints in order to proxy services that require authentication like Helius. 
 
@@ -55,18 +57,44 @@ export default async () => {
 };
 ```
 
-### Queries
-🔍 `./src/lib/state/actions`
-Queries 
+### 🔍 Queries
+📂 `./src/lib/state/actions` 
+Create queries to easily fetch and subscribe to data.
 
 ##### Example Query
 `./src/lib/state/actions/my-thing.ts`
 ```js
-export default async () => {
-    const response = await fetch("my-thing");
+import { createQuery } from "@tanstack/svelte-query";
 
-    const { data } = await response.json();
+import getPrice from "$lib/state/actions/get-solana-price";
 
-    return data;
-};
+export default () => createQuery({
+    queryKey : [ "solana-price" ],
+    queryFn  : getPrice,
+});
 ```
+
+### 🪄 Using Queries
+📂 `./src/lib/components/some-component`
+The following pattern will subscribe to the data in the solanaPrice query store and update the page if it changes. The following will also fetch data for the first time if solanaPrice is empty.
+
+##### Example Query
+`./src/lib/state/actions/my-thing.ts`
+```html
+<script>
+    import getSolanaPriceQuery from "$lib/state/queries/solana-price";
+
+    const solanaPrice = getSolanaPriceQuery();
+</script>
+
+{#if $solanaPrice.isFetching}
+    Loading...
+{:else}
+    <p>Price: {$solanaPrice}</p>
+{/if}
+```
+# 📦 @helius/xray-databse
+[wip]
+
+# 📦 @helius/makeover
+[wip]
