@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from "@sveltejs/kit";
 
-import connect from "$lib/util/solana/connect-mainnet";
+import connect from "$lib/util/solana/connect";
 
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 

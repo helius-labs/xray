@@ -2,7 +2,6 @@
     .input {
         background: rgba(0, 0, 0, 0.25);
     }
-
 </style>
 
 <script lang="ts">
@@ -10,6 +9,8 @@
     import { fly } from "svelte/transition";
 
     import search from "$lib/search";
+
+    import heliusLogo from "$lib/assets/helius/helius.png";
 
     let inputEl:HTMLInputElement;
     let inputValue:string = "";
@@ -30,6 +31,7 @@
         try {
             await search(inputValue);
         } catch(error) {
+            // If it errored right away, still show a loader for a little.
             if(Date.now() - beforeSearch < minSearch) {
                 await new Promise((resolve) => setTimeout(resolve, minSearch - (Date.now() - beforeSearch)));
             }
@@ -124,7 +126,7 @@
                 <img
                     class="h-5"
                     alt=""
-                    src="/media/helius/helius.png">
+                    src={heliusLogo}>
             </a>
         </div>
     </div>

@@ -1,6 +1,6 @@
 import { createQuery } from "@tanstack/svelte-query";
 
-import getAccountInfo from "src/lib/state/actions/get-solana-account-info";
+import getAccountInfo from "$lib/state/actions/get-solana-account-info";
 
 export default (address:string) => createQuery({
     queryKey : [ "solana-account-info" ],

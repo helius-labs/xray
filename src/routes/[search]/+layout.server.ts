@@ -9,15 +9,8 @@ import { redirect } from "@sveltejs/kit";
 
 import validatePubkey from "$lib/util/solana/validate-pubkey";
 
-import connect from "$lib/util/solana/connect-mainnet";
+import connect from "src/lib/util/solana/connect";
 
-import * as HeliusTypes from "helius-sdk";
-
-const helius: HeliusTypes.EnrichedTransaction = {
-    events: HeliusTypes.SwapEvent,
-};
-
-console.log(helius);
 // Decide where to go based on the search param.
 export async function load({ params, url }: RequestEvent) {
     // Check if already resolved.

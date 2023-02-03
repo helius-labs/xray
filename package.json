@@ -3,13 +3,6 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "// Setup Environments": "-------------------------------------------------------------",
-    "env": "dotenv --",
-    "env:dev": "dotenv -e .env.dev --",
-    "write-env": "node scripts/env.js",
-    "// CMS": "-------------------------------------------------------------",
-    "prefetch": "node scripts/hygraph-prefetch.js",
-    "prefetch:dev": "npm run env:dev -- npm run prefetch",
     "// Dev/Build": "-------------------------------------------------------------",
     "dev": "vite dev",
     "build": "vite build",
@@ -48,9 +41,9 @@
   "dependencies": {
     "@solana/spl-token-registry": "^0.2.4574",
     "@solana/web3.js": "^1.73.0",
-    "@sveltestack/svelte-query": "^1.6.0",
     "@tanstack/svelte-query": "^4.22.4",
-    "helius-sdk": "/Users/qudo/git/helius-sdk",
-    "highlight.js": "^11.7.0"
+    "helius-sdk": "file:../helius-sdk",
+    "highlight.js": "^11.7.0",
+    "svelte-json-tree": "^1.0.0"
   }
 }

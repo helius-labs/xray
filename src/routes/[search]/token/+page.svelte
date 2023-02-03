@@ -1,7 +1,21 @@
-<h1>Wallet</h1>
-
 <script>
     import { page } from "$app/stores";
 
-    $: console.log($page.data);
+    import JSONTree from "svelte-json-tree";
+    
+    import tokenQuery from "$lib/state/queries/solana-token";
+
+    const token = tokenQuery($page.params.search);
+
 </script>
+
+<h1>Token</h1>
+
+{#if $token.isFetching}
+    <button class="btn btn-ghost loading"></button>
+{:else}
+    <div class="card">
+        <JSONTree value={$token?.data} />
+    </div>
+{/if}
+

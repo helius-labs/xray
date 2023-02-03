@@ -3,6 +3,7 @@
     
     import { browser } from "$app/environment";
 
+    // TODO: How to get the local storage persistor working in svelte.
     import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
 
     import Nav from "$lib/components/nav.svelte";
@@ -20,6 +21,7 @@
 
 <QueryClientProvider client={queryClient}>
     <Nav />
+
     <main class="min-h-screen">
         <slot />
     </main>

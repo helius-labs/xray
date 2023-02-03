@@ -21,7 +21,7 @@
 {#if $accountInfo.isSuccess}
     <div class="relative">
         <div
-            class="absolute bottom-1/2 translate-y-1/2"
+            class="absolute bottom-1/2 translate-y-1/2 pointer-events-none"
             in:fade={{
                 duration : 2000,
             }}>

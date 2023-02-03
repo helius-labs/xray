@@ -3,6 +3,8 @@ import { goto } from "$app/navigation";
 import validatePubkey from "$lib/util/solana/validate-pubkey";
 
 export default async (search:string) => {
+    // TODO: better validation
+    
     // If it's long, assume it's a tx.
     // They will be presented with an error on the tx page if it's not.
     const probablyTransactionSignature = search.length > 50;
