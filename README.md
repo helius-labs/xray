@@ -110,4 +110,4 @@ The following pattern will subscribe to the data in the solanaPrice query store 
 A database for savaing anonymous data like trasaction views.
 
 # 📦 @helius/makeover
-[wip]
+Used for parsing blockchain data and making it pretty for the UI.
