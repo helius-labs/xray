@@ -103,7 +103,7 @@ The following pattern will subscribe to the data in the solanaPrice query store 
     <p>Price: {$solanaPrice}</p>
 {/if}
 ```
-# 📦 @helius/xray-databse
+# 📦 @helius/xray-database
 [wip]
 
 # 📦 @helius/makeover
