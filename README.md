@@ -47,6 +47,8 @@ State is primarily managed using Svelte Query. This library allows us to define 
 
 ### ⚡️ Actions
 📂 `./src/lib/state/actions`
+
+
 Actions are the Promises to fetch data often ran client side. These can reach out to 3rd parties directly or hit interal endpoints in order to proxy services that require authentication like Helius. 
 
 ##### Example Action
@@ -63,6 +65,8 @@ export default async () => {
 
 ### 🔍 Queries
 📂 `./src/lib/state/actions` 
+
+
 Create queries to easily fetch and subscribe to data.
 
 ##### Example Query
@@ -80,6 +84,8 @@ export default () => createQuery({
 
 ### 🪄 Using Queries
 📂 `./src/lib/components/some-component`
+
+
 The following pattern will subscribe to the data in the solanaPrice query store and update the page if it changes. The following will also fetch data for the first time if solanaPrice is empty.
 
 ##### Example Query
