@@ -40,7 +40,7 @@ Start all packages and apps in dev mode with `npm run dev`. There are also more 
 Build all apps and packages for production with `npm run build`.
 **Note:** If you want to build with your local `.env` try `npm run env -- npm run build`
 
-# 📦 UI & API
+# 📦 @helius/xray-app
 The UI & backend exist as one SvelteKit app. Our bakckend endpoints are located in `./src/routes/api/*`. The rest of the routes should be used for pages.
 
 

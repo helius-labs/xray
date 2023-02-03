@@ -10,7 +10,7 @@
     "// ENV -----------------": "",
     "env": "dotenv --",
     "// RUN -----------------": "",
-    "start:ui": "turbo run preview --prefix=apps/ui",
+    "start:app": "turbo run preview --prefix=apps/xray-app",
     "// BUILD -----------------": "",
     "build": "turbo run build",
     "// DEV -----------------": "",
