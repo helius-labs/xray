@@ -1,6 +1,6 @@
 <script>
-    import AccountsInfo from "./_sections/accounts-info.svelte";
-    import Transactions from "./_sections/transactions.svelte";
+    import AccountsInfo from "./_components/accounts-info.svelte";
+    import Transactions from "./_components/transactions.svelte";
 </script>
 
 <section>

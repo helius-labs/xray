@@ -1,6 +1,6 @@
 // WIP boilerplate for getting events by type
 import PrismaClient from "@helius/xray-database";
-import { RequestEvent } from "@sveltejs/kit";
+import type { RequestEvent } from "@sveltejs/kit";
 
 export async function GET({ params }:RequestEvent) {
     const prisma = new PrismaClient();

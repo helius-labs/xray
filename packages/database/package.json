@@ -2,12 +2,12 @@
   "name": "@helius/xray-database",
   "version": "1.0.0",
   "description": "",
-  "main": "./index.ts",
+  "main": "./index.js",
   "types": "./index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "echo \"Dev\"",
-    "build": "tsc index.ts",
+    "build": "tsc",
     "db:generate": "prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:pull": "prisma db pull"
