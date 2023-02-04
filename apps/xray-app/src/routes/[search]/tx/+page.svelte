@@ -10,5 +10,4 @@
 </script>
 
 <h1>Transaction</h1>
-
 <Transaction transaction={$transaction || {}} />

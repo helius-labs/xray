@@ -11,9 +11,8 @@ node_modules
 coverage
 
 # next.js
-.next/
-out/
-build
+dist
+.svelte-kit
 
 # misc
 .DS_Store
