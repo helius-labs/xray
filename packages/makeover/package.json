@@ -6,11 +6,12 @@
   "types": "./dist/index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc --watch",
+    "dev": "nodemon .",
     "build": "tsc"
   },
   "devDependencies": {
-    "tsconfig": "*"
+    "tsconfig": "*",
+    "eslint-config-custom": "*"
   },
   "author": "",
   "license": "ISC"
