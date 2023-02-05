@@ -1,7 +1,5 @@
 <script>
     import { page } from "$app/stores";
-
-    import JSONTree from "svelte-json-tree";
     
     import tokenQuery from "$lib/state/queries/solana-token";
 
@@ -15,7 +13,7 @@
     <button class="btn btn-ghost loading"></button>
 {:else}
     <div class="card">
-        <JSONTree value={$token?.data} />
+        <pre>{JSON.stringify($token?.data)}</pre>
     </div>
 {/if}
 

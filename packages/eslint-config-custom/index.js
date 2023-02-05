@@ -1,4 +1,4 @@
-module.exports =  {
+module.exports = {
     env : {
         browser : true,
         es2021  : true,
@@ -17,7 +17,6 @@ module.exports =  {
 
     extends : [
         "plugin:svelte/recommended",
-    //   "turbo"
     ],
 
     plugins : [
@@ -25,10 +24,6 @@ module.exports =  {
     ],
 
     overrides : [
-        // {
-        //     files     : [ "*.svelte" ],
-        //     processor : "svelte3/svelte3",
-        // },
         {
             files  : [ "*.svelte" ],
             parser : "svelte-eslint-parser",
@@ -100,7 +95,7 @@ module.exports =  {
             "error",
             {
                 order : [
-                    // `this` property.
+                // `this` property.
                     "this",
                     // `bind:this` directive.
                     "bind:this",
@@ -436,7 +431,7 @@ module.exports =  {
         indent                   : [ "error", 4 ],
         "linebreak-style"        : [ "error", "unix" ],
         semi                     : [ "error", "always" ],
-      
+        
         // Enforce newline consistency in objects
         "object-curly-newline" : [
             "warn",
