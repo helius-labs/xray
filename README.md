@@ -3,10 +3,6 @@
 # Project X-Ray
 An intuitive Solana transaction explorer powered by Helius.
 
-### 📜 Notion
-Join this to view project task management and other related resources.
-https://outgoing-stool-e96.notion.site/Project-XRAY-a9a36b39c97347f48689f6b111b6c958
-
 ### Tech Stack
 Here are the runtimes, key tools, libraries, and resources used in this project.
 - [Node](https://nodejs.org/en/)
