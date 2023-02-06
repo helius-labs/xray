@@ -28,13 +28,13 @@ Various APIs we use.
 This is a TurboRepo monorepo that can run and build all apps/packages in parallel. Apps like the UI are located in `/apps`. Packages used across apps are located in `/packages`.
 
 #### Setup Environment
-In the root of the proejct, create a `.env` file with the values mentioned in `.env.template`.
+In the root of the project, create a `.env` file with the values mentioned in `.env.template`.
 
 #### Install
-From the root of the proejct, run `npm install` to install dependencies for all apps and packages. 
+From the root of the project, run `npm install` to install dependencies for all apps and packages. 
 
 #### Dev
-Start all packages and apps in dev mode with `npm run dev`. There are also more scripts in `package.json` of examples showing how to start a sigle app or package.
+Start all packages and apps in dev mode with `npm run dev`. There are also more scripts in `package.json` of examples showing how to start a single app or package.
 
 #### Build
 Build all apps and packages for production with `npm run build`.
