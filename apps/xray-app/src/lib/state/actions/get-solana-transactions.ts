@@ -1,4 +1,4 @@
-import { parseTransaction } from "@helius/makeover";
+import { parseTransaction } from "../../../../../../packages/makeover/src";
 
 export default async (address:string):Promise<any> => {
     const response = await fetch(`/api/solana/${address}/transactions`);
