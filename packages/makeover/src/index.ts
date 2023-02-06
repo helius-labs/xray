@@ -18,10 +18,10 @@ interface Transfer {
 }
 
 const parseTransfer = (transaction: EnrichedTransaction): Transfer | EnrichedTransaction => {
-    if(transaction.tokenTransfers && transaction.tokenTransfers[0]) {
+    if(transaction.tokenTransfers && transaction.tokenTransfers.length >= 1) {
         const sendingUser = transaction.tokenTransfers[0].fromUserAccount;
         const receivingUser = transaction.tokenTransfers[0].toUserAccount;
-        const tokenTransferQuantity = transaction.tokenTransfers[0].rawTokenAmount;
+        const tokenTransferQuantity = transaction.tokenTransfers[0].tokenAmount;
         // const tokenTransferName = call a fetch to get the shorten named (ex: SOL, USDC, DeGods #1232)
         const tokenTransferMintAddress = transaction.tokenTransfers[0].mint;
         const { source, timestamp } = transaction;
@@ -36,13 +36,34 @@ const parseTransfer = (transaction: EnrichedTransaction): Transfer | EnrichedTra
 };
 
 interface Swap {
+    swapUser: string | null;
+    tokenSwapped: string;
+    tokenSwappedAmount: number;
+    tokenReceived: string | undefined;
+    tokenReceivedAmount: number | undefined;
     source: Source;
     timestamp: number;
 }
 
 const parseSwap = (transaction: EnrichedTransaction): Swap | EnrichedTransaction => {
-    if(transaction.tokenTransfers) {
-        return transaction;
+    if(transaction.tokenTransfers && transaction.tokenTransfers.length >= 1) {
+        const swapUser = transaction.tokenTransfers[0].fromUserAccount;
+        const tokenSwapped = transaction.tokenTransfers[0].mint;
+        const tokenSwappedAmount = transaction.tokenTransfers[0].tokenAmount;
+        let tokenReceived;
+        let tokenReceivedAmount;
+        const { source, timestamp } = transaction;
+
+        for(let i = 1; i < transaction.tokenTransfers.length; i++) {
+            if(transaction.tokenTransfers[i].toUserAccount === swapUser) {
+                tokenReceived = transaction.tokenTransfers[i].mint;
+                tokenReceivedAmount = transaction.tokenTransfers[i].tokenAmount;
+            }
+        }
+
+        return {
+            swapUser, tokenSwapped, tokenSwappedAmount, tokenReceived, tokenReceivedAmount, source, timestamp,
+        };
     }
     
     return transaction;
