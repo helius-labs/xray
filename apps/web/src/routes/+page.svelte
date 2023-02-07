@@ -1,16 +1,11 @@
-<style>
-    .input {
-        background: rgba(0, 0, 0, 0.25);
-    }
-</style>
-
 <script lang="ts">
     import { onMount } from "svelte";
+
     import { fly } from "svelte/transition";
 
-    import search from "$lib/search";
-
     import heliusLogo from "$lib/assets/helius/helius.png";
+
+    import { goto } from "$app/navigation";
 
     let inputEl:HTMLInputElement;
     let inputValue:string = "";
@@ -18,32 +13,40 @@
     let searchError = "";
     let isSearching = false;
 
-    const focus = () => inputEl.focus();
+    const focus = () => inputEl?.focus();
 
     const newSearch = async () => {
         searchError = "";
         isSearching = true;
 
-        const minSearch = 750;
-
-        const beforeSearch = Date.now();
+        const searchFailed = () => {
+            searchError = "Invalid search. Ensure you've provided a valid wallet address, token ID, or transaction signature.";
+            isSearching = false;
+        };
 
         try {
-            await search(inputValue);
-        } catch(error) {
-            // If it errored right away, still show a loader for a little.
-            if(Date.now() - beforeSearch < minSearch) {
-                await new Promise((resolve) => setTimeout(resolve, minSearch - (Date.now() - beforeSearch)));
+            const response = await fetch(`/api/search/${inputValue}`);
+
+            const { data } = await response.json();
+
+            if(!data?.valid) {
+                return searchFailed();
             }
 
-            isSearching = false;
-
-            searchError = "Search failed. Make sure you've provided a valid Solana  account address or transaction signature.";
+            goto(data?.url || "/");
+        } catch(error) {
+            searchFailed();
         }
     };
 
     onMount(focus);
 </script>
+
+<style>
+    .input {
+        background: rgba(0, 0, 0, 0.25);
+    }
+</style>
 
 <div
     class="flex justify-center items-center px-3 min-h-screen flex-wrap"
