@@ -1,5 +1,5 @@
 import type { EnrichedTransaction } from "../../../../../../../helius-sdk/dist";
-import { parseTransaction } from "../../../../../../packages/makeover/src";
+import { parseTransaction } from "@helius/xray-proton";
 
 export default async (address:string):Promise<EnrichedTransaction> => {
     const response = await fetch(`/api/solana/${address}/transactions`);

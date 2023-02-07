@@ -1,5 +1,5 @@
 {
-  "name": "@helius/xray-app",
+  "name": "@helius/xray-web",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -15,7 +15,7 @@
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^1.0.0",
-    "@sveltejs/kit": "^1.0.0",
+    "@sveltejs/adapter-vercel": "^2.0.1",
     "@tailwindcss/typography": "^0.5.8",
     "autoprefixer": "^10.4.7",
     "daisyui": "^2.46.1",
@@ -30,12 +30,11 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "@helius/makeover": "*",
     "@helius/xray-database": "*",
+    "@helius/xray-proton": "*",
     "@solana/spl-token-registry": "^0.2.7",
-    "@solana/web3.js": "^1.73.0",
+    "@sveltejs/kit": "^1.5.0",
     "@sveltestack/svelte-query": "^1.6.0",
-    "@tanstack/svelte-query": "^4.22.4",
-    "helius-sdk": "file:../helius-sdk"
+    "@tanstack/svelte-query": "^4.22.4"
   }
 }
