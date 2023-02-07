@@ -1,4 +1,5 @@
-import type { EnrichedTransaction } from "../../../../../../../helius-sdk/dist";
+import type { EnrichedTransaction } from "@helius/types";
+
 import { parseTransaction } from "@helius/xray-proton";
 
 export default async (address:string):Promise<EnrichedTransaction> => {
@@ -7,6 +8,6 @@ export default async (address:string):Promise<EnrichedTransaction> => {
     const { data }  = await response.json();
     
     const parsed = data.map((tx:EnrichedTransaction) => parseTransaction(tx));
-
+    
     return parsed;
 };

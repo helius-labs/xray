@@ -6,20 +6,24 @@ import {
     parseUnknown
 } from "./parsers";
 
-const supportedTransactions = {
+const supportedTransactionParsers = {
     TRANSFER : parseTransfer,
     SWAP     : parseSwap,
     UNKNOWN  : parseUnknown,
 };
 
-type SupportedTransactionTypes = keyof typeof supportedTransactions;
+type SupportedTransactionTypes = keyof typeof supportedTransactionParsers;
 
 export const parseTransaction = (transaction:EnrichedTransaction) => {
-    const parser = supportedTransactions[transaction?.type as SupportedTransactionTypes];
+    // Look up a parser for the transaction type
+    if(transaction?.type in supportedTransactionParsers) {
+        const txType = transaction?.type as SupportedTransactionTypes;
 
-    if(!parser) {
-        return parseUnknown(transaction);
+        const parsed = supportedTransactionParsers[txType](transaction);
+        
+        return parsed;
     }
 
-    return parser(transaction);
+    // Default to unknown
+    return parseUnknown(transaction);
 };
