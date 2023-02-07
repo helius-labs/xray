@@ -12,6 +12,7 @@
   },
   "devDependencies": {
     "tsconfig": "*",
+    "@helius/types": "*",
     "eslint-config-custom": "*"
   },
   "author": "",

@@ -1,4 +1,4 @@
-import { EnrichedTransaction, Source } from "../../../../helius-sdk/dist";
+import { EnrichedTransaction, Source } from "@helius/types";
 
 interface Swap {
     swapUser: string | null;
