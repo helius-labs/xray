@@ -33,7 +33,6 @@
     "@helius/makeover": "*",
     "@helius/xray-database": "*",
     "@solana/spl-token-registry": "^0.2.7",
-    "@solana/web3.js": "^1.73.0",
     "@sveltestack/svelte-query": "^1.6.0",
     "@tanstack/svelte-query": "^4.22.4",
     "helius-sdk": "file:../helius-sdk"

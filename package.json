@@ -13,6 +13,7 @@
     "start:app": "turbo run preview --prefix=apps/xray-app",
     "// BUILD -----------------": "",
     "build": "turbo run build",
+    "build:env": "npm run env -- turbo run build",
     "// DEV -----------------": "",
     "dev": "dotenv -- turbo run dev --parallel",
     "// Databse -----------------": "",
