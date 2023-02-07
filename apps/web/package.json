@@ -30,7 +30,7 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "@helius/proton": "*",
+    "@helius/xray-proton": "*",
     "@helius/xray-database": "*",
     "@solana/spl-token-registry": "^0.2.7",
     "@sveltestack/svelte-query": "^1.6.0",
