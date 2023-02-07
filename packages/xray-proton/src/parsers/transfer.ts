@@ -1,15 +1,8 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-import type { EnrichedTransaction, Source } from "@helius/types";
+import type { EnrichedTransaction } from "@helius-labs/helius-types";
 
-interface Transfer {
-    sendingUser: string | null,
-    receivingUser: string | null,
-    tokenTransferQuantity: number,
-    tokenTransferMintAddress: string,
-    source: Source;
-    timestamp: number;
-}
+import type { Transfer } from "../types";
 
 export const parseTransfer = (transaction: EnrichedTransaction): Transfer | EnrichedTransaction => {
     if(transaction.tokenTransfers) {

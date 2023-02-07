@@ -1,17 +1,15 @@
 {
-  "name": "@helius/xray-proton",
+  "name": "@helius-labs/xray-query",
   "version": "1.0.0",
   "description": "",
   "main": "./dist/index.js",
-  "types": "./dist/index.ts",
+  "types": "./dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc -w",
     "build": "tsc"
   },
   "devDependencies": {
     "tsconfig": "*",
-    "@helius/types": "*",
     "eslint-config-custom": "*"
   },
   "author": "",

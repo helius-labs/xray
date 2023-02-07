@@ -1,7 +1,7 @@
 <script>
     import { page } from "$app/stores";
     
-    import Transaction from "$lib/components/transaction.svelte";
+    import Transaction from "src/lib/components/transaction-card.svelte";
     
     import transactionsQuery from "$lib/state/queries/solana-account-transactions";
 
@@ -23,11 +23,6 @@
     {#each $transactions?.data as transaction }
         <div class="mb-8">
             <Transaction {transaction} />
-            <a
-                class="btn mt-2"
-                href="/{transaction?.signature}/tx">
-                View Tx
-            </a>
         </div>
     {/each}
 {/if}

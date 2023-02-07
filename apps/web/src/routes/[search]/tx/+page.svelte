@@ -1,7 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
 
-    import Transaction from "src/lib/components/transaction.svelte";
+    import Transaction from "src/lib/components/transaction-card.svelte";
 
     import transactionQuery from "$lib/state/queries/solana-account-transaction";
 

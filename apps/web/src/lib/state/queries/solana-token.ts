@@ -1,4 +1,4 @@
-import { createQuery } from "@tanstack/svelte-query";
+import { createQuery } from "@helius-labs/xray-query";
 
 import getToken from "$lib/state/actions/get-solana-token";
 

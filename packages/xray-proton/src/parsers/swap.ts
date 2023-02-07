@@ -1,4 +1,7 @@
-import { EnrichedTransaction, Source } from "@helius/types";
+import {
+    type EnrichedTransaction,
+    Source
+} from "@helius-labs/helius-types";
 
 interface Swap {
     swapUser: string | null;
