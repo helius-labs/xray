@@ -1,9 +1,9 @@
 {
-  "name": "matr",
+  "name": "@helius/xray",
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "apps/**",
+    "apps/*",
     "packages/*"
   ],
   "scripts": {

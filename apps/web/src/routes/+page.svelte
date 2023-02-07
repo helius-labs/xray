@@ -1,6 +1,4 @@
 <script lang="ts">
-    // MatrfYnDmsBrdnETpW2S6uksrChkGwyN4RRCXtTPZsv
-    // 4DBufsdfhnsGD242kSUT1VYMmwxE76G5EBKeKSaHhEnMqi2zvcqeePrGKTHSBapFYNUZEceACDR484hKTdc5sqwZ
     import { onMount } from "svelte";
 
     import { fly } from "svelte/transition";

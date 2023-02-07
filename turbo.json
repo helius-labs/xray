@@ -5,6 +5,14 @@
       "dependsOn": [ "^build" ],
       "outputs": [ "dist/**" ]
     },
+    "web#build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "env": [
+        "HELIUS_KEY"
+      ]
+    },
     "lint": {
       "outputs": []
     },
@@ -24,5 +32,8 @@
   },
   "globalDependencies": [
     ".env"
+  ],
+  "globalEnv": [
+    "HELIUS_KEY"
   ]
 }
