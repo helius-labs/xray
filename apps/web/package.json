@@ -34,7 +34,6 @@
     "@helius/xray-database": "*",
     "@solana/spl-token-registry": "^0.2.7",
     "@sveltestack/svelte-query": "^1.6.0",
-    "@tanstack/svelte-query": "^4.22.4",
-    "helius-sdk": "file:../helius-sdk"
+    "@tanstack/svelte-query": "^4.22.4"
   }
 }

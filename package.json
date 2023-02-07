@@ -1,6 +1,6 @@
 {
   "name": "@helius/xray",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "apps/*",
@@ -29,7 +29,8 @@
     "nodemon": "^2.0.20",
     "prettier": "latest",
     "turbo": "latest",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "helius-sdk": "file:../helius-sdk"
   },
   "engines": {
     "node": ">=18.0.0"
