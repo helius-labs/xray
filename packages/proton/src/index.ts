@@ -1,6 +1,7 @@
 import type { EnrichedTransaction } from "@helius/types";
 
 import {
+    parseBurn,
     parseSwap,
     parseTransfer,
     parseUnknown
@@ -10,6 +11,8 @@ const supportedTransactions = {
     TRANSFER : parseTransfer,
     SWAP     : parseSwap,
     UNKNOWN  : parseUnknown,
+    BURN     : parseBurn,
+    BURN_NFT : parseBurn,
 };
 
 type SupportedTransactionTypes = keyof typeof supportedTransactions;
