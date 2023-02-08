@@ -1,5 +1,5 @@
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type { EnrichedTransaction, Source } from "@helius/types";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 interface Transfer {
     sendingUser: string | null,
@@ -11,17 +11,19 @@ interface Transfer {
 }
 
 export const parseTransfer = (transaction: EnrichedTransaction): Transfer | EnrichedTransaction => {
-    if(transaction.tokenTransfers) {
+    const { tokenTransfers, nativeTransfers } = transaction;
+
+    if(tokenTransfers) {
         let firstTransaction;
         let tokenTransferQuantity;
         let tokenTransferMintAddress;
 
-        if(transaction.tokenTransfers.length === 0 && transaction.nativeTransfers) {
-            [ firstTransaction ] = transaction.nativeTransfers;
+        if(tokenTransfers.length === 0 && nativeTransfers) {
+            [ firstTransaction ] = nativeTransfers;
             tokenTransferQuantity = firstTransaction?.amount / LAMPORTS_PER_SOL;
             tokenTransferMintAddress = "So11111111111111111111111111111111111111112";
         } else {
-            [ firstTransaction ] = transaction.tokenTransfers;
+            [ firstTransaction ] = tokenTransfers;
             tokenTransferQuantity = firstTransaction?.tokenAmount;
             tokenTransferMintAddress = firstTransaction?.mint;
         }
