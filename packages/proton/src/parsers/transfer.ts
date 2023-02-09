@@ -1,13 +1,14 @@
 import type { EnrichedTransaction } from "@helius/types";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
 import { ProtonTransaction, ProtonTransactionAction } from "./types";
 
 export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransaction => {
     const { tokenTransfers, nativeTransfers } = transaction;
-
     const nativeTransfersLength = nativeTransfers.length - tokenTransfers.length;
-
     const actions: ProtonTransactionAction[] = [];
+    const primaryUser = tokenTransfers.length ? tokenTransfers[0].fromUserAccount : nativeTransfers[0].fromUserAccount;
+    const { type, source, timestamp } = transaction;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
         const [ tx ] = tokenTransfers;
@@ -38,9 +39,6 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
             amount,
         });
     }
-    
-    const primaryUser = tokenTransfers.length ? tokenTransfers[0].fromUserAccount : nativeTransfers[0].fromUserAccount;
-    const { type, source, timestamp } = transaction;
 
     return {
         type,
