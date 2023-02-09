@@ -27,28 +27,28 @@ This is a TurboRepo monorepo that can run and build all apps/packages in paralle
 - [Tailwind](https://tailwindcss.com/)
 - [DaisyUI Components](https://daisyui.com/)
 
-#### Setup Environment
+### Setup Environment
 In the root of the project, create a `.env` file with the values mentioned in `.env.template`.
 
-#### Install
+### Install
 Run the install command from the root of the project to install dependencies for all apps and packages. 
 ```
 npm install
 ```
 
-#### Dev
+### Dev
 Start all packages and apps in dev mode which watches for changes and adds your local environment.
 ```sh
 npm run dev
 ```
 
-#### Build
+### Build
 Build all apps and packages for production.
 ```sh
 npm run build
 ```
 
-#### Build Local Environment
+### Build Local Environment
 Build all apps and packages for production using your `.env` file.
 ```sh
 npm run build:env
@@ -57,7 +57,7 @@ npm run build:env
 # 📱 @helius-labs/xray-app
 A SvelteKit app that contains the main X-Ray UI and various endpoints used for viewing blockchain data.
 
-### Important Files & Folders
+## Important Files & Folders
 |||
 |-|-|
 📁 `./src/lib` | Common components, utilities, and libraries used throughout the app. Import things from this directory using the `$lib/` alias. |
@@ -67,7 +67,7 @@ A SvelteKit app that contains the main X-Ray UI and various endpoints used for v
 📄`./app.postcss` | Initialize/config Tailwind + global styles. |
 📄`./app.html` | The top level HTML template that wrapps all pages. Routes are injected into the  `%sveltekit.body%` tag. |
 
-### Routes
+## Routes
 |||
 |-|-|
 `/` | Home |
@@ -77,20 +77,20 @@ A SvelteKit app that contains the main X-Ray UI and various endpoints used for v
 `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key. |
 `/[search]/token` | Details about a particular token where `[search]` is a token mint address. |
 
-### Vercel Config
+## Vercel Config
 |||
 |-|-|
 Build Command | `cd ../.. && npx turbo run build --filter=web...` |
 Output Director | `apps/web/.svelte-kit` |
 Install Command | `npm install --prefix=../..` |
 
-### Styles
+## Styles
 [TailwindCSS](https://tailwindcss.com/) is used for base utilies and [DaisyUI](https://daisyui.com/) contains helpful UI components.
 
-### Icons
+## Icons
 See list of available icons at `$lib/icons/index.ts`.
 
-##### Use Icons
+### Use Icons
 ```js
 <script>
     import Icon from "$lib/icon";
@@ -99,18 +99,18 @@ See list of available icons at `$lib/icons/index.ts`.
 <Icon id="paper-plane">
 ```
 
-##### Add Icons
+### Add Icons
 1. Find the icon you want on [IconMon](https://iconmonstr.com/). Most of these should render fine. 
 2. Click "Embed" -> "Inline" and copy only the `<path>`.
 3. Add a new key to `$lib/icons/index.ts` that is similar to the Icon Monsters name for the icon and add your `<path>`.
 
-### State Management
+## State Management
 State is managed using a custom library located in `$lib/state`.
 
-#### Queries
+### Queries
 A query is a definition that contains an ID + some options on how to fetch data. This lib uses a combination of query definations and Svelte stores to create easy to load, subscribable and organized state. 
 
-#### Provider
+### Provider
 To access query state in components, your app needs to be wrapped with `<QueryProvider>` which provides state to any components underneath it.
 ```html
 <script>
@@ -125,7 +125,7 @@ To access query state in components, your app needs to be wrapped with `<QueryPr
 </QueryProvider>
 ```
 
-#### Use Queries
+### Use Queries
 Using queries is as easy as importing them as a store and subscribing with Sveltes `$`.
 ```html
 <script>
@@ -143,9 +143,9 @@ Using queries is as easy as importing them as a store and subscribing with Svelt
 {/if}
 ```
 
-#### Register Queries
+### Register Queries
 To fetch data, there needs to be a query for it. See registered queries in `$lib/state/queries`.
-##### Add Query
+#### Add Query
 1. Add a new key to the queries object with the ID you want to subcribe to your query with.
 2. Supply a loader function which should be a function that returns a Promise. Whatever is resolved will become the query value.
 3. Optional: Add a `formatter` function for the returned data to pass through. This should also be a function that returns a Promise.
@@ -166,7 +166,7 @@ const queries:Queries = {
 }
 ```
 
-#### Dynamic Queries
+### Dynamic Queries
 Pass data to your queries load function like so.
 ```html
 <script>
@@ -180,7 +180,7 @@ Pass data to your queries load function like so.
 </script>
 ```
 
-#### Reloading Queries
+### Reloading Queries
 You can access your loader function on any query store at `$myQuery.load()`. This makes it easy to reload a certain query throughout the app. Any components that are subscribed to the reloaded query will be updated.
 
 # 📦 @helius/proton
