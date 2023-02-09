@@ -1,30 +1,24 @@
 <script lang="ts">
     import "../app.postcss";
     
-    import { browser } from "$app/environment";
-
-    // TODO: How to get the local storage persistor working in svelte.
-    import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
-
     import Nav from "$lib/components/nav.svelte";
+        
+    import { QueryProvider } from "$lib/state";
 
-    // Create a client
-    const queryClient = new QueryClient({
-        defaultOptions : {
-            queries : {
-                enabled              : browser,
-                refetchOnWindowFocus : false,
-            },
+    import getSolanaPrice from "$lib/state/actions/get-solana-price";
+
+    const queries = {
+        "solana-price" : {
+            load : () => getSolanaPrice(),
         },
-    });
+    };
 
 </script>
 
-<QueryClientProvider client={queryClient}>
+<QueryProvider {queries}>
     <Nav />
-
     <main class="min-h-screen">
         <slot />
     </main>
-</QueryClientProvider>
+</QueryProvider>
 
