@@ -23,8 +23,6 @@ export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransact
     const parser = parsers[transaction?.type as ProtonSupportedTypes];
 
     const source = "SYSTEM_PROGRAM" as Source;
-
-    console.log({ parser });
     
     if(typeof parser === "undefined") {
         return {
