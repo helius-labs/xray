@@ -26,8 +26,8 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
         if(sent) {
             actions.push({
                 from,
-                sent,
                 to,
+                sent,
                 amount,
             });
         } else {

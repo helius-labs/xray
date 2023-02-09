@@ -12,8 +12,8 @@ type SupportedTransactionTypes = keyof typeof supportedTransactions;
 
 export interface ProtonTransactionAction {
     from: string,
-    sent?: string,
     to: string,
+    sent?: string,
     received?: string,
     amount: number,
 }
