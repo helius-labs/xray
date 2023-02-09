@@ -80,8 +80,8 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     
         actions.push({
             from,
-            sent,
             to,
+            sent,
             amount,
         });
     }
@@ -95,8 +95,8 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
 
         actions.push({
             from,
-            sent,
             to,
+            sent,
             amount,
         });
     }

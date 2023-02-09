@@ -36,12 +36,17 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
             actions.push({
                 from,
 <<<<<<< HEAD
+<<<<<<< HEAD
                 to,
                 sent,
 =======
                 sent,
                 to,
 >>>>>>> 9c4a140 (feat: ProtonTransaction support for swap tx type)
+=======
+                to,
+                sent,
+>>>>>>> 90496cb (chore: fixed order of ProtonTransactionAction keys)
                 amount,
             });
         } else {
