@@ -1,20 +1,23 @@
-import {
-    type EnrichedTransaction,
+import type {
+    EnrichedTransaction,
     Source
-} from "@helius/types";
+} from "@helius-labs/helius-types";
 
 import {
     ProtonTransaction,
-    ProtonTransactionAction
+    ProtonTransactionAction,
 } from "../types";
 
 export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction => {
+    const type = "SWAP";
+    const source = "SYSTEM_PROGRAM" as Source;
+
     if(transaction?.tokenTransfers === null) {
         return {
-            type        : "SWAP",
+            type,
+            source,
             primaryUser : "",
             timestamp   : 0,
-            source      : Source.SYSTEM_PROGRAM,
             actions     : [],
         };
     }
@@ -24,8 +27,6 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
     
     const {
-        type = "SWAP",
-        source = Source.SYSTEM_PROGRAM,
         timestamp,
     } = transaction;
 
@@ -62,7 +63,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     }
     
     return {
-        type : type || "SWAP",
+        type,
         primaryUser,
         timestamp,
         source,

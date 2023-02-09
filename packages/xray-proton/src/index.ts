@@ -1,28 +1,53 @@
-import type { EnrichedTransaction } from "@helius/types";
+import type { EnrichedTransaction, Source } from "@helius-labs/helius-types";
 
+import type {
+    ProtonTransaction,
+    ProtonSupportedTypes
+} from "./types";
+ 
 import {
     parseBurn,
     parseSwap,
     parseTransfer,
-    parseUnknown
 } from "./parsers";
 
-const supportedTransactions = {
+const parsers = {
     TRANSFER : parseTransfer,
     SWAP     : parseSwap,
-    UNKNOWN  : parseUnknown,
     BURN     : parseBurn,
     BURN_NFT : parseBurn,
+    UNKNOWN  : (data:any) => data,
 };
 
-type SupportedTransactionTypes = keyof typeof supportedTransactions;
+export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransaction => {
+    const parser = parsers[transaction?.type as ProtonSupportedTypes];
 
-export const parseTransaction = (transaction:EnrichedTransaction) => {
-    const parser = supportedTransactions[transaction?.type as SupportedTransactionTypes];
+    const source = "SYSTEM_PROGRAM" as Source;
 
-    if(!parser) {
-        return parseUnknown(transaction);
+    console.log({ parser });
+    
+    if(typeof parser === "undefined") {
+        return {
+            type        : "UNKNOWN",
+            source,
+            primaryUser : "",
+            timestamp   : 0,
+            actions     : [],
+        };
     }
+    
+    try {
+        return parser(transaction);
+    } catch(error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
 
-    return parser(transaction);
+        return {
+            type        : "UNKNOWN",
+            source,
+            primaryUser : "",
+            timestamp   : 0,
+            actions     : [],
+        };
+    }
 };

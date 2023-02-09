@@ -3,12 +3,12 @@ import { Source } from "@helius-labs/helius-types";
 const supportedTransactions = {
     TRANSFER : "TRANSFER",
     SWAP     : "SWAP",
-    UNKNOWN  : "UNKNOWN",
     BURN     : "BURN",
     BURN_NFT : "BURN_NFT",
+    UNKNOWN  : "UNKNOWN",
 };
 
-type SupportedTransactionTypes = keyof typeof supportedTransactions;
+export type ProtonSupportedTypes = keyof typeof supportedTransactions;
 
 export interface ProtonTransactionAction {
     from: string,
@@ -19,7 +19,7 @@ export interface ProtonTransactionAction {
 }
 
 export interface ProtonTransaction {
-    type: SupportedTransactionTypes,
+    type: ProtonSupportedTypes,
     primaryUser: string,
     timestamp: number,
     source: Source,
