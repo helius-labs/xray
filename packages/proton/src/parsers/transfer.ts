@@ -1,5 +1,6 @@
 import type { EnrichedTransaction } from "@helius/types";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
 import { ProtonTransaction, ProtonTransactionAction } from "./types";
 
 <<<<<<< HEAD
@@ -9,6 +10,7 @@ import { ProtonTransaction, ProtonTransactionAction } from "./types";
 >>>>>>> 10cb258 (feat: universal tx data shape, transfer support)
 export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransaction => {
     const { tokenTransfers, nativeTransfers } = transaction;
+<<<<<<< HEAD
     const nativeTransfersLength = nativeTransfers.length - tokenTransfers.length;
     const actions: ProtonTransactionAction[] = [];
     const primaryUser = tokenTransfers.length ? tokenTransfers[0].fromUserAccount : nativeTransfers[0].fromUserAccount;
@@ -62,7 +64,12 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     const nativeTransfersLength = nativeTransfers.length - tokenTransfers.length;
 >>>>>>> ca842f4 (feat: bulk send support for transfer parsing)
 
+=======
+    const nativeTransfersLength = nativeTransfers.length - tokenTransfers.length;
+>>>>>>> 9c4a140 (feat: ProtonTransaction support for swap tx type)
     const actions: ProtonTransactionAction[] = [];
+    const primaryUser = tokenTransfers.length ? tokenTransfers[0].fromUserAccount : nativeTransfers[0].fromUserAccount;
+    const { type, source, timestamp } = transaction;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
         const [ tx ] = tokenTransfers;
@@ -93,6 +100,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
             amount,
         });
     }
+<<<<<<< HEAD
     
 <<<<<<< HEAD
     return transaction;
@@ -100,6 +108,8 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
 =======
     const primaryUser = tokenTransfers.length ? tokenTransfers[0].fromUserAccount : nativeTransfers[0].fromUserAccount;
     const { type, source, timestamp } = transaction;
+=======
+>>>>>>> 9c4a140 (feat: ProtonTransaction support for swap tx type)
 
     return {
         type,
