@@ -77,13 +77,32 @@ A SvelteKit app that contains the main X-Ray UI and various endpoints used for v
 `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key. |
 `/[search]/token` | Details about a particular token where `[search]` is a token mint address. |
 
+### Vercel Config
+|||
+|-|-|
+Build Command | `cd ../.. && npx turbo run build --filter=web...` |
+Output Director | `apps/web/.svelte-kit` |
+Install Command | `npm install --prefix=../..` |
+
 ### Styles
 [TailwindCSS](https://tailwindcss.com/) is used for base utilies and [DaisyUI](https://daisyui.com/) contains helpful UI components.
 
 ### Icons
-```js
+See list of available icons at `$lib/icons/index.ts`.
 
+##### Use Icons
+```js
+<script>
+    import Icon from "$lib/icon";
+</script>
+
+<Icon id="paper-plane">
 ```
+
+##### Add Icons
+1. Find the icon you want on [IconMon](https://iconmonstr.com/). Most of these should render fine. 
+2. Click "Embed" -> "Inline" and copy only the `<path>`.
+3. Add a new key to `$lib/icons/index.ts` that is similar to the Icon Monsters name for the icon and add your `<path>`.
 
 ### State Management
 State is managed using a custom library located in `$lib/state`.
@@ -164,8 +183,8 @@ Pass data to your queries load function like so.
 #### Reloading Queries
 You can access your loader function on any query store at `$myQuery.load()`. This makes it easy to reload a certain query throughout the app. Any components that are subscribed to the reloaded query will be updated.
 
-# 📦 @helius/xray-database
-A database for savaing anonymous data like trasaction views.
-
 # 📦 @helius/proton
 Used for parsing blockchain data and making it pretty for the UI.
+
+# 📦 @helius/xray-database
+A database for savaing anonymous data like trasaction views.
