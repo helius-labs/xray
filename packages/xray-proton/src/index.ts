@@ -1,36 +1,25 @@
-export * from "./types";
+import type { EnrichedTransaction } from "@helius/types";
 
-import type { EnrichedTransaction } from "@helius-labs/helius-types";
+import {
+    parseSwap,
+    parseTransfer,
+    parseUnknown
+} from "./parsers";
 
-import { parseSwap } from "./parsers/swap";
-import { parseTransfer } from "./parsers/transfer";
-import { parseUnknown } from "./parsers/unknown";
-
-const supportedTransactionParsers = {
+const supportedTransactions = {
     TRANSFER : parseTransfer,
     SWAP     : parseSwap,
     UNKNOWN  : parseUnknown,
 };
 
-type SupportedTransactionTypes = keyof typeof supportedTransactionParsers;
+type SupportedTransactionTypes = keyof typeof supportedTransactions;
 
 export const parseTransaction = (transaction:EnrichedTransaction) => {
-    const supported = transaction?.type in supportedTransactionParsers;
+    const parser = supportedTransactions[transaction?.type as SupportedTransactionTypes];
 
-    if(!supported) {
-        return {
-            supported : false,
-            type      : "UNKNOWN",
-            parsed    : parseUnknown(transaction),
-        };
+    if(!parser) {
+        return parseUnknown(transaction);
     }
 
-    return {
-        supported : true,
-        type      : transaction?.type,
-
-        // TODO: better narrowing
-        // @ts-ignore
-        parsed    : supportedTransactionParsers[transaction?.type](transaction),
-    };
+    return parser(transaction);
 };

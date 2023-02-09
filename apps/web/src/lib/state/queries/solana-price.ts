@@ -1,8 +1,8 @@
-import { createQuery } from "@helius-labs/xray-query";
+// import query from "@helius-labs/xray-query";
 
-import getPrice from "$lib/state/actions/get-solana-price";
+// import getPrice from "$lib/state/actions/get-solana-price";
 
-export default () => createQuery({
-    queryKey : [ "solana-price" ],
-    queryFn  : getPrice,
-});
+// export default () => query({
+//     id   : "solana-price",
+//     load : getPrice,
+// });

@@ -1,11 +1,9 @@
 <script lang="ts">
     import { page } from "$app/stores";
 
-    import getSolanaPriceQuery from "$lib/state/queries/solana-price";
+    import query from "$lib/state";
 
-    import formatMoney from "src/lib/util/format-money";
-
-    const solanaPrice = getSolanaPriceQuery();
+    const solanaPrice = query("solana-price");
 
 </script>
 
@@ -37,6 +35,10 @@
         href="https://birdeye.so/token/So11111111111111111111111111111111111111112"
         rel="noreferrer"
         target="_blank">
-        <h1 class="font-mono">{`${formatMoney($solanaPrice?.data)} SOL/USD` || ""}</h1>
+        {#if $solanaPrice?.isLoading}
+            <button class="btn btn-ghost loading"></button>
+        {:else if $solanaPrice?.data}
+            <h1 class="font-mono">{`${$solanaPrice?.data} SOL/USD` || ""}</h1>
+        {/if}
     </a>
 </nav>

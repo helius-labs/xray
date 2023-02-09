@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "@helius-labs/xray-database": "*",
-    "@helius-labs/xray-query": "*",
     "@helius-labs/xray-proton": "*",
     "@solana/spl-token-registry": "^0.2.7",
     "@sveltejs/kit": "^1.5.0"
