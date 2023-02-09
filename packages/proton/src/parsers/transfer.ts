@@ -1,46 +1,53 @@
-import type { EnrichedTransaction, Source } from "@helius/types";
+import type { EnrichedTransaction } from "@helius/types";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { ProtonTransaction, ProtonTransactionAction } from "./types";
 
-interface Transfer {
-    sendingUser: string | null,
-    receivingUser: string | null,
-    tokenTransferQuantity: number,
-    tokenTransferMintAddress: string,
-    source: Source;
-    timestamp: number;
-}
-
-export const parseTransfer = (transaction: EnrichedTransaction): Transfer | EnrichedTransaction => {
+export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransaction => {
     const { tokenTransfers, nativeTransfers } = transaction;
 
     if(tokenTransfers) {
         let firstTransaction;
-        let tokenTransferQuantity;
-        let tokenTransferMintAddress;
-        
+        const actions: ProtonTransactionAction[] = [];
+
         if(tokenTransfers.length === 0 && nativeTransfers) {
             firstTransaction = nativeTransfers[0];
-            tokenTransferQuantity = firstTransaction?.amount / LAMPORTS_PER_SOL;
-            tokenTransferMintAddress = "So11111111111111111111111111111111111111112";
+            const from = firstTransaction.fromUserAccount;
+            const to = firstTransaction.toUserAccount;
+            const sent = "So11111111111111111111111111111111111111112";
+            const amount = firstTransaction.amount / LAMPORTS_PER_SOL;
+
+            actions.push({
+                from,
+                sent,
+                to,
+                amount,
+            });
         } else {
             firstTransaction = tokenTransfers[0];
-            tokenTransferQuantity = firstTransaction?.tokenAmount;
-            tokenTransferMintAddress = firstTransaction?.mint;
+            const from = firstTransaction.fromUserAccount;
+            const to = firstTransaction.toUserAccount;
+            const sent = firstTransaction.mint;
+            const amount = firstTransaction.tokenAmount;
+
+            actions.push({
+                from,
+                sent,
+                to,
+                amount,
+            });
         }
         
-        const sendingUser = firstTransaction?.fromUserAccount;
-        const receivingUser = firstTransaction?.toUserAccount;
-        const { source, timestamp } = transaction;
+        const primaryUser = firstTransaction?.fromUserAccount;
+        const { type, source, timestamp } = transaction;
 
         return {
-            sendingUser,
-            receivingUser,
-            tokenTransferQuantity,
-            tokenTransferMintAddress,
-            source,
+            type,
+            primaryUser,
             timestamp,
+            source,
+            actions,
         };
     }
-
+    
     return transaction;
 };
