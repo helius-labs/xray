@@ -1,3 +1,3 @@
-import { EnrichedTransaction } from "@helius-labs/helius-types";
+import { EnrichedTransaction } from "@helius/types";
 
 export const parseUnknown = (transaction: EnrichedTransaction) => transaction;
