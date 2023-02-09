@@ -10,13 +10,13 @@ export async function GET({ params }: RequestEvent) {
         method  : "POST",
         headers : {},
         body    : `{
-            transactions : [
+            "transactions" : [
                 "${params.address}"
             ]
         }`,
     });
 
-    const data  = await response.json();
+    const [ data ]  = await response.json();
     
     return json({ data });
 }

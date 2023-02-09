@@ -1,12 +1,7 @@
-/* Write your global styles here, in PostCSS syntax */
+/* Base config */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.btn-gradient {
-    color: rgb(255, 255, 255);
-    background: -webkit-linear-gradient(left, rgb(255, 85, 0), rgb(255, 145, 0));
-}
 
 input::placeholder {
     @apply text-white opacity-50;
@@ -14,6 +9,29 @@ input::placeholder {
 
 .card {
     @apply shadow-xl rounded-lg p-3 bg-black;
+}
+
+.center {
+    @apply flex justify-center items-center;
+}
+
+.icon {
+    @apply fill-current h-4 w-4;
+}
+
+section {
+    @apply pb-8;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Orbitron', sans-serif;
+}
+
+
+/* New components */
+.btn-gradient {
+    color: rgb(255, 255, 255);
+    background: -webkit-linear-gradient(left, rgb(255, 85, 0), rgb(255, 145, 0));
 }
 
 .blob {
@@ -26,18 +44,7 @@ input::placeholder {
     filter: blur(20rem)
 }
 
-.center {
-    @apply flex justify-center items-center;
-}
-
-section {
-    @apply pb-8;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Orbitron', sans-serif;
-}
-
+/* Libs */
 :root {
     /* color */
     --json-tree-string-color: #00e45d;

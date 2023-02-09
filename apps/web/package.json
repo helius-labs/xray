@@ -1,5 +1,5 @@
 {
-  "name": "@helius/xray-web",
+  "name": "@helius-labs/xray-web",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -30,11 +30,9 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
-    "@helius/xray-database": "*",
-    "@helius/xray-proton": "*",
+    "@helius-labs/xray-database": "*",
+    "@helius-labs/xray-proton": "*",
     "@solana/spl-token-registry": "^0.2.7",
-    "@sveltejs/kit": "^1.5.0",
-    "@sveltestack/svelte-query": "^1.6.0",
-    "@tanstack/svelte-query": "^4.22.4"
+    "@sveltejs/kit": "^1.5.0"
   }
 }
