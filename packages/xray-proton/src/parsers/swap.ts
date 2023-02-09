@@ -1,36 +1,71 @@
-import { EnrichedTransaction, Source } from "@helius/types";
+import {
+    type EnrichedTransaction,
+    Source
+} from "@helius/types";
 
-export default (transaction: EnrichedTransaction): Swap | EnrichedTransaction => {
-    const { tokenTransfers } = transaction;
+import {
+    ProtonTransaction,
+    ProtonTransactionAction
+} from "../types";
 
-    if(tokenTransfers) {
-        const [ firstTransaction ] = tokenTransfers;
-        const swapUser = firstTransaction.fromUserAccount;
-        const tokenSwapped = firstTransaction.mint;
-        const tokenSwappedAmount = firstTransaction.tokenAmount;
-        const { source, timestamp } = transaction;
-        
-        // const swapTransfer = transaction.tokenTransfers.find(({ toUserAccount })) => toUserAccount === swapUser
-        let tokenReceived;
-        let tokenReceivedAmount;
-        
-        for(let i = 1; i < tokenTransfers.length; i++) {
-            if(tokenTransfers[i].toUserAccount === swapUser) {
-                tokenReceived = tokenTransfers[i].mint;
-                tokenReceivedAmount = tokenTransfers[i].tokenAmount;
-            }
-        }
-        
+export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction => {
+    if(transaction?.tokenTransfers === null) {
         return {
-            swapUser,
-            tokenSwapped,
-            tokenSwappedAmount,
-            tokenReceived,
-            tokenReceivedAmount,
-            source,
-            timestamp,
+            type        : "SWAP",
+            primaryUser : "",
+            timestamp   : 0,
+            source      : Source.SYSTEM_PROGRAM,
+            actions     : [],
         };
     }
+
+    const { tokenTransfers } = transaction;
+    const actions: ProtonTransactionAction[] = [];
+    const primaryUser = tokenTransfers[0].fromUserAccount || "";
     
-    return transaction;
+    const {
+        type = "SWAP",
+        source = Source.SYSTEM_PROGRAM,
+        timestamp,
+    } = transaction;
+
+    for(let i = 0; i < tokenTransfers.length; i++) {
+        const [ tx ] = tokenTransfers;
+        let sent;
+        let received;
+
+        if(tx.fromUserAccount === primaryUser) {
+            sent = tx.mint;
+        } else if(tx.toUserAccount === primaryUser) {
+            received = tx.mint;
+        }
+
+        const from = tx.fromUserAccount || "";
+        const to = tx.toUserAccount || "";
+        const amount = tx.tokenAmount;
+
+        if(sent) {
+            actions.push({
+                from,
+                to,
+                sent,
+                amount,
+            });
+        } else {
+            actions.push({
+                from,
+                to,
+                received,
+                amount,
+            });
+        }
+    }
+    
+    return {
+        type : type || "SWAP",
+        primaryUser,
+        timestamp,
+        source,
+        actions,
+    };
 };

@@ -21,14 +21,19 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
 
     const { tokenTransfers } = transaction;
     const actions: ProtonTransactionAction[] = [];
-    const primaryUser = tokenTransfers[0].fromUserAccount;
-    const { type, source, timestamp } = transaction;
+
+    const primaryUser = tokenTransfers[0].fromUserAccount || "";
+
+    const {
+        source,
+        timestamp,
+    } = transaction;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
         const [ tx ] = tokenTransfers;
-        const from = tx.fromUserAccount;
+        const from = tx.fromUserAccount || "";
         const sent = tx.mint;
-        const to = tx.toUserAccount;
+        const to = tx.toUserAccount || "";
         const amount = tx.tokenAmount;
 
         actions.push({
@@ -40,7 +45,7 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
     }
 
     return {
-        type,
+        type       : "BURN",
         primaryUser,
         timestamp,
         source,

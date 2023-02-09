@@ -1,46 +1,77 @@
-import type { EnrichedTransaction, Source } from "@helius/types";
+import {
+    type EnrichedTransaction,
+    Source,
+    NativeTransfer
+} from "@helius/types";
+
+import {
+    ProtonTransaction,
+    ProtonTransactionAction
+} from "../types";
+
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-interface Transfer {
-    sendingUser: string | null,
-    receivingUser: string | null,
-    tokenTransferQuantity: number,
-    tokenTransferMintAddress: string,
-    source: Source;
-    timestamp: number;
-}
+export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransaction => {
+    const {
+        type,
+        source,
+        timestamp,
+        tokenTransfers = [],
+        nativeTransfers = [],
+    } = transaction;
 
-export const parseTransfer = (transaction: EnrichedTransaction): Transfer | EnrichedTransaction => {
-    const { tokenTransfers, nativeTransfers } = transaction;
-
-    if(tokenTransfers) {
-        let firstTransaction;
-        let tokenTransferQuantity;
-        let tokenTransferMintAddress;
-        
-        if(tokenTransfers.length === 0 && nativeTransfers) {
-            firstTransaction = nativeTransfers[0];
-            tokenTransferQuantity = firstTransaction?.amount / LAMPORTS_PER_SOL;
-            tokenTransferMintAddress = "So11111111111111111111111111111111111111112";
-        } else {
-            firstTransaction = tokenTransfers[0];
-            tokenTransferQuantity = firstTransaction?.tokenAmount;
-            tokenTransferMintAddress = firstTransaction?.mint;
-        }
-        
-        const sendingUser = firstTransaction?.fromUserAccount;
-        const receivingUser = firstTransaction?.toUserAccount;
-        const { source, timestamp } = transaction;
-
+    if(tokenTransfers === null || nativeTransfers === null) {
         return {
-            sendingUser,
-            receivingUser,
-            tokenTransferQuantity,
-            tokenTransferMintAddress,
-            source,
-            timestamp,
+            type        : "TRANSFER",
+            primaryUser : "",
+            timestamp   : 0,
+            source      : Source.SYSTEM_PROGRAM,
+            actions     : [],
         };
     }
+    
+    const nativeTransfersLength = nativeTransfers.length - tokenTransfers.length;
 
-    return transaction;
+    const actions: ProtonTransactionAction[] = [];
+
+    const primaryUser = tokenTransfers[0].fromUserAccount || "";
+
+    for(let i = 0; i < tokenTransfers.length; i++) {
+        const [ tx ] = tokenTransfers;
+        const from = tx.fromUserAccount || "";
+        const to = tx.toUserAccount || "";
+        const sent = tx.mint;
+        const amount = tx.tokenAmount;
+    
+        actions.push({
+            from,
+            to,
+            sent,
+            amount,
+        });
+    }
+    
+    for(let i = 0; i < nativeTransfersLength; i++) {
+        const [ tx ] = nativeTransfers;
+
+        const from = tx.fromUserAccount || "";
+        const to = tx.toUserAccount || "";
+        const sent = "So11111111111111111111111111111111111111112";
+        const amount = tx.amount / LAMPORTS_PER_SOL;
+
+        actions.push({
+            from,
+            to,
+            sent,
+            amount,
+        });
+    }
+    
+    return {
+        type : "TRANSFER",
+        primaryUser,
+        timestamp,
+        source,
+        actions,
+    };
 };
