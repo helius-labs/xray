@@ -19,8 +19,6 @@
         $accountInfo.load($page.params.search);
     }
 
-    $: console.log($accountInfo);
-
     $: tweenedBalance.set($accountInfo?.data?.balance || 0);
 </script>
      

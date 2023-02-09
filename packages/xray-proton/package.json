@@ -11,7 +11,7 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@helius-labs/types": "*",
+    "@helius-labs/helius-types": "*",
     "@types/node-fetch": "^2.6.2",
     "eslint-config-custom": "*",
     "tsconfig": "*"
