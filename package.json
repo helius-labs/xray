@@ -29,6 +29,7 @@
     "eslint-config-custom": "*",
     "nodemon": "^2.0.20",
     "prettier": "latest",
+    "tsc-watch": "^6.0.0",
     "turbo": "latest",
     "typescript": "^4.9.4"
   },

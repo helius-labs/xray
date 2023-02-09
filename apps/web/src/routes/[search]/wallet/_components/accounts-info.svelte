@@ -11,14 +11,20 @@
         duration : 1000,
     });
 
-    import accountInfoQuery from "$lib/state/queries/solana-account-info";
+    import query from "$lib/state";
 
-    const accountInfo = accountInfoQuery($page.params.search);
+    const accountInfo = query("solana-account-info");
+
+    if($accountInfo?.load && !$accountInfo.hasFetched) {
+        $accountInfo.load($page.params.search);
+    }
+
+    $: console.log($accountInfo);
 
     $: tweenedBalance.set($accountInfo?.data?.balance || 0);
 </script>
      
-{#if $accountInfo.isSuccess}
+{#if $accountInfo?.isSuccess}
     <div class="relative">
         <div
             class="absolute bottom-1/2 translate-y-1/2 pointer-events-none"

@@ -1,20 +1,13 @@
-import type { EnrichedTransaction, Source } from "@helius/types";
+import type { EnrichedTransaction } from "@helius/types";
 
-type TokensBurned = {
-    tokenBurned: string;
-    tokenBurnedAmount: number;
-}
+import {
+    ProtonBurn,
+    ProtonTokensBurned
+} from "../types";
 
-interface Burn {
-    sendingUser: string | null;
-    tokensBurned: TokensBurned[];
-    source: Source;
-    timestamp: number;
-}
-
-export const parseBurn = (transaction: EnrichedTransaction): Burn | EnrichedTransaction => {
+export const parseBurn = (transaction: EnrichedTransaction): ProtonBurn | EnrichedTransaction => {
     const sendingUser = transaction.tokenTransfers[0].fromUserAccount;
-    const tokensBurned: TokensBurned[] = [];
+    const tokensBurned: ProtonTokensBurned[] = [];
     const { source, timestamp, tokenTransfers } = transaction;
     
     if(tokenTransfers?.length > 0) {

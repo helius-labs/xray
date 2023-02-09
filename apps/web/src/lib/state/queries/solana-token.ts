@@ -1,8 +1,8 @@
-import { createQuery } from "@tanstack/svelte-query";
+// import { createQuery } from "@helius-labs/xray-query";
 
-import getToken from "$lib/state/actions/get-solana-token";
+// import getToken from "$lib/state/actions/get-solana-token";
 
-export default (address:string) => createQuery({
-    queryKey : [ "solana-account-token" ],
-    queryFn  : () => getToken(address),
-});
+// export default (address:string) => createQuery({
+//     queryKey : [ "solana-account-token" ],
+//     queryFn  : () => getToken(address),
+// });

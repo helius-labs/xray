@@ -1,12 +1,15 @@
 <script>
     import { page } from "$app/stores";
     
-    import Transaction from "$lib/components/transaction.svelte";
+    import Transaction from "src/lib/components/transaction-card.svelte";
     
-    import transactionsQuery from "$lib/state/queries/solana-account-transactions";
+    import query from "$lib/state";
 
-    const transactions = transactionsQuery($page.params.search);
+    const transactions = query("solana-account-transactions");
 
+    $: if($transactions?.load) {
+        $transactions.load($page.params.search);
+    }
 </script>
 
 {#if $transactions?.data?.length === 0}
@@ -15,7 +18,7 @@
             No transactions found
         </p>
     </div>
-{:else if $transactions?.isFetching}
+{:else if $transactions?.isLoading}
     <div class="center">
         <button class="btn btn-ghost loading"></button>
     </div>
@@ -23,11 +26,6 @@
     {#each $transactions?.data as transaction }
         <div class="mb-8">
             <Transaction {transaction} />
-            <a
-                class="btn mt-2"
-                href="/{transaction?.signature}/tx">
-                View Tx
-            </a>
         </div>
     {/each}
 {/if}
