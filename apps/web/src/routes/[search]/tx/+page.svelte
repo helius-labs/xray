@@ -1,7 +1,4 @@
 <script lang="ts">
-    import type { SvelteComponent } from "svelte";
-    import type { TransactionType } from "@helius/types";
-
     import { page } from "$app/stores";
 
     import query from "$lib/state";
@@ -10,9 +7,9 @@
     import TxAction from "$lib/components/transaction/actions.svelte";
     import TxTokenPreview from "$lib/components/transaction/token-preview.svelte";
     import TxNFTDetails from "$lib/components/transaction/nft-preview.svelte";
-    import TxFooter from "$lib/components/transaction/footer.svelte";
     import TxSendReceive from "$lib/components/transaction/send-receive.svelte";
     import TxSwap from "$lib/components/transaction/swap.svelte";
+    import TxFooter from "$lib/components/transaction/footer.svelte";
 
     const transaction = query("solana-transaction");
     const tokenRegistry = query("solana-token-registry");
@@ -20,6 +17,8 @@
     $: if($transaction?.load) {
         $transaction.load($page.params.search);
     }
+
+    console.log($transaction.data.raw);
 </script>
 
 {#if $transaction?.isLoading}
@@ -27,6 +26,9 @@
 {:else if $transaction?.isError}
     <p>Error: {$transaction?.error}</p>
 {:else if $transaction?.hasFetched}
+    <div class="text-xs card mb-3">
+        <pre>{JSON.stringify($transaction?.data?.parsed, null, 4)}</pre>
+    </div>
     <TxType />
     {#if $transaction?.data?.type === "TRANSFER"}
         {#if $tokenRegistry?.data?.has($transaction?.data?.tokenTransferMintAddress)}
@@ -42,3 +44,4 @@
     {/if}
     <TxFooter />
 {/if}
+

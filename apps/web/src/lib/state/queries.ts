@@ -10,6 +10,7 @@ import getSolanaTokenRegistry from "$lib/state/actions/get-solana-token-registry
 import formatMoney from "$lib/util/format-money";
 
 import { parseTransaction } from "@helius-labs/xray-proton";
+import type { EnrichedTransaction } from "@helius/types";
 
 const queries:Queries = {
     "solana-price" : {
@@ -26,17 +27,22 @@ const queries:Queries = {
 
     "solana-account-info" : {
         loader : (...args:any) => getSolanaAccountInfo(args[0]),
-
     },
 
     "solana-account-transactions" : {
         loader    : (...args:any) => getSolanaTransactions(args[0]),
-        formatter : (data:any) => data.map(parseTransaction),
+        formatter : (data:any) => data.map((tx:EnrichedTransaction) => ({
+            parsed : parseTransaction(tx),
+            raw    : tx,
+        })),
     },
 
     "solana-transaction" : {
         loader    : (...args:any) => getSolanaTransaction(args[0]),
-        formatter : parseTransaction,
+        formatter : (data:any) => ({
+            parsed : parseTransaction(data),
+            raw    : data,
+        }),
     },
 
     "solana-token" : {
