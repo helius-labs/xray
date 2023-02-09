@@ -1,16 +1,6 @@
 import { EnrichedTransaction, Source } from "@helius/types";
 
-interface Swap {
-    swapUser: string | null;
-    tokenSwapped: string;
-    tokenSwappedAmount: number;
-    tokenReceived: string | undefined;
-    tokenReceivedAmount: number | undefined;
-    source: Source;
-    timestamp: number;
-}
-
-export const parseSwap = (transaction: EnrichedTransaction): Swap | EnrichedTransaction => {
+export default (transaction: EnrichedTransaction): Swap | EnrichedTransaction => {
     const { tokenTransfers } = transaction;
 
     if(tokenTransfers) {
