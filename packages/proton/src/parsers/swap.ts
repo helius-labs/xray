@@ -11,8 +11,10 @@ interface Swap {
 }
 
 export const parseSwap = (transaction: EnrichedTransaction): Swap | EnrichedTransaction => {
-    if(transaction.tokenTransfers) {
-        const [ firstTransaction ] = transaction.tokenTransfers;
+    const { tokenTransfers } = transaction;
+
+    if(tokenTransfers) {
+        const [ firstTransaction ] = tokenTransfers;
         const swapUser = firstTransaction.fromUserAccount;
         const tokenSwapped = firstTransaction.mint;
         const tokenSwappedAmount = firstTransaction.tokenAmount;
@@ -22,10 +24,10 @@ export const parseSwap = (transaction: EnrichedTransaction): Swap | EnrichedTran
         let tokenReceived;
         let tokenReceivedAmount;
         
-        for(let i = 1; i < transaction.tokenTransfers.length; i++) {
-            if(transaction.tokenTransfers[i].toUserAccount === swapUser) {
-                tokenReceived = transaction.tokenTransfers[i].mint;
-                tokenReceivedAmount = transaction.tokenTransfers[i].tokenAmount;
+        for(let i = 1; i < tokenTransfers.length; i++) {
+            if(tokenTransfers[i].toUserAccount === swapUser) {
+                tokenReceived = tokenTransfers[i].mint;
+                tokenReceivedAmount = tokenTransfers[i].tokenAmount;
             }
         }
         
