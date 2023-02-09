@@ -10,7 +10,8 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
 
     for(let i = 0; i < tokenTransfers.length; i++) {
         const [ tx ] = tokenTransfers;
-        let sent; let received;
+        let sent;
+        let received;
 
         if(tx.fromUserAccount === primaryUser) {
             sent = tx.mint;

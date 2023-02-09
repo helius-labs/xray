@@ -1,39 +1,33 @@
-import type { EnrichedTransaction, Source } from "@helius/types";
+import type { EnrichedTransaction } from "@helius/types";
 
-type TokensBurned = {
-    tokenBurned: string;
-    tokenBurnedAmount: number;
-}
+import { ProtonTransaction, ProtonTransactionAction } from "./types";
 
-interface Burn {
-    sendingUser: string | null;
-    tokensBurned: TokensBurned[];
-    source: Source;
-    timestamp: number;
-}
+export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction => {
+    const { tokenTransfers } = transaction;
+    const actions: ProtonTransactionAction[] = [];
+    const primaryUser = tokenTransfers[0].fromUserAccount;
+    const { type, source, timestamp } = transaction;
 
-export const parseBurn = (transaction: EnrichedTransaction): Burn | EnrichedTransaction => {
-    const sendingUser = transaction.tokenTransfers[0].fromUserAccount;
-    const tokensBurned: TokensBurned[] = [];
-    const { source, timestamp, tokenTransfers } = transaction;
-    
-    if(tokenTransfers?.length > 0) {
-        for(let i = 0; i < tokenTransfers.length; i++) {
-            const [ tx ] = tokenTransfers;
-            const tokenBurned = tx.mint;
-            const tokenBurnedAmount = tx.tokenAmount;
+    for(let i = 0; i < tokenTransfers.length; i++) {
+        const [ tx ] = tokenTransfers;
+        const from = tx.fromUserAccount;
+        const sent = tx.mint;
+        const to = tx.toUserAccount;
+        const amount = tx.tokenAmount;
 
-            tokensBurned.push({
-                tokenBurned,
-                tokenBurnedAmount,
-            });
-        }
+        actions.push({
+            from,
+            sent,
+            to,
+            amount,
+        });
     }
 
     return {
-        sendingUser,
-        tokensBurned,
-        source,
+        type,
+        primaryUser,
         timestamp,
+        source,
+        actions,
     };
 };
