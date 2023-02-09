@@ -17,8 +17,6 @@
     $: if($transaction?.load) {
         $transaction.load($page.params.search);
     }
-
-    console.log($transaction.data.raw);
 </script>
 
 {#if $transaction?.isLoading}
@@ -27,7 +25,12 @@
     <p>Error: {$transaction?.error}</p>
 {:else if $transaction?.hasFetched}
     <div class="text-xs card mb-3">
+        Parsed
         <pre>{JSON.stringify($transaction?.data?.parsed, null, 4)}</pre>
+    </div>
+    <div class="text-xs card mb-3">
+        Raw
+        <pre>{JSON.stringify($transaction?.data?.raw, null, 4)}</pre>
     </div>
     <TxType />
     {#if $transaction?.data?.type === "TRANSFER"}

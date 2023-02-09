@@ -1,7 +1,5 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
-
-    export let transaction;
+    export let transaction:any;
 </script>
 <!-- <div class="card grid-cols-12">
     <div class="col-span-4">
