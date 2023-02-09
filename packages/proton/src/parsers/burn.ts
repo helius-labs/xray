@@ -17,8 +17,8 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
 
         actions.push({
             from,
-            sent,
             to,
+            sent,
             amount,
         });
     }
