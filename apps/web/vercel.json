@@ -1,5 +1,5 @@
 {
     "buildCommand": "cd ../.. && npm run build",
-    "outputDirectory": "apps/web/.svelte-kit",
+    "outputDirectory": ".svelte-kit",
     "installCommand": "npm install --prefix=../../"
 }
