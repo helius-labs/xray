@@ -13,11 +13,11 @@ interface Burn {
 }
 
 export const parseBurn = (transaction: EnrichedTransaction): Burn | EnrichedTransaction => {
-    const sendingUser = transaction.feePayer;
+    const sendingUser = transaction.tokenTransfers[0].fromUserAccount;
     const tokensBurned: TokensBurned[] = [];
     const { source, timestamp, tokenTransfers } = transaction;
     
-    if(tokenTransfers && tokenTransfers.length > 0) {
+    if(tokenTransfers?.length > 0) {
         for(let i = 0; i < tokenTransfers.length; i++) {
             const [ tx ] = tokenTransfers;
             const tokenBurned = tx.mint;

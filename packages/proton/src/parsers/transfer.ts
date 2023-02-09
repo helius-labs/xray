@@ -17,13 +17,13 @@ export const parseTransfer = (transaction: EnrichedTransaction): Transfer | Enri
         let firstTransaction;
         let tokenTransferQuantity;
         let tokenTransferMintAddress;
-
+        
         if(tokenTransfers.length === 0 && nativeTransfers) {
-            [ firstTransaction ] = nativeTransfers;
+            firstTransaction = nativeTransfers[0];
             tokenTransferQuantity = firstTransaction?.amount / LAMPORTS_PER_SOL;
             tokenTransferMintAddress = "So11111111111111111111111111111111111111112";
         } else {
-            [ firstTransaction ] = tokenTransfers;
+            firstTransaction = tokenTransfers[0];
             tokenTransferQuantity = firstTransaction?.tokenAmount;
             tokenTransferMintAddress = firstTransaction?.mint;
         }
