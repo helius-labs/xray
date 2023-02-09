@@ -5,7 +5,6 @@ import adapter from "@sveltejs/adapter-auto";
 const config = {
     kit : {
         adapter : adapter(),
-        outDir  : "dist",
         alias   : {
             src              : "./src",
             "@helius-labs/*" : "../../packages/*",
