@@ -1,4 +1,4 @@
-import type { EnrichedTransaction, Source } from "@helius-labs/helius-types";
+import type { EnrichedTransaction, Source } from "helius-sdk";
 
 import type {
     ProtonSupportedTypes,

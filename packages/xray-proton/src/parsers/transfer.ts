@@ -1,7 +1,7 @@
 import type {
     EnrichedTransaction,
     Source
-} from "@helius-labs/helius-types";
+} from "helius-sdk";
 
 import {
     ProtonTransaction,
@@ -53,7 +53,8 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
             toName = getSolanaName(tx.toUserAccount);
         }
         const sent = tx.mint;
-        const amount = tx.tokenAmount;
+        // TODO change rawTokenAmount -> tokenAmount
+        const amount = tx.rawTokenAmount;
     
         actions.push({
             from,

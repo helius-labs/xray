@@ -1,8 +1,9 @@
 import { getSolanaName } from "@helius-labs/helius-namor";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type {
     EnrichedTransaction,
     Source
-} from "@helius-labs/helius-types";
+} from "helius-sdk";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import {
@@ -50,7 +51,8 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
             fromName = getSolanaName(tx.toUserAccount);
         }
         const sent = tx.mint;
-        const amount = tx.tokenAmount;
+        // TODO change rawTokenAmount -> tokenAmount
+        const amount = tx.rawTokenAmount;
 
         actions.push({
             from,
