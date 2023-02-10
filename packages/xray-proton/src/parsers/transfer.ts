@@ -25,15 +25,17 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     if(tokenTransfers === null || nativeTransfers === null) {
         return {
             type,
-            source,
             primaryUser : "",
+            fee         : 0,
             signature   : "",
             timestamp   : 0,
+            source,
             actions     : [],
         };
     }
     
     const primaryUser = tokenTransfers[0]?.fromUserAccount || "";
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
     source = transaction.source;
     
     const actions: ProtonTransactionAction[] = [];
@@ -94,6 +96,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     return {
         type,
         primaryUser,
+        fee,
         signature,
         timestamp,
         source,
