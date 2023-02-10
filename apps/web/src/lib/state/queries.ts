@@ -48,16 +48,6 @@ const queries:Queries = {
     "solana-token" : {
         loader : (...args:any) => getSolanaToken(args[0]),
     },
-
-    "recently-viewed" : {
-        loader : () => {
-            const existing = window?.localStorage?.getItem("xray:recently-viewed");
-
-            if (existing) {
-                return JSON.parse(existing);
-            }
-        }
-    }
 };
 
 export default queries;

@@ -12,25 +12,16 @@ import { PublicKey } from "@solana/web3.js";
 
 import  { publicKeyMappings } from "./types";
 
-const isValid = (key:string) => {
-    try {
-        return new PublicKey(key)
-    } catch (e) {
-        console.log(e);
-    
-        return false;
-    }
-}
-
-
 export const getSolanaName = (pubkey:string) => {
-    if(!isValid(pubkey)) {
-        return;
+    try {
+        new PublicKey(pubkey)
+    } catch (e) {
+        throw new Error("Invalid solana address");
     }
 
-    const keyMap:Map<string, string> = new Map(Object.entries(publicKeyMappings));
+    const keyMap = new Map(Object.entries(publicKeyMappings));
 
-    if(keyMap.has(pubkey) !== undefined) {
+    if (keyMap.has(pubkey)) {
         return keyMap.get(pubkey);
     }
 
