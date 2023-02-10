@@ -1,4 +1,4 @@
-import { Source } from "@helius-labs/helius-types";
+import { Source } from "helius-sdk";
 
 const supportedTransactions = {
     TRANSFER : "TRANSFER",

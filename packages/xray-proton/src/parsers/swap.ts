@@ -1,9 +1,9 @@
 import { getSolanaName } from "@helius-labs/helius-namor";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type {
     EnrichedTransaction,
     Source
-} from "@helius-labs/helius-types";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+} from "helius-sdk";
 
 import {
     ProtonTransaction,
