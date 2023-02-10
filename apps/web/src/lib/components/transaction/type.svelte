@@ -45,7 +45,7 @@
         {/if}
     </div>
     <h1>{$transaction.data.parsed.actions[0].amount} {symbol}</h1>
-    <div class="mt-3">
+    <div class="mt-3 text-xs">
         <p> {month} { day }, {year} at {clockHours}:{minutes}{suffix}</p>
     </div>
 </div>

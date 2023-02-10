@@ -34,24 +34,22 @@
         Raw
         <pre>{JSON.stringify($transaction?.data?.raw, null, 4)}</pre>
     </div> -->
-    <div class="card p-5">
-        <div class="grid grid-col-1 w-1/2 mx-auto">
+    <div class="grid grid-col-1 mx-auto">
 
-            <TxType />
-            {#if $transaction?.data?.parsed.type === "TRANSFER"}
-                {#if $tokenRegistry?.data?.has($transaction?.data?.parsed.actions[0].sent)}
-                    <TxSendReceive />
-                    <TxTokenPreview />
-                {:else if $tokenRegistry?.hasFetched}
-                    <TxNFTDetails />
-                    <TxAction />
-                {/if}
-            {:else if $transaction?.data?.parsed.type === "SWAP"}
-                <TxSwap />
-                <TxFooter />
+        <TxType />
+        {#if $transaction?.data?.parsed.type === "TRANSFER"}
+            {#if $tokenRegistry?.data?.has($transaction?.data?.parsed.actions[0].sent)}
+                <TxSendReceive />
+                <TxTokenPreview />
+            {:else if $tokenRegistry?.hasFetched}
+                <TxNFTDetails />
+                <TxAction />
             {/if}
+        {:else if $transaction?.data?.parsed.type === "SWAP"}
+            <TxSwap />
             <TxFooter />
-        </div>
+        {/if}
+        <TxFooter />
     </div>
 {/if}
 

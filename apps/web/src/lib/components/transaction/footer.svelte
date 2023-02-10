@@ -16,18 +16,6 @@
 
 </script>
 <div class="flex flex-col border-t border-gray-900">
-    <div class="flex justify-between p-3">
-        <div class="flex items-center">
-            <div class="w-10 h-10 flex items-center justify-center">
-                <Icon id="network" />
-            </div>
-            <p class="text-xs ml-1">Network Fee</p>
-        </div>
-        <div class="flex items-center">
-            <!--hardcoded for now till I figure out where to get this data-->
-            <p class="text-xs">0.000001 SOL</p>
-        </div>
-    </div>
     <div class="flex justify-between px-3">
         <div class="flex items-center">
             <div class="w-10 h-10 flex items-center justify-center">
