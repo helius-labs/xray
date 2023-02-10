@@ -1,3 +1,4 @@
+import { getSolanaName } from "@helius-labs/helius-namor";
 import type {
     EnrichedTransaction,
     Source
@@ -5,12 +6,12 @@ import type {
 
 import {
     ProtonTransaction,
-    ProtonTransactionAction,
+    ProtonTransactionAction
 } from "../types";
 
 export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction => {
     const type = "SWAP";
-    const source = "SYSTEM_PROGRAM" as Source;
+    let source = "SYSTEM_PROGRAM" as Source;
 
     if(transaction?.tokenTransfers === null) {
         return {
@@ -29,9 +30,10 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     const {
         timestamp,
     } = transaction;
+    source = transaction.source;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
-        const [ tx ] = tokenTransfers;
+        const tx = tokenTransfers[i];
         let sent;
         let received;
 
@@ -42,20 +44,32 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
         }
 
         const from = tx.fromUserAccount || "";
+        let fromName;
+        if(tx.fromUserAccount) {
+            fromName = getSolanaName(tx.fromUserAccount)
+        }
         const to = tx.toUserAccount || "";
+        let toName;
+        if(tx.toUserAccount) {
+            toName = getSolanaName(tx.toUserAccount);
+        }
         const amount = tx.tokenAmount;
 
         if(sent) {
             actions.push({
                 from,
+                fromName,
                 to,
+                toName,
                 sent,
                 amount,
             });
         } else {
             actions.push({
                 from,
+                fromName,
                 to,
+                toName,
                 received,
                 amount,
             });
