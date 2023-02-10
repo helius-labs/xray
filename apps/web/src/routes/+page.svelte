@@ -16,10 +16,10 @@
     });
 
     const removeItem = (idx:number) => {
-        recent = recent.filter((_, i) => i !== idx)
+        recent = recent.filter((_, i) => i !== idx);
 
         window.localStorage?.setItem("xray:recent-searches", JSON.stringify(recent));
-    }
+    };
 
     let inputEl:HTMLInputElement;
     let inputValue:string = "";
@@ -58,7 +58,6 @@
                 ]));
             }
 
-
             goto(data?.url || "/");
         } catch(error) {
             searchFailed();
@@ -74,8 +73,7 @@
     }
 </style>
 
-<div
-    class="flex justify-center items-center px-3 min-h-screen flex-wrap">
+<div class="flex justify-center items-center px-3 min-h-screen flex-wrap">
     <div class="absolute bottom-1/2 translate-y-1/2 pointer-events-none">
         <div class="blob"></div>
     </div>
@@ -123,26 +121,28 @@
             
             <div class="dropdown w-full">
                 <input
-                    tabindex="0"
                     bind:this={inputEl}
                     class="input input-bordered rounded-lg w-full text-lg h-16 focus:input-secondary px-14"
                     placeholder="Search Solana"
+                    tabindex="0"
                     type="text"
                     bind:value={inputValue}>
 
-                    {#if recent.length}
-                        <!-- svelte-ignore a11y-no-noninteractive-tabindex -->
-                        <ul tabindex="0" class="dropdown-content w-full menu p-2 shadow bg-base-100 mt-3 relative px-4 rounded-lg">
-                            <p class="text-xs font-bold mt-2 mb-1">Recent</p>
-                            {#each recent as address}
-                                <li class="truncate px-0 m1-2 w-full text-ellipsis ">
-                                    <a href="/{address}" class="px-1 py-2 w-full">
-                                        {address}
-                                    </a>
-                                </li>
+                {#if recent.length}
+                    <ul class="dropdown-content w-full menu p-2 shadow bg-base-100 mt-3 relative px-4 rounded-lg">
+                        <p class="text-xs font-bold mt-2 mb-1">Recent</p>
+                        {#each recent as address}
+                            <li class="truncate px-0 m1-ds2 w-full text-ellipsis ">
+                                <a
+                                    class="px-1 py-2 w-full"
+                                    data-sveltekit-preload-data="hover"
+                                    href="/{address}">
+                                    {address}
+                                </a>
+                            </li>
                         {/each}
-                        </ul>
-                    {/if}
+                    </ul>
+                {/if}
             </div>
 
             <button
