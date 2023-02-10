@@ -45,11 +45,11 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
 
         const from = tx.fromUserAccount || "";
         let fromName;
-        let toName;
         if(tx.fromUserAccount) {
             fromName = getSolanaName(tx.fromUserAccount)
         }
         const to = tx.toUserAccount || "";
+        let toName;
         if(tx.toUserAccount) {
             toName = getSolanaName(tx.toUserAccount);
         }
