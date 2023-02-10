@@ -33,7 +33,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     source = transaction.source;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
-        const [ tx ] = tokenTransfers;
+        const tx = tokenTransfers[i];
         let sent;
         let received;
 
