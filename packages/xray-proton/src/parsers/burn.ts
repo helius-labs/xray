@@ -50,7 +50,8 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
             fromName = getSolanaName(tx.toUserAccount);
         }
         const sent = tx.mint;
-        const amount = tx.tokenAmount;
+        // TODO change rawTokenAmount -> tokenAmount
+        const amount = tx.rawTokenAmount;
 
         actions.push({
             from,
