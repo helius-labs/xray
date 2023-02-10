@@ -18,6 +18,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
             type,
             source,
             primaryUser : "",
+            signature   : "",
             timestamp   : 0,
             actions     : [],
         };
@@ -28,6 +29,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
     
     const {
+        signature,
         timestamp,
     } = transaction;
     source = transaction.source;
@@ -79,6 +81,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     return {
         type,
         primaryUser,
+        signature,
         timestamp,
         source,
         actions,

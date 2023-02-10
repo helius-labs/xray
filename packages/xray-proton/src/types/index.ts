@@ -23,6 +23,7 @@ export interface ProtonTransactionAction {
 export interface ProtonTransaction {
     type: ProtonSupportedTypes,
     primaryUser: string,
+    signature: string,
     timestamp: number,
     source: Source,
     actions: ProtonTransactionAction[],

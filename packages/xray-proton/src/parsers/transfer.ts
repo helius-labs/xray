@@ -13,6 +13,7 @@ import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransaction => {
     const {
+        signature,
         timestamp,
         tokenTransfers = [],
         nativeTransfers = [],
@@ -26,6 +27,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
             type,
             source,
             primaryUser : "",
+            signature   : "",
             timestamp   : 0,
             actions     : [],
         };
@@ -92,6 +94,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     return {
         type,
         primaryUser,
+        signature,
         timestamp,
         source,
         actions,
