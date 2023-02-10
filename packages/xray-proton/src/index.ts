@@ -1,7 +1,8 @@
 import type { EnrichedTransaction, Source } from "@helius-labs/helius-types";
 
 import type {
-    ProtonSupportedTypes, ProtonTransaction
+    ProtonSupportedTypes,
+    ProtonTransaction
 } from "./types";
  
 import {
