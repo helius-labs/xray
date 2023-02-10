@@ -15,12 +15,6 @@
         recent = JSON.parse(recentStorage || "[]");
     });
 
-    const removeItem = (idx:number) => {
-        recent = recent.filter((_, i) => i !== idx);
-
-        window.localStorage?.setItem("xray:recent-searches", JSON.stringify(recent));
-    };
-
     let inputEl:HTMLInputElement;
     let inputValue:string = "";
 
@@ -49,12 +43,12 @@
 
             const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
 
-            const recent = JSON.parse(recentStorage || "[]");
+            const recentJson = JSON.parse(recentStorage || "[]");
 
             if(!recent.includes(inputValue)) {
                 window.localStorage?.setItem("xray:recent-searches", JSON.stringify([
                     inputValue,
-                    ...recent.slice(0, 5),
+                    ...recentJson.slice(0, 5),
                 ]));
             }
 
