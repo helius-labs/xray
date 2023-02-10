@@ -17,6 +17,7 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
             type        : "BURN",
             source,
             primaryUser : "",
+            signature   : "",
             timestamp   : 0,
             actions     : [],
         };
@@ -28,6 +29,7 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
 
     const {
+        signature,
         timestamp,
     } = transaction;
     source = transaction.source;
@@ -60,6 +62,7 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
     return {
         type       : "BURN",
         primaryUser,
+        signature,
         timestamp,
         source,
         actions,
