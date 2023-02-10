@@ -3,6 +3,7 @@ import type {
     EnrichedTransaction,
     Source
 } from "@helius-labs/helius-types";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import {
     ProtonTransaction,
@@ -16,10 +17,11 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     if(transaction?.tokenTransfers === null) {
         return {
             type,
-            source,
             primaryUser : "",
+            fee         : 0,
             signature   : "",
             timestamp   : 0,
+            source,
             actions     : [],
         };
     }
@@ -32,6 +34,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
         signature,
         timestamp,
     } = transaction;
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
     source = transaction.source;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
@@ -81,6 +84,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     return {
         type,
         primaryUser,
+        fee,
         signature,
         timestamp,
         source,

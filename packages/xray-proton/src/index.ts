@@ -1,14 +1,14 @@
 import type { EnrichedTransaction, Source } from "@helius-labs/helius-types";
 
 import type {
-    ProtonTransaction,
-    ProtonSupportedTypes
+    ProtonSupportedTypes,
+    ProtonTransaction
 } from "./types";
  
 import {
     parseBurn,
     parseSwap,
-    parseTransfer,
+    parseTransfer
 } from "./parsers";
 
 const parsers = {
@@ -27,9 +27,11 @@ export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransact
     if(typeof parser === "undefined") {
         return {
             type        : "UNKNOWN",
-            source,
             primaryUser : "",
+            fee         : 0,
+            signature   : "",
             timestamp   : 0,
+            source,
             actions     : [],
         };
     }
@@ -42,9 +44,11 @@ export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransact
 
         return {
             type        : "UNKNOWN",
-            source,
             primaryUser : "",
+            fee         : 0,
+            signature   : "",
             timestamp   : 0,
+            source,
             actions     : [],
         };
     }
