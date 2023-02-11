@@ -1,4 +1,4 @@
-import { Source } from "@helius-labs/helius-types";
+import { Source } from "helius-sdk";
 
 const supportedTransactions = {
     TRANSFER : "TRANSFER",
@@ -23,6 +23,7 @@ export interface ProtonTransactionAction {
 export interface ProtonTransaction {
     type: ProtonSupportedTypes,
     primaryUser: string,
+    fee: number,
     signature: string,
     timestamp: number,
     source: Source,

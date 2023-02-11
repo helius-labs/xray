@@ -1,19 +1,14 @@
-export * from "./types";
-
-import {
-    type EnrichedTransaction,
-    Source
-} from "@helius-labs/helius-types";
+import { type EnrichedTransaction, Source } from "helius-sdk";
 
 import type {
-    ProtonTransaction,
-    ProtonSupportedTypes
+    ProtonSupportedTypes,
+    ProtonTransaction
 } from "./types";
  
 import {
     parseBurn,
     parseSwap,
-    parseTransfer,
+    parseTransfer
 } from "./parsers";
 
 const parsers = {
@@ -31,6 +26,7 @@ const unknown:ProtonTransaction = {
     timestamp   : 0,
     actions     : [],
     signature   : "",
+    fee         : 0,
 };
 
 export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransaction => {
