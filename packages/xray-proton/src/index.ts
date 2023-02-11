@@ -7,6 +7,7 @@ import type {
  
 import {
     parseBurn,
+    parseNftSale,
     parseSwap,
     parseTransfer
 } from "./parsers";
@@ -16,6 +17,7 @@ const parsers = {
     SWAP     : parseSwap,
     BURN     : parseBurn,
     BURN_NFT : parseBurn,
+    NFT_SALE : parseNftSale,
     UNKNOWN  : (data:any) => data,
 };
 
