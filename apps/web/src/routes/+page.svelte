@@ -74,7 +74,7 @@
     <div class="w-full max-w-2xl">
         <div class="w-full">
             <h1 class="text-8xl text-white text-center font-bold">
-                PEGASUS
+                ATLAS
             </h1>
         </div>
         {#if searchError && !isSearching}
