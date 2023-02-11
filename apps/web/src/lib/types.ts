@@ -1,3 +1,6 @@
+import type { EnrichedTransaction } from "@helius-labs/helius-types";
+import type { ProtonTransaction } from "@helius-labs/xray-proton";
+
 export interface UIAccount {
     publicKey: string
     transactions: Array<any>
@@ -13,4 +16,9 @@ export interface SearchResult {
     account: UIAccount
     token : UIToken
     transaction : UITransaction
+}
+
+export interface WebTransaction {
+    parsed : ProtonTransaction,
+    raw : EnrichedTransaction
 }

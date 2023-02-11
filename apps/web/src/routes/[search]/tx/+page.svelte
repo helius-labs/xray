@@ -4,7 +4,6 @@
     import query from "$lib/state";
 
     import TxType from "$lib/components/transaction/type.svelte";
-    import TxAction from "$lib/components/transaction/actions.svelte";
     import TxTokenPreview from "$lib/components/transaction/token-preview.svelte";
     import TxNFTDetails from "$lib/components/transaction/nft-preview.svelte";
     import TxSendReceive from "$lib/components/transaction/send-receive.svelte";
@@ -21,6 +20,15 @@
         $transaction.load($page.params.search);
     }
 </script>
+
+{#if $page.url.searchParams.get("wallet")}
+    <a
+        class="btn btn-ghost mb-6 pl-0"
+        href="/{$page.url.searchParams.get("wallet")}/wallet">
+        <Icon id="arrow-left" />
+        <span class="ml-3">Back to Wallet</span>
+    </a>
+{/if}
 
 {#if $transaction?.isLoading}
     <p>Loading...</p>
@@ -52,7 +60,8 @@
         amount,
         sent,
     }}
-        <div class="grid grid-cols-4 gap-4">
+        <hr class="opacity-25 my-8">
+        <div class="grid grid-cols-4 gap-4 mb-10">
             <div class="col-span-3">
                 <div class="grid grid-cols-12 gap-4">
                     <div class="col-span-4">

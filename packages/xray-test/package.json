@@ -1,0 +1,19 @@
+{
+  "name": "@helius-labs/xray-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "eslint-config-custom": "*",
+    "tsconfig": "*"
+  },
+  "author": "",
+  "license": "ISC"
+}

@@ -32,6 +32,7 @@
   "dependencies": {
     "@helius-labs/xray-database": "*",
     "@helius-labs/xray-proton": "*",
+    "@helius-labs/xray-test": "*",
     "@solana/spl-token-registry": "^0.2.7",
     "@sveltejs/kit": "^1.5.0",
     "tailwindcss-neumorphism": "^0.1.0"
