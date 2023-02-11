@@ -35,6 +35,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
         timestamp,
     } = transaction;
     const fee = transaction.fee / LAMPORTS_PER_SOL;
+
     source = transaction.source;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
@@ -50,14 +51,18 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
 
         const from = tx.fromUserAccount || "";
         let fromName;
+
         if(tx.fromUserAccount) {
-            fromName = getSolanaName(tx.fromUserAccount)
+            fromName = getSolanaName(tx.fromUserAccount);
         }
+
         const to = tx.toUserAccount || "";
         let toName;
+
         if(tx.toUserAccount) {
             toName = getSolanaName(tx.toUserAccount);
         }
+
         // TODO change rawTokenAmount -> tokenAmount
         const amount = tx.rawTokenAmount;
 
