@@ -7,17 +7,15 @@
 
     import shortenAddress from "$lib/util/shorten-string";
 
+    import { state } from "svelte-snacks";
+    
     const tweenedBalance = tweened(0, {
         duration : 1000,
     });
 
-    import query from "$lib/state";
+    const address = $page.params.search;
 
-    const accountInfo = query("solana-account-info");
-
-    if($accountInfo?.load && !$accountInfo.hasFetched) {
-        $accountInfo.load($page.params.search);
-    }
+    const accountInfo = state("solanaAccountInfo", address);
 
     $: tweenedBalance.set($accountInfo?.data?.balance || 0);
 </script>

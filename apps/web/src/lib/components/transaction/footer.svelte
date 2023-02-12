@@ -13,8 +13,8 @@
     $: if($transaction?.load) {
         $transaction.load($page.params.search);
     }
-
 </script>
+
 <div class="flex flex-col border-t border-gray-900">
     <div class="flex justify-between px-3">
         <div class="flex items-center">

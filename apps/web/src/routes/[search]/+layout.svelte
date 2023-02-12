@@ -5,3 +5,14 @@
     </div>
 </div>
 
+<script>
+    import { onMount } from "svelte";
+
+    import { state } from "svelte-snacks";
+
+    const tokenRegistry = state("solanaTokenRegistry");
+
+    onMount(() => {
+        $tokenRegistry.load();
+    });
+</script>

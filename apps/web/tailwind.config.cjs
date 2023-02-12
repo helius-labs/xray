@@ -19,11 +19,11 @@ const config = {
 
                     "primary-content" : "#f5f5f4",
       
-                    secondary : "#f5f5f4",
+                    secondary : "#060606",
                              
                     accent : "#ea580c",
                              
-                    neutral : "#292524",
+                    neutral : "#616161",
                              
                     "base-100" : "#060606",
                              

@@ -1,53 +1,80 @@
 <script lang="ts">
-    import query from "$lib/state";
+    import { state } from "svelte-snacks";
+
     import Icon from "$lib/icon";
 
-    const tokenRegistry = query("solana-token-registry");
+    import { page } from "$app/stores";
 
+    const address = $page.params.search;
+
+    const tokenRegistry = state("solanaTokenRegistry");
+
+    const solanaToken = state([ "solanaToken", address ], address);
+    
     interface TokenInput {
         address: string
         amount: number
     }
 
+    interface Token {
+        image: string,
+        name: string,
+        address: string,
+    }
+    
     export let token:TokenInput;
 
-    let details = {
-        logoURI : "",
-        amount  : 0,
-        symbol  : "",
+    let isLoading = true;
+    
+    const metadata:Token = {
+        image   : "",
+        name    : "",
+        address : token.address,
     };
 
-    const fetchMetadata = async () => {
-        const response = await fetch(`/api/solana/${token.address}/token`);
+    $: if($tokenRegistry.hasFetched) {
+        const tokenDetails = $tokenRegistry.data.get(token?.address);
 
-        const { data } = await response.json();
+        if(!metadata) {
+            // is NFT
+            $solanaToken.load();
+        } else {
+            metadata.image = tokenDetails?.logoURI;
+            metadata.name = tokenDetails?.symbol;
+            isLoading = false;
+        }
+    }
 
-        details.logoURI = data?.offChainData.image;
-        details.symbol = data?.offChainData.symbol;
-    };
+    $: if($solanaToken.hasFetched) {
+        isLoading = false;
 
-    $: if($tokenRegistry.data.has && token) {
-        details = $tokenRegistry.data.has(token?.address) ? $tokenRegistry.data.get(token?.address) : {};
-
-        if(!$tokenRegistry.data.has(token?.address)) {
-            fetchMetadata();
+        if($solanaToken.data?.name) {
+            metadata.name = $solanaToken.data?.name;
+            metadata.image = $solanaToken.data?.image;
+        } else {
+            metadata.name = "";
+            metadata.image = "";
         }
     }
 </script>
 
 <div class="card grid grid-cols-12 gap-3">
     <div class="col-span-1 center">
-        {#if details.logoURI}
-            <img
-                class="w-full rounded-full"
-                alt="token symbol"
-                src={details.logoURI} />
+        {#if isLoading}
+            <button class="btn-ghost loading"></button>
         {:else}
-            <Icon id="question" />
+            {#if metadata.image}
+                <img
+                    class="w-full rounded-full"
+                    alt="token symbol"
+                    src={metadata.image} />
+            {:else}
+                <Icon id="question" />
+            {/if}
         {/if}
     </div>
     <div class="col-span-5">
-        <h4 class="m-0 font-bold text-lg">{details.symbol || "UNKNOWN"}</h4>
+        <h4 class="m-0 font-bold text-lg">{metadata.name || "UNKNOWN"}</h4>
         <p class="m-0 opacity-50">
             {token.amount}
         </p>

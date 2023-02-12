@@ -1,15 +1,19 @@
 <script lang="ts">
     import "../app.postcss";
-    
+
+    import { browser } from "$app/environment";
+
     import Nav from "$lib/components/nav.svelte";
         
-    import { QueryProvider } from "$lib/state";
+    import { SnackProvider } from "svelte-snacks";
+
+    import * as queries from "$lib/state/queries";
 </script>
 
-<QueryProvider>
+<SnackProvider config={{ queries, disable : !browser }}>
     <Nav />
-    <main class="min-h-screen">
+    <main>
         <slot />
     </main>
-</QueryProvider>
+</SnackProvider>
 

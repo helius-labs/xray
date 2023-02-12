@@ -5,6 +5,8 @@ import type {
     ProtonTransaction
 } from "./types";
  
+export * from "./types";
+
 import {
     parseBurn,
     parseNftBid,

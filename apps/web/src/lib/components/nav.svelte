@@ -1,15 +1,20 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import { onMount } from "svelte";
 
-    import query from "$lib/state";
+    import { state } from "svelte-snacks";
 
-    const solanaPrice = query("solana-price");
+    const solanaPrice = state("tokenPrice", "So11111111111111111111111111111111111111112");
+    const solanaTPS = state("solanaTps");
 
+    onMount(() => {
+        $solanaPrice.load();
+        $solanaTPS.load();
+    });
 </script>
 
 <nav class="flex justify-between items-center fixed top-0 left-0 w-full p-1">
     <div class="flex items-center ml-2 py-3">
-        
         {#if $page.url.pathname !== "/"}
             <h1 class="font-bold mr-2 text-xl">XRAY</h1>
             
@@ -21,24 +26,36 @@
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"><path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z" /></svg>
             </a>
-            
         {/if}
-        <button class="btn btn-ghost btn-sm rounded p-1 px-3">
+
+        <button class="btn btn-outline p-1 px-3">
             <svg
-                class="fill-white h-5 w-5"
+                class="fill-current h-5 w-5"
                 viewBox="0 0 24 24"
                 xmlns="http://www.w3.org/2000/svg"><path d="M14.601 21.5c0 1.38-1.116 2.5-2.499 2.5-1.378 0-2.499-1.12-2.499-2.5s1.121-2.5 2.499-2.5c1.383 0 2.499 1.119 2.499 2.5zm-2.42-21.5c-4.029 0-7.06 2.693-7.06 8h3.955c0-2.304.906-4.189 3.024-4.189 1.247 0 2.57.828 2.684 2.411.123 1.666-.767 2.511-1.892 3.582-2.924 2.78-2.816 4.049-2.816 7.196h3.943c0-1.452-.157-2.508 1.838-4.659 1.331-1.436 2.986-3.222 3.021-5.943.047-3.963-2.751-6.398-6.697-6.398z" /></svg>
         </button>
     </div>
-    <a
-        class="mr-2 flex"
-        href="https://birdeye.so/token/So11111111111111111111111111111111111111112"
-        rel="noreferrer"
-        target="_blank">
-        {#if $solanaPrice?.isLoading}
+    <div class="flex">
+        {#if $solanaTPS?.isLoading || $solanaPrice?.isLoading}
             <button class="btn btn-ghost loading"></button>
-        {:else if $solanaPrice?.data}
-            <h1 class="font-mono">{`${$solanaPrice?.data} SOL/USD` || ""}</h1>
         {/if}
-    </a>
+        
+        {#if $solanaTPS?.hasFetched}
+            <div class="mr-5">
+                <p class="text-xs text-neutral font-bold">TPS</p>
+                <p class="">{$solanaTPS?.data?.tps.toFixed(0)}</p>
+            </div>
+        {/if}
+        
+        {#if $solanaPrice?.hasFetched}
+            <a
+                class="mr-2"
+                href="https://birdeye.so/token/So11111111111111111111111111111111111111112"
+                rel="noreferrer"
+                target="_blank">
+                <p class="text-xs text-neutral font-bold">Price</p>
+                <p class="">{$solanaPrice?.data}</p>
+            </a>
+        {/if}
+    </div>
 </nav>

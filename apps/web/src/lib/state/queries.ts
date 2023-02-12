@@ -1,16 +1,10 @@
-import type { Queries } from "./types";
-
-import getSolanaPrice from "$lib/state/actions/get-solana-price";
-import getSolanaAccountInfo from "$lib/state/actions/get-solana-account-info";
-import getSolanaTransaction from "$lib/state/actions/get-solana-transaction";
-import getSolanaTransactions from "$lib/state/actions/get-solana-transactions";
-import getSolanaToken from "$lib/state/actions/get-solana-token";
-import getSolanaTokenRegistry from "$lib/state/actions/get-solana-token-registry";
+import * as actions from "./actions";
 
 import formatMoney from "$lib/util/format-money";
 
 import { parseTransaction } from "@helius-labs/xray-proton";
-import type { EnrichedTransaction } from "@helius/types";
+
+import type { EnrichedTransaction } from "helius-sdk";
 
 type Token = {
     address: string;
@@ -20,42 +14,42 @@ type Token = {
     logoURI: string;
 };
 
-const queries:Queries = {
-    "solana-price" : {
-        loader                   : getSolanaPrice,
-        formatter                : formatMoney,
-        fetchOnFirstSubscription : true,
-    },
-
-    "solana-token-registry" : {
-        loader                   : () => getSolanaTokenRegistry(),
-        fetchOnFirstSubscription : true,
-        formatter                : (data:any) => new Map(data.map((token:Token) => ([ token?.address, token ]))),
-    },
-
-    "solana-account-info" : {
-        loader : (...args:any) => getSolanaAccountInfo(args[0]),
-    },
-
-    "solana-account-transactions" : {
-        loader    : (...args:any) => getSolanaTransactions(args[0]),
-        formatter : (data:any) => data.map((tx:EnrichedTransaction) => ({
-            parsed : parseTransaction(tx),
-            raw    : tx,
-        })),
-    },
-
-    "solana-transaction" : {
-        loader    : (...args:any) => getSolanaTransaction(args[0]),
-        formatter : (data:any) => ({
-            parsed : parseTransaction(data),
-            raw    : data,
-        }),
-    },
-
-    "solana-token" : {
-        loader : (...args:any) => getSolanaToken(args[0]),
-    },
+export const tokenPrice = {
+    loader    : actions.getTokenPrice,
+    formatter : formatMoney,
 };
 
-export default queries;
+export const solanaTps = {
+    loader    : actions.getSolanaTps,
+};
+
+export const solanaTokenRegistry = {
+    loader                   : actions.getSolanaTokenRegistry,
+    fetchOnFirstSubscription : true,
+    formatter                : (data:any) => new Map(data.map((token:Token) => ([ token?.address, token ]))),
+};
+
+export const solanaAccountInfo = {
+    loader : actions.getSolanaAccountInfo,
+};
+
+export const solanaTransactions = {
+    loader    : actions.getSolanaTransactions,
+    formatter : (data:any) => data.map((tx:EnrichedTransaction) => ({
+        parsed : parseTransaction(tx),
+        raw    : tx,
+    })),
+};
+
+export const solanaTransaction = {
+    loader    : actions.getSolanaTransaction,
+    formatter : (data:any) => ({
+        parsed : parseTransaction(data),
+        raw    : data,
+    }),
+};
+
+export const solanaToken = {
+    loader : actions.getSolanaToken,
+};
+

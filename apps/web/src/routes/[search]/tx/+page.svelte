@@ -1,7 +1,9 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
     import { page } from "$app/stores";
 
-    import query from "$lib/state";
+    import { state } from "svelte-snacks";
 
     import TxType from "$lib/components/transaction/type.svelte";
     import TxTokenPreview from "$lib/components/transaction/token-preview.svelte";
@@ -11,14 +13,17 @@
     import TxFooter from "$lib/components/transaction/footer.svelte";
     import shortenString from "src/lib/util/shorten-string";
     import Icon from "src/lib/icon/icon.svelte";
+
+    const address = $page.params.search;
   
-    const tokenRegistry = query("solana-token-registry");
+    const tokenRegistry = state(`solanaTokenRegistry`);
 
-    const transaction = query("solana-transaction");
+    const transaction = state([ "solanaTransaction", address ]);
 
-    $: if($transaction?.load && $page.params.search) {
-        $transaction.load($page.params.search);
-    }
+    onMount(() => {
+        $tokenRegistry.load();
+        $transaction.load();
+    });
 </script>
 
 {#if $page.url.searchParams.get("wallet")}

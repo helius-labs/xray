@@ -1,32 +1,37 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
     import { page } from "$app/stores";
 
     import type { WebTransaction } from "$lib/types";
     
     import Icon from "$lib/icon";
-    import query from "$lib/state";
 
     import type {
         ProtonTransactionAction,
     } from "@helius-labs/xray-proton";
+
+    import { state } from "svelte-snacks";
     
     import TokenBalance from "$lib/components/token-balance.svelte";
 
-    const transactions = query("solana-account-transactions");
+    const address = $page.params.search;
+
+    const transactions = state("solanaTransactions", address);
+
+    onMount(() => {
+        $transactions.load();
+    });
 
     // Merge all of the actions across all Txs so we can group like types
     let grouped:Array<any> = [];
-
-    $: if($transactions?.load) {
-        $transactions.load($page.params.search);
-    }
 
     $: if($transactions?.data?.length) {
         let lastType = "";
 
         // Group by type
         $transactions?.data?.forEach((transaction:WebTransaction) => {
-            transaction?.parsed?.actions.forEach((action:ProtonTransactionAction) => {
+            transaction?.parsed?.actions?.forEach((action:ProtonTransactionAction) => {
                 const primaryUser = transaction?.parsed?.primaryUser;
 
                 let type:string = transaction?.parsed?.type;
@@ -57,6 +62,8 @@
         // Update template
         grouped = grouped;
     }
+
+    $: console.log(grouped);
 </script>
 
 {#if $transactions?.data?.length === 0}

@@ -1,8 +1,7 @@
 import type { Writable } from "svelte/store";
 
-// eslint-disable-next-line no-unused-vars
-export type FormatterFunction = (data: any) => any | Promise<any>;
-export type LoadFunction = (...args:any) => Promise<any>;
+export type FormatterFunction = (data: any) => any;
+export type LoadFunction = (args:any) => Promise<any>;
 
 export interface QueryOptions {
     loader: LoadFunction,
@@ -13,15 +12,8 @@ export interface QueryOptions {
     fetchOnFirstSubscription?: boolean,
 }
 
-export type Queries = Record<string, QueryOptions>;
-
-export interface QueryProviderOptions {
-    disable?: boolean,
-    contextKey?: string,
-}
-
 export interface Query {
-    id: string,
+    id: string | string[],
     nextFetch: number,
     lastFetch: number,
     timesRetired: number,
@@ -31,12 +23,23 @@ export interface Query {
     isError: boolean,
     error: string,
     data: any,
-    load: LoadFunction | null,
-    formatter?: FormatterFunction | null,
+    load: () => any,
+    formatter?: FormatterFunction,
 }
 
 export type QueryStore = Writable<Query>;
-export type QueryContext = Map<string, QueryStore>;
+
+export type QueryMap = Map<string, QueryStore>;
+
+export interface StateConfig {
+    disable?: boolean,
+    queries?: Record<string, QueryOptions>,
+}
+
+export interface StateContext {
+    config: StateConfig,
+    queries: QueryMap,
+}
 
 export const defaultQuery:Query = {
     id           : "",
@@ -49,6 +52,6 @@ export const defaultQuery:Query = {
     isSuccess    : false,
     error        : "",
     data         : {},
-    load         : null,
+    load         : () => null,
     formatter    : null,
 };
