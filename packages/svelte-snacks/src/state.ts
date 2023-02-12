@@ -5,7 +5,8 @@ import {
     type QueryStore,
     type StateContext,
     type QueryOptions,
-    
+    type Query,
+
     defaultQuery
 } from "./types";
 
@@ -15,8 +16,11 @@ import {
 
 import {
     writable,
-    get
+    get,
+    type Writable,
 } from "svelte/store";
+
+export * from "./types";
 
 const context = ():StateContext => get(getContext(contextKey));
 
@@ -71,65 +75,77 @@ export const state = (idInput:string | string[], args?:any):QueryStore => {
     // @ts-ignore
     const queryOptions = config.queries ? config.queries[name] : {} as QueryOptions;
 
-    const newQueryStore:QueryStore = writable({
-        ...defaultQuery,
-        id,
-        load : async () => {
+    const loadQuery = async (store:any) => {
+        // eslint-disable-next-line no-console
+        console.log(id, `LOADING`, {
+            args,
+            value : get(queries.get(id)),
+        });
+
+        // Is loading
+        store.update((existing:Query) => ({
+            ...existing,
+            isLoading  : true,
+            isSuccess  : false,
+            hasFetched : false,
+        }));
+
+        try {
+            let data = await queryOptions.loader(args);
+
+            if(queryOptions.formatter) {
+                data = await queryOptions.formatter(data);
+            }
+
             // eslint-disable-next-line no-console
-            console.log(id, `LOADING`, {
+            console.log(id, `SUCCESS`, {
                 args,
-                value : get(queries.get(id)),
+                value    : get(queries.get(id)),
+                response : data,
             });
 
-            // Is loading
-            newQueryStore.update((existing) => ({
+            // Is success
+            store.update((existing:Query) => ({
                 ...existing,
-                isLoading  : true,
-                isSuccess  : false,
-                hasFetched : false,
+                isLoading  : false,
+                isSuccess  : true,
+                hasFetched : true,
+                lastFetch  : Date.now(),
+                data,
             }));
+        } catch(error) {
+            // eslint-disable-next-line no-console
+            console.log(`ERROR`, id, args);
 
-            try {
-                let data = await queryOptions.loader(args);
+            // Is error
+            store.update((existing:Query) => ({
+                ...existing,
+                isLoading  : false,
+                isError    : true,
+                hasFetched : true,
+                error      : String(error),
+            }));
+        }
+    };
 
-                if(queryOptions.formatter) {
-                    data = await queryOptions.formatter(data);
-                }
+    const newQueryStore:Writable<Query> = writable<Query>(defaultQuery, (set) => {
+        loadQuery(newQueryStore);
 
-                // eslint-disable-next-line no-console
-                console.log(id, `SUCCESS`, {
-                    args,
-                    value    : get(queries.get(id)),
-                    response : data,
-                });
+        set({
+            ...get(newQueryStore),
+            load : () => loadQuery(newQueryStore),
+            id,
+        });
 
-                // Is success
-                newQueryStore.update((existing) => ({
-                    ...existing,
-                    isLoading  : false,
-                    isSuccess  : true,
-                    hasFetched : true,
-                    lastFetch  : Date.now(),
-                    data,
-                }));
-            } catch(error) {
-                // eslint-disable-next-line no-console
-                console.log(`ERROR`, id, args);
+        queries.set(id, newQueryStore);
 
-                // Is error
-                newQueryStore.update((existing) => ({
-                    ...existing,
-                    isLoading  : false,
-                    isError    : true,
-                    hasFetched : true,
-                    error      : String(error),
-                }));
-            }
-        },
+        return () => {
+            // eslint-disable-next-line no-console
+            console.log(id, `UNSUBSCRIBED`);
+        };
     });
 
     queries.set(id, newQueryStore);
 
     return newQueryStore;
 };
-

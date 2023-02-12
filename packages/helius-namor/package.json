@@ -7,8 +7,8 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsc",
-    "build": "tsc -w"
+    "build": "tsc",
+    "dev": "tsc -w"
   },
   "devDependencies": {
     "eslint-config-custom": "*",

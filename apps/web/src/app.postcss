@@ -7,17 +7,15 @@ body,
 html {
     width: 100vw;
     min-height: 100vh;
-}
-
-html {
-    background: #0f0f0f;
+    overflow-x: hidden;
+    background: #010101;
+    letter-spacing: 0.05rem;
 }
 
 body {
     font-family: 'Space Grotesk', sans-serif;
     background-size: cover;
     background-position: center;
-    /* background-image: url(image.png); */
 }
 
 input::placeholder {
@@ -25,7 +23,7 @@ input::placeholder {
 }
 
 .card {
-    @apply shadow-xl rounded-lg p-3 bg-black;
+    @apply rounded-lg p-3 bg-black border border-secondary;
 }
 
 .center {
@@ -34,6 +32,10 @@ input::placeholder {
 
 .icon {
     @apply fill-current h-4 w-4;
+}
+
+.icon-fill-success {
+    @apply fill-green-500;
 }
 
 .icon-md {

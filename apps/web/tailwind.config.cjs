@@ -19,13 +19,13 @@ const config = {
 
                     "primary-content" : "#f5f5f4",
       
-                    secondary : "#060606",
+                    secondary : "#0e0e0e",
                              
                     accent : "#ea580c",
                              
                     neutral : "#616161",
                              
-                    "base-100" : "#060606",
+                    "base-100" : "#010101",
                              
                     info : "#2563eb",
                              
@@ -33,7 +33,7 @@ const config = {
                              
                     warning : "#FBBD23",
                              
-                    error : "#dc2626",
+                    error : "#ee2222",
                 },
             },
         ],

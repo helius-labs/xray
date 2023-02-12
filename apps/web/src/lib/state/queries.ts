@@ -16,7 +16,6 @@ type Token = {
 
 export const tokenPrice = {
     loader    : actions.getTokenPrice,
-    formatter : formatMoney,
 };
 
 export const solanaTps = {

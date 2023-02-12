@@ -22,3 +22,21 @@ export interface WebTransaction {
     parsed : ProtonTransaction,
     raw : EnrichedTransaction
 }
+
+export interface WebTranscationAction {
+    type : string,
+    primaryUser : string,
+    signature : string,
+    receivedFrom: string,
+    sentTo: string,
+    received: string,
+    sent: string,
+    amount: number,
+    subtype: string,
+}
+
+export interface Token {
+    image: string,
+    name: string,
+    address: string,
+}

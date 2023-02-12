@@ -1,6 +1,5 @@
 <script>
     import { page } from "$app/stores";
-    import query from "$lib/state";
 
     import shortenString from "$lib/util/shorten-string";
 

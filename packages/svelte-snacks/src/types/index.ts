@@ -53,5 +53,5 @@ export const defaultQuery:Query = {
     error        : "",
     data         : {},
     load         : () => null,
-    formatter    : null,
+    formatter    : () => null,
 };

@@ -11,7 +11,7 @@ export async function GET({ params }: RequestEvent) {
         headers : {},
         body    : JSON.stringify({
             mintAccounts : [
-                params.address,
+                params?.address,
             ],
         }),
     });

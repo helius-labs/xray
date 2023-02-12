@@ -30,13 +30,14 @@
     "vite": "^4.0.0"
   },
   "dependencies": {
+    "@helius-labs/helius-namor": "*",
     "@helius-labs/xray-database": "*",
     "@helius-labs/xray-proton": "*",
     "@helius-labs/xray-test": "*",
-    "@helius-labs/helius-namor": "*",
     "@solana/spl-token-registry": "^0.2.7",
-    "svelte-snacks": "*",
     "@sveltejs/kit": "^1.5.0",
+    "svelte-intersection-observer": "^0.10.0",
+    "svelte-snacks": "*",
     "tailwindcss-neumorphism": "^0.1.0"
   }
 }

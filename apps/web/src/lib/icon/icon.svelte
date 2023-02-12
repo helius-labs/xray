@@ -6,6 +6,7 @@
     } from "./index";
 
     export let id:Icon;
+    export let fill:string = "current" as "current" | "success";
     export let size = "sm" as "sm" | "md" | "lg";
 
     let el:SVGElement;
@@ -21,7 +22,7 @@
 
 <svg
     bind:this={el}
-    class="icon icon-{size}"
+    class="icon icon-{size} icon-fill-{fill}"
     viewBox="0 0 24 24"
     xmlns="http://www.w3.org/2000/svg">
 </svg>

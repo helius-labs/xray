@@ -8,8 +8,6 @@ import {
     names
 } from "unique-names-generator";
 
-import { PublicKey } from "@solana/web3.js";
-
 import { publicKeyMappings } from "./types";
 
 export const nameFromString = (str:string) => uniqueNamesGenerator({
@@ -24,12 +22,6 @@ export const nameFromString = (str:string) => uniqueNamesGenerator({
 });
 
 export const getSolanaName = (pubkey:string) => {
-    try {
-        new PublicKey(pubkey);
-    } catch(e) {
-        throw new Error("Invalid solana address");
-    }
-
     const keyMap = new Map(Object.entries(publicKeyMappings));
 
     if(keyMap.has(pubkey)) {

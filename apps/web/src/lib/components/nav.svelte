@@ -7,24 +7,22 @@
     const solanaPrice = state("tokenPrice", "So11111111111111111111111111111111111111112");
     const solanaTPS = state("solanaTps");
 
+    import formatMoney from "$lib/util/format-money";
+
     onMount(() => {
         $solanaPrice.load();
         $solanaTPS.load();
     });
+
 </script>
 
-<nav class="flex justify-between items-center fixed top-0 left-0 w-full p-1">
+<nav class="border border-secondary flex justify-between items-center fixed top-0 left-0 w-screen p-1 bg-black z-10">
     <div class="flex items-center ml-2 py-3">
         {#if $page.url.pathname !== "/"}
-            <h1 class="font-bold mr-2 text-xl">XRAY</h1>
-            
             <a
-                class="btn btn-ghost btn-sm rounded mr-2 p-1 px-3"
+                class="btn btn-outline p-1 px-3 mr-3"
                 href="/">
-                <svg
-                    class="fill-white h-5 w-5"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"><path d="M21 13v10h-6v-6h-6v6h-6v-10h-3l12-12 12 12h-3zm-1-5.907v-5.093h-3v2.093l3 3z" /></svg>
+                <h1 class="font-bold text-xl">XRAY</h1>
             </a>
         {/if}
 
@@ -54,7 +52,7 @@
                 rel="noreferrer"
                 target="_blank">
                 <p class="text-xs text-neutral font-bold">Price</p>
-                <p class="">{$solanaPrice?.data}</p>
+                <p class="">{formatMoney($solanaPrice?.data)}</p>
             </a>
         {/if}
     </div>
