@@ -3,7 +3,6 @@ import type {
     EnrichedTransaction,
     Source
 } from "helius-sdk";
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import {
     ProtonTransaction,

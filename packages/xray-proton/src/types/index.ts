@@ -5,6 +5,7 @@ const supportedTransactions = {
     SWAP     : "SWAP",
     BURN     : "BURN",
     BURN_NFT : "BURN_NFT",
+    NFT_SALE : "NFT_SALE",
     UNKNOWN  : "UNKNOWN",
 };
 
