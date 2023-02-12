@@ -5,7 +5,9 @@ const {
     MOCK_ENDPOINTS,
 } = process.env;
 
-import transactionsMock from "./test/transactions.mock";
+import {
+    transactionsVariety,
+} from "@helius-labs/xray-test";
 
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {
@@ -17,5 +19,5 @@ export async function GET({ params }: RequestEvent) {
         return json({ data });
     }
 
-    return json({ data : transactionsMock });
+    return json({ data : transactionsVariety });
 }

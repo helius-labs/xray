@@ -1,4 +1,4 @@
-import type { EnrichedTransaction, Source } from "helius-sdk";
+import { type EnrichedTransaction, Source } from "helius-sdk";
 
 import type {
     ProtonSupportedTypes,
@@ -21,21 +21,21 @@ const parsers = {
     UNKNOWN  : (data:any) => data,
 };
 
+const unknown:ProtonTransaction = {
+    type        : "UNKNOWN",
+    source      : Source.SYSTEM_PROGRAM,
+    primaryUser : "",
+    timestamp   : 0,
+    actions     : [],
+    signature   : "",
+    fee         : 0,
+};
+
 export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransaction => {
     const parser = parsers[transaction?.type as ProtonSupportedTypes];
-
-    const source = "SYSTEM_PROGRAM" as Source;
     
     if(typeof parser === "undefined") {
-        return {
-            type        : "UNKNOWN",
-            primaryUser : "",
-            fee         : 0,
-            signature   : "",
-            timestamp   : 0,
-            source,
-            actions     : [],
-        };
+        return unknown;
     }
     
     try {
@@ -44,14 +44,6 @@ export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransact
         // eslint-disable-next-line no-console
         console.log(error);
 
-        return {
-            type        : "UNKNOWN",
-            primaryUser : "",
-            fee         : 0,
-            signature   : "",
-            timestamp   : 0,
-            source,
-            actions     : [],
-        };
+        return unknown;
     }
 };
