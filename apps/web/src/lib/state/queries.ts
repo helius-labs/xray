@@ -12,6 +12,14 @@ import formatMoney from "$lib/util/format-money";
 import { parseTransaction } from "@helius-labs/xray-proton";
 import type { EnrichedTransaction } from "@helius/types";
 
+type Token = {
+    address: string;
+    name: string;
+    symbol: string;
+    decimals: number;
+    logoURI: string;
+};
+
 const queries:Queries = {
     "solana-price" : {
         loader                   : getSolanaPrice,
@@ -22,7 +30,7 @@ const queries:Queries = {
     "solana-token-registry" : {
         loader                   : () => getSolanaTokenRegistry(),
         fetchOnFirstSubscription : true,
-        formatter                : (data:any) => new Map(data.map((token:any) => ([ token?.address, token ]))),
+        formatter                : (data:any) => new Map(data.map((token:Token) => ([ token?.address, token ]))),
     },
 
     "solana-account-info" : {
