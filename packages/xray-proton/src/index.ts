@@ -8,19 +8,21 @@ import type {
 import {
     parseBurn,
     parseNftBid,
+    parseNftList,
     parseNftSale,
     parseSwap,
     parseTransfer
 } from "./parsers";
 
 const parsers = {
-    TRANSFER : parseTransfer,
-    SWAP     : parseSwap,
-    BURN     : parseBurn,
-    BURN_NFT : parseBurn,
-    NFT_SALE : parseNftSale,
-    NFT_BID  : parseNftBid,
-    UNKNOWN  : (data:any) => data,
+    TRANSFER    : parseTransfer,
+    SWAP        : parseSwap,
+    BURN        : parseBurn,
+    BURN_NFT    : parseBurn,
+    NFT_SALE    : parseNftSale,
+    NFT_BID     : parseNftBid,
+    NFT_LISTING : parseNftList,
+    UNKNOWN     : (data:any) => data,
 };
 
 const unknown:ProtonTransaction = {
