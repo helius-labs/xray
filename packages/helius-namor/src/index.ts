@@ -19,6 +19,8 @@ export const nameFromString = (str:string) => uniqueNamesGenerator({
     ],
     seed      : str,
     separator : " ",
+    length    : 2,
+    style     : "capital",
 });
 
 export const getSolanaName = (pubkey:string) => {

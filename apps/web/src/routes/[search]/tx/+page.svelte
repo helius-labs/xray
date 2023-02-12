@@ -15,11 +15,11 @@
     const transaction = state([ "solanaTransaction", address ], address);
 
     const formatDate = (date:number) => new Date(date).toLocaleDateString("en-US", {
-        year   : "numeric",
-        month  : "short",
         day    : "numeric",
         hour   : "numeric",
         minute : "numeric",
+        month  : "short",
+        year   : "numeric",
     });
 
     onMount(() => {
@@ -95,9 +95,9 @@
                     <TransactionAction
                         action={{
                             ...action,
-                            type      : $transaction?.data?.raw?.type,
                             owner     : $page.url.searchParams.get("wallet"),
                             timestamp : $transaction?.data?.raw?.timestamp,
+                            type      : $transaction?.data?.raw?.type,
                         }} />
                 </a>
             </div>

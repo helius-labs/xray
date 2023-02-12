@@ -65,8 +65,8 @@
         <div
             class="card"
             in:fly={{
-                y        : 50,
                 duration : 500,
+                y        : 50,
             }}>
 
             <div class="w-full flex items-center justify-between">

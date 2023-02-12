@@ -1,9 +1,17 @@
 <script lang="ts">
-    import type { Token, WebTranscationAction } from "$lib/types";
+    import type {
+        Token,
+        WebTranscationAction
+    } from "$lib/types";
     
     import { state } from "svelte-snacks";
-    import { fly, scale } from "svelte/transition";
+    
+    import {
+        fly,
+        scale
+    } from "svelte/transition";
 
+    import { page } from "$app/stores";
     import { getSolanaName } from "@helius-labs/helius-namor";
 
     import Icon from "$lib/icon";
@@ -17,6 +25,8 @@
     import type { QueryStore } from "svelte-snacks";
         
     export let action:WebTranscationAction;
+    export let owner:string;
+    export let index:number;
    
     const tokenRegistry = state("solanaTokenRegistry");
 
@@ -34,15 +44,23 @@
     }
     
     const metadata:Token = {
+        address,
         image : "",
         name  : "",
-        address,
     };
 
     const cap = (string:string = "") => string
         .split(" ")
         .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
         .join(" ");
+
+    $: if($page.url.searchParams.get("wallet")) {
+        if(action?.sentTo === owner) {
+            action.type = "TRANSFER_RECEIVED";
+        } else if(action?.receivedFrom === owner) {
+            action.type = "TRANSFER_SENT";
+        }
+    }
         
     $: tokenDetails = $tokenRegistry.data.get(address);
 
@@ -87,8 +105,9 @@
             <div
                 class="card grid grid-cols-12 gap-3"
                 in:fly={{
-                    y     : 50,
-                    delay : 250,
+                    delay  : index < 25 ? index * 500 : 0,
+                    easing : cubicOut,
+                    y      : 50,
                 }}
             >
                 <div class="col-span-2 md:col-span-1 center relative">

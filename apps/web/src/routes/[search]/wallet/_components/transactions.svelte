@@ -3,13 +3,14 @@
 
     import { page } from "$app/stores";
 
-    import type { WebTransaction, WebTranscationAction } from "$lib/types";
+    import type {
+        WebTransaction,
+        WebTranscationAction
+    } from "$lib/types";
     
     import Icon from "$lib/icon";
 
-    import type {
-        ProtonTransactionAction,
-    } from "@helius-labs/xray-proton";
+    import type { ProtonTransactionAction } from "@helius-labs/xray-proton";
 
     import { state } from "svelte-snacks";
     
@@ -20,11 +21,11 @@
     const transactions = state("solanaTransactions", address);
 
     const formatDate = (date:number) => new Date(date).toLocaleDateString("en-US", {
-        year   : "numeric",
-        month  : "short",
         day    : "numeric",
         hour   : "numeric",
         minute : "numeric",
+        month  : "short",
+        year   : "numeric",
     });
     
     onMount(() => {
@@ -50,9 +51,9 @@
                 }
 
                 grouped[grouped.length - 1][1].push({
-                    type      : "UNKNOWN",
                     signature : transaction?.parsed?.signature,
                     timestamp : lastTimestamp,
+                    type      : "UNKNOWN",
                 });
                 
                 return;
@@ -79,13 +80,12 @@
                     grouped.push([ lastType, []]);
                 }
 
-                console.log({ lastTimestamp });
                 grouped[grouped.length - 1][1].push({
                     ...action,
-                    type,
                     primaryUser : transaction?.raw?.primaryUser,
                     signature   : transaction?.raw?.signature,
                     timestamp   : lastTimestamp,
+                    type,
                 });
             });
         });
@@ -106,7 +106,7 @@
         <button class="btn btn-ghost loading"></button>
     </div>
 {:else if $transactions?.data?.length}
-    {#each grouped as [ type, actions ]}
+    {#each grouped as [ type, actions ], txindex}
         <div class="mb-16">
             <div class="mt-3 flex justify-between">
                 <!-- Group header -->
@@ -139,7 +139,9 @@
                     <a
                         class="mb-2"
                         href="/{action?.signature}/tx?wallet={$page.params.search}">
-                        <TransactionAction {action} />
+                        <TransactionAction
+                            {action}
+                            owner={$page.params.search} />
                     </a>
                 </div>
             {/each}

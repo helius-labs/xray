@@ -92,8 +92,8 @@
                 <p
                     class="text-slate-100"
                     in:fly={{
-                        y        : -10,
                         duration : 500,
+                        y        : -10,
                     }}>
                     {searchError}
                 </p>
