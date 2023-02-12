@@ -35,6 +35,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     
     const primaryUser = tokenTransfers[0]?.fromUserAccount || "";
     const fee = transaction.fee / LAMPORTS_PER_SOL;
+
     source = transaction.source;
     
     const actions: ProtonTransactionAction[] = [];
@@ -43,14 +44,18 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
         const [ tx ] = tokenTransfers;
         const from = tx.fromUserAccount || "";
         let fromName;
+
         if(tx.fromUserAccount) {
             fromName = getSolanaName(tx.fromUserAccount);
         }
+
         const to = tx.toUserAccount || "";
         let toName;
+
         if(tx.toUserAccount) {
             toName = getSolanaName(tx.toUserAccount);
         }
+
         const sent = tx.mint;
         // TODO change rawTokenAmount -> tokenAmount
         const amount = tx.rawTokenAmount;
@@ -72,14 +77,18 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
 
         const from = tx.fromUserAccount || "";
         let fromName;
+
         if(tx.fromUserAccount) {
             fromName = getSolanaName(tx.fromUserAccount);
         }
+
         const to = tx.toUserAccount || "";
         let toName;
+
         if(tx.toUserAccount) {
             toName = getSolanaName(tx.toUserAccount);
         }
+
         const sent = "So11111111111111111111111111111111111111112";
         const amount = tx.amount / LAMPORTS_PER_SOL;
 

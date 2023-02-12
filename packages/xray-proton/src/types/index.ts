@@ -6,6 +6,7 @@ const supportedTransactions = {
     BURN     : "BURN",
     BURN_NFT : "BURN_NFT",
     NFT_SALE : "NFT_SALE",
+    NFT_BID  : "NFT_BID",
     UNKNOWN  : "UNKNOWN",
 };
 

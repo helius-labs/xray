@@ -7,6 +7,7 @@ import type {
  
 import {
     parseBurn,
+    parseNftBid,
     parseNftSale,
     parseSwap,
     parseTransfer
@@ -18,6 +19,7 @@ const parsers = {
     BURN     : parseBurn,
     BURN_NFT : parseBurn,
     NFT_SALE : parseNftSale,
+    NFT_BID  : parseNftBid,
     UNKNOWN  : (data:any) => data,
 };
 
