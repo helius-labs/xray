@@ -34,7 +34,7 @@
             {:else}
                 <p>Sent from</p>
             {/if}
-                <h4>{shortenString(sender)}</h4>
+            <h4>{shortenString(sender)}</h4>
         </div>
     </div>
     <div class="mt-5 ml-3">

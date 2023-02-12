@@ -1,7 +1,7 @@
 <script>
     import { page } from "$app/stores";
     import query from "$lib/state";
-    import convertTimestamp from "$lib/util/convert-timestamp";
+    import convertTimestamp from "src/lib/util/pretty-date";
 
     import Icon from "$lib/icon";
 
@@ -9,10 +9,11 @@
 
     const tokenRegistry = query("solana-token-registry");
 
-
     let isSent = false;
 
-    const { year, month, day, clockHours, minutes, suffix } = convertTimestamp($transaction?.data?.parsed.timestamp);
+    const {
+        year, month, day, clockHours, minutes, suffix,
+    } = convertTimestamp($transaction?.data?.parsed.timestamp);
     
     $: if($transaction?.load && $page.params.search) {
         $transaction.load($page.params.search);
@@ -26,10 +27,11 @@
     
 </script>
 <div class="w-full flex flex-col justify-center items-center mt-14">
-    <div class="flex justify-center items-center w-12 h-12 rounded-full"
-    class:bg-green-700={!isSent}
-    class:bg-red-700={isSent}
-    >     
+    <div
+        class="flex justify-center items-center w-12 h-12 rounded-full"
+        class:bg-green-700={!isSent}
+        class:bg-red-700={isSent}
+    >
         {#if isSent}
             <Icon id="arrow-up" />
             

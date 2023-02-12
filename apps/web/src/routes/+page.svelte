@@ -5,6 +5,8 @@
 
     import heliusLogo from "$lib/assets/helius/helius.png";
 
+    import { nameFromString } from "@helius-labs/helius-namor";
+
     import { goto } from "$app/navigation";
 
     let recent:string[] = [];
@@ -67,15 +69,13 @@
     }
 </style>
 
-<div class="flex justify-center items-center px-3 min-h-screen flex-wrap">
-    <div class="absolute bottom-1/2 translate-y-1/2 pointer-events-none">
-        <div class="blob"></div>
-    </div>
+<div class="flex justify-center pt-40 md:pt-60 px-3 min-h-screen flex-wrap">
     <div class="w-full max-w-2xl">
-        <div class="w-full">
-            <h1 class="text-8xl text-white text-center font-bold">
+        <div>
+            <h1 class="text-8xl text-white opacity-80 text-center font-bold">
                 XRAY
             </h1>
+            <p class="text-center text-current opacity-50">A Solana explorer built by the community, made for everyone.</p>
         </div>
         {#if searchError && !isSearching}
             <div class="flex items-center mt-4 opacity-50">
@@ -116,7 +116,7 @@
             <div class="dropdown w-full">
                 <input
                     bind:this={inputEl}
-                    class="input input-bordered rounded-lg w-full text-lg h-16 focus:input-secondary px-14"
+                    class="input input-bordered rounded-lg w-full text-lg h-16 px-14 focus:input-success"
                     placeholder="Search Solana"
                     tabindex="0"
                     type="text"
@@ -126,12 +126,21 @@
                     <ul class="dropdown-content w-full menu p-2 shadow bg-base-100 mt-3 relative px-4 rounded-lg">
                         <p class="text-xs font-bold mt-2 mb-1">Recent</p>
                         {#each recent as address}
-                            <li class="truncate px-0 m1-ds2 w-full text-ellipsis ">
+                            <li class="truncate px-0 m1-ds2 w-full relative">
                                 <a
-                                    class="px-1 py-2 w-full"
+                                    class="px-1 py-2 w-full block text-ellipsis max-w-full"
                                     data-sveltekit-preload-data="hover"
                                     href="/{address}">
-                                    {address}
+                                    <p class="text-micro text-xs opacity-50">
+                                        {nameFromString(address)}
+                                    </p>
+                                    <p class="text-micro text-xs">
+                                        {#if address.length > 20}
+                                            {address}
+                                        {:else}
+                                            {address}
+                                        {/if}
+                                    </p>
                                 </a>
                             </li>
                         {/each}

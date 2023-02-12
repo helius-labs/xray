@@ -1,7 +1,8 @@
-import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type {
     EnrichedTransaction,
-    Source
+    Source,
+    TokenTransfer
 } from "helius-sdk";
 import {
     ProtonTransaction,
@@ -9,6 +10,10 @@ import {
 } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
+
+interface TempTokenTransfer extends TokenTransfer {
+    tokenAmount: number;
+}
 
 export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransaction => {
     const {
@@ -41,7 +46,8 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
     const actions: ProtonTransactionAction[] = [];
 
     for(let i = 0; i < tokenTransfers.length; i++) {
-        const [ tx ] = tokenTransfers;
+        const tx = tokenTransfers[i] as TempTokenTransfer;
+
         const from = tx.fromUserAccount || "";
         let fromName;
 
@@ -50,6 +56,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
         }
 
         const to = tx.toUserAccount || "";
+
         let toName;
 
         if(tx.toUserAccount) {
@@ -58,7 +65,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
 
         const sent = tx.mint;
         // TODO change rawTokenAmount -> tokenAmount
-        const amount = tx.rawTokenAmount;
+        const amount = tx?.rawTokenAmount || tx?.tokenAmount;
     
         actions.push({
             from,

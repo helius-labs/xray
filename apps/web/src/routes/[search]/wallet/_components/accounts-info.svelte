@@ -3,55 +3,64 @@
 
     import { tweened } from "svelte/motion";
 
-    import { fly, fade } from "svelte/transition";
+    import { fly } from "svelte/transition";
+
+    import { cubicOut } from "svelte/easing";
 
     import shortenAddress from "$lib/util/shorten-string";
 
+    import { state } from "svelte-snacks";
+
+    import { getSolanaName } from "@helius-labs/helius-namor/dist";
+
+    import formatMoney from "$lib/util/format-money";
+
+    import Icon from "$lib/icon";
+    
     const tweenedBalance = tweened(0, {
         duration : 1000,
+        easing   : cubicOut,
     });
 
-    import query from "$lib/state";
+    const tweenedUSDBalance = tweened(0, {
+        duration : 2000,
+        easing   : cubicOut,
+    });
 
-    const accountInfo = query("solana-account-info");
+    const address = $page.params.search;
 
-    if($accountInfo?.load && !$accountInfo.hasFetched) {
-        $accountInfo.load($page.params.search);
-    }
+    const solanaPrice = state("tokenPrice", "So11111111111111111111111111111111111111112");
+    const accountInfo = state("solanaAccountInfo", address);
 
     $: tweenedBalance.set($accountInfo?.data?.balance || 0);
+    $: tweenedUSDBalance.set($accountInfo?.data?.balance * $solanaPrice?.data || 0);
+
+    $: console.log($solanaPrice);
 </script>
      
 {#if $accountInfo?.isSuccess}
     <div class="relative">
-        <div
-            class="absolute bottom-1/2 translate-y-1/2 pointer-events-none"
-            in:fade={{
-                duration : 2000,
-            }}>
-            <div class="blob"></div>
-        </div>
-        <div
-            class="flex items-center justify-between mb-6"
-            in:fly={{
-                y        : -50,
-                duration : 500,
-            }}>
-            <h2 class="font-bold text-3xl mr-2">
-                {shortenAddress($page.params.search, 6)}
-            </h2>
-            <button class="btn-ghost rounded p-1">
-                <svg
-                    class="h-8 fill-current"
-                    clip-rule="evenodd"
-                    fill-rule="evenodd"
-                    stroke-linejoin="round"
-                    stroke-miterlimit="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"><path
-                    d="m6 18h-3c-.48 0-1-.379-1-1v-14c0-.481.38-1 1-1h14c.621 0 1 .522 1 1v3h3c.621 0 1 .522 1 1v14c0 .621-.522 1-1 1h-14c-.48 0-1-.379-1-1zm1.5-10.5v13h13v-13zm9-1.5v-2.5h-13v13h2.5v-9.5c0-.481.38-1 1-1z"
-                    fill-rule="nonzero" /></svg>
-            </button>
+        <h1 class="text-3xl font-bold mb-2">
+            Wallet
+        </h1>
+
+        <div class="card mb-3 pr-0">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="font-bold text-lg mr-2">
+                        {getSolanaName($page.params.search || "")}
+                    </h2>
+                    
+                    <p class="text-xs opacity-50">{shortenAddress($page.params.search, 6)}</p>
+                </div>
+                <div>
+                    <button class="btn btn-ghost">
+                        <Icon
+                            id="copy"
+                            size="md" />
+                    </button>
+                </div>
+            </div>
         </div>
         <div
             class="card"
@@ -59,6 +68,7 @@
                 y        : 50,
                 duration : 500,
             }}>
+
             <div class="w-full flex items-center justify-between">
                 <div class="flex items-center">
                     <img
@@ -69,9 +79,14 @@
                         Balance
                     </p>
                 </div>
-                <p>
-                    {$tweenedBalance.toFixed(5)}
-                </p>
+                <div class="text-right">
+                    <p class="font-semibold text-sm opacity-50">
+                        {formatMoney($tweenedUSDBalance)}
+                    </p>
+                    <p class="font-bold text-lg">
+                        {$tweenedBalance.toFixed(5)}
+                    </p>
+                </div>
             </div>
         </div>
     </div>
