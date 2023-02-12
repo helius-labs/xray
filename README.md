@@ -183,8 +183,37 @@ Pass data to your queries load function like so.
 ### Reloading Queries
 You can access your loader function on any query store at `$myQuery.load()`. This makes it easy to reload a certain query throughout the app. Any components that are subscribed to the reloaded query will be updated.
 
-# 📦 @helius/proton
+# 📦 @helius-labs/proton
 Used for parsing blockchain data and making it pretty for the UI.
 
-# 📦 @helius/xray-database
+## Important Files & Folders
+|||
+|-|-|
+📁`./src/parsers` | All parser methods that turn Helius EnrichedTransaction API calls into more easily readable objects for the UI depending on the transaction type. |
+📄`./src/parsers/index.ts` | Export new parser functions here. |
+📄`./src/types/index.ts` | Displays all supported transaction types with parsing and the interface returned from every parser function. Add new transaction w/ parsers to the supportedTransactions object. |
+📄`./index.ts` | File where all transactions are parsed through. Import new parser functions here and add the transaction type with the corresponding function to the parsers object. |
+
+## General Work Flow When Adding a New Transaction Type
+1. Identify a transaction type that is not currently supported. 
+    - [Helius API Docs](https://docs.helius.xyz/reference/transaction-types) - View all transaction types supported by Helius.
+2. Get to know the transaction type. Here is the resource I personally like to use for it:
+    - [SwaggerHub](https://app.swaggerhub.com/apis-docs/Helius/HeliusAPI/1.1.0#/Transactions/getEnrichedTransactions) - Use `/v0/addresses/{address}/transactions ` for addresses with the specific transaction type or `/v0/transactions/` for a transaction (also supports multiple transactions). I like downloading the JSON file and looking through it constantly. More transactions + edge cases are better to battle test your parser function. 
+2. Add a new file in `./src/parsers` with the name of the transaction type. (refer to other files for general structures of what a parser function should look like)
+3. Export the function in `./src/parsers/index.ts`, add the transaction type to the `supportedTransactions` object in `./src/types/index.ts`, and add the transaction type with the corresponding parser function to the `parsers` object in `./index.ts`.
+4. Work on the parser function while testing it since it is now compatible with the UI.
+
+## Currently Supported Transactions 
+|||
+| - | - |
+| **Transaction Type** | **File in `/src/parsers`** |
+| TRANSFER | `/transfer.ts` |
+| SWAP | `/swap.ts` | 
+| BURN | `/burn.ts` |
+| BURN_NFT | `/burn.ts` |
+| NFT_SALE | `/nft/sale.ts` | 
+| NFT_BID | `/nft/bid.ts` |
+| NFT_LISTING | `/nft/list.ts` |
+
+# 📦 @helius-labs/xray-database
 A database for savaing anonymous data like trasaction views.
