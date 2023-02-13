@@ -1,4 +1,4 @@
-import { LAMPORTS_PER_SOL, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type {
     EnrichedTransaction,
     Source,

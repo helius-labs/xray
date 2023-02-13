@@ -10,12 +10,12 @@ import {
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 
-export const parseNftList = (transaction: EnrichedTransaction): ProtonTransaction => {
+export const parseNftCancelList = (transaction: EnrichedTransaction): ProtonTransaction => {
     let source = "SYSTEM_PROGRAM" as Source;
 
     if(transaction?.events.nft === null) {
         return {
-            type        : "NFT_LISTING",
+            type        : "NFT_CANCEL_LISTING",
             primaryUser : "",
             fee         : 0,
             signature   : "",

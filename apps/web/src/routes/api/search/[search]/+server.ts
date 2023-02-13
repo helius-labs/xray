@@ -1,11 +1,11 @@
 import { json, type RequestEvent } from "@sveltejs/kit";
 
 import type {
-    ParsedAccountData,
+    ParsedAccountData
 } from "@solana/web3.js";
 
-import validPublicKey from "$lib/util/solana/validate-pubkey";
 import connect from "$lib/util/solana/connect";
+import validPublicKey from "$lib/util/solana/validate-pubkey";
 
 import { PublicKey } from "@solana/web3.js";
 
