@@ -1,7 +1,5 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-import { getSolanaName } from "@helius-labs/helius-namor";
-
 import type {
     EnrichedTransaction,
     Source
@@ -11,6 +9,8 @@ import {
     ProtonTransaction,
     ProtonTransactionAction
 } from "../types";
+
+import { getSolanaName } from "@helius-labs/helius-namor";
 
 export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction => {
     let source = "SYSTEM_PROGRAM" as Source;

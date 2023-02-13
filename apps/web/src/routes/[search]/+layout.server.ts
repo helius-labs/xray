@@ -2,7 +2,7 @@
 import type { RequestEvent } from "./$types";
 
 import type {
-    ParsedAccountData,
+    ParsedAccountData
 } from "@solana/web3.js";
 
 import { redirect } from "@sveltejs/kit";
