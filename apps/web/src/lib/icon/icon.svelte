@@ -7,7 +7,7 @@
     } from "$lib/types";
 
     export let id:Icon;
-    export let fill:string = "current" as "current" | "success";
+    export let fill:string = "current" as "current" | "success" | "base-100";
     export let size = "sm" as "sm" | "md" | "lg";
 
     let el:SVGElement;
