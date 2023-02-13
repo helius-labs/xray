@@ -10,14 +10,14 @@ import {
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 
-export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction => {
+export const parseNftCancelBid = (transaction: EnrichedTransaction): ProtonTransaction => {
     let source = "SYSTEM_PROGRAM" as Source;
 
     // TODO: fix this
     // @ts-ignore
     if(transaction?.events.nft === null) {
         return {
-            type        : "NFT_BID",
+            type        : "NFT_BID_CANCELLED",
             primaryUser : "",
             fee         : 0,
             signature   : "",

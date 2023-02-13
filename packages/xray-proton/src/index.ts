@@ -1,4 +1,4 @@
-import { type EnrichedTransaction, Source } from "helius-sdk";
+import { Source, type EnrichedTransaction } from "helius-sdk";
 
 import type {
     ProtonSupportedTypes,
@@ -10,6 +10,8 @@ export * from "./types";
 import {
     parseBurn,
     parseNftBid,
+    parseNftCancelBid,
+    parseNftCancelList,
     parseNftList,
     parseNftSale,
     parseSwap,
@@ -17,14 +19,16 @@ import {
 } from "./parsers";
 
 const parsers = {
-    TRANSFER    : parseTransfer,
-    SWAP        : parseSwap,
-    BURN        : parseBurn,
-    BURN_NFT    : parseBurn,
-    NFT_SALE    : parseNftSale,
-    NFT_BID     : parseNftBid,
-    NFT_LISTING : parseNftList,
-    UNKNOWN     : (data:any) => data,
+    TRANSFER           : parseTransfer,
+    SWAP               : parseSwap,
+    BURN               : parseBurn,
+    BURN_NFT           : parseBurn,
+    NFT_SALE           : parseNftSale,
+    NFT_BID            : parseNftBid,
+    NFT_BID_CANCELLED  : parseNftCancelBid,
+    NFT_LISTING        : parseNftList,
+    NFT_CANCEL_LISTING : parseNftCancelList,
+    UNKNOWN            : (data:any) => data,
 };
 
 const unknown:ProtonTransaction = {

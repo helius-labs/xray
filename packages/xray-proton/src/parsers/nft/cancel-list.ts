@@ -10,14 +10,14 @@ import {
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 
-export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction => {
+export const parseNftCancelList = (transaction: EnrichedTransaction): ProtonTransaction => {
     let source = "SYSTEM_PROGRAM" as Source;
 
     // TODO: fix this
     // @ts-ignore
     if(transaction?.events.nft === null) {
         return {
-            type        : "NFT_BID",
+            type        : "NFT_CANCEL_LISTING",
             primaryUser : "",
             fee         : 0,
             signature   : "",
@@ -26,7 +26,7 @@ export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction
             actions     : [],
         };
     }
-
+    
     // TODO: fix this
     // @ts-ignore
     const nftEvent = transaction?.events.nft;
@@ -34,7 +34,7 @@ export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction
 
     // TODO: fix this
     // @ts-ignore
-    const primaryUser = nftEvent.buyer;
+    const primaryUser = nftEvent.seller;
 
     const {
         type,
@@ -45,11 +45,11 @@ export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction
 
     source = nftEvent.source;
 
-    const from = "";
-    const fromName = undefined;
-    const to = nftEvent.buyer;
-    const toName = getSolanaName(nftEvent.buyer);
-    const received = nftEvent.nfts[0].mint;
+    const from = nftEvent.seller;
+    const fromName = getSolanaName(nftEvent.seller);
+    const to = "";
+    const toName = undefined;
+    const sent = nftEvent.nfts[0].mint;
     const amount = nftEvent.amount / LAMPORTS_PER_SOL;
 
     actions.push({
@@ -57,7 +57,7 @@ export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction
         fromName,
         to,
         toName,
-        received,
+        sent,
         amount,
     });
 

@@ -13,8 +13,6 @@ import { getSolanaName } from "@helius-labs/helius-namor";
 export const parseNftList = (transaction: EnrichedTransaction): ProtonTransaction => {
     let source = "SYSTEM_PROGRAM" as Source;
 
-    // TODO: fix this
-    // @ts-ignore
     if(transaction?.events.nft === null) {
         return {
             type        : "NFT_LISTING",
@@ -26,7 +24,7 @@ export const parseNftList = (transaction: EnrichedTransaction): ProtonTransactio
             actions     : [],
         };
     }
-
+    
     // TODO: fix this
     // @ts-ignore
     const nftEvent = transaction?.events.nft;
@@ -34,7 +32,7 @@ export const parseNftList = (transaction: EnrichedTransaction): ProtonTransactio
 
     // TODO: fix this
     // @ts-ignore
-    const primaryUser = transaction.seller;
+    const primaryUser = nftEvent.seller;
 
     const {
         type,
