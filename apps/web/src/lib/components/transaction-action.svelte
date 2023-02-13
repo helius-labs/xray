@@ -44,7 +44,7 @@
         name  : "",
     };
         
-    $: tokenDetails = $tokenRegistry.data.get(address);
+    $: tokenDetails = $tokenRegistry.data.get ? $tokenRegistry.data.get(address) : {};
 
     $: if(intersecting) {
         if(tokenDetails) {
