@@ -34,7 +34,7 @@ export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction
 
     // TODO: fix this
     // @ts-ignore
-    const primaryUser = transaction.buyer;
+    const primaryUser = nftEvent.buyer;
 
     const {
         type,
