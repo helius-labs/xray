@@ -6,7 +6,10 @@
 		"esModuleInterop": true,
 		"forceConsistentCasingInFileNames": true,
 		"strict": true,
-		"ignoreDeprecations": "5.0"
+		"ignoreDeprecations": "5.0",
+		"resolveJsonModule": true,
+		"allowSyntheticDefaultImports": true,
+		"importsNotUsedAsValues": "error",
 	}
 	// Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
 	//

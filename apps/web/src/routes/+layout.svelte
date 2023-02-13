@@ -10,7 +10,7 @@
     import * as queries from "$lib/state/queries";
 </script>
 
-<SnackProvider config={{ queries, disable : !browser }}>
+<SnackProvider config={{ disable : !browser, queries }}>
     <Nav />
     <main>
         <slot />

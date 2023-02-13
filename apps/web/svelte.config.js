@@ -6,8 +6,8 @@ const config = {
     kit : {
         adapter : adapter(),
         alias   : {
-            src              : "./src",
             "@helius-labs/*" : "../../packages/*",
+            src              : "./src",
         },
     },
 

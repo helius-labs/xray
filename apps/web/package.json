@@ -36,6 +36,8 @@
     "@helius-labs/xray-test": "*",
     "@solana/spl-token-registry": "^0.2.7",
     "@sveltejs/kit": "^1.5.0",
+    "highlight.js": "^11.7.0",
+    "svelte-highlight": "^7.1.2",
     "svelte-intersection-observer": "^0.10.0",
     "svelte-snacks": "*",
     "tailwindcss-neumorphism": "^0.1.0"
