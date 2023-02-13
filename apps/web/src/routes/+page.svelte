@@ -5,7 +5,17 @@
 
     import heliusLogo from "$lib/assets/helius/helius.png";
 
+    import { nameFromString } from "@helius-labs/helius-namor";
+
     import { goto } from "$app/navigation";
+
+    let recent:string[] = [];
+
+    onMount(() => {
+        const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
+            
+        recent = JSON.parse(recentStorage || "[]");
+    });
 
     let inputEl:HTMLInputElement;
     let inputValue:string = "";
@@ -33,6 +43,17 @@
                 return searchFailed();
             }
 
+            const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
+
+            const recentJson = JSON.parse(recentStorage || "[]");
+
+            if(!recent.includes(inputValue)) {
+                window.localStorage?.setItem("xray:recent-searches", JSON.stringify([
+                    inputValue,
+                    ...recentJson.slice(0, 5),
+                ]));
+            }
+
             goto(data?.url || "/");
         } catch(error) {
             searchFailed();
@@ -48,18 +69,13 @@
     }
 </style>
 
-<div
-    class="flex justify-center items-center px-3 min-h-screen flex-wrap"
-    on:click={focus}
-    on:keydown={focus}>
-    <div class="absolute bottom-1/2 translate-y-1/2">
-        <div class="blob"></div>
-    </div>
+<div class="flex justify-center pt-40 md:pt-60 px-3 min-h-screen flex-wrap">
     <div class="w-full max-w-2xl">
-        <div class="w-full">
-            <h1 class="text-8xl text-white text-center font-bold">
+        <div>
+            <h1 class="text-8xl text-white opacity-80 text-center font-bold">
                 XRAY
             </h1>
+            <p class="text-center text-current opacity-50">A Solana explorer built by the community, made for everyone.</p>
         </div>
         {#if searchError && !isSearching}
             <div class="flex items-center mt-4 opacity-50">
@@ -84,7 +100,7 @@
             </div>
         {/if}
         <form
-            class="py-10 flex justify-center relative"
+            class="my-5 flex justify-center relative"
             on:submit|preventDefault={newSearch}>
             <svg
                 class="fill-white opacity-50 h-7 absolute left-4 bottom-1/2 translate-y-1/2"
@@ -97,12 +113,40 @@
                 d="m15.97 17.031c-1.479 1.238-3.384 1.985-5.461 1.985-4.697 0-8.509-3.812-8.509-8.508s3.812-8.508 8.509-8.508c4.695 0 8.508 3.812 8.508 8.508 0 2.078-.747 3.984-1.985 5.461l4.749 4.75c.146.146.219.338.219.531 0 .587-.537.75-.75.75-.192 0-.384-.073-.531-.22zm-5.461-13.53c-3.868 0-7.007 3.14-7.007 7.007s3.139 7.007 7.007 7.007c3.866 0 7.007-3.14 7.007-7.007s-3.141-7.007-7.007-7.007z"
                 fill-rule="nonzero" /></svg>
             
-            <input
-                bind:this={inputEl}
-                class="input input-bordered rounded-lg w-full text-lg h-16 focus:input-secondary px-14"
-                placeholder="Search Solana"
-                type="text"
-                bind:value={inputValue}>
+            <div class="dropdown w-full">
+                <input
+                    bind:this={inputEl}
+                    class="input input-bordered rounded-lg w-full text-lg h-16 px-14 focus:input-success"
+                    placeholder="Search Solana"
+                    tabindex="0"
+                    type="text"
+                    bind:value={inputValue}>
+
+                {#if recent.length}
+                    <ul class="dropdown-content w-full menu p-2 shadow bg-base-100 mt-3 relative px-4 rounded-lg">
+                        <p class="text-xs font-bold mt-2 mb-1">Recent</p>
+                        {#each recent as address}
+                            <li class="truncate px-0 m1-ds2 w-full relative">
+                                <a
+                                    class="px-1 py-2 w-full block text-ellipsis max-w-full"
+                                    data-sveltekit-preload-data="hover"
+                                    href="/{address}">
+                                    <p class="text-micro text-xs opacity-50">
+                                        {nameFromString(address)}
+                                    </p>
+                                    <p class="text-micro text-xs">
+                                        {#if address.length > 20}
+                                            {address}
+                                        {:else}
+                                            {address}
+                                        {/if}
+                                    </p>
+                                </a>
+                            </li>
+                        {/each}
+                    </ul>
+                {/if}
+            </div>
 
             <button
                 class="absolute right-4 bottom-1/2 translate-y-1/2 btn btn-ghost px-0"

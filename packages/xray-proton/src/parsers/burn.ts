@@ -1,22 +1,28 @@
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
 import type {
     EnrichedTransaction,
     Source
-} from "@helius-labs/helius-types";
+} from "helius-sdk";
 
 import {
     ProtonTransaction,
-    ProtonTransactionAction,
+    ProtonTransactionAction
 } from "../types";
 
+import { getSolanaName } from "@helius-labs/helius-namor";
+
 export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction => {
-    const source = "SYSTEM_PROGRAM" as Source;
+    let source = "SYSTEM_PROGRAM" as Source;
 
     if(transaction?.tokenTransfers === null) {
         return {
             type        : "BURN",
-            source,
             primaryUser : "",
+            fee         : 0,
+            signature   : "",
             timestamp   : 0,
+            source,
             actions     : [],
         };
     }
@@ -27,19 +33,38 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
 
     const {
+        signature,
         timestamp,
     } = transaction;
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+
+    source = transaction.source;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
         const [ tx ] = tokenTransfers;
         const from = tx.fromUserAccount || "";
-        const sent = tx.mint;
+        let fromName;
+
+        if(tx.fromUserAccount) {
+            fromName = getSolanaName(tx.fromUserAccount);
+        }
+
         const to = tx.toUserAccount || "";
-        const amount = tx.tokenAmount;
+        let toName;
+
+        if(tx.toUserAccount) {
+            fromName = getSolanaName(tx.toUserAccount);
+        }
+
+        const sent = tx.mint;
+        // TODO change rawTokenAmount -> tokenAmount
+        const amount = tx.rawTokenAmount;
 
         actions.push({
             from,
+            fromName,
             to,
+            toName,
             sent,
             amount,
         });
@@ -48,6 +73,8 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
     return {
         type       : "BURN",
         primaryUser,
+        fee,
+        signature,
         timestamp,
         source,
         actions,

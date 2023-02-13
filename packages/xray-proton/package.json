@@ -11,7 +11,7 @@
     "build": "tsc"
   },
   "devDependencies": {
-    "@helius-labs/helius-types": "*",
+    "@helius-labs/helius-namor": "*",
     "@types/node-fetch": "^2.6.2",
     "eslint-config-custom": "*",
     "tsconfig": "*"

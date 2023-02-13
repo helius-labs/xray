@@ -42,7 +42,7 @@ module.exports = {
     },
 
     rules : {
-        "svelte/no-at-html-tag" :  "never",
+        "svelte/no-at-html-tag"         : "off",
         "svelte/prefer-class-directive" : "error",
         "svelte/prefer-style-directive" : "error",
         "svelte/valid-compile"          : [

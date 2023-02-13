@@ -1,23 +1,34 @@
+import { getSolanaName } from "@helius-labs/helius-namor";
+
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
 import type {
     EnrichedTransaction,
-    Source
-} from "@helius-labs/helius-types";
+    Source,
+    TokenTransfer
+} from "helius-sdk";
 
 import {
     ProtonTransaction,
-    ProtonTransactionAction,
+    ProtonTransactionAction
 } from "../types";
+
+interface TempTokenTransfer extends TokenTransfer {
+    tokenAmount: number;
+}
 
 export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction => {
     const type = "SWAP";
-    const source = "SYSTEM_PROGRAM" as Source;
+    let source = "SYSTEM_PROGRAM" as Source;
 
     if(transaction?.tokenTransfers === null) {
         return {
             type,
-            source,
             primaryUser : "",
+            fee         : 0,
+            signature   : "",
             timestamp   : 0,
+            source,
             actions     : [],
         };
     }
@@ -27,11 +38,15 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
     
     const {
+        signature,
         timestamp,
     } = transaction;
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+
+    source = transaction.source;
 
     for(let i = 0; i < tokenTransfers.length; i++) {
-        const [ tx ] = tokenTransfers;
+        const tx = tokenTransfers[i] as TempTokenTransfer;
         let sent;
         let received;
 
@@ -42,20 +57,37 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
         }
 
         const from = tx.fromUserAccount || "";
+        let fromName;
+
+        if(tx.fromUserAccount) {
+            fromName = getSolanaName(tx.fromUserAccount);
+        }
+
         const to = tx.toUserAccount || "";
-        const amount = tx.tokenAmount;
+        let toName;
+
+        if(tx.toUserAccount) {
+            toName = getSolanaName(tx.toUserAccount);
+        }
+
+        // TODO change rawTokenAmount -> tokenAmount
+        const amount = tx.rawTokenAmount || tx.tokenAmount;
 
         if(sent) {
             actions.push({
                 from,
+                fromName,
                 to,
+                toName,
                 sent,
                 amount,
             });
         } else {
             actions.push({
                 from,
+                fromName,
                 to,
+                toName,
                 received,
                 amount,
             });
@@ -65,6 +97,8 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
     return {
         type,
         primaryUser,
+        fee,
+        signature,
         timestamp,
         source,
         actions,

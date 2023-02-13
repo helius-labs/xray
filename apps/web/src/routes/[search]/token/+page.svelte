@@ -1,13 +1,17 @@
 <script>
-    import { page } from "$app/stores";
+    import { onMount } from "svelte";
     
-    import query from "$lib/state";
+    import { page } from "$app/stores";
 
-    const token = query("solana-token");
+    import { state } from "svelte-snacks";
 
-    $: if($token?.load) {
-        $token.load($page.params.search);
-    }
+    const address = $page.params.search;
+ 
+    const token = state("solanaToken", address);
+
+    onMount(() => {
+        $token.load();
+    });
 </script>
 
 <h1>Token</h1>

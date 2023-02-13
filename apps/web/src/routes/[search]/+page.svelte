@@ -1,8 +1,3 @@
-<script>
-
-    import { Server } from "@sveltejs/kit";
-
-</script>
 <!--
     Empty page required else this route is a 404
 

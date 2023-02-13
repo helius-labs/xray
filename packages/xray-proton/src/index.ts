@@ -1,37 +1,51 @@
-import type { EnrichedTransaction, Source } from "@helius-labs/helius-types";
+import { Source, type EnrichedTransaction } from "helius-sdk";
 
 import type {
-    ProtonTransaction,
-    ProtonSupportedTypes
+    ProtonSupportedTypes,
+    ProtonTransaction
 } from "./types";
  
+export * from "./types";
+
 import {
     parseBurn,
+    parseNftBid,
+    parseNftCancelBid,
+    parseNftCancelList,
+    parseNftList,
+    parseNftSale,
     parseSwap,
-    parseTransfer,
+    parseTransfer
 } from "./parsers";
 
 const parsers = {
-    TRANSFER : parseTransfer,
-    SWAP     : parseSwap,
-    BURN     : parseBurn,
-    BURN_NFT : parseBurn,
-    UNKNOWN  : (data:any) => data,
+    TRANSFER           : parseTransfer,
+    SWAP               : parseSwap,
+    BURN               : parseBurn,
+    BURN_NFT           : parseBurn,
+    NFT_SALE           : parseNftSale,
+    NFT_BID            : parseNftBid,
+    NFT_BID_CANCELLED  : parseNftCancelBid,
+    NFT_LISTING        : parseNftList,
+    NFT_CANCEL_LISTING : parseNftCancelList,
+    UNKNOWN            : (data:any) => data,
+};
+
+const unknown:ProtonTransaction = {
+    type        : "UNKNOWN",
+    source      : Source.SYSTEM_PROGRAM,
+    primaryUser : "",
+    timestamp   : 0,
+    actions     : [],
+    signature   : "",
+    fee         : 0,
 };
 
 export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransaction => {
     const parser = parsers[transaction?.type as ProtonSupportedTypes];
-
-    const source = "SYSTEM_PROGRAM" as Source;
     
     if(typeof parser === "undefined") {
-        return {
-            type        : "UNKNOWN",
-            source,
-            primaryUser : "",
-            timestamp   : 0,
-            actions     : [],
-        };
+        return unknown;
     }
     
     try {
@@ -40,12 +54,6 @@ export const parseTransaction = (transaction:EnrichedTransaction):ProtonTransact
         // eslint-disable-next-line no-console
         console.log(error);
 
-        return {
-            type        : "UNKNOWN",
-            source,
-            primaryUser : "",
-            timestamp   : 0,
-            actions     : [],
-        };
+        return unknown;
     }
 };
