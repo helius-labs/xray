@@ -9,7 +9,11 @@ export * from "./types";
 
 import {
     parseBurn,
-    parseNftBid, parseNftCancelList, parseNftList, parseNftSale,
+    parseNftBid,
+    parseNftCancelBid,
+    parseNftCancelList,
+    parseNftList,
+    parseNftSale,
     parseSwap,
     parseTransfer
 } from "./parsers";
@@ -21,6 +25,7 @@ const parsers = {
     BURN_NFT           : parseBurn,
     NFT_SALE           : parseNftSale,
     NFT_BID            : parseNftBid,
+    NFT_BID_CANCELLED  : parseNftCancelBid,
     NFT_LISTING        : parseNftList,
     NFT_CANCEL_LISTING : parseNftCancelList,
     UNKNOWN            : (data:any) => data,

@@ -7,6 +7,7 @@ const supportedTransactions = {
     BURN_NFT           : "BURN_NFT",
     NFT_SALE           : "NFT_SALE",
     NFT_BID            : "NFT_BID",
+    NFT_BID_CANCELLED  : "NFT_BID_CANCELLED",
     NFT_LISTING        : "NFT_LISTING",
     NFT_CANCEL_LISTING : "NFT_CANCEL_LISTING",
     UNKNOWN            : "UNKNOWN",
