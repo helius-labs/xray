@@ -4,7 +4,7 @@ const {
     HELIUS_KEY,
 } = process.env;
 
-// Consume a search, return what to do with it
+// Consume a search, return whadt to do with it
 export async function GET({ params }: RequestEvent) {
     const response = await fetch(`https://api.helius.xyz/v0/tokens/metadata/?api-key=${HELIUS_KEY}`, {
         method  : "POST",

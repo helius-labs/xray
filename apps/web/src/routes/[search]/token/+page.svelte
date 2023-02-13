@@ -7,11 +7,8 @@
 
     const address = $page.params.search;
  
-    const token = state("solanaToken", address);
+    const token = state([ "solanaToken", address ], address);
 
-    onMount(() => {
-        $token.load();
-    });
 </script>
 
 <h1>Token</h1>
