@@ -25,10 +25,14 @@ export const parseNftList = (transaction: EnrichedTransaction): ProtonTransactio
         };
     }
     
+    // TODO: fix this
+    // @ts-ignore
     const nftEvent = transaction?.events.nft;
     const actions: ProtonTransactionAction[] = [];
 
-    const primaryUser = transaction.seller;
+    // TODO: fix this
+    // @ts-ignore
+    const primaryUser = nftEvent.seller;
 
     const {
         type,

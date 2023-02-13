@@ -25,6 +25,8 @@ export const parseNftSale = (transaction: EnrichedTransaction): ProtonTransactio
         };
     }
 
+    // TODO: fix this
+    // @ts-ignore
     const nftEvent = transaction?.events.nft;
     const actions: ProtonTransactionAction[] = [];
 
