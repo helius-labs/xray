@@ -4,15 +4,27 @@
         UITransactionActionGroup
     } from "$lib/types";
 
+    import { page } from "$app/stores";
+
     import {
         groupTransactionActions,
         mergeTransactionActions
     } from "$lib/util/transactions";
 
     import Icon from "$lib/icon";
+
+    import TransactionAction from "$lib/components/transaction-action.svelte";
+
+    import {
+        fly,
+        fade
+    } from "svelte/transition";
+
+    import { cubicOut } from "svelte/easing";
     
     export let transactions:UITransaction[];
     export let user:string = "";
+    export let gap:number = 3;
 
     let groups:UITransactionActionGroup[] = [];
 
@@ -29,19 +41,33 @@
     type,
     actions,
     timestamp,
-}}
-
-    <div class="flex">
+}, groupIndex}
+    <div
+        class="py-6"
+        in:fade={{
+            delay    : groupIndex * 100,
+            duration : 500,
+        }}>
         <div class="flex">
-            <Icon id={icon} />
-            <p class="text-micro">
-                {label}
-            </p>
+            <div class="flex items-center">
+                <Icon id={icon} />
+                <p class="text-micro ml-2">
+                    {label}
+                </p>
+            </div>
         </div>
 
+        {#each actions as action, actionIndex}
+            <a
+                class="mb-2 block hover:opacity-75 cursor-pointer"
+                href="/{action.signature}/tx?wallet={$page.params.search}"
+                in:fly={{
+                    delay  : actionIndex * 100,
+                    easing : cubicOut,
+                    y      : 50,
+                }}>
+                <TransactionAction {action} />
+            </a>
+        {/each}
     </div>
-
-    {#each actions as action}
-        <div class="card"></div>
-    {/each}
 {/each}

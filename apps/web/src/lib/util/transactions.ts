@@ -1,50 +1,98 @@
 import {
     type UITransaction,
-    type UITransactionAction,
     type UITransactionActionGroup,
     type Icon,
-    actionTypeMetadata
+    type UITransactionAction,
+    UITransactionActionType,
+    transactionActionsMetadata
 } from "$lib/types";
 
-export const mergeTransactionActions = (transactions:UITransaction[], user?:string) =>
-    transactions.reduce<UITransactionAction[]>((acc, tx) => {
-        const { actions = [] }  = tx?.parsed || {};
+import { TransactionType } from "helius-sdk";
 
-        if(actions.length) {
-            return [
-                ...acc,
-                ...tx?.parsed?.actions.map((action) => {
-                    let actionType:string = tx?.parsed?.type;
+export const parseTransactionActions = (tx:UITransaction, user?:string):UITransactionAction[] => {
+    const merged:UITransactionAction[] = [];
 
-                    if(user && user === action.from) {
-                        actionType = `TRANSFER_SENT`;
-                    } else if(user && user === action.to) {
-                        actionType = `TRANSFER_RECEIVED`;
-                    }
+    const { actions } = tx.parsed;
+    const type = tx.parsed.type as TransactionType;
+        
+    if(tx.parsed.type === TransactionType.TRANSFER) {
+        (actions || []).forEach((action) => {
+            let actionType:UITransactionActionType = UITransactionActionType.UNKNOWN;
 
-                    return {
-                        amount       : action.amount,
-                        received     : action.received,
-                        receivedFrom : action.from,
-                        sent         : action.sent,
-                        sentTo       : action.to,
-                        signature    : tx?.raw?.signature,
-                        timestamp    : tx?.raw?.timestamp,
-                        type         : actionType,
-                    };
-                }),
-            ];
-        }
+            if(user && user === action.from) {
+                actionType = UITransactionActionType.TRANSFER_SENT;
+            } else if(user && user === action.to) {
+                actionType = UITransactionActionType.TRANSFER_RECEIVED;
+            }
 
-        return [
-            ...acc,
-            {
-                signature : tx?.raw?.signature,
-                timestamp : tx?.raw?.timestamp,
-                type      : "UNKNOWN",
-            },
-        ];
-    }, []);
+            merged.push({
+                actionType,
+                amount       : action.amount,
+                received     : action.received,
+                receivedFrom : action.from,
+                sent         : action.sent,
+                sentTo       : action.to,
+                signature    : tx?.raw?.signature,
+                timestamp    : tx?.raw?.timestamp,
+                type,
+            });
+        });
+    } else if(tx.parsed.type === TransactionType.SWAP) {
+        const sentTransfers = (actions || []).filter((action) => action.from === tx?.parsed?.primaryUser);
+        const received = (actions || []).find((action) => action.to === tx?.parsed?.primaryUser);
+        const sent = sentTransfers.find((transfer) => transfer?.fromName === received?.toName);
+
+        merged.push({
+            actionType   : UITransactionActionType.SWAP_SENT,
+            amount       : sent?.amount,
+            received     : "",
+            receivedFrom : "",
+            sent         : sent?.sent,
+            sentTo       : "",
+            signature    : tx?.raw?.signature,
+            timestamp    : tx?.raw?.timestamp,
+            type         : TransactionType.SWAP,
+        });
+
+        merged.push({
+            actionType   : UITransactionActionType.SWAP_RECEIVED,
+            amount       : received?.amount,
+            received     : received?.received,
+            receivedFrom : "",
+            sent         : "",
+            sentTo       : "",
+            signature    : tx?.raw?.signature,
+            timestamp    : tx?.raw?.timestamp,
+            type         : TransactionType.SWAP,
+        });
+    } else {
+        merged.push({
+            actionType   : UITransactionActionType.UNKNOWN,
+            amount       : 0,
+            received     : "",
+            receivedFrom : "",
+            sent         : "",
+            sentTo       : "",
+            signature    : tx?.raw?.signature,
+            timestamp    : tx?.raw?.timestamp,
+            type,
+        });
+    }
+
+    return merged;
+};
+
+export const mergeTransactionActions = (transactions:UITransaction[], user?:string):UITransactionAction[] => {
+    const merged:UITransactionAction[] = [];
+    
+    transactions.forEach((tx) => {
+        const actions = parseTransactionActions(tx, user);
+
+        merged.push(...actions);
+    });
+
+    return merged;
+};
 
 // eslint-disable-next-line max-statements
 export const groupTransactionActions = (actions:UITransactionAction[]) => {
@@ -54,39 +102,40 @@ export const groupTransactionActions = (actions:UITransactionAction[]) => {
     // - TRANSFER
     // - UNKNOWN
 
-    const groupableTypes = [
-        "TRANSFER_SENT",
-        "TRANSFER_RECEIVED",
-        "TRANSFER",
-        "UNKNOWN",
-    ];
-
     const groups:UITransactionActionGroup[] = [];
 
     for(let i = 0; i < actions.length; i++) {
         const action = actions[i];
-        const { type } = action;
+        const { type, actionType } = action;
 
         const lastGroup = groups[groups.length - 1];
 
-        const matchesLastGroupType = type && lastGroup && type === lastGroup?.type;
-        const isGroupable = groupableTypes.includes(type);
+        let groupType:string = type;
+
+        if(type === TransactionType.TRANSFER && actionType === UITransactionActionType.TRANSFER_SENT) {
+            groupType = UITransactionActionType.TRANSFER_SENT;
+        } else if(type === TransactionType.TRANSFER && actionType === UITransactionActionType.TRANSFER_RECEIVED) {
+            groupType = UITransactionActionType.TRANSFER_RECEIVED;
+        }
+
+        const matchesLastGroupType = groupType && lastGroup && groupType === lastGroup?.type;
         const isWithin24Hours = actions[i].timestamp - lastGroup?.timestamp < 1000 * 60 * 60 * 24;
 
-        const shouldGroup = matchesLastGroupType && isGroupable || isWithin24Hours;
-
-        const icon = (actionTypeMetadata[type]?.icon || actionTypeMetadata.UNKNOWN.icon) as Icon;
+        const {
+            icon,
+            label,
+        } = transactionActionsMetadata[actionType as UITransactionActionType] || transactionActionsMetadata.UNKNOWN;
 
         // Add new group
-        if(!matchesLastGroupType && isGroupable || !groups.length) {
+        if(!matchesLastGroupType || !groups.length) {
             groups.push({
                 actions : [
                     action,
                 ],
                 icon,
-                label     : actionTypeMetadata[type]?.label || actionTypeMetadata.UNKNOWN.label,
+                label,
                 timestamp : action.timestamp,
-                type      : action.type,
+                type      : groupType,
             });
 
             continue;
@@ -95,6 +144,8 @@ export const groupTransactionActions = (actions:UITransactionAction[]) => {
         // Add to existing group
         groups[groups.length - 1].actions.push(action);
     }
+
+    console.log({ groups });
 
     return groups;
 };

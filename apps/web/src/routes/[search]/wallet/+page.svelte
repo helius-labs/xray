@@ -21,6 +21,7 @@
         <button class="btn btn-ghost loading"></button>
     {:else}
         <Transactions
+            gap={8}
             transactions={$transactions.data}
             user={$page.params.search}
         />

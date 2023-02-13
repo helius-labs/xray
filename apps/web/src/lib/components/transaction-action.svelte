@@ -1,32 +1,27 @@
 <script lang="ts">
-    import type {
-        Token,
-        WebTranscationAction
-    } from "$lib/types";
-    
     import { state } from "svelte-snacks";
     
-    import {
-        fly,
-        scale
-    } from "svelte/transition";
+    import type {
+        UITokenMetadata,
+        UITransactionAction
+    } from "$lib/types";
+    
+    import { fly } from "svelte/transition";
 
-    import { page } from "$app/stores";
     import { getSolanaName } from "@helius-labs/helius-namor";
 
     import Icon from "$lib/icon";
-
-    import { cubicOut } from "svelte/easing";
 
     import shortenString from "$lib/util/shorten-string";
 
     import IntersectionObserver from "svelte-intersection-observer";
 
     import type { QueryStore } from "svelte-snacks";
+
+    import cap from "$lib/util/cap";
+    import formatMoney from "../util/format-money";
         
-    export let action:WebTranscationAction;
-    export let owner:string;
-    export let index:number;
+    export let action:UITransactionAction;
    
     const tokenRegistry = state("solanaTokenRegistry");
 
@@ -43,24 +38,11 @@
         solanaToken = state([ "solanaToken", address ], address);
     }
     
-    const metadata:Token = {
+    const metadata:UITokenMetadata = {
         address,
         image : "",
         name  : "",
     };
-
-    const cap = (string:string = "") => string
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-
-    $: if($page.url.searchParams.get("wallet")) {
-        if(action?.sentTo === owner) {
-            action.type = "TRANSFER_RECEIVED";
-        } else if(action?.receivedFrom === owner) {
-            action.type = "TRANSFER_SENT";
-        }
-    }
         
     $: tokenDetails = $tokenRegistry.data.get(address);
 
@@ -84,10 +66,14 @@
 
     $: title = metadata?.name || txName;
 
-    $: if(action?.type === "TRANSFER_SENT") {
+    $: if(action?.actionType === "TRANSFER_SENT") {
         label = `To: ${displayName}`;
-    } else if(action?.type === "TRANSFER_RECEIVED") {
+    } else if(action?.actionType === "TRANSFER_RECEIVED") {
         label = `From: ${displayName}`;
+    } else if(action?.actionType === "SWAP_RECEIVED") {
+        label = `For: ${displayName}`;
+    } else if(action?.actionType === "SWAP_SENT") {
+        label = `Swapped: ${displayName}`;
     } else {
         label = `Tx: ${shortenString(action?.signature, 10)}`;
     }
@@ -102,13 +88,7 @@
         bind:this={element}
         class="min-h-28">
         {#if intersecting}
-            <div
-                class="card grid grid-cols-12 gap-3"
-                in:fly={{
-                    delay  : index < 25 ? index * 500 : 0,
-                    easing : cubicOut,
-                    y      : 50,
-                }}
+            <div class="card grid grid-cols-12 gap-3"
             >
                 <div class="col-span-2 md:col-span-1 center relative">
                     {#if isLoading}
@@ -136,13 +116,13 @@
                         <p class="m-0 opacity-50 text-xs">{label}</p>
                     </div>
     
-                    {#if action?.type === "TRANSFER_SENT"}
-                        <h4 class="font-bold text-sm text-error absolute right-2 top-3">
-                            - {action?.amount}
+                    {#if action?.actionType === "TRANSFER_SENT" || action?.actionType === "SWAP_SENT"}
+                        <h4 class="font-bold text-sm md:text-lg text-error absolute right-2 top-3">
+                            - {metadata.name === "USDC" ? formatMoney(action.amount) : action.amount}
                         </h4>
-                    {:else if action?.type === "TRANSFER_RECEIVED"}
-                        <h4 class="font-bold text-sm text-success absolute right-2 top-3">
-                            + {action?.amount}
+                    {:else if action?.actionType === "TRANSFER_RECEIVED" || action?.actionType === "SWAP_RECEIVED"}
+                        <h4 class="font-bold text-sm md:text-lg text-success absolute right-2 top-3">
+                            + {metadata.name === "USDC" ? formatMoney(action.amount) : action.amount}
                         </h4>
                     {:else if action?.type === "TRANSFER"}
                         <h4 class="text-black font-bold text-sm absolute right-2 top-3">

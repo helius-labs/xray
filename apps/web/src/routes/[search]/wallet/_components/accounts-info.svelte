@@ -34,8 +34,6 @@
 
     $: tweenedBalance.set($accountInfo?.data?.balance || 0);
     $: tweenedUSDBalance.set($accountInfo?.data?.balance * $solanaPrice?.data || 0);
-
-    $: console.log($solanaPrice);
 </script>
      
 {#if $accountInfo?.isSuccess}
@@ -75,7 +73,7 @@
                         class="h-9 rounded-full mr-1"
                         alt=""
                         src="/media/tokens/solana.png">
-                    <p class="opacity-50">
+                    <p class="opacity-50 text-xl">
                         Balance
                     </p>
                 </div>
