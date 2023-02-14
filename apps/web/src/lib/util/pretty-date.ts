@@ -1,7 +1,20 @@
-export default (timestamp:number) => {
+export default (timestamp: number) => {
     const date = new Date(timestamp * 1000);
     // Months array
-    const monthsArr = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ];
+    const monthsArr = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ];
     // Year
     const year = date.getFullYear();
 
@@ -21,11 +34,11 @@ export default (timestamp:number) => {
     const seconds = date.getSeconds();
 
     // Convert hours & minutes to 12 hour format
-    
+
     const suffix = hours >= 12 ? "pm" : "am";
-    
-    const clockHours = ((hours + 11) % 12 + 1);
-    
+
+    const clockHours = ((hours + 11) % 12) + 1;
+
     return {
         year,
         month,

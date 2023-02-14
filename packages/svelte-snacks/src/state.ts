@@ -2,44 +2,36 @@
 import { getContext } from "svelte";
 
 import {
+    defaultQuery,
+    type Query,
+    type QueryOptions,
     type QueryStore,
     type StateContext,
-    type QueryOptions,
-    type Query,
-
-    defaultQuery
 } from "./types";
 
-import {
-    contextKey,
-} from "./config";
+import { contextKey } from "./config";
 
-import {
-    writable,
-    get,
-    type Writable,
-} from "svelte/store";
+import { get, writable, type Writable } from "svelte/store";
 
 export * from "./types";
 
-const context = ():StateContext => get(getContext(contextKey));
+const context = (): StateContext => get(getContext(contextKey));
 
-export const state = (idInput:string | string[], args?:any):QueryStore => {
+export const state = (idInput: string | string[], args?: any): QueryStore => {
     const contextValue = context();
 
-    if(!contextValue) {
-        throw new Error(`No context found. Did you forget to wrap your app in <SnackProvider>?`);
+    if (!contextValue) {
+        throw new Error(
+            `No context found. Did you forget to wrap your app in <SnackProvider>?`
+        );
     }
 
-    const {
-        config = {},
-        queries = new Map(),
-    } = context();
+    const { config = {}, queries = new Map() } = context();
 
     let name = idInput;
     let id = idInput;
 
-    if(typeof idInput !== `string`) {
+    if (typeof idInput !== `string`) {
         name = idInput[0];
         id = idInput.join(`-`);
     }
@@ -50,100 +42,88 @@ export const state = (idInput:string | string[], args?:any):QueryStore => {
     const hasStore = queries.has(id);
 
     // If disabled, get out, return defaults, don't fetch anything.
-    if(config.disable) {
+    if (config.disable) {
         return writable(defaultQuery);
     }
 
-    if(!hasConfig) {
+    if (!hasConfig) {
         // eslint-disable-next-line no-console
         console.log(id, `ERROR`, {
             args,
-            value : get(queries.get(id)),
+            value: get(queries.get(id)),
         });
-        
+
         return writable(defaultQuery);
     }
 
-    if(hasStore) {
+    if (hasStore) {
         return queries.get(id) as QueryStore;
     }
 
-    // eslint-disable-next-line no-console
-    console.log(id, `CREATING`);
-
     // TODO: this is to make ts happy but existense of config.queries[id] is already checked above
-    // @ts-ignore
-    const queryOptions = config.queries ? config.queries[name] : {} as QueryOptions;
+    const queryOptions = config.queries
+        ? config.queries[name as string]
+        : ({} as QueryOptions);
 
-    const loadQuery = async (store:any) => {
-        // eslint-disable-next-line no-console
-        console.log(id, `LOADING`, {
-            args,
-            value : get(queries.get(id)),
-        });
-
+    const loadQuery = async (store: any) => {
         // Is loading
-        store.update((existing:Query) => ({
+        store.update((existing: Query) => ({
             ...existing,
-            isLoading  : true,
-            isSuccess  : false,
-            hasFetched : false,
+            hasFetched: false,
+            isLoading: true,
+            isSuccess: false,
         }));
 
         try {
             let data = await queryOptions.loader(args);
 
-            if(queryOptions.formatter) {
+            if (queryOptions.formatter) {
                 data = await queryOptions.formatter(data);
             }
 
-            // eslint-disable-next-line no-console
-            console.log(id, `SUCCESS`, {
-                args,
-                value    : get(queries.get(id)),
-                response : data,
-            });
-
             // Is success
-            store.update((existing:Query) => ({
+            store.update((existing: Query) => ({
                 ...existing,
-                isLoading  : false,
-                isSuccess  : true,
-                hasFetched : true,
-                lastFetch  : Date.now(),
                 data,
+                hasFetched: true,
+                isLoading: false,
+                isSuccess: true,
+                lastFetch: Date.now(),
             }));
-        } catch(error) {
+        } catch (error) {
             // eslint-disable-next-line no-console
             console.log(`ERROR`, id, args);
 
             // Is error
-            store.update((existing:Query) => ({
+            store.update((existing: Query) => ({
                 ...existing,
-                isLoading  : false,
-                isError    : true,
-                hasFetched : true,
-                error      : String(error),
+                error: String(error),
+                hasFetched: true,
+                isError: true,
+                isLoading: false,
             }));
         }
     };
 
-    const newQueryStore:Writable<Query> = writable<Query>(defaultQuery, (set) => {
-        loadQuery(newQueryStore);
+    const newQueryStore: Writable<Query> = writable<Query>(
+        defaultQuery,
+        (set) => {
+            loadQuery(newQueryStore);
 
-        set({
-            ...get(newQueryStore),
-            load : () => loadQuery(newQueryStore),
-            id,
-        });
+            set({
+                ...get(newQueryStore),
+                id,
+                load: () => loadQuery(newQueryStore),
+            });
 
-        queries.set(id, newQueryStore);
+            queries.set(id, newQueryStore);
 
-        return () => {
-            // eslint-disable-next-line no-console
-            console.log(id, `UNSUBSCRIBED`);
-        };
-    });
+            return () => {
+                // eslint-disable-next-line no-console
+                console.log(id, `UNSUBSCRIBED`);
+            };
+        }
+    );
 
     queries.set(id, newQueryStore);
 

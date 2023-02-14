@@ -11,11 +11,11 @@ export async function GET({ params }: RequestEvent) {
     const pubKey = new PublicKey(params.address || "");
 
     const accountInfo = await connection.getParsedAccountInfo(pubKey);
-    
+
     return json({
-        data : {
+        data: {
             ...accountInfo,
-            balance : (accountInfo?.value?.lamports || 0) / LAMPORTS_PER_SOL,
+            balance: (accountInfo?.value?.lamports || 0) / LAMPORTS_PER_SOL,
         },
     });
 }

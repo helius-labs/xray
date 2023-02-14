@@ -1,27 +1,15 @@
 {
-  "editor.tabSize": 4,
-  "eslint.validate": [
-    "javascript",
-    "javascriptreact",
-    "html",
-    "svelte"
-  ],
-  "files.associations": {
-    "*.css": "postcss"
-  },
-  "editor.codeActionsOnSave": {
-		"source.fixAll.stylelint": true,
-		"source.fixAll.eslint": true,
-  },
-  "cSpell.words": [
-    "deez",
-    "MATR",
-    "mucs",
-    "solana",
-    "sveltejs",
-    "sveltekit",
-    "TOTP",
-    "uuidv"
-  ],
-  "dotenv.enableAutocloaking": false,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.detectIndentation": false,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "eslint.validate": ["json", "jsonc", "svelte"],
+    "files.associations": {
+        "*.css": "postcss"
+    },
+    "json.schemaDownload.enable": false,
+    "prettier.requireConfig": true
 }

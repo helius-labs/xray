@@ -2,30 +2,31 @@ import {
     parsers,
     ProtonSupportedType,
     unknownProtonTransaction,
-    type ProtonParser
+    type ProtonParser,
 } from "./types";
- 
+
 export * from "./types";
 
-export const parseTransaction:ProtonParser = (transaction) => {
+export const parseTransaction: ProtonParser = (transaction) => {
     const supportedParsers = Object.keys(ProtonSupportedType);
 
-    let parser:ProtonParser = parsers.UNKNOWN;
+    let parser: ProtonParser = parsers.UNKNOWN;
 
-    if(!supportedParsers.includes(transaction.type)) {
+    if (!supportedParsers.includes(transaction.type)) {
         return unknownProtonTransaction;
     }
 
-    const parserIndex = Math.floor(supportedParsers.indexOf(transaction.type) / 2) - 1;
+    const parserIndex =
+        Math.floor(supportedParsers.indexOf(transaction.type) / 2) - 1;
     // console.log("supportedParsers", supportedParsers);
     // console.log("parserIndex", parserIndex);
 
     parser = Object.values(parsers)[parserIndex];
     // console.log("parser", parser);
-    
+
     try {
         return parser(transaction);
-    } catch(error) {
+    } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);
 

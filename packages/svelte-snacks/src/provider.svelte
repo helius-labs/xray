@@ -9,14 +9,16 @@
 
     // eslint-disable-next-line no-console
     console.log(`Initializing state`);
-    
+
     const queryMap = new Map();
 
-    setContext(contextKey, writable({
-        queries : queryMap,
-        config,
-    }));
-
+    setContext(
+        contextKey,
+        writable({
+            config,
+            queries: queryMap,
+        })
+    );
 </script>
 
-<slot></slot>
+<slot />
