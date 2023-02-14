@@ -1,3 +1,4 @@
+# ensure all apps and packages can still build and test
 name: Node.js CI
 
 on:
@@ -22,4 +23,4 @@ jobs:
                   node-version: ${{ matrix.node-version }}
             - run: npm ci
             - run: npm run build --if-present
-            # - run: npm test
+            - run: npm test
