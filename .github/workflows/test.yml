@@ -1,6 +1,9 @@
 # ensure all apps and packages can still build and test
 name: Node.js CI
 
+env:
+    HELIUS_KEY: "chewed-glass"
+
 on:
     push:
         branches: [main]
