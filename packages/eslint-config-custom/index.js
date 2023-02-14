@@ -30,8 +30,6 @@ module.exports = {
         "simple-import-sort",
     ],
     rules: {
-        "import-newlines/enforce": ["error", 1],
-
         indent: ["error", 4],
 
         "no-console": "error",

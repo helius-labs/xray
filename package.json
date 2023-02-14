@@ -1,8 +1,28 @@
 {
-    "dependencies": {
-        "@solana/web3.js": "^1.73.2",
-        "helius-sdk": "^0.3.0",
-        "json-format-highlight": "^1.0.4"
+    "name": "@helius/xray",
+    "version": "0.0.1",
+    "private": true,
+    "workspaces": [
+        "apps/*",
+        "packages/*"
+    ],
+    "scripts": {
+        "// ENV -----------------": "",
+        "env": "dotenv --",
+        "// RUN -----------------": "",
+        "start:app": "turbo run preview --prefix=apps/xray-app",
+        "// BUILD -----------------": "",
+        "build": "turbo run build",
+        "build:env": "npm run env -- turbo run build",
+        "// DEV -----------------": "",
+        "dev": "dotenv -- turbo run dev --parallel",
+        "// Databse -----------------": "",
+        "db:pull": "dotenv -- turbo run db:pull",
+        "db:generate": "dotenv -- turbo run db:generate",
+        "// Lint --------------------": "",
+        "lint": "turbo lint",
+        "lint:fix": "eslint . --fix",
+        "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\""
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.52.0",
@@ -47,30 +67,10 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "name": "@helius/xray",
     "packageManager": "npm@8.19.2",
-    "private": true,
-    "scripts": {
-        "// BUILD -----------------": "",
-        "// ENV -----------------": "",
-        "// RUN -----------------": "",
-        "// DEV -----------------": "",
-        "build": "turbo run build",
-        "// Databse -----------------": "",
-        "env": "dotenv --",
-        "build:env": "npm run env -- turbo run build",
-        "start:app": "turbo run preview --prefix=apps/xray-app",
-        "// Lint --------------------": "",
-        "db:generate": "dotenv -- turbo run db:generate",
-        "db:pull": "dotenv -- turbo run db:pull",
-        "dev": "dotenv -- turbo run dev --parallel",
-        "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
-        "lint": "turbo lint",
-        "lint:fix": "eslint . --fix"
-    },
-    "version": "0.0.1",
-    "workspaces": [
-        "apps/*",
-        "packages/*"
-    ]
+    "dependencies": {
+        "@solana/web3.js": "^1.73.2",
+        "helius-sdk": "^0.3.0",
+        "json-format-highlight": "^1.0.4"
+    }
 }

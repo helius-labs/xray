@@ -10,5 +10,6 @@
     "files.associations": {
         "*.css": "postcss"
     },
+    "json.schemaDownload.enable": false,
     "prettier.requireConfig": true
 }
