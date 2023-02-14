@@ -183,7 +183,7 @@
             <div class="dropdown w-full">
                 <input
                     bind:this={inputEl}
-                    class="input input-bordered focus:input-success h-16 w-full rounded-lg px-14 text-lg"
+                    class="input-bordered input h-16 w-full rounded-lg px-14 text-lg focus:input-success"
                     placeholder="Search Solana"
                     tabindex="0"
                     type="text"
@@ -192,13 +192,13 @@
 
                 {#if recent.length}
                     <ul
-                        class="dropdown-content menu bg-base-100 relative mt-3 w-full rounded-lg p-2 px-4 shadow"
+                        class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
                     >
                         <div class="flex items-center justify-between">
                             <p class="text-md mt-2 mb-1 font-bold">Recent</p>
                             <div>
                                 <button
-                                    class="btn btn-outline btn-sm"
+                                    class="btn-outline btn-sm btn"
                                     on:click|preventDefault={() =>
                                         (inputValue = "")}
                                 >
@@ -206,14 +206,14 @@
                                 </button>
 
                                 <button
-                                    class="btn btn-outline btn-sm ml-2"
+                                    class="btn-outline btn-sm btn ml-2"
                                     on:click|preventDefault={setFromClipboard}
                                 >
                                     <span class="text-sm"> Paste </span>
                                 </button>
 
                                 <button
-                                    class="btn btn-outline btn-sm ml-2"
+                                    class="btn-outline btn-sm btn ml-2"
                                     on:click|preventDefault={() =>
                                         (showConnectWallet = true)}
                                 >
@@ -248,7 +248,7 @@
             </div>
 
             <button
-                class="btn btn-ghost absolute right-4 bottom-1/2 translate-y-1/2 px-0"
+                class="btn-ghost btn absolute right-4 bottom-1/2 translate-y-1/2 px-0"
                 class:loading={isSearching}
             >
                 {#if !isSearching}

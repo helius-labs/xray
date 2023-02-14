@@ -75,7 +75,7 @@
     </Namor>
 
     {#if !$transaction?.hasFetched}
-        <button class="btn btn-ghost loading pr-0" />
+        <button class="loading btn-ghost btn pr-0" />
     {/if}
 </div>
 
@@ -134,7 +134,7 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="bg-success center h-10 w-10 rounded-full">
+                    <div class="center h-10 w-10 rounded-full bg-success">
                         <Icon
                             id="check"
                             fill="base-100"
@@ -153,7 +153,7 @@
                         </p>
                     </div>
                     <div>
-                        <div class="badge badge-success">Success</div>
+                        <div class="badge-success badge">Success</div>
                     </div>
                 </div>
             </IconCard>
@@ -162,7 +162,7 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="bg-secondary center h-10 w-10 rounded-full">
+                    <div class="center h-10 w-10 rounded-full bg-secondary">
                         <Icon
                             id="network"
                             size="sm"
@@ -191,7 +191,7 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="bg-secondary center h-10 w-10 rounded-full">
+                    <div class="center h-10 w-10 rounded-full bg-secondary">
                         <Icon
                             id="signature"
                             size="sm"
@@ -209,7 +209,7 @@
                         </p>
                     </div>
                     <div>
-                        <button class="btn btn-ghost btn-sm">
+                        <button class="btn-ghost btn-sm btn">
                             <Icon
                                 id="copy"
                                 size="md"
@@ -223,7 +223,7 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="bg-secondary center h-10 w-10 rounded-full">
+                    <div class="center h-10 w-10 rounded-full bg-secondary">
                         <Icon
                             id="json"
                             size="sm"
@@ -243,7 +243,7 @@
                     <div>
                         {#if showCode}
                             <button
-                                class="btn btn-sm btn-ghost"
+                                class="btn-ghost btn-sm btn"
                                 on:click={() => (showCode = false)}
                             >
                                 <Icon
@@ -253,7 +253,7 @@
                             </button>
                         {:else}
                             <button
-                                class="btn btn-sm btn-ghost"
+                                class="btn-ghost btn-sm btn"
                                 on:click={() => (showCode = true)}
                             >
                                 <Icon
@@ -272,7 +272,6 @@
                     in:fade={{ duration: 500 }}
                 >
                     <div class="code overflow-hidden">
-                        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
                         <pre><code class="text-xs">{@html metadataHTML}</code
                             ></pre>
                     </div>
@@ -282,7 +281,7 @@
 
         <div class="my-5 flex justify-center">
             <a
-                class="btn btn-ghost text-success text-xs hover:bg-transparent"
+                class="btn-ghost btn text-xs text-success hover:bg-transparent"
                 href={`https://explorer.solana.com/tx/${$page?.params?.search}`}
                 >View on Solana Explorer</a
             >

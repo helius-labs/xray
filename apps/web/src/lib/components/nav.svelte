@@ -3,6 +3,7 @@
 
     import { state } from "svelte-snacks";
 
+    import formatMoney from "$lib/util/format-money";
     import { onMount } from "svelte";
 
     import { nameFromString } from "@helius-labs/helius-namor";
@@ -10,9 +11,6 @@
     import { goto } from "$app/navigation";
 
     import Icon from "$lib/icon";
-
-    import formatMoney from "$lib/util/format-money";
-    import shortenString from "../util/shorten-string";
 
     const solanaPrice = state(
         "tokenPrice",
@@ -93,7 +91,7 @@
 <div class="modal">
     <div class="modal-box">
         <label
-            class="btn btn-outline btn-sm absolute right-3 top-3"
+            class="btn-outline btn-sm btn absolute right-3 top-3"
             for="my-modal">Close</label
         >
         <h2 class="text-2xl font-bold">ABOUT XRAY</h2>
@@ -111,7 +109,7 @@
 
         <div class="mt-8 flex w-full">
             <a
-                class="btn btn-outline mr-2"
+                class="btn-outline btn mr-2"
                 href="https://github.com/helius-labs/xray"
             >
                 <Icon
@@ -121,7 +119,7 @@
                 <p class="ml-2">Code</p>
             </a>
             <a
-                class="btn btn-outline relative"
+                class="btn-outline btn relative"
                 href="https://discord.gg/Wkn3uuSby7"
             >
                 <Icon
@@ -135,12 +133,12 @@
 </div>
 
 <nav
-    class="border-secondary fixed top-0 left-0 z-10 grid w-screen grid-cols-3 border bg-black p-1"
+    class="fixed top-0 left-0 z-10 grid w-screen grid-cols-3 border border-secondary bg-black p-1"
 >
     <div class="ml-2 flex items-center">
         {#if $page.url.pathname !== "/"}
             <a
-                class="btn mr- btn-ghost p-1 px-4 "
+                class="mr- btn-ghost btn p-1 px-4 "
                 href="/"
             >
                 <span class="text-2xl"> XRAY </span>
@@ -149,7 +147,7 @@
 
         <!-- The button to open modal -->
         <label
-            class="btn btn-ghost"
+            class="btn-ghost btn"
             for="my-modal"
             ><Icon
                 id="info"
@@ -180,7 +178,7 @@
                 <div class="dropdown w-full">
                     <input
                         bind:this={inputEl}
-                        class="input input-bordered focus:input-success w-full  rounded-lg"
+                        class="input-bordered input w-full rounded-lg  focus:input-success"
                         placeholder="Search Solana"
                         tabindex="0"
                         type="text"
@@ -189,7 +187,7 @@
 
                     {#if recent.length}
                         <ul
-                            class="dropdown-content menu bg-base-100 relative mt-3 w-full rounded-lg p-2 px-4 shadow"
+                            class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
                         >
                             <p class="mt-2 mb-1 text-xs font-bold">Recent</p>
                             {#each recent as address}
@@ -221,7 +219,7 @@
                 </div>
 
                 <button
-                    class="btn btn-ghost absolute right-4 bottom-1/2 translate-y-1/2 px-2"
+                    class="btn-ghost btn absolute right-4 bottom-1/2 translate-y-1/2 px-2"
                     class:loading={isSearching}
                 >
                     {#if !isSearching}
@@ -233,12 +231,12 @@
     </div>
     <div class="flex items-center justify-end pr-4">
         {#if $solanaTPS?.isLoading || $solanaPrice?.isLoading}
-            <button class="btn btn-ghost loading" />
+            <button class="loading btn-ghost btn" />
         {/if}
 
         {#if $solanaTPS?.hasFetched}
             <div class="mr-5">
-                <p class="text-neutral text-xs font-bold">TPS</p>
+                <p class="text-xs font-bold text-neutral">TPS</p>
                 <p class="">{$solanaTPS?.data?.tps.toFixed(0)}</p>
             </div>
         {/if}
@@ -250,7 +248,7 @@
                 rel="noreferrer"
                 target="_blank"
             >
-                <p class="text-neutral text-xs font-bold">Price</p>
+                <p class="text-xs font-bold text-neutral">Price</p>
                 <p class="">{formatMoney($solanaPrice?.data)}</p>
             </a>
         {/if}

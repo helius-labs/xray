@@ -15,8 +15,8 @@
     setContext(
         contextKey,
         writable({
-            queries: queryMap,
             config,
+            queries: queryMap,
         })
     );
 </script>

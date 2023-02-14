@@ -1,11 +1,11 @@
 export * from "./types";
 
 import {
-    uniqueNamesGenerator,
     adjectives,
-    colors,
     animals,
+    colors,
     names,
+    uniqueNamesGenerator,
 } from "unique-names-generator";
 
 import { publicKeyMappings } from "./types";

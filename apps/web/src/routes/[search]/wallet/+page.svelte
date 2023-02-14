@@ -35,7 +35,7 @@
         </div>
 
         {#if !$accountInfo?.hasFetched || !$transactions.hasFetched}
-            <button class="btn btn-ghost loading pr-0" />
+            <button class="loading btn-ghost btn pr-0" />
         {/if}
 
         {#if !$accountInfo?.hasFetched}

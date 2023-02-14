@@ -2,16 +2,16 @@
 import { getContext } from "svelte";
 
 import {
+    defaultQuery,
+    type Query,
+    type QueryOptions,
     type QueryStore,
     type StateContext,
-    type QueryOptions,
-    type Query,
-    defaultQuery,
 } from "./types";
 
 import { contextKey } from "./config";
 
-import { writable, get, type Writable } from "svelte/store";
+import { get, writable, type Writable } from "svelte/store";
 
 export * from "./types";
 
@@ -61,8 +61,10 @@ export const state = (idInput: string | string[], args?: any): QueryStore => {
     }
 
     // TODO: this is to make ts happy but existense of config.queries[id] is already checked above
-    // @ts-ignore
-    const queryOptions = config.queries ? config.queries[name]: ({} as QueryOptions);
+    const queryOptions = config.queries
+        ? // @ts-ignore
+          config.queries[name]
+        : ({} as QueryOptions);
 
     const loadQuery = async (store: any) => {
         // Is loading

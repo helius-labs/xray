@@ -17,6 +17,7 @@
         const icon = IconPaths[id as keyof typeof IconPaths];
 
         if (icon) {
+            // eslint-disable-next-line no-unsanitized/property
             el.innerHTML = icon;
         }
     });

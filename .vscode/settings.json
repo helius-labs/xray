@@ -1,10 +1,14 @@
 {
-    "editor.tabSize": 4,
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.detectIndentation": false,
-    "eslint.validate": ["javascript", "javascriptreact", "html", "svelte"],
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "eslint.validate": ["json", "jsonc", "svelte"],
     "files.associations": {
         "*.css": "postcss"
     },
-    "editor.formatOnSave": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "prettier.requireConfig": true
 }

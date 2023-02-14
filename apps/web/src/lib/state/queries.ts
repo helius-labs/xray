@@ -1,7 +1,5 @@
 import * as actions from "./actions";
 
-import formatMoney from "$lib/util/format-money";
-
 import { parseTransaction } from "@helius-labs/xray-proton";
 
 import type { EnrichedTransaction } from "helius-sdk";

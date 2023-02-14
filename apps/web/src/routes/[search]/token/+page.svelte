@@ -13,7 +13,7 @@
 <h1>Token</h1>
 
 {#if $token.isLoading}
-    <button class="btn btn-ghost loading" />
+    <button class="loading btn-ghost btn" />
 {:else}
     <div class="card">
         <pre>{JSON.stringify($token?.data)}</pre>

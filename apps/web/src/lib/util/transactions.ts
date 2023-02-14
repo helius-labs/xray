@@ -1,10 +1,9 @@
 import {
-    type UITransaction,
-    type UITransactionActionGroup,
-    type Icon,
-    type UITransactionAction,
-    UITransactionActionType,
     transactionActionsMetadata,
+    UITransactionActionType,
+    type UITransaction,
+    type UITransactionAction,
+    type UITransactionActionGroup,
 } from "$lib/types";
 
 import { TransactionType } from "helius-sdk";

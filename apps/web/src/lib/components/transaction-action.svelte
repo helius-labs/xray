@@ -5,8 +5,6 @@
 
     import { fly } from "svelte/transition";
 
-    import { getSolanaName } from "@helius-labs/helius-namor";
-
     import Icon from "$lib/icon";
     import IconCard from "$lib/components/icon-card.svelte";
 
@@ -14,6 +12,7 @@
 
     import IntersectionObserver from "svelte-intersection-observer";
 
+    import { getSolanaName } from "@helius-labs/helius-namor";
     import type { QueryStore } from "svelte-snacks";
 
     import cap from "$lib/util/cap";
@@ -31,6 +30,12 @@
     let element: HTMLElement;
     let solanaToken: QueryStore;
     const isNFT = false;
+
+    const obk = {
+        address,
+        image: "",
+        name: "",
+    };
 
     if (address) {
         solanaToken = state(["solanaToken", address], address);
@@ -98,7 +103,7 @@
             <IconCard>
                 <div slot="icon">
                     {#if isLoading}
-                        <button class="btn-ghost loading" />
+                        <button class="loading btn-ghost" />
                     {:else if metadata.image}
                         <img
                             class="max-w-3 w-full rounded"
@@ -127,7 +132,7 @@
 
                     {#if action?.actionType === "TRANSFER_SENT" || action?.actionType === "SWAP_SENT"}
                         <h4
-                            class="text-error absolute right-2 top-3 text-sm font-bold md:text-lg"
+                            class="absolute right-2 top-3 text-sm font-bold text-error md:text-lg"
                         >
                             - {metadata.name === "USDC"
                                 ? formatMoney(action.amount)
@@ -135,7 +140,7 @@
                         </h4>
                     {:else if action?.actionType === "TRANSFER_RECEIVED" || action?.actionType === "SWAP_RECEIVED"}
                         <h4
-                            class="text-success absolute right-2 top-3 text-sm font-bold md:text-lg"
+                            class="absolute right-2 top-3 text-sm font-bold text-success md:text-lg"
                         >
                             + {metadata.name === "USDC"
                                 ? formatMoney(action.amount)
@@ -143,7 +148,7 @@
                         </h4>
                     {:else if action?.type === "TRANSFER"}
                         <h4
-                            class="absolute right-2 top-3 text-sm font-bold text-black"
+                            class=" absolute  right-2 top-3 text-sm font-bold text-black"
                         >
                             {action?.amount}
                         </h4>

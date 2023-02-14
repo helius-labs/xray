@@ -1,9 +1,9 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import type {
-    TransactionType,
-    NFTEvent,
     EnrichedTransaction,
+    NFTEvent,
+    TransactionType,
 } from "helius-sdk";
 
 import {
