@@ -1,8 +1,8 @@
 import {
-    type ProtonParser,
+    parsers,
     ProtonSupportedType,
     unknownProtonTransaction,
-    parsers
+    type ProtonParser
 } from "./types";
  
 export * from "./types";
@@ -16,9 +16,12 @@ export const parseTransaction:ProtonParser = (transaction) => {
         return unknownProtonTransaction;
     }
 
-    const parserIndex = supportedParsers.indexOf(transaction.type);
+    const parserIndex = Math.floor(supportedParsers.indexOf(transaction.type) / 2) - 1;
+    // console.log("supportedParsers", supportedParsers);
+    // console.log("parserIndex", parserIndex);
 
     parser = Object.values(parsers)[parserIndex];
+    // console.log("parser", parser);
     
     try {
         return parser(transaction);

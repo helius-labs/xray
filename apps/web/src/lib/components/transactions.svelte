@@ -1,14 +1,14 @@
 <script lang="ts">
     import type {
-        UITransaction,
-        UITransactionActionGroup
+      UITransaction,
+      UITransactionActionGroup
     } from "$lib/types";
 
     import { page } from "$app/stores";
 
     import {
-        groupTransactionActions,
-        mergeTransactionActions
+      groupTransactionActions,
+      mergeTransactionActions
     } from "$lib/util/transactions";
 
     import Icon from "$lib/icon";
@@ -16,15 +16,15 @@
     import TransactionAction from "$lib/components/transaction-action.svelte";
 
     import {
-        fly,
-        fade
+      fade, fly
     } from "svelte/transition";
 
     import { cubicOut } from "svelte/easing";
     
     export let transactions:UITransaction[];
     export let user:string = "";
-    export let gap:number = 3;
+    // dont know what this is for but commented it out cause it fixed an error
+    // export let gap:number = 3;
 
     let groups:UITransactionActionGroup[] = [];
 
