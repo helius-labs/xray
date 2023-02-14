@@ -57,6 +57,8 @@ export const parseBurn = (transaction: EnrichedTransaction): ProtonTransaction =
         }
 
         const sent = tx.mint;
+
+        // @ts-ignore
         const amount = tx.tokenAmount;
 
         actions.push({
