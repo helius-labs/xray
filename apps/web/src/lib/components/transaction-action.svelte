@@ -11,6 +11,7 @@
     import { getSolanaName } from "@helius-labs/helius-namor";
 
     import Icon from "$lib/icon";
+    import IconCard from "$lib/components/icon-card.svelte";
 
     import shortenString from "$lib/util/shorten-string";
 
@@ -71,7 +72,7 @@
     } else if(action?.actionType === "TRANSFER_RECEIVED") {
         label = `From: ${displayName}`;
     } else if(action?.actionType === "SWAP_RECEIVED") {
-        label = `For: ${displayName}`;
+        label = `For: ${displayName} / ${shortenString(action?.from, 6)}`;
     } else if(action?.actionType === "SWAP_SENT") {
         label = `Swapped: ${displayName}`;
     } else {
@@ -88,9 +89,8 @@
         bind:this={element}
         class="min-h-28">
         {#if intersecting}
-            <div class="card grid grid-cols-12 gap-3"
-            >
-                <div class="col-span-2 md:col-span-1 center relative">
+            <IconCard>
+                <div slot="icon">
                     {#if isLoading}
                         <button class="btn-ghost loading"></button>
                     {:else}
@@ -107,7 +107,7 @@
                         {/if}
                     {/if}
                 </div>
-                <div class="col-span-10 md:col-span-11  flex justify-between">
+                <div slot="title">
                     <div>
                         <h4
                             class="m-0 font-bold text-md"
@@ -130,7 +130,7 @@
                         </h4>
                     {/if}
                 </div>
-            </div>
+            </IconCard>
         {/if}
     </div>
 </IntersectionObserver>

@@ -48,18 +48,21 @@
             delay    : groupIndex * 100,
             duration : 500,
         }}>
-        <div class="flex">
+        <div class="flex opacity-75 mb-2">
             <div class="flex items-center">
-                <Icon id={icon} />
-                <p class="text-micro ml-2">
+                <Icon
+                    id={icon}
+                    size="md" />
+                <h1 class="ml-2">
                     {label}
-                </p>
+                </h1>
             </div>
         </div>
 
         {#each actions as action, actionIndex}
             <a
                 class="mb-2 block hover:opacity-75 cursor-pointer"
+                data-sveltekit-reload
                 href="/{action.signature}/tx?wallet={$page.params.search}"
                 in:fly={{
                     delay  : actionIndex * 100,
