@@ -28,13 +28,13 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
 
     if(tokenTransfers === null || nativeTransfers === null) {
         return {
-            type,
-            primaryUser : "",
-            fee         : 0,
-            signature   : "",
-            timestamp   : 0,
-            source,
             actions     : [],
+            fee         : 0,
+            primaryUser : "",
+            signature   : "",
+            source,
+            timestamp   : 0,
+            type,
         };
     }
     
@@ -64,16 +64,15 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
         }
 
         const sent = tx.mint;
-        // TODO change rawTokenAmount -> tokenAmount
-        const amount = tx?.rawTokenAmount || tx?.tokenAmount;
+        const amount = tx?.tokenAmount;
     
         actions.push({
+            amount,
             from,
             fromName,
+            sent,
             to,
             toName,
-            sent,
-            amount,
         });
     }
 
@@ -100,22 +99,22 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
         const amount = tx.amount / LAMPORTS_PER_SOL;
 
         actions.push({
+            amount,
             from,
             fromName,
+            sent,
             to,
             toName,
-            sent,
-            amount,
         });
     }
     
     return {
-        type,
-        primaryUser,
-        fee,
-        signature,
-        timestamp,
-        source,
         actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
     };
 };

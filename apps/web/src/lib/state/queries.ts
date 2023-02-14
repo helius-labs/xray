@@ -23,9 +23,9 @@ export const solanaTps = {
 };
 
 export const solanaTokenRegistry = {
-    loader                   : actions.getSolanaTokenRegistry,
     fetchOnFirstSubscription : true,
     formatter                : (data:any) => new Map(data.map((token:Token) => ([ token?.address, token ]))),
+    loader                   : actions.getSolanaTokenRegistry,
 };
 
 export const solanaAccountInfo = {
@@ -33,19 +33,19 @@ export const solanaAccountInfo = {
 };
 
 export const solanaTransactions = {
-    loader    : actions.getSolanaTransactions,
     formatter : (data:any) => data.map((tx:EnrichedTransaction) => ({
         parsed : parseTransaction(tx),
         raw    : tx,
     })),
+    loader    : actions.getSolanaTransactions,
 };
 
 export const solanaTransaction = {
-    loader    : actions.getSolanaTransaction,
     formatter : (data:any) => ({
         parsed : parseTransaction(data),
         raw    : data,
     }),
+    loader    : actions.getSolanaTransaction,
 };
 
 export const solanaToken = {

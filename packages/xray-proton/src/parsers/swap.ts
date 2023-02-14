@@ -23,13 +23,13 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
 
     if(transaction?.tokenTransfers === null) {
         return {
-            type,
-            primaryUser : "",
-            fee         : 0,
-            signature   : "",
-            timestamp   : 0,
-            source,
             actions     : [],
+            fee         : 0,
+            primaryUser : "",
+            signature   : "",
+            source,
+            timestamp   : 0,
+            type,
         };
     }
 
@@ -70,37 +70,36 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        // TODO change rawTokenAmount -> tokenAmount
-        const amount = tx.rawTokenAmount || tx.tokenAmount;
+        const amount = tx.tokenAmount;
 
         if(sent) {
             actions.push({
+                amount,
                 from,
                 fromName,
+                sent,
                 to,
                 toName,
-                sent,
-                amount,
             });
         } else {
             actions.push({
+                amount,
                 from,
                 fromName,
+                received,
                 to,
                 toName,
-                received,
-                amount,
             });
         }
     }
     
     return {
-        type,
-        primaryUser,
-        fee,
-        signature,
-        timestamp,
-        source,
         actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
     };
 };

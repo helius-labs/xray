@@ -1,22 +1,28 @@
 <script lang="ts">
-    import type { Token, WebTranscationAction } from "$lib/types";
-    
     import { state } from "svelte-snacks";
-    import { fly, scale } from "svelte/transition";
+    
+    import type {
+        UITokenMetadata,
+        UITransactionAction
+    } from "$lib/types";
+    
+    import { fly } from "svelte/transition";
 
     import { getSolanaName } from "@helius-labs/helius-namor";
 
     import Icon from "$lib/icon";
-
-    import { cubicOut } from "svelte/easing";
+    import IconCard from "$lib/components/icon-card.svelte";
 
     import shortenString from "$lib/util/shorten-string";
 
     import IntersectionObserver from "svelte-intersection-observer";
 
     import type { QueryStore } from "svelte-snacks";
+
+    import cap from "$lib/util/cap";
+    import formatMoney from "../util/format-money";
         
-    export let action:WebTranscationAction;
+    export let action:UITransactionAction;
    
     const tokenRegistry = state("solanaTokenRegistry");
 
@@ -33,18 +39,13 @@
         solanaToken = state([ "solanaToken", address ], address);
     }
     
-    const metadata:Token = {
+    const metadata:UITokenMetadata = {
+        address,
         image : "",
         name  : "",
-        address,
     };
-
-    const cap = (string:string = "") => string
-        .split(" ")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
         
-    $: tokenDetails = $tokenRegistry.data.get(address);
+    $: tokenDetails = $tokenRegistry.data.get ? $tokenRegistry.data.get(address) : {};
 
     $: if(intersecting) {
         if(tokenDetails) {
@@ -66,10 +67,14 @@
 
     $: title = metadata?.name || txName;
 
-    $: if(action?.type === "TRANSFER_SENT") {
+    $: if(action?.actionType === "TRANSFER_SENT") {
         label = `To: ${displayName}`;
-    } else if(action?.type === "TRANSFER_RECEIVED") {
+    } else if(action?.actionType === "TRANSFER_RECEIVED") {
         label = `From: ${displayName}`;
+    } else if(action?.actionType === "SWAP_RECEIVED") {
+        label = `For: ${displayName} / ${shortenString(action?.from, 6)}`;
+    } else if(action?.actionType === "SWAP_SENT") {
+        label = `Swapped: ${displayName}`;
     } else {
         label = `Tx: ${shortenString(action?.signature, 10)}`;
     }
@@ -84,20 +89,14 @@
         bind:this={element}
         class="min-h-28">
         {#if intersecting}
-            <div
-                class="card grid grid-cols-12 gap-3"
-                in:fly={{
-                    y     : 50,
-                    delay : 250,
-                }}
-            >
-                <div class="col-span-2 md:col-span-1 center relative">
+            <IconCard>
+                <div slot="icon">
                     {#if isLoading}
                         <button class="btn-ghost loading"></button>
                     {:else}
                         {#if metadata.image}
                             <img
-                                class="rounded w-full"
+                                class="rounded w-full max-w-3"
                                 alt="token symbol"
                                 src={metadata.image} />
                         {:else}
@@ -108,7 +107,7 @@
                         {/if}
                     {/if}
                 </div>
-                <div class="col-span-10 md:col-span-11  flex justify-between">
+                <div slot="title">
                     <div>
                         <h4
                             class="m-0 font-bold text-md"
@@ -117,13 +116,13 @@
                         <p class="m-0 opacity-50 text-xs">{label}</p>
                     </div>
     
-                    {#if action?.type === "TRANSFER_SENT"}
-                        <h4 class="font-bold text-sm text-error absolute right-2 top-3">
-                            - {action?.amount}
+                    {#if action?.actionType === "TRANSFER_SENT" || action?.actionType === "SWAP_SENT"}
+                        <h4 class="font-bold text-sm md:text-lg text-error absolute right-2 top-3">
+                            - {metadata.name === "USDC" ? formatMoney(action.amount) : action.amount}
                         </h4>
-                    {:else if action?.type === "TRANSFER_RECEIVED"}
-                        <h4 class="font-bold text-sm text-success absolute right-2 top-3">
-                            + {action?.amount}
+                    {:else if action?.actionType === "TRANSFER_RECEIVED" || action?.actionType === "SWAP_RECEIVED"}
+                        <h4 class="font-bold text-sm md:text-lg text-success absolute right-2 top-3">
+                            + {metadata.name === "USDC" ? formatMoney(action.amount) : action.amount}
                         </h4>
                     {:else if action?.type === "TRANSFER"}
                         <h4 class="text-black font-bold text-sm absolute right-2 top-3">
@@ -131,7 +130,7 @@
                         </h4>
                     {/if}
                 </div>
-            </div>
+            </IconCard>
         {/if}
     </div>
 </IntersectionObserver>

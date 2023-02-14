@@ -1,19 +1,25 @@
-import { Source } from "helius-sdk";
+import {
+    EnrichedTransaction, Source, TransactionType
+} from "helius-sdk";
 
-const supportedTransactions = {
-    TRANSFER           : "TRANSFER",
-    SWAP               : "SWAP",
-    BURN               : "BURN",
-    BURN_NFT           : "BURN_NFT",
-    NFT_SALE           : "NFT_SALE",
-    NFT_BID            : "NFT_BID",
-    NFT_BID_CANCELLED  : "NFT_BID_CANCELLED",
-    NFT_LISTING        : "NFT_LISTING",
-    NFT_CANCEL_LISTING : "NFT_CANCEL_LISTING",
-    UNKNOWN            : "UNKNOWN",
-};
+import * as parser from "../parsers";
 
-export type ProtonSupportedTypes = keyof typeof supportedTransactions;
+export enum ProtonSupportedType {
+    BURN,
+    BURN_NFT,
+    NFT_BID,
+    NFT_BID_CANCELLED,
+    NFT_CANCEL_LISTING,
+    NFT_LISTING,
+    NFT_SALE,
+    SWAP,
+    TRANSFER,
+    UNKNOWN,
+}
+
+export type ProtonParser = (transaction:EnrichedTransaction) => ProtonTransaction;
+
+export type ProtonType = keyof typeof ProtonSupportedType;
 
 export interface ProtonTransactionAction {
     from: string,
@@ -26,7 +32,7 @@ export interface ProtonTransactionAction {
 }
 
 export interface ProtonTransaction {
-    type: ProtonSupportedTypes,
+    type: ProtonType | TransactionType,
     primaryUser: string,
     fee: number,
     signature: string,
@@ -34,3 +40,29 @@ export interface ProtonTransaction {
     source: Source,
     actions: ProtonTransactionAction[],
 }
+
+export type ProtonParsers = Record<ProtonType, ProtonParser>
+
+export const unknownProtonTransaction:ProtonTransaction = {
+    actions     : [],
+    fee         : 0,
+    primaryUser : "",
+    signature   : "",
+    source      : Source.SYSTEM_PROGRAM,
+    timestamp   : 0,
+    type        : "UNKNOWN",
+};
+
+export const parsers:ProtonParsers = {
+    BURN               : parser.parseBurn,
+    BURN_NFT           : parser.parseBurn,
+    NFT_BID            : parser.parseNftBid,
+    NFT_BID_CANCELLED  : parser.parseNftCancelBid,
+    NFT_CANCEL_LISTING : parser.parseNftCancelList,
+    NFT_LISTING        : parser.parseNftList,
+    NFT_SALE           : parser.parseNftSale,
+    SWAP               : parser.parseSwap,
+    TRANSFER           : parser.parseTransfer,
+    UNKNOWN            : (data:any) => data,
+};
+
