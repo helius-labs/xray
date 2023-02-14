@@ -70,8 +70,7 @@ export const parseSwap = (transaction: EnrichedTransaction): ProtonTransaction =
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        // TODO change rawTokenAmount -> tokenAmount
-        const amount = tx.rawTokenAmount || tx.tokenAmount;
+        const amount = tx.tokenAmount;
 
         if(sent) {
             actions.push({
