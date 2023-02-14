@@ -42,16 +42,16 @@ export interface StateContext {
 }
 
 export const defaultQuery: Query = {
-    id: "",
-    nextFetch: 0,
-    lastFetch: 0,
-    timesRetired: 0,
-    hasFetched: false,
-    isLoading: false,
-    isError: false,
-    isSuccess: false,
-    error: "",
     data: {},
-    load: () => null,
+    error: "",
     formatter: () => null,
+    hasFetched: false,
+    id: "",
+    isError: false,
+    isLoading: false,
+    isSuccess: false,
+    lastFetch: 0,
+    load: () => null,
+    nextFetch: 0,
+    timesRetired: 0,
 };

@@ -62,8 +62,7 @@ export const state = (idInput: string | string[], args?: any): QueryStore => {
 
     // TODO: this is to make ts happy but existense of config.queries[id] is already checked above
     const queryOptions = config.queries
-        ? // @ts-ignore
-          config.queries[name]
+        ? config.queries[name]
         : ({} as QueryOptions);
 
     const loadQuery = async (store: any) => {

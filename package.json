@@ -20,6 +20,7 @@
         "db:pull": "dotenv -- turbo run db:pull",
         "db:generate": "dotenv -- turbo run db:generate",
         "// Lint --------------------": "",
+        "test": "turbo lint",
         "lint": "turbo lint",
         "lint:fix": "eslint . --fix",
         "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\""
