@@ -1,0 +1,12 @@
+{
+    "trailingComma": "es5",
+    "tabWidth": 4,
+    "semi": true,
+    "singleQuote": false,
+    "bracketSpacing": true,
+    "svelteBracketNewLine": true,
+    "singleAttributePerLine": true,
+    "svelteSortOrder": "options-styles-scripts-markup",
+    "plugins": ["prettier-plugin-svelte", "prettier-plugin-tailwindcss"],
+    "tailwindConfig": "./apps/web/tailwind.config.js"
+}

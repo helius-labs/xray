@@ -10,33 +10,32 @@
 
     const address = $page.params.search;
 
-    const transactions = state([ "solanaTransactions", address ], address);
-    const accountInfo = state([ "solanaAccountInfo", address ], address);
-
+    const transactions = state(["solanaTransactions", address], address);
+    const accountInfo = state(["solanaAccountInfo", address], address);
 </script>
 
 <section>
-    <div class="flex justify-between items-center mb-5">
+    <div class="mb-5 flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold">
-                Wallet
-            </h1>
+            <h1 class="text-3xl font-bold">Wallet</h1>
             <Namor
                 text={$page.params.search}
                 let:result
-                let:shortenedOriginal>
+                let:shortenedOriginal
+            >
                 <h3
-                    class="text-sm tooltip tooltip-right"
-                    data-tip={shortenedOriginal}>
+                    class="tooltip tooltip-right text-sm"
+                    data-tip={shortenedOriginal}
+                >
                     <span class="opacity-50">
                         {result}
                     </span>
                 </h3>
             </Namor>
         </div>
-    
-        {#if !$accountInfo?.hasFetched || !$transactions.hasFetched }
-            <button class="btn btn-ghost pr-0 loading"></button>
+
+        {#if !$accountInfo?.hasFetched || !$transactions.hasFetched}
+            <button class="btn btn-ghost loading pr-0" />
         {/if}
 
         {#if !$accountInfo?.hasFetched}

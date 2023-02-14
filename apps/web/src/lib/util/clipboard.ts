@@ -3,9 +3,9 @@ export const pasteFromClipboard = async () => {
         const text = await navigator.clipboard.readText();
 
         console.log({ text });
-        
+
         return text;
-    } catch(error) {
+    } catch (error) {
         // eslint-disable-next-line no-console
         console.log(`ERROR`, error);
     }
@@ -13,10 +13,10 @@ export const pasteFromClipboard = async () => {
     return "";
 };
 
-export const copyToClipboard = async (text:string, copied = false) => {
+export const copyToClipboard = async (text: string, copied = false) => {
     await navigator.clipboard.writeText(text);
 
-    if(copied) {
+    if (copied) {
         copied = true;
 
         setTimeout(() => {
@@ -24,4 +24,3 @@ export const copyToClipboard = async (text:string, copied = false) => {
         }, 2000);
     }
 };
-

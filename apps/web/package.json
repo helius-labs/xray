@@ -11,7 +11,9 @@
     "// Typescript": "-------------------------------------------------------------",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "// Lint": "-------------------------------------------------------------",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'"
+
   },
   "devDependencies": {
     "@solana/wallet-adapter-wallets": "^0.19.11",

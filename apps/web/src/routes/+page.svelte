@@ -1,3 +1,9 @@
+<style>
+    .input {
+        background: rgba(0, 0, 0, 0.25);
+    }
+</style>
+
 <script lang="ts">
     import { onMount } from "svelte";
 
@@ -28,18 +34,18 @@
         PhantomWalletAdapter,
         BackpackWalletAdapter,
         GlowWalletAdapter,
-        SolflareWalletAdapter
+        SolflareWalletAdapter,
     } from "@solana/wallet-adapter-wallets";
 
     let showConnectWallet = false;
 
-    let inputEl:HTMLInputElement;
-    let inputValue:string = "";
+    let inputEl: HTMLInputElement;
+    let inputValue: string = "";
 
     let searchError = "";
     let isSearching = false;
 
-    let recent:string[] = [];
+    let recent: string[] = [];
 
     const wallets = [
         new PhantomWalletAdapter(),
@@ -54,12 +60,12 @@
     const setFromClipboard = async () => {
         const clipboard = await pasteFromClipboard();
 
-        if(clipboard) {
+        if (clipboard) {
             inputValue = clipboard;
         }
     };
 
-    const connectWallet = async (event:CustomEvent) => {
+    const connectWallet = async (event: CustomEvent) => {
         await $walletStore.select(event.detail);
         await $walletStore.connect();
 
@@ -69,8 +75,10 @@
     };
 
     onMount(() => {
-        const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
-            
+        const recentStorage = window?.localStorage?.getItem(
+            "xray:recent-searches"
+        );
+
         recent = JSON.parse(recentStorage || "[]");
     });
 
@@ -81,7 +89,8 @@
         isSearching = true;
 
         const searchFailed = () => {
-            searchError = "Invalid search. Ensure you've provided a valid wallet address, token ID, or transaction signature.";
+            searchError =
+                "Invalid search. Ensure you've provided a valid wallet address, token ID, or transaction signature.";
             isSearching = false;
         };
 
@@ -90,35 +99,31 @@
 
             const { data } = await response.json();
 
-            if(!data?.valid) {
+            if (!data?.valid) {
                 return searchFailed();
             }
 
-            const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
+            const recentStorage = window?.localStorage?.getItem(
+                "xray:recent-searches"
+            );
 
             const recentJson = JSON.parse(recentStorage || "[]");
 
-            if(!recent.includes(inputValue)) {
-                window.localStorage?.setItem("xray:recent-searches", JSON.stringify([
-                    inputValue,
-                    ...recentJson.slice(0, 5),
-                ]));
+            if (!recent.includes(inputValue)) {
+                window.localStorage?.setItem(
+                    "xray:recent-searches",
+                    JSON.stringify([inputValue, ...recentJson.slice(0, 5)])
+                );
             }
 
             goto(data?.url || "/");
-        } catch(error) {
+        } catch (error) {
             searchFailed();
         }
     };
 
     onMount(focus);
 </script>
-
-<style>
-    .input {
-        background: rgba(0, 0, 0, 0.25);
-    }
-</style>
 
 {#if showConnectWallet}
     <WalletModal
@@ -131,76 +136,87 @@
 <WalletProvider
     autoConnect={false}
     {localStorageKey}
-    {wallets} />
-    
+    {wallets}
+/>
+
 <ConnectionProvider {network} />
 
-<div class="flex justify-center pt-40 md:pt-60 px-3 min-h-screen flex-wrap">
+<div class="flex min-h-screen flex-wrap justify-center px-3 pt-40 md:pt-60">
     <div class="w-full max-w-2xl">
         <div>
-            <h1 class="text-8xl text-white opacity-80 text-center font-bold">
+            <h1 class="text-center text-8xl font-bold text-white opacity-80">
                 XRAY
             </h1>
-            <p class="text-center text-current opacity-50">A Solana explorer built by the community, made for everyone.</p>
+            <p class="text-center text-current opacity-50">
+                A Solana explorer built by the community, made for everyone.
+            </p>
         </div>
         {#if searchError && !isSearching}
-            <div class="flex items-center mt-4 opacity-50">
+            <div class="mt-4 flex items-center opacity-50">
                 <Icon
                     id="info"
                     fill="warning"
-                    size="md" />
+                    size="md"
+                />
                 <p
-                    class="text-slate-100 ml-3"
+                    class="ml-3 text-slate-100"
                     in:fly={{
-                        duration : 500,
-                        y        : -10,
-                    }}>
+                        duration: 500,
+                        y: -10,
+                    }}
+                >
                     {searchError}
                 </p>
             </div>
         {/if}
         <form
-            class="my-5 flex justify-center relative"
-            on:submit={newSearch}>
+            class="relative my-5 flex justify-center"
+            on:submit={newSearch}
+        >
             <div class="absolute left-4 bottom-1/2 translate-y-1/2">
                 <Icon
                     id="search"
-                    size="md" />
+                    size="md"
+                />
             </div>
-            
+
             <div class="dropdown w-full">
                 <input
                     bind:this={inputEl}
-                    class="input input-bordered rounded-lg w-full text-lg h-16 px-14 focus:input-success"
+                    class="input input-bordered focus:input-success h-16 w-full rounded-lg px-14 text-lg"
                     placeholder="Search Solana"
                     tabindex="0"
                     type="text"
-                    bind:value={inputValue}>
+                    bind:value={inputValue}
+                />
 
                 {#if recent.length}
-                    <ul class="dropdown-content w-full menu p-2 shadow bg-base-100 mt-3 relative px-4 rounded-lg">
+                    <ul
+                        class="dropdown-content menu bg-base-100 relative mt-3 w-full rounded-lg p-2 px-4 shadow"
+                    >
                         <div class="flex items-center justify-between">
-                            <p class="text-md font-bold mt-2 mb-1">Recent</p>
+                            <p class="text-md mt-2 mb-1 font-bold">Recent</p>
                             <div>
                                 <button
                                     class="btn btn-outline btn-sm"
-                                    on:click|preventDefault={() => (inputValue = "")}>
-                                    <span class="text-sm">
-                                        Clear
-                                    </span>
+                                    on:click|preventDefault={() =>
+                                        (inputValue = "")}
+                                >
+                                    <span class="text-sm"> Clear </span>
                                 </button>
 
                                 <button
                                     class="btn btn-outline btn-sm ml-2"
-                                    on:click|preventDefault={setFromClipboard}>
-                                    <span class="text-sm">
-                                        Paste
-                                    </span>
+                                    on:click|preventDefault={setFromClipboard}
+                                >
+                                    <span class="text-sm"> Paste </span>
                                 </button>
 
                                 <button
                                     class="btn btn-outline btn-sm ml-2"
-                                    on:click|preventDefault={() => (showConnectWallet = true)}>
+                                    on:click|preventDefault={() =>
+                                        (showConnectWallet = true)}
+                                >
                                     <span class="text-sm">
                                         🎒 Connect Wallet
                                     </span>
@@ -208,11 +224,12 @@
                             </div>
                         </div>
                         {#each recent as address}
-                            <li class="truncate px-0 m1-ds2 w-full relative">
+                            <li class="m1-ds2 relative w-full truncate px-0">
                                 <a
-                                    class="px-1 py-2 w-full block text-ellipsis max-w-full"
+                                    class="block w-full max-w-full text-ellipsis px-1 py-2"
                                     data-sveltekit-preload-data="hover"
-                                    href="/{address}">
+                                    href="/{address}"
+                                >
                                     <p class="text-micro text-xs opacity-50">
                                         {nameFromString(address)}
                                     </p>
@@ -231,24 +248,28 @@
             </div>
 
             <button
-                class="absolute right-4 bottom-1/2 translate-y-1/2 btn btn-ghost px-0"
-                class:loading={isSearching}>
+                class="btn btn-ghost absolute right-4 bottom-1/2 translate-y-1/2 px-0"
+                class:loading={isSearching}
+            >
                 {#if !isSearching}
                     <Icon
                         id="arrowRight"
-                        size="md" />
+                        size="md"
+                    />
                 {/if}
             </button>
         </form>
         <div>
             <a
-                class="flex justify-center items-center opacity-50"
-                href="https://helius.xyz/">
-                <p class="text-xs mr-1 ">Powered by </p>
+                class="flex items-center justify-center opacity-50"
+                href="https://helius.xyz/"
+            >
+                <p class="mr-1 text-xs ">Powered by</p>
                 <img
                     class="h-5"
                     alt=""
-                    src={heliusLogo}>
+                    src={heliusLogo}
+                />
             </a>
         </div>
     </div>

@@ -5,7 +5,7 @@
 
 // export async function GET({ params }:RequestEvent) {
 //     const prisma = new PrismaClient();
-    
+
 //     const events = await prisma.event.findMany({
 //         where : {
 //             type : params.type,

@@ -15,40 +15,41 @@ type Token = {
 };
 
 export const tokenPrice = {
-    loader    : actions.getTokenPrice,
+    loader: actions.getTokenPrice,
 };
 
 export const solanaTps = {
-    loader    : actions.getSolanaTps,
+    loader: actions.getSolanaTps,
 };
 
 export const solanaTokenRegistry = {
-    fetchOnFirstSubscription : true,
-    formatter                : (data:any) => new Map(data.map((token:Token) => ([ token?.address, token ]))),
-    loader                   : actions.getSolanaTokenRegistry,
+    fetchOnFirstSubscription: true,
+    formatter: (data: any) =>
+        new Map(data.map((token: Token) => [token?.address, token])),
+    loader: actions.getSolanaTokenRegistry,
 };
 
 export const solanaAccountInfo = {
-    loader : actions.getSolanaAccountInfo,
+    loader: actions.getSolanaAccountInfo,
 };
 
 export const solanaTransactions = {
-    formatter : (data:any) => data.map((tx:EnrichedTransaction) => ({
-        parsed : parseTransaction(tx),
-        raw    : tx,
-    })),
-    loader    : actions.getSolanaTransactions,
+    formatter: (data: any) =>
+        data.map((tx: EnrichedTransaction) => ({
+            parsed: parseTransaction(tx),
+            raw: tx,
+        })),
+    loader: actions.getSolanaTransactions,
 };
 
 export const solanaTransaction = {
-    formatter : (data:any) => ({
-        parsed : parseTransaction(data),
-        raw    : data,
+    formatter: (data: any) => ({
+        parsed: parseTransaction(data),
+        raw: data,
     }),
-    loader    : actions.getSolanaTransaction,
+    loader: actions.getSolanaTransaction,
 };
 
 export const solanaToken = {
-    loader : actions.getSolanaToken,
+    loader: actions.getSolanaToken,
 };
-
