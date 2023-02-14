@@ -96,7 +96,7 @@
                     {:else}
                         {#if metadata.image}
                             <img
-                                class="rounded w-full"
+                                class="rounded w-full max-w-3"
                                 alt="token symbol"
                                 src={metadata.image} />
                         {:else}

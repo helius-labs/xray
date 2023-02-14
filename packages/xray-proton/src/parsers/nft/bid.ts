@@ -5,69 +5,63 @@ import type {
 } from "helius-sdk";
 import {
     ProtonTransaction,
-    ProtonTransactionAction
+    unknownProtonTransaction
 } from "../../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 
 export const parseNftBid = (transaction: EnrichedTransaction): ProtonTransaction => {
     let source = "SYSTEM_PROGRAM" as Source;
+    
+    const { type } = transaction;
 
-    // TODO: fix this
-    // @ts-ignore
-    if(transaction?.events.nft === null) {
-        return {
-            type        : "NFT_BID",
-            primaryUser : "",
-            fee         : 0,
-            signature   : "",
-            timestamp   : 0,
-            source,
-            actions     : [],
-        };
+    const nftEvent = transaction.events.nft;
+
+    const data = {
+        actions     : [],
+        fee         : 0,
+        primaryUser : "",
+        signature   : "",
+        source,
+        timestamp   : 0,
+        type,
+    };
+
+    if(!nftEvent) {
+        return data;
     }
 
-    // TODO: fix this
-    // @ts-ignore
-    const nftEvent = transaction?.events.nft;
-    const actions: ProtonTransactionAction[] = [];
-
-    // TODO: fix this
-    // @ts-ignore
-    const primaryUser = nftEvent.buyer;
-
     const {
-        type,
         signature,
         timestamp,
+        buyer,
+        tokensInvolved,
     } = nftEvent;
-    const fee = nftEvent.fee / LAMPORTS_PER_SOL;
+
+    const primaryUser = nftEvent.seller;
+
+    const [ firstToken ] = tokensInvolved;
+
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
 
     source = nftEvent.source;
 
-    const from = "";
-    const fromName = undefined;
-    const to = nftEvent.buyer;
-    const toName = getSolanaName(nftEvent.buyer);
-    const received = nftEvent.nfts[0].mint;
-    const amount = nftEvent.amount / LAMPORTS_PER_SOL;
-
-    actions.push({
-        from,
-        fromName,
-        to,
-        toName,
-        received,
-        amount,
-    });
-
     return {
-        type,
-        primaryUser,
+        actions : [
+            {
+                amount   : 0,
+                from     : "",
+                fromName : "",
+                sent     : firstToken.mint,
+                to       : buyer,
+                toName   : getSolanaName(buyer || ""),
+            },
+        ],
         fee,
+        primaryUser,
         signature,
-        timestamp,
         source,
-        actions,
+        timestamp,
+        type,
     };
 };

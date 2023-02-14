@@ -1,73 +1,63 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import type {
-    EnrichedTransaction,
-    Source
-} from "helius-sdk";
-import {
-    ProtonTransaction,
-    ProtonTransactionAction
-} from "../../types";
+
+import type { Source } from "helius-sdk";
+
+import { ProtonParser } from "../../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 
-export const parseNftCancelList = (transaction: EnrichedTransaction): ProtonTransaction => {
+export const parseNftCancelList:ProtonParser = (transaction) => {
     let source = "SYSTEM_PROGRAM" as Source;
-
-    // TODO: fix this
-    // @ts-ignore
-    if(transaction?.events.nft === null) {
-        return {
-            type        : "NFT_CANCEL_LISTING",
-            primaryUser : "",
-            fee         : 0,
-            signature   : "",
-            timestamp   : 0,
-            source,
-            actions     : [],
-        };
-    }
     
-    // TODO: fix this
-    // @ts-ignore
-    const nftEvent = transaction?.events.nft;
-    const actions: ProtonTransactionAction[] = [];
+    const { type } = transaction;
 
-    // TODO: fix this
-    // @ts-ignore
-    const primaryUser = nftEvent.seller;
+    const nftEvent = transaction.events.nft;
+
+    const data = {
+        actions     : [],
+        fee         : 0,
+        primaryUser : "",
+        signature   : "",
+        source,
+        timestamp   : 0,
+        type,
+    };
+
+    if(!nftEvent) {
+        return data;
+    }
 
     const {
-        type,
         signature,
         timestamp,
+        seller,
+        tokensInvolved,
     } = nftEvent;
-    const fee = nftEvent.fee / LAMPORTS_PER_SOL;
+
+    const primaryUser = nftEvent.seller;
+
+    const [ firstToken ] = tokensInvolved;
+
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
 
     source = nftEvent.source;
 
-    const from = nftEvent.seller;
-    const fromName = getSolanaName(nftEvent.seller);
-    const to = "";
-    const toName = undefined;
-    const sent = nftEvent.nfts[0].mint;
-    const amount = nftEvent.amount / LAMPORTS_PER_SOL;
-
-    actions.push({
-        from,
-        fromName,
-        to,
-        toName,
-        sent,
-        amount,
-    });
-
     return {
-        type,
-        primaryUser,
+        actions : [
+            {
+                amount   : 0,
+                from     : seller,
+                fromName : getSolanaName(seller || ""),
+                sent     : firstToken.mint,
+                to       : "",
+                toName   : "",
+            },
+        ],
         fee,
+        primaryUser,
         signature,
-        timestamp,
         source,
-        actions,
+        timestamp,
+        type,
     };
 };

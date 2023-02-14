@@ -1,11 +1,9 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-
 import type {
     EnrichedTransaction,
     Source,
     TokenTransfer
 } from "helius-sdk";
-
 import {
     ProtonTransaction,
     ProtonTransactionAction
@@ -39,7 +37,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
             type,
         };
     }
-
+    
     const primaryUser = tokenTransfers[0]?.fromUserAccount || "";
     const fee = transaction.fee / LAMPORTS_PER_SOL;
 
@@ -66,8 +64,7 @@ export const parseTransfer = (transaction: EnrichedTransaction): ProtonTransacti
         }
 
         const sent = tx.mint;
-        // TODO change rawTokenAmount -> tokenAmount
-        const amount = tx?.rawTokenAmount || tx?.tokenAmount;
+        const amount = tx?.tokenAmount;
     
         actions.push({
             amount,
