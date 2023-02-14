@@ -72,7 +72,7 @@
     } else if(action?.actionType === "TRANSFER_RECEIVED") {
         label = `From: ${displayName}`;
     } else if(action?.actionType === "SWAP_RECEIVED") {
-        label = `For: ${displayName} / ${shortenString(action?.from, 6)}`;
+        label = `For: ${displayName} / ${shortenString(action.received, 6)}`;
     } else if(action?.actionType === "SWAP_SENT") {
         label = `Swapped: ${displayName}`;
     } else {

@@ -37,6 +37,7 @@ module.exports = {
         "@typescript-eslint/eslint-plugin",
         "import-newlines",
         "sort-keys-fix",
+        "html",
     ],
 
     rules : {
@@ -460,8 +461,8 @@ module.exports = {
         "svelte/first-attribute-linebreak" : [
             "error",
             {
-                multiline  : "below", // or "beside"
-                singleline : "beside", // "below"
+                multiline  : "below",
+                singleline : "beside",
             },
         ],
         
@@ -472,7 +473,7 @@ module.exports = {
                 endTag         : "never",
                 // or "always" or "ignore"
                 selfClosingTag : "always",
-                startTag       : "never", // or "never" or "ignore"
+                startTag       : "never",
             },
         ],
         

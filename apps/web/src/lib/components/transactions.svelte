@@ -1,14 +1,14 @@
 <script lang="ts">
     import type {
-      UITransaction,
-      UITransactionActionGroup
+        UITransaction,
+        UITransactionActionGroup
     } from "$lib/types";
 
     import { page } from "$app/stores";
 
     import {
-      groupTransactionActions,
-      mergeTransactionActions
+        groupTransactionActions,
+        mergeTransactionActions
     } from "$lib/util/transactions";
 
     import Icon from "$lib/icon";
@@ -16,7 +16,8 @@
     import TransactionAction from "$lib/components/transaction-action.svelte";
 
     import {
-      fade, fly
+        fade,
+        fly
     } from "svelte/transition";
 
     import { cubicOut } from "svelte/easing";

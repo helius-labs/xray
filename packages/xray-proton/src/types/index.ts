@@ -1,5 +1,7 @@
 import {
-    EnrichedTransaction, Source, TransactionType
+    EnrichedTransaction,
+    Source,
+    TransactionType
 } from "helius-sdk";
 
 import * as parser from "../parsers";
