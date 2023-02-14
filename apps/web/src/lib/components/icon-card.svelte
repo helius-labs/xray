@@ -28,7 +28,3 @@
         </div>
     {/if}
 </div>
-
-<script>
-    $: console.log("slots", $$slots.details);
-</script>

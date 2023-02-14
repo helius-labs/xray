@@ -1,9 +1,7 @@
 /* eslint-disable max-statements */
 import type { RequestEvent } from "./$types";
 
-import type {
-    ParsedAccountData
-} from "@solana/web3.js";
+import type { ParsedAccountData } from "@solana/web3.js";
 
 import { redirect } from "@sveltejs/kit";
 

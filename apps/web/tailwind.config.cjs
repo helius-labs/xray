@@ -13,7 +13,7 @@ const config = {
                              
                     info : "#2563eb",
                              
-                    neutral : "#0e0e0e",
+                    neutral : "#616161",
                              
                     primary           : "#f5f5f4",
                              

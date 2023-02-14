@@ -6,13 +6,10 @@ import {
     type StateContext,
     type QueryOptions,
     type Query,
-
     defaultQuery
 } from "./types";
 
-import {
-    contextKey,
-} from "./config";
+import { contextKey } from "./config";
 
 import {
     writable,
@@ -68,26 +65,17 @@ export const state = (idInput:string | string[], args?:any):QueryStore => {
         return queries.get(id) as QueryStore;
     }
 
-    // eslint-disable-next-line no-console
-    console.log(id, `CREATING`);
-
     // TODO: this is to make ts happy but existense of config.queries[id] is already checked above
     // @ts-ignore
     const queryOptions = config.queries ? config.queries[name] : {} as QueryOptions;
 
     const loadQuery = async (store:any) => {
-        // eslint-disable-next-line no-console
-        console.log(id, `LOADING`, {
-            args,
-            value : get(queries.get(id)),
-        });
-
         // Is loading
         store.update((existing:Query) => ({
             ...existing,
+            hasFetched : false,
             isLoading  : true,
             isSuccess  : false,
-            hasFetched : false,
         }));
 
         try {
@@ -97,21 +85,14 @@ export const state = (idInput:string | string[], args?:any):QueryStore => {
                 data = await queryOptions.formatter(data);
             }
 
-            // eslint-disable-next-line no-console
-            console.log(id, `SUCCESS`, {
-                args,
-                value    : get(queries.get(id)),
-                response : data,
-            });
-
             // Is success
             store.update((existing:Query) => ({
                 ...existing,
+                data,
+                hasFetched : true,
                 isLoading  : false,
                 isSuccess  : true,
-                hasFetched : true,
                 lastFetch  : Date.now(),
-                data,
             }));
         } catch(error) {
             // eslint-disable-next-line no-console
@@ -120,10 +101,10 @@ export const state = (idInput:string | string[], args?:any):QueryStore => {
             // Is error
             store.update((existing:Query) => ({
                 ...existing,
-                isLoading  : false,
-                isError    : true,
-                hasFetched : true,
                 error      : String(error),
+                hasFetched : true,
+                isError    : true,
+                isLoading  : false,
             }));
         }
     };
@@ -133,8 +114,8 @@ export const state = (idInput:string | string[], args?:any):QueryStore => {
 
         set({
             ...get(newQueryStore),
-            load : () => loadQuery(newQueryStore),
             id,
+            load : () => loadQuery(newQueryStore),
         });
 
         queries.set(id, newQueryStore);

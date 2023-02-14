@@ -3,25 +3,76 @@
 
     import { fly } from "svelte/transition";
 
+    import { clusterApiUrl } from "@solana/web3.js";
+
     import heliusLogo from "$lib/assets/helius/helius.png";
+
+    import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
 
     import { nameFromString } from "@helius-labs/helius-namor";
 
     import { goto } from "$app/navigation";
 
-    let recent:string[] = [];
+    import { pasteFromClipboard } from "$lib/util/clipboard";
 
-    onMount(() => {
-        const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
-            
-        recent = JSON.parse(recentStorage || "[]");
-    });
+    import Icon from "$lib/icon";
+
+    import {
+        workSpace,
+        WalletProvider,
+        ConnectionProvider,
+        WalletModal,
+    } from "@svelte-on-solana/wallet-adapter-ui";
+
+    import {
+        PhantomWalletAdapter,
+        BackpackWalletAdapter,
+        GlowWalletAdapter,
+        SolflareWalletAdapter
+    } from "@solana/wallet-adapter-wallets";
+
+    let showConnectWallet = false;
 
     let inputEl:HTMLInputElement;
     let inputValue:string = "";
 
     let searchError = "";
     let isSearching = false;
+
+    let recent:string[] = [];
+
+    const wallets = [
+        new PhantomWalletAdapter(),
+        new BackpackWalletAdapter(),
+        new SolflareWalletAdapter(),
+        new GlowWalletAdapter(),
+    ];
+
+    const localStorageKey = "walletAdapter";
+    const network = clusterApiUrl("mainnet-beta");
+
+    const setFromClipboard = async () => {
+        const clipboard = await pasteFromClipboard();
+
+        if(clipboard) {
+            inputValue = clipboard;
+        }
+    };
+
+    const connectWallet = async (event:CustomEvent) => {
+        await $walletStore.select(event.detail);
+        await $walletStore.connect();
+
+        inputValue = $walletStore.publicKey?.toBase58() || "";
+
+        showConnectWallet = false;
+    };
+
+    onMount(() => {
+        const recentStorage = window?.localStorage?.getItem("xray:recent-searches");
+            
+        recent = JSON.parse(recentStorage || "[]");
+    });
 
     const focus = () => inputEl?.focus();
 
@@ -69,6 +120,21 @@
     }
 </style>
 
+{#if showConnectWallet}
+    <WalletModal
+        maxNumberOfWallets="6"
+        on:connect={connectWallet}
+        on:close={() => (showConnectWallet = false)}
+    />
+{/if}
+
+<WalletProvider
+    autoConnect={false}
+    {localStorageKey}
+    {wallets} />
+    
+<ConnectionProvider {network} />
+
 <div class="flex justify-center pt-40 md:pt-60 px-3 min-h-screen flex-wrap">
     <div class="w-full max-w-2xl">
         <div>
@@ -79,18 +145,12 @@
         </div>
         {#if searchError && !isSearching}
             <div class="flex items-center mt-4 opacity-50">
-                <svg
-                    class="fill-white h-10 mr-3"
-                    clip-rule="evenodd"
-                    fill-rule="evenodd"
-                    stroke-linejoin="round"
-                    stroke-miterlimit="2"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"><path
-                    d="m12.002 2.005c5.518 0 9.998 4.48 9.998 9.997 0 5.518-4.48 9.998-9.998 9.998-5.517 0-9.997-4.48-9.997-9.998 0-5.517 4.48-9.997 9.997-9.997zm0 1.5c-4.69 0-8.497 3.807-8.497 8.497s3.807 8.498 8.497 8.498 8.498-3.808 8.498-8.498-3.808-8.497-8.498-8.497zm0 6.5c-.414 0-.75.336-.75.75v5.5c0 .414.336.75.75.75s.75-.336.75-.75v-5.5c0-.414-.336-.75-.75-.75zm-.002-3c.552 0 1 .448 1 1s-.448 1-1 1-1-.448-1-1 .448-1 1-1z"
-                    fill-rule="nonzero" /></svg>
+                <Icon
+                    id="info"
+                    fill="warning"
+                    size="md" />
                 <p
-                    class="text-slate-100"
+                    class="text-slate-100 ml-3"
                     in:fly={{
                         duration : 500,
                         y        : -10,
@@ -101,17 +161,12 @@
         {/if}
         <form
             class="my-5 flex justify-center relative"
-            on:submit|preventDefault={newSearch}>
-            <svg
-                class="fill-white opacity-50 h-7 absolute left-4 bottom-1/2 translate-y-1/2"
-                clip-rule="evenodd"
-                fill-rule="evenodd"
-                stroke-linejoin="round"
-                stroke-miterlimit="2"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"><path
-                d="m15.97 17.031c-1.479 1.238-3.384 1.985-5.461 1.985-4.697 0-8.509-3.812-8.509-8.508s3.812-8.508 8.509-8.508c4.695 0 8.508 3.812 8.508 8.508 0 2.078-.747 3.984-1.985 5.461l4.749 4.75c.146.146.219.338.219.531 0 .587-.537.75-.75.75-.192 0-.384-.073-.531-.22zm-5.461-13.53c-3.868 0-7.007 3.14-7.007 7.007s3.139 7.007 7.007 7.007c3.866 0 7.007-3.14 7.007-7.007s-3.141-7.007-7.007-7.007z"
-                fill-rule="nonzero" /></svg>
+            on:submit={newSearch}>
+            <div class="absolute left-4 bottom-1/2 translate-y-1/2">
+                <Icon
+                    id="search"
+                    size="md" />
+            </div>
             
             <div class="dropdown w-full">
                 <input
@@ -124,7 +179,34 @@
 
                 {#if recent.length}
                     <ul class="dropdown-content w-full menu p-2 shadow bg-base-100 mt-3 relative px-4 rounded-lg">
-                        <p class="text-xs font-bold mt-2 mb-1">Recent</p>
+                        <div class="flex items-center justify-between">
+                            <p class="text-md font-bold mt-2 mb-1">Recent</p>
+                            <div>
+                                <button
+                                    class="btn btn-outline btn-sm"
+                                    on:click|preventDefault={() => (inputValue = "")}>
+                                    <span class="text-sm">
+                                        Clear
+                                    </span>
+                                </button>
+
+                                <button
+                                    class="btn btn-outline btn-sm ml-2"
+                                    on:click|preventDefault={setFromClipboard}>
+                                    <span class="text-sm">
+                                        Paste
+                                    </span>
+                                </button>
+
+                                <button
+                                    class="btn btn-outline btn-sm ml-2"
+                                    on:click|preventDefault={() => (showConnectWallet = true)}>
+                                    <span class="text-sm">
+                                        🎒 Connect Wallet
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
                         {#each recent as address}
                             <li class="truncate px-0 m1-ds2 w-full relative">
                                 <a
@@ -152,16 +234,9 @@
                 class="absolute right-4 bottom-1/2 translate-y-1/2 btn btn-ghost px-0"
                 class:loading={isSearching}>
                 {#if !isSearching}
-                    <svg
-                        class="fill-white opacity-50 h-8"
-                        clip-rule="evenodd"
-                        fill-rule="evenodd"
-                        stroke-linejoin="round"
-                        stroke-miterlimit="2"
-                        viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg"><path
-                        d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z"
-                        fill-rule="nonzero" /></svg>
+                    <Icon
+                        id="arrowRight"
+                        size="md" />
                 {/if}
             </button>
         </form>
