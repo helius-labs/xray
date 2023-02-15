@@ -15,6 +15,8 @@ export interface UITokenMetadata {
     address: string;
     image: string;
     name: string;
+    description?: string;
+    attributes?: Array<{ trait_type: string; value: string }>;
 }
 
 export interface SearchResult {
