@@ -1,20 +1,25 @@
-<div class="card grid grid-cols-12 gap-3"
->
-    <div class="col-span-2 md:col-span-1 center relative">
+<div class="card grid grid-cols-12 gap-3">
+    <div class="center relative col-span-2 md:col-span-1">
         <slot name="icon">
-            <div class="w-10 h-10 bg-secondary rounded-full animate-pulse"></div>
+            <div class="h-10 w-10 animate-pulse rounded-full bg-secondary" />
         </slot>
     </div>
 
     <div class="col-span-10 md:col-span-11">
         <slot name="title">
-            <div class="flex items-center justify-between w-full">
+            <div class="flex w-full items-center justify-between">
                 <div class="w-3/4">
-                    <div class="h-3 w-1/4 bg-secondary rounded-full my-2 animate-pulse"></div>
-                    <div class="h-2 w-2/4 bg-secondary rounded-full animate-pulse"></div>
+                    <div
+                        class="my-2 h-3 w-1/4 animate-pulse rounded-full bg-secondary"
+                    />
+                    <div
+                        class="h-2 w-2/4 animate-pulse rounded-full bg-secondary"
+                    />
                 </div>
-                <div class="w-1/4 flex justify-end">
-                    <div class="h-3 w-10 bg-secondary rounded-full my-2 animate-pulse"></div>
+                <div class="flex w-1/4 justify-end">
+                    <div
+                        class="my-2 h-3 w-10 animate-pulse rounded-full bg-secondary"
+                    />
                 </div>
             </div>
         </slot>
@@ -22,13 +27,7 @@
 
     {#if $$slots.details !== undefined}
         <div class="col-span-12">
-            <slot name="details">
-
-            </slot>
+            <slot name="details" />
         </div>
     {/if}
 </div>
-
-<script>
-    $: console.log("slots", $$slots.details);
-</script>

@@ -10,35 +10,36 @@
 
     const address = $page.params.search;
 
-    const transactions = state([ "solanaTransactions", address ], address);
-    const accountInfo = state([ "solanaAccountInfo", address ], address);
-
+    const transactions = state(["solanaTransactions", address], address);
+    const accountInfo = state(["solanaAccountInfo", address], address);
 </script>
 
 <section>
-    <div class="flex justify-between items-center mb-5">
+    <div class="mb-5 flex items-center justify-between">
         <div>
-            <h1 class="text-3xl font-bold">
-                Wallet
-            </h1>
+            <h1 class="text-3xl font-bold">Wallet</h1>
             <Namor
                 text={$page.params.search}
                 let:result
-                let:shortenedOriginal>
+                let:shortenedOriginal
+            >
                 <h3
-                    class="text-sm tooltip tooltip-right"
-                    data-tip={shortenedOriginal}>
+                    class="tooltip tooltip-right text-sm"
+                    data-tip={shortenedOriginal}
+                >
                     <span class="opacity-50">
                         {result}
                     </span>
                 </h3>
             </Namor>
         </div>
-    
-        {#if !$accountInfo?.hasFetched || !$transactions.hasFetched }
-            <button class="btn btn-ghost pr-0 loading"></button>
-        {:else}
-            <h1>{$accountInfo?.balance}</h1>
+
+        {#if !$accountInfo?.hasFetched || !$transactions.hasFetched}
+            <button class="loading btn-ghost btn pr-0" />
+        {/if}
+
+        {#if !$accountInfo?.hasFetched}
+            <h1>{$accountInfo?.data?.balance}</h1>
         {/if}
     </div>
 
@@ -50,23 +51,6 @@
         {/each}
     {:else}
         <Transactions
-            gap={8}
-            transactions={$transactions.data}
-            user={$page.params.search}
-        />
-    {/if}
-</section>
-
-<section>
-    {#if !$transactions.hasFetched}
-        {#each Array(3) as _}
-            <div class="mb-3">
-                <IconCard />
-            </div>
-        {/each}
-    {:else}
-        <Transactions
-            gap={8}
             transactions={$transactions.data}
             user={$page.params.search}
         />

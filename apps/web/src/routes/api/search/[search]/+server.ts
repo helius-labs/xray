@@ -1,8 +1,6 @@
 import { json, type RequestEvent } from "@sveltejs/kit";
 
-import type {
-    ParsedAccountData
-} from "@solana/web3.js";
+import type { ParsedAccountData } from "@solana/web3.js";
 
 import connect from "$lib/util/solana/connect";
 import validPublicKey from "$lib/util/solana/validate-pubkey";
@@ -17,37 +15,38 @@ export async function GET({ params }: RequestEvent) {
     // If it's long, assume it's a tx.
     // They will be presented with an error on the tx page if it's not.
     const probablyTransactionSignature = search.length > 50;
-    
-    if(validPublicKey(search)) {
+
+    if (validPublicKey(search)) {
         const pubkey = new PublicKey(search);
         const account = await connection.getParsedAccountInfo(pubkey);
-        
+
         // TODO: no casting
-        const {
-            program,
-        } = account?.value?.data as ParsedAccountData;
-         
-        const url = program === "spl-token" ? `/${params.search}/token` : `/${params.search}/wallet`;
-         
+        const { program } = account?.value?.data as ParsedAccountData;
+
+        const url =
+            program === "spl-token"
+                ? `/${params.search}/token`
+                : `/${params.search}/wallet`;
+
         return json({
-            data : {
-                valid : true,
+            data: {
+                valid: true,
                 url,
             },
         });
-    } else if(probablyTransactionSignature) {
+    } else if (probablyTransactionSignature) {
         return json({
-            data : {
-                valid : true,
-                url   : `/${params?.search}/tx`,
+            data: {
+                valid: true,
+                url: `/${params?.search}/tx`,
             },
         });
     }
- 
+
     return json({
-        data : {
-            valid : false,
-            url   : `/`,
+        data: {
+            valid: false,
+            url: `/`,
         },
     });
 }

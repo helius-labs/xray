@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import { page } from "$app/stores";
 
     import { state } from "svelte-snacks";
@@ -6,13 +7,12 @@
     import TokenProvider from "$lib/components/token-provider.svelte";
 
     const address = $page.params.search;
- 
-    const token = state([ "solanaToken", address ], address);
 
+    const token = state(["solanaToken", address], address);
 </script>
 
 {#if $token.isLoading}
-    <button class="btn btn-ghost loading"></button>
+    <button class="loading btn-ghost btn" />
 {:else}
     <TokenProvider
         token={$token.data}
@@ -60,4 +60,3 @@
     </TokenProvider>
 
 {/if}
-

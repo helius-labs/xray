@@ -1,15 +1,13 @@
 export * from "./swaps";
 export * from "./transfers";
 
-import {
-    swapUsdcSol
-} from "./swaps";
+import { swapUsdcSol } from "./swaps";
 
 import {
     transferMulti,
     transferNFT,
     transferSol,
-    transferToken
+    transferToken,
 } from "./transfers";
 
 export const transactionsVariety = [
