@@ -1,5 +1,5 @@
 {
     "buildCommand": "cd ../../ && npx turbo build",
-    "framework": "sveltekit",
+    "framework": "/vercel/output",
     "installCommand": "npm install --prefix=../../"
 }
