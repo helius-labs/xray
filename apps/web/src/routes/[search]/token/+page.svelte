@@ -16,10 +16,11 @@
 {:else}
     <TokenProvider
         token={$token.data}
-        let:metadata>
-        <h1 class="text-xl text-center">{metadata.name}</h1>
-        <div class="avatar flex justify-center items-center mt-2">
-            <div class="rounded-md w-1/2">
+        let:metadata
+    >
+        <h1 class="text-center text-xl">{metadata.name}</h1>
+        <div class="avatar mt-2 flex items-center justify-center">
+            <div class="w-1/2 rounded-md">
                 <img
                     class="rounded-md"
                     alt="token symbol"
@@ -29,9 +30,7 @@
         </div>
         {#if metadata.description}
             <div class="mt-2">
-                <h3 class="text-lg font-medium text-gray-900">
-                    Description
-                </h3>
+                <h3 class="text-lg font-medium text-gray-900">Description</h3>
                 <p class="text-sm text-gray-500">
                     {metadata.description}
                 </p>
@@ -39,24 +38,20 @@
         {/if}
         {#if metadata.attributes.length > 0}
             <div class="mt-10">
-                <h3 class="text-lg font-medium text-gray-900">
-                    Properties
-                </h3>
+                <h3 class="text-lg font-medium text-gray-900">Properties</h3>
                 <div class="flex flex-wrap">
                     {#each metadata.attributes as attribute}
-                        <div class="card p-0 mr-3 mt-3">
+                        <div class="card mr-3 mt-3 p-0">
                             <h4 class="text-sm font-medium text-gray-900">
                                 {attribute.traitType.toUpperCase()}
                             </h4>
                             <p class="text-sm text-gray-500">
                                 {attribute.value}
                             </p>
-            
                         </div>
                     {/each}
                 </div>
             </div>
         {/if}
     </TokenProvider>
-
 {/if}
