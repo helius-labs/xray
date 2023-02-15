@@ -111,7 +111,7 @@
                 <a
                     class="mb-2 block hover:opacity-75 cursor-pointer"
                     data-sveltekit-reload
-                    href="/{action.signature}/tx?wallet={$page.params.search}"
+                    href="/{action.sent}/token?tx={action.signature}"
                     in:fly={{
                         delay  : actionIndex * 100,
                         easing : cubicOut,

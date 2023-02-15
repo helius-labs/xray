@@ -1,9 +1,9 @@
-<script>
-    import { onMount } from "svelte";
-    
+<script lang="ts">
     import { page } from "$app/stores";
 
     import { state } from "svelte-snacks";
+
+    import TokenProvider from "$lib/components/token-provider.svelte";
 
     const address = $page.params.search;
  
@@ -11,13 +11,53 @@
 
 </script>
 
-<h1>Token</h1>
-
 {#if $token.isLoading}
     <button class="btn btn-ghost loading"></button>
 {:else}
-    <div class="card">
-        <pre>{JSON.stringify($token?.data)}</pre>
-    </div>
+    <TokenProvider
+        token={$token.data}
+        let:metadata>
+        <h1 class="text-xl text-center">{metadata.name}</h1>
+        <div class="avatar flex justify-center items-center mt-2">
+            <div class="rounded-md w-1/2">
+                <img
+                    class="rounded-md"
+                    alt="token symbol"
+                    src={metadata.image}
+                />
+            </div>
+        </div>
+        {#if metadata.description}
+            <div class="mt-2">
+                <h3 class="text-lg font-medium text-gray-900">
+                    Description
+                </h3>
+                <p class="text-sm text-gray-500">
+                    {metadata.description}
+                </p>
+            </div>
+        {/if}
+        {#if metadata.attributes.length > 0}
+            <div class="mt-10">
+                <h3 class="text-lg font-medium text-gray-900">
+                    Properties
+                </h3>
+                <div class="flex flex-wrap">
+                    {#each metadata.attributes as attribute}
+                        <div class="card p-0 mr-3 mt-3">
+                            <h4 class="text-sm font-medium text-gray-900">
+                                {attribute.traitType.toUpperCase()}
+                            </h4>
+                            <p class="text-sm text-gray-500">
+                                {attribute.value}
+                            </p>
+            
+                        </div>
+                    {/each}
+                </div>
+            </div>
+        {/if}
+    </TokenProvider>
+
 {/if}
 
