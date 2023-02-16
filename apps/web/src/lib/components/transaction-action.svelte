@@ -39,10 +39,6 @@
         name: "",
     };
 
-    $: if ($solanaToken.data?.offChainMetadata?.metadata?.symbol === "MUC") {
-        console.log(JSON.stringify($solanaToken.data, null, 2));
-    }
-
     $: tokenDetails = $tokenRegistry.data.get
         ? $tokenRegistry.data.get(address)
         : {};

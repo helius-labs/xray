@@ -1,5 +1,6 @@
 <script>
     import Icon from "$lib/icon";
+    import Search from "$lib/components/search.svelte";
 </script>
 
 <div
@@ -31,5 +32,11 @@
                 {/each}
             </tbody>
         </table>
+
+        <div class="w-full">
+            <div class="hidden justify-center lg:flex">
+                <Search />
+            </div>
+        </div>
     </div>
 </div>
