@@ -1,16 +1,16 @@
 {
-  "$schema": "https://json.schemastore.org/tsconfig",
-  "compilerOptions": {
-    "target": "es2020",
-    "module": "ES2020",
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "allowSyntheticDefaultImports": true,
-    "allowJs": true
-  },
-  "include": ["src"],
-  "exclude": ["node_modules"]
+    "$schema": "https://json.schemastore.org/tsconfig",
+    "compilerOptions": {
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "declaration": true,
+        "module": "ES2020",
+        "moduleResolution": "node",
+        "outDir": "./dist",
+        "resolveJsonModule": true,
+        "strict": true,
+        "target": "es2020"
+    },
+    "exclude": ["node_modules"],
+    "include": ["src"]
 }

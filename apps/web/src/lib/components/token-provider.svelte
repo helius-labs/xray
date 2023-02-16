@@ -2,35 +2,42 @@
     import type { UITokenMetadata } from "$lib/types";
     import { state, type QueryStore } from "svelte-snacks";
 
-    export let token;
-
-    const address = token?.mint || "unknown";
-
-    const solanaToken: QueryStore = state(["solanaToken", address], address);
-
+    export let search:string;
+    
+    const solanaToken: QueryStore = state(["solanaToken", search], search);
+    
     const tokenRegistry = state("solanaTokenRegistry");
 
     const metadata: UITokenMetadata = {
-        address,
+        address : "",
         attributes: [],
+        collectionKey: "",
+        creators: [],
         description: "",
         image: "",
         name: "",
     };
 
     $: tokenDetails = $tokenRegistry.data.get
-        ? $tokenRegistry.data.get(address)
+        ? $tokenRegistry.data.get(search)
         : {};
 
     $: if (tokenDetails) {
         metadata.name = tokenDetails?.symbol;
         metadata.image = tokenDetails?.logoURI;
     } else {
-        metadata.name = $solanaToken.data?.offChainData?.name;
-        metadata.image = $solanaToken.data?.offChainData?.image;
-        metadata.description = $solanaToken.data?.offChainData?.description;
-        metadata.attributes = $solanaToken.data?.offChainData?.attributes;
+        metadata.address = $solanaToken.data?.account;
+        metadata.name = $solanaToken.data?.offChainMetadata?.metadata?.name;
+        metadata.image = $solanaToken.data?.offChainMetadata?.metadata?.image;
+        metadata.description = $solanaToken.data?.offChainMetadata?.metadata?.description;
+        metadata.attributes = $solanaToken.data?.offChainMetadata?.metadata?.attributes;
+        metadata.creators = $solanaToken.data?.onChainMetadata?.metadata?.data?.creators;
+        metadata.collectionKey = $solanaToken.data?.onChainMetadata?.metadata?.collection?.key;
     }
+
+    $: console.log("This is token", $solanaToken);
+    $: console.log("This is attributes", $solanaToken.data);
+    $: console.log("This is it's METADATA", metadata);
 </script>
 
-<slot {metadata} />
+<slot {metadata} token={$solanaToken} />
