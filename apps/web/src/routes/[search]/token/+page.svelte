@@ -42,6 +42,7 @@
               </div>
             </div>
         </div>
+
         {#if metadata.description}
             <div class="mt-3 md:ml-5 md:mt-0">
                 <h3 class="text-lg font-medium text-gray-500">Name</h3>

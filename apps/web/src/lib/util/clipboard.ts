@@ -15,12 +15,4 @@ export const pasteFromClipboard = async () => {
 
 export const copyToClipboard = async (text: string, copied = false) => {
     await navigator.clipboard.writeText(text);
-
-    if (copied) {
-        copied = true;
-
-        setTimeout(() => {
-            copied = false;
-        }, 2000);
-    }
 };

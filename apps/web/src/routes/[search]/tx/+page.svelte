@@ -23,14 +23,12 @@
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
-    import Namor from "$lib/components/namor.svelte";
+    import Namor from "src/lib/components/providers/namor-provider.svelte";
 
     import {
         groupTransactionActions,
         mergeTransactionActions,
     } from "$lib/util/transactions";
-
-    import { nameFromString } from "@helius-labs/helius-namor";
 
     import { fade } from "svelte/transition";
 

@@ -18,8 +18,6 @@
 
     export let transactions: UITransaction[];
     export let user: string = "";
-    // dont know what this is for but commented it out cause it fixed an error
-    // export let gap:number = 3;
 
     let groups: UITransactionActionGroup[] = [];
 
