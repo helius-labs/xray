@@ -5,7 +5,7 @@ import { TokenListProvider } from "@solana/spl-token-registry";
 import type { EnrichedTransaction } from "helius-sdk";
 
 export const getSolanaAccountInfo = async (address: string): Promise<any> => {
-    const response = await fetch(`/api/solana/${address}/account-info`);
+    const response = await fetch(`/$/api/solana/${address}/account-info`);
 
     const json = await response.json();
 
@@ -27,7 +27,7 @@ export const getTokenPrice = async (
 };
 
 export const getSolanaTps = async (): Promise<any> => {
-    const response = await fetch(`/api/solana/tps`);
+    const response = await fetch(`/$/api/solana/tps`);
 
     const { data } = await response.json();
 
@@ -43,7 +43,7 @@ export const getSolanaTokenRegistry = async (): Promise<TokenInfo[]> => {
 };
 
 export const getSolanaToken = async (address: string): Promise<any> => {
-    const response = await fetch(`/api/solana/${address}/token`);
+    const response = await fetch(`/$/api/solana/${address}/token`);
 
     const { data } = await response.json();
 
@@ -53,7 +53,7 @@ export const getSolanaToken = async (address: string): Promise<any> => {
 export const getSolanaTransaction = async (
     signature: string
 ): Promise<EnrichedTransaction> => {
-    const response = await fetch(`/api/solana/${signature}/transaction`);
+    const response = await fetch(`/$/api/solana/${signature}/transaction`);
 
     const { data } = await response.json();
 
@@ -63,7 +63,7 @@ export const getSolanaTransaction = async (
 export const getSolanaTransactions = async (
     address: string
 ): Promise<EnrichedTransaction[]> => {
-    const response = await fetch(`/api/solana/${address}/transactions`);
+    const response = await fetch(`/$/api/solana/${address}/transactions`);
 
     const { data } = await response.json();
 

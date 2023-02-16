@@ -3,7 +3,7 @@
 
     import type { UITokenMetadata, UITransactionAction } from "$lib/types";
 
-    import { fly } from "svelte/transition";
+    import { ProtonSupportedType } from "@helius-labs/xray-proton";
 
     import Icon from "$lib/icon";
     import IconCard from "$lib/components/icon-card.svelte";
@@ -29,13 +29,6 @@
     let intersecting = false;
     let element: HTMLElement;
     let solanaToken: QueryStore;
-    const isNFT = false;
-
-    const obk = {
-        address,
-        image: "",
-        name: "",
-    };
 
     if (address) {
         solanaToken = state(["solanaToken", address], address);
@@ -76,6 +69,8 @@
 
     $: title = metadata?.name || txName;
 
+    $: supported = Object.keys(ProtonSupportedType).includes(action?.type);
+
     $: if (action?.actionType === "TRANSFER_SENT") {
         label = `To: ${displayName}`;
     } else if (action?.actionType === "TRANSFER_RECEIVED") {
@@ -104,7 +99,7 @@
                 <div slot="icon">
                     {#if isLoading}
                         <button class="loading btn-ghost" />
-                    {:else if metadata.image}
+                    {:else if supported}
                         <img
                             class="max-w-3 w-full rounded"
                             alt="token symbol"

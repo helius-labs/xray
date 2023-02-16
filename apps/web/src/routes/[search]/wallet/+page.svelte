@@ -1,12 +1,11 @@
 <script>
-    // import AccountsInfo from "./_components/accounts-info.svelte";
-    import Transactions from "$lib/components/transactions.svelte";
-    import IconCard from "$lib/components/icon-card.svelte";
-
     import { state } from "svelte-snacks";
 
     import { page } from "$app/stores";
-    import Namor from "src/lib/components/namor.svelte";
+
+    import Namor from "$lib/components/providers/namor-provider.svelte";
+    import Transactions from "$lib/components/transactions.svelte";
+    import IconCard from "$lib/components/icon-card.svelte";
 
     const address = $page.params.search;
 
