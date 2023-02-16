@@ -11,12 +11,17 @@ export interface UITransaction {
     raw: EnrichedTransaction;
 }
 
+export interface UITokenMetadataAttribute {
+    traitType: string;
+    value: string;
+}
+
 export interface UITokenMetadata {
     address: string;
     image: string;
     name: string;
     description?: string;
-    attributes?: Array<{ trait_type: string; value: string }>;
+    attributes?: UITokenMetadataAttribute[];
 }
 
 export interface SearchResult {

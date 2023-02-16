@@ -8,8 +8,6 @@
     const address = $page.params.search;
 
     const token = state(["solanaToken", address], address);
-
-    $: console.log(JSON.stringify($token.data, null, 2));
 </script>
 
 {#if $token.isLoading}
@@ -39,7 +37,7 @@
             </div>
         {/if}
 
-        {#if metadata.attributes}
+        {#if metadata.attributes && metadata.attributes.length}
             <div class="mt-10">
                 <h3 class="text-lg font-medium text-gray-900">Properties</h3>
                 <div class="flex flex-wrap">

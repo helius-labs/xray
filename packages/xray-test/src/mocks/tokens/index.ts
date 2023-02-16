@@ -2,23 +2,33 @@ import bonk from "./bonk";
 import solana from "./solana";
 import usdc from "./usdc";
 
-import muc636 from "./mucs/muc-636";
-import muc672 from "./mucs/muc-672";
-import muc674 from "./mucs/muc-674";
-import muc684 from "./mucs/muc-684";
-import muc723 from "./mucs/muc-723";
-import muc733 from "./mucs/muc-733";
-import muc737 from "./mucs/muc-737";
+import muc18 from "./mucs/muc-18";
+import muc33 from "./mucs/muc-33";
+import muc37 from "./mucs/muc-37";
+import muc147 from "./mucs/muc-147";
+import muc175 from "./mucs/muc-175";
+import muc191 from "./mucs/muc-191";
+import muc192 from "./mucs/muc-192";
+import muc193 from "./mucs/muc-193";
+import muc386 from "./mucs/muc-386";
+import muc391 from "./mucs/muc-391";
+import muc422 from "./mucs/muc-422";
+import muc429 from "./mucs/muc-429";
 
 export default [
     bonk,
     solana,
     usdc,
-    muc636,
-    muc672,
-    muc674,
-    muc684,
-    muc723,
-    muc733,
-    muc737,
+    muc18,
+    muc33,
+    muc37,
+    muc147,
+    muc175,
+    muc191,
+    muc192,
+    muc193,
+    muc386,
+    muc422,
+    muc391,
+    muc429,
 ];
