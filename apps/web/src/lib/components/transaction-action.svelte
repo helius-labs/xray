@@ -1,22 +1,21 @@
 <script lang="ts">
-    import { state } from "svelte-snacks";
-
     import type { UITokenMetadata, UITransactionAction } from "$lib/types";
+    import type { QueryStore } from "svelte-snacks";
 
-    import { fly } from "svelte/transition";
-
-    import Icon from "$lib/icon";
-    import IconCard from "$lib/components/icon-card.svelte";
-
-    import shortenString from "$lib/util/shorten-string";
+    import { state } from "svelte-snacks";
 
     import IntersectionObserver from "svelte-intersection-observer";
 
+    import { ProtonSupportedType } from "@helius-labs/xray-proton";
     import { getSolanaName } from "@helius-labs/helius-namor";
-    import type { QueryStore } from "svelte-snacks";
+
+    import Icon from "$lib/icon";
+
+    import IconCard from "$lib/components/icon-card.svelte";
 
     import cap from "$lib/util/cap";
-    import formatMoney from "../util/format-money";
+    import formatMoney from "$lib/util/format-money";
+    import shortenString from "$lib/util/shorten-string";
 
     export let action: UITransactionAction;
 
@@ -29,13 +28,6 @@
     let intersecting = false;
     let element: HTMLElement;
     let solanaToken: QueryStore;
-    const isNFT = false;
-
-    const obk = {
-        address,
-        image: "",
-        name: "",
-    };
 
     if (address) {
         solanaToken = state(["solanaToken", address], address);
@@ -56,8 +48,9 @@
             metadata.name = tokenDetails?.symbol;
             metadata.image = tokenDetails?.logoURI;
         } else {
-            metadata.name = $solanaToken.data?.offChainData?.name;
-            metadata.image = $solanaToken.data?.offChainData?.image;
+            metadata.name = $solanaToken.data?.offChainMetadata?.metadata?.name;
+            metadata.image =
+                $solanaToken.data?.offChainMetadata?.metadata?.image;
         }
 
         isLoading = false;
@@ -75,6 +68,8 @@
         .join(" ");
 
     $: title = metadata?.name || txName;
+
+    $: supported = Object.keys(ProtonSupportedType).includes(action?.type);
 
     $: if (action?.actionType === "TRANSFER_SENT") {
         label = `To: ${displayName}`;
@@ -104,7 +99,7 @@
                 <div slot="icon">
                     {#if isLoading}
                         <button class="loading btn-ghost" />
-                    {:else if metadata.image}
+                    {:else if supported}
                         <img
                             class="max-w-3 w-full rounded"
                             alt="token symbol"
@@ -112,8 +107,7 @@
                         />
                     {:else}
                         <Icon
-                            id="lighting"
-                            fill="success"
+                            id="question"
                             size="md"
                         />
                     {/if}
@@ -148,7 +142,7 @@
                         </h4>
                     {:else if action?.type === "TRANSFER"}
                         <h4
-                            class=" absolute  right-2 top-3 text-sm font-bold text-black"
+                            class="absolute right-2 top-3 text-sm font-bold text-black"
                         >
                             {action?.amount}
                         </h4>

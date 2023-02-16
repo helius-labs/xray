@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import { page } from "$app/stores";
 
     import { state } from "svelte-snacks";
 
-    import TokenProvider from "$lib/components/token-provider.svelte";
+    import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     const address = $page.params.search;
 
@@ -28,6 +27,7 @@
                 />
             </div>
         </div>
+
         {#if metadata.description}
             <div class="mt-2">
                 <h3 class="text-lg font-medium text-gray-900">Description</h3>
@@ -36,7 +36,8 @@
                 </p>
             </div>
         {/if}
-        {#if metadata.attributes.length > 0}
+
+        {#if metadata.attributes && metadata.attributes.length}
             <div class="mt-10">
                 <h3 class="text-lg font-medium text-gray-900">Properties</h3>
                 <div class="flex flex-wrap">
