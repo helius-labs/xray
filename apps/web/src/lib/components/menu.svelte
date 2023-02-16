@@ -22,6 +22,15 @@
                 </tr>
             </thead>
             <tbody class="text-center">
+                <!-- <tr>
+                    <td>
+                        <div class="w-full">
+                            <div class="hidden justify-center lg:flex">
+                                <Search />
+                            </div>
+                        </div>
+                    </td>
+                </tr> -->
                 {#each [{ name: "About XRAY", url: "/$/about" }, { name: "About Helius APIs", url: "https://helius.xyz" }, { name: "Contribute", url: "https://github.com/helius-labs/xray" }, { name: "Join Discord", url: "https://discord.gg/Wkn3uuSby7" }] as { name, url }}
                     <tr>
                         <a
@@ -32,11 +41,5 @@
                 {/each}
             </tbody>
         </table>
-
-        <div class="w-full">
-            <div class="hidden justify-center lg:flex">
-                <Search />
-            </div>
-        </div>
     </div>
 </div>
