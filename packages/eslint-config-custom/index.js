@@ -5,7 +5,12 @@ module.exports = {
         jest: true,
         node: true,
     },
+
     extends: ["plugin:prettier/recommended", "plugin:svelte/recommended"],
+    globals: {
+        APP_NAME: "readonly",
+        APP_VERSION: "readonly",
+    },
     overrides: [
         {
             files: ["**/*.svelte"],

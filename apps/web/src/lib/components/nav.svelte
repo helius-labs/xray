@@ -11,12 +11,14 @@
 
     import Menu from "$lib/components/menu.svelte";
     import Search from "$lib/components/search.svelte";
+    import DevBanner from "$lib/components/dev-banner.svelte";
 
     const solanaPrice = state(
         "tokenPrice",
         "So11111111111111111111111111111111111111112"
     );
     const solanaTPS = state("solanaTps");
+    const xrayConfig = state("xrayConfig");
 
     let backUrl = "";
 
@@ -33,8 +35,9 @@
 </script>
 
 <nav
-    class="fixed top-0 left-0 z-10 grid w-screen grid-cols-2 items-center border bg-black p-1 lg:grid-cols-3"
+    class="sticky top-0 left-0 z-10 grid h-full grid-cols-2 items-center border bg-black p-1 px-0 lg:grid-cols-3"
 >
+    <DevBanner />
     <div class="flex items-center">
         {#if backUrl}
             <div
@@ -75,7 +78,7 @@
             </div>
         {/if}
 
-        <div class="ml-1 text-xs">
+        <div class="ml-1 hidden text-xs md:block">
             <div class="mr-5">
                 <span class="font-bold">TPS </span>
                 {#if $solanaTPS.hasFetched}

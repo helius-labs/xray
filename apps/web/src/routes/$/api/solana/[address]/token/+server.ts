@@ -7,12 +7,12 @@ import { tokens } from "@helius-labs/xray-test";
 // Consume a search, return whadt to do with it
 export async function GET({ params }: RequestEvent) {
     if (!HELIUS_KEY) {
-        const data = tokens.find(
-            ({ mint = "", account = "" }) =>
+        const mocked = tokens.find(
+            ({ mint, account }) =>
                 mint === params?.address || account === params?.address
         );
 
-        return json({ data });
+        return json({ data: mocked });
     }
 
     const response = await fetch(
@@ -27,7 +27,7 @@ export async function GET({ params }: RequestEvent) {
         }
     );
 
-    const [data] = (await response.json()) || [];
+    const data = (await response.json()) || [];
 
-    return json({ data });
+    return json({ data: data[0] });
 }
