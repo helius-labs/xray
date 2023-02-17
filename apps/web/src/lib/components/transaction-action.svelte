@@ -12,6 +12,7 @@
     import Icon from "$lib/icon";
 
     import IconCard from "$lib/components/icon-card.svelte";
+    import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     import cap from "$lib/util/cap";
     import formatMoney from "$lib/util/format-money";
@@ -27,11 +28,11 @@
     let isLoading = true;
     let intersecting = false;
     let element: HTMLElement;
-    let solanaToken: QueryStore;
+    // let solanaToken: QueryStore;
 
-    if (address) {
-        solanaToken = state(["solanaToken", address], address);
-    }
+    // if (address) {
+    //     solanaToken = state(["solanaToken", address], address);
+    // }
 
     const metadata: UITokenMetadata = {
         address,
