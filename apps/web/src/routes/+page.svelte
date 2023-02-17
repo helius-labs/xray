@@ -95,7 +95,7 @@
         };
 
         try {
-            const response = await fetch(`/api/search/${inputValue}`);
+            const response = await fetch(`/$/api/search/${inputValue}`);
 
             const { data } = await response.json();
 
@@ -141,89 +141,71 @@
 
 <ConnectionProvider {network} />
 
-<div class="flex min-h-screen flex-wrap justify-center px-3 pt-40 md:pt-60">
-    <div class="w-full max-w-2xl">
-        <div>
-            <h1 class="text-center text-8xl font-bold text-white opacity-80">
-                XRAY
-            </h1>
-            <p class="text-center text-current opacity-50">
-                A Solana explorer built by the community, made for everyone.
-            </p>
+<div class="mx-auto max-w-2xl pt-20 md:pt-48">
+    <div>
+        <h1 class="text-center text-8xl font-bold text-white opacity-80">
+            XRAY
+        </h1>
+    </div>
+
+    <form
+        class="relative mb-5 mt-4 flex justify-center"
+        on:submit={newSearch}
+    >
+        <div class="absolute left-4 bottom-1/2 translate-y-1/2">
+            <Icon
+                id="search"
+                size="md"
+            />
         </div>
-        {#if searchError && !isSearching}
-            <div class="mt-4 flex items-center opacity-50">
-                <Icon
-                    id="info"
-                    fill="warning"
-                    size="md"
-                />
-                <p
-                    class="ml-3 text-slate-100"
-                    in:fly={{
-                        duration: 500,
-                        y: -10,
-                    }}
-                >
-                    {searchError}
-                </p>
-            </div>
-        {/if}
-        <form
-            class="relative my-5 flex justify-center"
-            on:submit={newSearch}
-        >
-            <div class="absolute left-4 bottom-1/2 translate-y-1/2">
-                <Icon
-                    id="search"
-                    size="md"
-                />
-            </div>
 
-            <div class="dropdown w-full">
-                <input
-                    bind:this={inputEl}
-                    class="input-bordered input h-16 w-full rounded-lg px-14 text-lg focus:input-success"
-                    placeholder="Search Solana"
-                    tabindex="0"
-                    type="text"
-                    bind:value={inputValue}
-                />
+        <div class="dropdown w-full">
+            <input
+                bind:this={inputEl}
+                class="input-bordered input h-16 w-full rounded-lg px-14 text-lg focus:input-success"
+                placeholder="Search Solana"
+                tabindex="0"
+                type="text"
+                bind:value={inputValue}
+                on:keydown={(event) => {
+                    if (event.key === "Enter") {
+                        newSearch();
+                    }
+                }}
+            />
 
+            <ul
+                class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
+            >
+                <div class="flex flex-wrap items-center justify-between">
+                    <p class="text-md mb-1 mt-2 font-bold">Recents</p>
+                    <div class="mb-1">
+                        <button
+                            class="btn-outline btn-sm btn"
+                            on:click|preventDefault={() => (inputValue = "")}
+                        >
+                            <span class="text-sm"> Clear </span>
+                        </button>
+
+                        <button
+                            class="btn-outline btn-sm btn ml-2"
+                            on:click|preventDefault={setFromClipboard}
+                        >
+                            <span class="text-sm"> Paste </span>
+                        </button>
+
+                        <button
+                            class="btn-outline btn-sm btn ml-2"
+                            on:click|preventDefault={() =>
+                                (showConnectWallet = true)}
+                        >
+                            <span class="text-sm"> Connect Wallet </span>
+                        </button>
+                    </div>
+                </div>
                 {#if recent.length}
-                    <ul
-                        class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
-                    >
-                        <div class="flex items-center justify-between">
-                            <p class="text-md mt-2 mb-1 font-bold">Recent</p>
-                            <div>
-                                <button
-                                    class="btn-outline btn-sm btn"
-                                    on:click|preventDefault={() =>
-                                        (inputValue = "")}
-                                >
-                                    <span class="text-sm"> Clear </span>
-                                </button>
-
-                                <button
-                                    class="btn-outline btn-sm btn ml-2"
-                                    on:click|preventDefault={setFromClipboard}
-                                >
-                                    <span class="text-sm"> Paste </span>
-                                </button>
-
-                                <button
-                                    class="btn-outline btn-sm btn ml-2"
-                                    on:click|preventDefault={() =>
-                                        (showConnectWallet = true)}
-                                >
-                                    <span class="text-sm">
-                                        🎒 Connect Wallet
-                                    </span>
-                                </button>
-                            </div>
-                        </div>
-                        {#each recent as address}
+                    {#each recent as address}
+                        {#if address}
                             <li class="m1-ds2 relative w-full truncate px-0">
                                 <a
                                     class="block w-full max-w-full text-ellipsis px-1 py-2"
@@ -242,35 +224,70 @@
                                     </p>
                                 </a>
                             </li>
-                        {/each}
-                    </ul>
+                        {/if}
+                    {/each}
+                {:else}
+                    <i class="pt-2 text-xs opacity-50"
+                        >Paste an address or connect a wallet to get started.</i
+                    >
                 {/if}
-            </div>
-
-            <button
-                class="btn-ghost btn absolute right-4 bottom-1/2 translate-y-1/2 px-0"
-                class:loading={isSearching}
-            >
-                {#if !isSearching}
-                    <Icon
-                        id="arrowRight"
-                        size="md"
-                    />
-                {/if}
-            </button>
-        </form>
-        <div>
-            <a
-                class="flex items-center justify-center opacity-50"
-                href="https://helius.xyz/"
-            >
-                <p class="mr-1 text-xs ">Powered by</p>
-                <img
-                    class="h-5"
-                    alt=""
-                    src={heliusLogo}
-                />
-            </a>
+            </ul>
         </div>
+
+        <button
+            class="btn-ghost btn absolute right-4 bottom-1/2 translate-y-1/2 px-0"
+            class:loading={isSearching}
+        >
+            {#if !isSearching}
+                <Icon
+                    id="arrowRight"
+                    size="md"
+                />
+            {/if}
+        </button>
+    </form>
+
+    {#if searchError && !isSearching}
+        <div class="mt-4 flex items-center text-warning">
+            <Icon
+                id="info"
+                fill="warning"
+                size="md"
+            />
+            <p
+                class="ml-3"
+                in:fly={{
+                    duration: 500,
+                    y: -10,
+                }}
+            >
+                {searchError}
+            </p>
+        </div>
+
+        <button
+            class="btn-outline btn-sm btn mt-2"
+            on:click|preventDefault={() => {
+                searchError = "";
+                inputValue = "";
+                focus();
+            }}
+        >
+            <span class="text-sm"> Clear </span>
+        </button>
+    {/if}
+
+    <div>
+        <a
+            class="flex items-center justify-center opacity-50"
+            href="https://helius.xyz/"
+        >
+            <p class="mr-1 text-xs ">Powered by</p>
+            <img
+                class="h-5"
+                alt=""
+                src={heliusLogo}
+            />
+        </a>
     </div>
 </div>

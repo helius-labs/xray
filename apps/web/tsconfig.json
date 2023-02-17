@@ -1,14 +1,14 @@
 {
     "compilerOptions": {
         "allowJs": true,
+        "allowSyntheticDefaultImports": true,
         "checkJs": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        "strict": true,
         "ignoreDeprecations": "5.0",
+        "importsNotUsedAsValues": "error",
         "resolveJsonModule": true,
-        "allowSyntheticDefaultImports": true,
-        "importsNotUsedAsValues": "error"
+        "strict": true
     },
     // Path aliases are handled by https://kit.svelte.dev/docs/configuration#alias
     //

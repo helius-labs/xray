@@ -1,3 +1,6 @@
+<style>
+</style>
+
 <script>
     import { state } from "svelte-snacks";
 
@@ -16,9 +19,9 @@
 </script>
 
 <section>
-    <!-- <p class="text-xs opacity-50">Wallet</p> -->
-
-    <div class="mb-5 flex items-center justify-between">
+    <div
+        class="title sticky top-16 z-10 mb-5 flex w-full items-center justify-between bg-black pb-2 pt-5"
+    >
         <div class="item-center flex w-full justify-between">
             <div>
                 <Namor
@@ -35,17 +38,13 @@
                         </h3>
                     </div>
 
-                    <h1 class="text-2xl font-bold">{result}</h1>
+                    <h1 class="text-lg font-bold lg:text-2xl">{result}</h1>
                 </Namor>
             </div>
             <div>
                 <CopyButton text={$page.params.search} />
             </div>
         </div>
-
-        {#if !$accountInfo?.hasFetched || !$transactions.hasFetched}
-            <button class="loading btn-ghost btn pr-0" />
-        {/if}
 
         {#if !$accountInfo?.hasFetched}
             <h1>{$accountInfo?.data?.balance}</h1>

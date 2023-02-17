@@ -22,7 +22,7 @@
         };
 
         try {
-            const response = await fetch(`/api/search/${inputValue}`);
+            const response = await fetch(`/$/api/search/${inputValue}`);
 
             const { data } = await response.json();
 
@@ -79,7 +79,7 @@
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
-            class="input-bordered input w-full rounded-lg  focus:input-success"
+            class="input-bordered input h-10 w-full  rounded-lg focus:input-success"
             placeholder="Search Solana"
             tabindex="0"
             type="text"
