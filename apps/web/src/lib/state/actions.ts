@@ -4,6 +4,39 @@ import { TokenListProvider } from "@solana/spl-token-registry";
 
 import type { EnrichedTransaction } from "helius-sdk";
 
+import type { UIConfig } from "$lib/types";
+
+import { dev } from "$app/environment";
+
+export const getXrayConfig = async (): Promise<UIConfig> => {
+    const devMode = Boolean(window.localStorage.getItem("xray:devmode"));
+
+    return {
+        dev,
+        devMode,
+
+        // These get replaced by vite
+        // @ts-ignore
+        isMocked: IS_MOCKED,
+        // @ts-ignore
+        name: APP_NAME,
+        // @ts-ignore
+        version: APP_VERSION,
+    };
+};
+
+export const updateXrayConfig = (
+    existing: UIConfig,
+    options: UIConfig
+): UIConfig => {
+    window.localStorage.setItem("xray:devmode", String(options.devMode));
+
+    return {
+        ...existing,
+        ...options,
+    };
+};
+
 export const getSolanaAccountInfo = async (address: string): Promise<any> => {
     const response = await fetch(`/$/api/solana/${address}/account-info`);
 
@@ -66,6 +99,8 @@ export const getSolanaTransactions = async (
     const response = await fetch(`/$/api/solana/${address}/transactions`);
 
     const { data } = await response.json();
+
+    console.log({ data });
 
     return data;
 };

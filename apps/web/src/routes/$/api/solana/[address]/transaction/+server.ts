@@ -8,7 +8,9 @@ import { transactions } from "@helius-labs/xray-test";
 export async function GET({ params }: RequestEvent) {
     if (!HELIUS_KEY) {
         const data = transactions.transactionsVariety.find(
-            ({ signature = "" }) => signature === params?.signature
+            ({ signature = "" }) => {
+                return signature === params?.address;
+            }
         );
 
         return json({ data });

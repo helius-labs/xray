@@ -15,7 +15,7 @@ import muc391 from "./mucs/muc-391";
 import muc422 from "./mucs/muc-422";
 import muc429 from "./mucs/muc-429";
 
-export default [
+const tokens: Array<any> = [
     bonk,
     solana,
     usdc,
@@ -32,3 +32,5 @@ export default [
     muc391,
     muc429,
 ];
+
+export default tokens;

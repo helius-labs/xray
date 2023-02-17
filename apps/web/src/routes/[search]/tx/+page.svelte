@@ -24,6 +24,7 @@
     import TransactionAction from "$lib/components/transaction-action.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Namor from "src/lib/components/providers/namor-provider.svelte";
+    import CopyButton from "$lib/components/copy-button.svelte";
 
     import {
         groupTransactionActions,
@@ -58,22 +59,36 @@
     }
 </script>
 
-<div class="flex items-center justify-between">
-    <Namor
-        text={$page.params.search}
-        let:result
-        let:shortenedOriginal
-    >
-        <h1
-            class="tooltip text-3xl font-bold"
-            data-tip="Tx: {shortenedOriginal}"
+<div class="sticky top-16 z-10 flex items-center justify-between pt-5 pb-4">
+    <div>
+        <Namor
+            text={$page.params.search}
+            let:result
+            let:shortenedOriginal
         >
-            {result}
-        </h1>
-    </Namor>
+            <div class="flex">
+                TX:
+                <h3 class="tooltip tooltip-right ml-2">
+                    <span class="opacity-50">
+                        {shortenedOriginal}
+                    </span>
+                </h3>
+            </div>
+            <h1
+                class="tooltip text-lg font-bold lg:text-3xl"
+                data-tip="Tx: {shortenedOriginal}"
+            >
+                {result}
+            </h1>
+        </Namor>
+    </div>
 
     {#if !$transaction?.hasFetched}
         <button class="loading btn-ghost btn pr-0" />
+    {:else}
+        <div>
+            <CopyButton text={window.location.href} />
+        </div>
     {/if}
 </div>
 
@@ -135,7 +150,7 @@
                     <div class="center h-10 w-10 rounded-full bg-success">
                         <Icon
                             id="check"
-                            fill="base-100"
+                            fill="black"
                             size="sm"
                         />
                     </div>
@@ -207,12 +222,7 @@
                         </p>
                     </div>
                     <div>
-                        <button class="btn-ghost btn-sm btn">
-                            <Icon
-                                id="copy"
-                                size="md"
-                            />
-                        </button>
+                        <CopyButton text={$page.params.search} />
                     </div>
                 </div>
             </IconCard>
@@ -266,7 +276,7 @@
 
             {#if showCode}
                 <div
-                    class="card mt-3"
+                    class="card mt-3 w-full overflow-hidden"
                     in:fade={{ duration: 500 }}
                 >
                     <div class="code overflow-hidden">

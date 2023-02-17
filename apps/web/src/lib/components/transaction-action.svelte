@@ -99,7 +99,7 @@
                 <div slot="icon">
                     {#if isLoading}
                         <button class="loading btn-ghost" />
-                    {:else if supported}
+                    {:else if supported && action?.type !== "UNKNOWN"}
                         <img
                             class="max-w-3 w-full rounded"
                             alt="token symbol"
@@ -107,7 +107,8 @@
                         />
                     {:else}
                         <Icon
-                            id="question"
+                            id="lighting"
+                            fill="success"
                             size="md"
                         />
                     {/if}

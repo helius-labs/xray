@@ -42,9 +42,10 @@
         "@solana/spl-token-registry": "^0.2.7",
         "@sveltejs/kit": "^1.6.0",
         "highlight.js": "^11.7.0",
+        "json-viewer-js": "^1.0.8",
         "svelte-highlight": "^7.1.2",
         "svelte-intersection-observer": "^0.10.0",
-        "svelte-snacks": "*",
-        "tailwindcss-neumorphism": "^0.1.0"
+        "svelte-json-tree": "^1.0.0",
+        "svelte-snacks": "*"
     }
 }

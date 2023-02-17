@@ -2,6 +2,14 @@ import type { EnrichedTransaction, TransactionType } from "helius-sdk";
 
 import type { ProtonTransaction } from "@helius-labs/xray-proton";
 
+export interface UIConfig {
+    dev: boolean;
+    devMode: boolean;
+    isMocked: boolean;
+    name: string;
+    version: string;
+}
+
 export interface UIAccount {
     publicKey: string;
     transactions: Array<any>;
@@ -92,6 +100,8 @@ export enum IconPaths {
     bars = '<path d="M0 22h1v-5h4v5h2v-10h4v10h2v-15h4v15h2v-21h4v21h1v1h-24v-1zm4-4h-2v4h2v-4zm6-5h-2v9h2v-9zm6-5h-2v14h2v-14zm6-6h-2v20h2v-20z"/>',
 
     hamburger = '<path d="m22 16.75c0-.414-.336-.75-.75-.75h-18.5c-.414 0-.75.336-.75.75s.336.75.75.75h18.5c.414 0 .75-.336.75-.75zm0-5c0-.414-.336-.75-.75-.75h-18.5c-.414 0-.75.336-.75.75s.336.75.75.75h18.5c.414 0 .75-.336.75-.75zm0-5c0-.414-.336-.75-.75-.75h-18.5c-.414 0-.75.336-.75.75s.336.75.75.75h18.5c.414 0 .75-.336.75-.75z" fill-rule="nonzero"/>',
+
+    code = '<path d="M16 3.383l-.924-.383-7.297 17.617.924.383 7.297-17.617zm.287 3.617l6.153 4.825-6.173 5.175.678.737 7.055-5.912-7.048-5.578-.665.753zm-8.478 0l-6.249 4.825 6.003 5.175-.679.737-6.884-5.912 7.144-5.578.665.753z"/>',
 }
 
 export type Icon = keyof typeof IconPaths;

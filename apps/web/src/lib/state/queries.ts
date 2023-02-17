@@ -48,6 +48,11 @@ export const solanaTransaction = {
     loader: actions.getSolanaTransaction,
 };
 
+export const xrayConfig = {
+    loader: actions.getXrayConfig,
+    mutator: actions.updateXrayConfig,
+};
+
 export const solanaToken = {
     loader: actions.getSolanaToken,
 };

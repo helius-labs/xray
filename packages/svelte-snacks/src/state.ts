@@ -15,7 +15,10 @@ import { get, writable, type Writable } from "svelte/store";
 
 export * from "./types";
 
-const context = (): StateContext => get(getContext(contextKey));
+export const getStateStore = (): Writable<StateContext> =>
+    getContext(contextKey);
+
+export const context = (): StateContext => get(getStateStore());
 
 export const state = (idInput: string | string[], args?: any): QueryStore => {
     const contextValue = context();
@@ -90,6 +93,13 @@ export const state = (idInput: string | string[], args?: any): QueryStore => {
                 isSuccess: true,
                 lastFetch: Date.now(),
             }));
+
+            if (data) {
+                window.localStorage.setItem(
+                    `svelte-snacks:query-${id}`,
+                    JSON.stringify(data)
+                );
+            }
         } catch (error) {
             // eslint-disable-next-line no-console
             console.log(`ERROR`, id, args);
@@ -105,23 +115,75 @@ export const state = (idInput: string | string[], args?: any): QueryStore => {
         }
     };
 
+    const mutateQuery = async (store: any, mutateArgs: any) => {
+        const existingValue = get(store);
+
+        if (!queryOptions.mutator) {
+            return;
+        }
+
+        // Is loading
+        store.update((existing: Query) => ({
+            ...existing,
+            isMutating: true,
+            isSuccess: false,
+        }));
+
+        try {
+            let data = await queryOptions.mutator(existingValue, mutateArgs);
+
+            if (queryOptions.formatter) {
+                data = await queryOptions.formatter(data);
+            }
+
+            // Is success
+            store.update((existing: Query) => ({
+                ...existing,
+                data,
+                hasMutated: true,
+                isMutating: false,
+                lastFetch: Date.now(),
+            }));
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.log(`ERROR`, id, args, error);
+
+            // Is error
+            store.update((existing: Query) => ({
+                ...existing,
+                error: String(error),
+                hasMutated: true,
+                isError: true,
+                isMutating: false,
+            }));
+        }
+    };
+
     const newQueryStore: Writable<Query> = writable<Query>(
         defaultQuery,
         (set) => {
-            loadQuery(newQueryStore);
+            let cached = {};
+
+            try {
+                cached = JSON.parse(
+                    window.localStorage.getItem(`svelte-snacks:query-${id}`) ||
+                        ""
+                );
+            } catch (error) {}
 
             set({
                 ...get(newQueryStore),
+                data: cached,
                 id,
                 load: () => loadQuery(newQueryStore),
+                mutate: (args: any) => mutateQuery(newQueryStore, args),
             });
+
+            loadQuery(newQueryStore);
 
             queries.set(id, newQueryStore);
 
-            return () => {
-                // eslint-disable-next-line no-console
-                console.log(id, `UNSUBSCRIBED`);
-            };
+            return () => {};
         }
     );
 

@@ -1,6 +1,22 @@
 <script>
     import Icon from "$lib/icon";
-    import Search from "$lib/components/search.svelte";
+
+    import { state } from "svelte-snacks";
+
+    const config = state("xrayConfig");
+
+    let devMode = false;
+    let ready = false;
+
+    $: if ($config?.hasFetched && ready) {
+        devMode = $config.data.devMode;
+
+        ready = true;
+    }
+
+    $: if (devMode && ready) {
+        $config.mutate({ devMode });
+    }
 </script>
 
 <div
@@ -39,6 +55,18 @@
                         >
                     </tr>
                 {/each}
+                <tr>
+                    <div class="form-control pt-4">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Developer mode</span>
+                            <input
+                                bind:checked={devMode}
+                                type="checkbox"
+                                class="toggle-success toggle"
+                            />
+                        </label>
+                    </div>
+                </tr>
             </tbody>
         </table>
     </div>

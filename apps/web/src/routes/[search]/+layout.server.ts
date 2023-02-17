@@ -15,7 +15,9 @@ export async function load({ params, url }: RequestEvent) {
     if (
         url.pathname.endsWith("/token") ||
         url.pathname.endsWith("/wallet") ||
-        url.pathname.endsWith("/tx")
+        url.pathname.endsWith("/tx") ||
+        url.pathname.startsWith("#") ||
+        !url.pathname
     ) {
         return;
     }
