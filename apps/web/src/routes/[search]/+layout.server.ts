@@ -54,9 +54,19 @@ export async function load({ params, url }: RequestEvent) {
             // );
             const address = await fetch(`https://resolve-solana-domain.qudo-code.repl.co/domain/${params.search}`)
                 .then((res) => res.json());
+            // const data = await fetch(`/api/bonfida/domain/${params.search}`, {
+            //     body    : JSON.stringify({ search : params.search }),
+            //     headers : {
+            //         "Content-Type" : "application/json",
+            //     },
+            //     method : "GET",
+            // });
+            // const address = await data.json();
+            // const address = await fetch(`http://localhost:5173/api/bonfida/domain/${params.search}`)
+            //     .then((res) => res.json());
             const redirectUrl = address ? `/${address}/wallet` : `/${params.search}/?error="invalid-search"`;
-            // const redirectUrl = data.registry.owner ? `/${data.registry.owner}/wallet` : `/${params.search}/?error="invalid-search"`;
 
+            // const redirectUrl = data.registry.owner ? `/${data.registry.owner}/wallet` : `/${params.search}/?error="invalid-search"`;
             throw redirect(307, redirectUrl);
         } catch(error) {
             // console.log(error);

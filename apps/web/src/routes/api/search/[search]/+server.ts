@@ -58,7 +58,16 @@ export async function GET({ params }: RequestEvent) {
             // const url = data.registry.owner ? `/${data.registry.owner}/wallet` : `/${params.search}/?error="invalid-search"`;
             const address = await fetch(`https://resolve-solana-domain.qudo-code.repl.co/domain/${search}`)
                 .then((res) => res.json());
-            const url = address ? `/${address}/wallet` : `${params.search}/?error="invalid-search"`;
+            // const data = await fetch(`/api/bonfida/domain/${search}`, {
+            //     body    : JSON.stringify({ search }),
+            //     headers : {
+            //         "Content-Type" : "application/json",
+            //     },
+            //     method : "GET",
+            // });
+
+            // const address = await data.json();
+            const url = address ? `/${address}/wallet` : `${search}/?error="invalid-search"`;
             
             return json({
                 data : {
