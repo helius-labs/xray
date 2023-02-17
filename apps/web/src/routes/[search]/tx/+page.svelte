@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import type { UITransactionActionGroup } from "$lib/types";
-    
+
     import { page } from "$app/stores";
 
     import { state } from "svelte-snacks";
@@ -23,53 +23,57 @@
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
-    import Namor from "$lib/components/namor.svelte";
+    import Namor from "src/lib/components/providers/namor-provider.svelte";
 
     import {
         groupTransactionActions,
-        mergeTransactionActions
+        mergeTransactionActions,
     } from "$lib/util/transactions";
-
-    import { nameFromString } from "@helius-labs/helius-namor";
 
     import { fade } from "svelte/transition";
 
     let showCode = false;
 
     const address = $page.params.search;
-  
-    const transaction = state([ "solanaTransaction", address ], address);
+
+    const transaction = state(["solanaTransaction", address], address);
 
     let metadataHTML = "";
 
-    let groups:UITransactionActionGroup[] = [];
+    let groups: UITransactionActionGroup[] = [];
 
-    $: if($transaction?.data?.parsed) {
+    $: if ($transaction?.data?.parsed) {
         metadataHTML = formatHighlight($transaction?.data?.raw, {
-            keyColor    : "#a5a3a3",
-            numberColor : "#e8a034",
-            stringColor : "#24ae67",
+            keyColor: "#a5a3a3",
+            numberColor: "#e8a034",
+            stringColor: "#24ae67",
         });
 
-        const merged = mergeTransactionActions([ $transaction?.data ], $page.url.searchParams.get("wallet") || "");
+        const merged = mergeTransactionActions(
+            [$transaction?.data],
+            $page.url.searchParams.get("wallet") || ""
+        );
 
         groups = groupTransactionActions(merged);
     }
 </script>
 
-<div class="flex justify-between items-center">
+<div class="flex items-center justify-between">
     <Namor
         text={$page.params.search}
         let:result
         let:shortenedOriginal
     >
         <h1
-            class="text-3xl font-bold tooltip"
-            data-tip="Tx: {shortenedOriginal}">{result}</h1>
+            class="tooltip text-3xl font-bold"
+            data-tip="Tx: {shortenedOriginal}"
+        >
+            {result}
+        </h1>
     </Namor>
 
     {#if !$transaction?.hasFetched}
-        <button class="btn btn-ghost pr-0 loading"></button>
+        <button class="loading btn-ghost btn pr-0" />
     {/if}
 </div>
 
@@ -82,25 +86,20 @@
 {:else if $transaction?.isError}
     <p>Error: {$transaction?.error}</p>
 {:else if $transaction?.hasFetched}
-
-    {#each groups as {
-        label,
-        icon,
-        type,
-        actions,
-        timestamp,
-    }, groupIndex}
+    {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
         <div
             class="py-6"
             in:fade={{
-                delay    : groupIndex * 100,
-                duration : 500,
-            }}>
-            <div class="flex opacity-75 mb-2">
+                delay: groupIndex * 100,
+                duration: 500,
+            }}
+        >
+            <div class="mb-2 flex opacity-75">
                 <div class="flex items-center">
                     <Icon
                         id={icon}
-                        size="md" />
+                        size="md"
+                    />
                     <h1 class="ml-2">
                         {label}
                     </h1>
@@ -109,39 +108,41 @@
 
             {#each actions as action, actionIndex}
                 <a
-                    class="mb-2 block hover:opacity-75 cursor-pointer"
+                    class="mb-2 block cursor-pointer hover:opacity-75"
                     data-sveltekit-reload
-                    href="/{action.signature}/tx?wallet={$page.params.search}"
+                    href="/{action.sent}/token?tx={action.signature}"
                     in:fly={{
-                        delay  : actionIndex * 100,
-                        easing : cubicOut,
-                        y      : 50,
-                    }}>
+                        delay: actionIndex * 100,
+                        easing: cubicOut,
+                        y: 50,
+                    }}
+                >
                     <TransactionAction {action} />
                 </a>
             {/each}
         </div>
     {/each}
-    
+
     <div
         in:fade={{
-            delay    : 500,
-            duration : 750,
+            delay: 500,
+            duration: 750,
         }}
     >
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="w-10 h-10 bg-success rounded-full center">
+                    <div class="center h-10 w-10 rounded-full bg-success">
                         <Icon
                             id="check"
                             fill="base-100"
-                            size="sm" />
+                            size="sm"
+                        />
                     </div>
                 </div>
                 <div
                     slot="title"
-                    class="flex justify-between items-center"
+                    class="flex items-center justify-between"
                 >
                     <div>
                         <p>Status</p>
@@ -150,9 +151,7 @@
                         </p>
                     </div>
                     <div>
-                        <div class="badge badge-success">
-                            Success
-                        </div>
+                        <div class="badge-success badge">Success</div>
                     </div>
                 </div>
             </IconCard>
@@ -161,15 +160,16 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="w-10 h-10 bg-secondary rounded-full center">
+                    <div class="center h-10 w-10 rounded-full bg-secondary">
                         <Icon
                             id="network"
-                            size="sm" />
+                            size="sm"
+                        />
                     </div>
                 </div>
                 <div
                     slot="title"
-                    class="flex justify-between items-center"
+                    class="flex items-center justify-between"
                 >
                     <div>
                         <p>Network Fee</p>
@@ -189,15 +189,16 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="w-10 h-10 bg-secondary rounded-full center">
+                    <div class="center h-10 w-10 rounded-full bg-secondary">
                         <Icon
                             id="signature"
-                            size="sm" />
+                            size="sm"
+                        />
                     </div>
                 </div>
                 <div
                     slot="title"
-                    class="flex justify-between items-center"
+                    class="flex items-center justify-between"
                 >
                     <div>
                         <p>Signature</p>
@@ -206,10 +207,11 @@
                         </p>
                     </div>
                     <div>
-                        <button class="btn btn-ghost btn-sm">
+                        <button class="btn-ghost btn-sm btn">
                             <Icon
                                 id="copy"
-                                size="md" />
+                                size="md"
+                            />
                         </button>
                     </div>
                 </div>
@@ -219,15 +221,17 @@
         <div class="mb-3">
             <IconCard>
                 <div slot="icon">
-                    <div class="w-10 h-10 bg-secondary rounded-full center">
+                    <div class="center h-10 w-10 rounded-full bg-secondary">
                         <Icon
                             id="json"
-                            size="sm" />
+                            size="sm"
+                        />
                     </div>
                 </div>
                 <div
                     slot="title"
-                    class="flex justify-between items-center">
+                    class="flex items-center justify-between"
+                >
                     <div>
                         <p>JSON</p>
                         <p class="text-xs opacity-50">
@@ -237,8 +241,9 @@
                     <div>
                         {#if showCode}
                             <button
-                                class="btn btn-sm btn-ghost"
-                                on:click={() => (showCode = false)}>
+                                class="btn-ghost btn-sm btn"
+                                on:click={() => (showCode = false)}
+                            >
                                 <Icon
                                     id="cancel"
                                     size="md"
@@ -246,8 +251,9 @@
                             </button>
                         {:else}
                             <button
-                                class="btn btn-sm btn-ghost"
-                                on:click={() => (showCode = true)}>
+                                class="btn-ghost btn-sm btn"
+                                on:click={() => (showCode = true)}
+                            >
                                 <Icon
                                     id="dots"
                                     size="md"
@@ -261,22 +267,22 @@
             {#if showCode}
                 <div
                     class="card mt-3"
-                    in:fade={{ duration : 500 }}>
+                    in:fade={{ duration: 500 }}
+                >
                     <div class="code overflow-hidden">
-                        <!-- eslint-disable-next-line svelte/no-at-html-tags -->
-                        <pre><code class="text-xs">{@html metadataHTML}</code></pre>
+                        <pre><code class="text-xs">{@html metadataHTML}</code
+                            ></pre>
                     </div>
                 </div>
             {/if}
         </div>
 
-        <div class="flex justify-center my-5">
+        <div class="my-5 flex justify-center">
             <a
-                class="btn btn-ghost hover:bg-transparent text-success text-xs"
+                class="btn-ghost btn text-xs text-success hover:bg-transparent"
                 href={`https://explorer.solana.com/tx/${$page?.params?.search}`}
-
-            >View on Solana Explorer</a>
+                >View on Solana Explorer</a
+            >
         </div>
     </div>
-        
 {/if}

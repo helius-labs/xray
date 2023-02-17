@@ -13,7 +13,7 @@ html {
 }
 
 body {
-    font-family: 'Space Grotesk', sans-serif;
+    font-family: "Space Grotesk", sans-serif;
     background-size: cover;
     background-position: center;
 }
@@ -22,17 +22,20 @@ input::placeholder {
     @apply text-white opacity-50;
 }
 
+.border {
+    @apply border-secondary;
+}
 
 .card {
-    @apply rounded-lg p-3 bg-black border border-secondary;
+    @apply rounded-lg border border-secondary bg-black p-3;
 }
 
 .center {
-    @apply flex justify-center items-center;
+    @apply flex items-center justify-center;
 }
 
 .icon {
-    @apply fill-current h-4 w-4;
+    @apply h-4 w-4 fill-current;
 }
 
 .icon-fill-success {
@@ -55,8 +58,13 @@ section {
     @apply pb-8;
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Space Grotesk', sans-serif;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Space Grotesk", sans-serif;
 }
 
 .bg-transfer {
@@ -66,7 +74,11 @@ h1, h2, h3, h4, h5, h6 {
 /* New components */
 .btn-gradient {
     color: rgb(255, 255, 255);
-    background: -webkit-linear-gradient(left, rgb(255, 85, 0), rgb(255, 145, 0));
+    background: -webkit-linear-gradient(
+        left,
+        rgb(255, 85, 0),
+        rgb(255, 145, 0)
+    );
 }
 
 .btn-outline {
@@ -80,11 +92,17 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 100%;
     height: 30rem;
     width: 30rem;
-    filter: blur(20rem)
+    filter: blur(20rem);
 }
 
-.fancy-focus:focus{
-    background: linear-gradient(to bottom right, #ec5a16 10%, #cd51e9 50%, #40d2ff, #0a50dc);
+.fancy-focus:focus {
+    background: linear-gradient(
+        to bottom right,
+        #ec5a16 10%,
+        #cd51e9 50%,
+        #40d2ff,
+        #0a50dc
+    );
 }
 
 /* Libs */
@@ -109,5 +127,5 @@ h1, h2, h3, h4, h5, h6 {
     --json-tree-li-line-height: 1.3;
     /* font */
     --json-tree-font-size: 12px;
-    --json-tree-font-family: 'Courier New', Courier, monospace;
+    --json-tree-font-family: "Courier New", Courier, monospace;
 }

@@ -1,13 +1,17 @@
 import { Connection } from "@solana/web3.js";
 
-import { HELIUS_KEY } from "$env/static/private";
+const { HELIUS_KEY } = process.env;
 
 const networks = {
-    mainnet : `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`,
-    devnet  : `https://rpc-devnet.helius.xyz/?api-key=${HELIUS_KEY}`,
+    devnet: `https://rpc-devnet.helius.xyz/?api-key=${HELIUS_KEY}`,
+    mainnet: `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`,
+    solanaMainnet: "https://api.mainnet-beta.solana.com",
 };
 
-export default (network: "devnet" | "mainnet" = "mainnet") => new Connection(
-    networks[network],
-    "confirmed"
-);
+export default (network: "devnet" | "mainnet" = "mainnet") => {
+    if (!HELIUS_KEY) {
+        return new Connection(networks.solanaMainnet, "confirmed");
+    }
+
+    return new Connection(networks[network], "confirmed");
+};

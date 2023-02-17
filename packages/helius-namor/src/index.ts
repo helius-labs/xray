@@ -1,32 +1,28 @@
 export * from "./types";
 
 import {
-    uniqueNamesGenerator,
     adjectives,
-    colors,
     animals,
-    names
+    colors,
+    names,
+    uniqueNamesGenerator,
 } from "unique-names-generator";
 
 import { publicKeyMappings } from "./types";
 
-export const nameFromString = (str:string) => uniqueNamesGenerator({
-    dictionaries : [
-        adjectives,
-        colors,
-        animals,
-        names,
-    ],
-    seed      : str,
-    separator : " ",
-    length    : 2,
-    style     : "capital",
-});
+export const nameFromString = (str: string) =>
+    uniqueNamesGenerator({
+        dictionaries: [colors, adjectives, colors, animals],
+        length: 4,
+        seed: str + "namor",
+        separator: " ",
+        style: "capital",
+    });
 
-export const getSolanaName = (pubkey:string) => {
+export const getSolanaName = (pubkey: string) => {
     const keyMap = new Map(Object.entries(publicKeyMappings));
 
-    if(keyMap.has(pubkey)) {
+    if (keyMap.has(pubkey)) {
         return keyMap.get(pubkey);
     }
 
