@@ -36,7 +36,9 @@
 
     const address = $page.params.search;
 
+    
     const transaction = state(["solanaTransaction", address], address);
+    console.log("this is transaction supposedly", $transaction)
 
     let metadataHTML = "";
 

@@ -2,7 +2,7 @@
     import { page } from "$app/stores";
     import shortenString from "$lib/util/shorten-string";
 
-    import TokenProvider from "$lib/components/token-provider.svelte";
+    import TokenProvider from "$lib/components/providers/token-provider.svelte";
     
     const search = $page.params.search;
 </script>
