@@ -29,7 +29,7 @@
             <thead>
                 <tr class="flex justify-between pb-4">
                     <h1 class="text-2xl">MENU</h1>
-                    <a href="#">
+                    <a href="/#">
                         <Icon
                             id="cancel"
                             size="lg"

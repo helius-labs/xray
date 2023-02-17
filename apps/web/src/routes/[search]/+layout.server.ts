@@ -26,7 +26,7 @@ export async function load({ params, url }: RequestEvent) {
 
     // If it's long, assume it's a tx.
     // TODO: better way to check if it's a tx?
-    // They will be presented with an error on the tx page if it's not.
+    // They will be an error on the tx page if it's not.
     const probablyTransactionSignature = params.search.length > 50;
 
     const pubKey = validatePubkey(params.search);
