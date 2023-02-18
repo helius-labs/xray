@@ -9,7 +9,7 @@
     import Namor from "$lib/components/providers/namor-provider.svelte";
     import Transactions from "$lib/components/transactions.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
 
     const address = $page.params.search;

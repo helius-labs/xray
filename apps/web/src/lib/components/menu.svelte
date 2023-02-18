@@ -1,5 +1,5 @@
 <script>
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import { state } from "svelte-snacks";
 

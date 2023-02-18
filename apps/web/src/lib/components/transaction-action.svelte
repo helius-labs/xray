@@ -9,7 +9,7 @@
     import { ProtonSupportedType } from "@helius-labs/xray-proton";
     import { getSolanaName } from "@helius-labs/helius-namor";
 
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import IconCard from "$lib/components/icon-card.svelte";
 

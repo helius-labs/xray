@@ -8,7 +8,7 @@
         mergeTransactionActions,
     } from "$lib/util/transactions";
 
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
 

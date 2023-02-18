@@ -1,7 +1,7 @@
 <script lang="ts">
     import { copyToClipboard } from "$lib/util/clipboard";
 
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     let copied = false;
 

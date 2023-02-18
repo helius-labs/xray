@@ -7,7 +7,7 @@
 
     import formatMoney from "$lib/util/format-money";
 
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import Menu from "$lib/components/menu.svelte";
     import Search from "$lib/components/search.svelte";

@@ -19,7 +19,7 @@
     import formatHighlight from "json-format-highlight";
 
     import shortenString from "$lib/util/shorten-string";
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
