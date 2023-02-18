@@ -1,14 +1,8 @@
-import {
-    json,
-    type RequestEvent
-} from "@sveltejs/kit";
+import { json, type RequestEvent } from "@sveltejs/kit";
 
 import connect from "$lib/util/solana/connect";
 
-import {
-    getDomainKey,
-    NameRegistryState
-} from "@bonfida/spl-name-service";
+import { getDomainKey, NameRegistryState } from "@bonfida/spl-name-service";
 
 export async function GET({ params }: RequestEvent) {
     const connection = connect();
@@ -17,10 +11,7 @@ export async function GET({ params }: RequestEvent) {
 
     const { pubkey } = await getDomainKey(domain);
 
-    const data = await NameRegistryState.retrieve(
-        connection,
-        pubkey,
-    );
+    const data = await NameRegistryState.retrieve(connection, pubkey);
 
     // const address = data.registry.owner;
 
