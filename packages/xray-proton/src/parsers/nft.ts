@@ -175,19 +175,22 @@ export const parseNftBid: ProtonParser = (transaction) => {
 export const parseNftMint: ProtonParser = (transaction) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
+    const { nativeTransfers } = transaction;
+
     if (!nftEvent) {
         return generateDefaultTransaction(transaction.type);
     }
 
     let mintAmount = 0;
-    if (transaction.nativeTransfers) {
-        for (let i = 0; i < transaction.nativeTransfers.length; i++) {
-            if (transaction.nativeTransfers[i].amount > mintAmount) {
-                mintAmount = transaction.nativeTransfers[i].amount;
+    if (nativeTransfers) {
+        for (let i = 0; i < nativeTransfers.length; i++) {
+            const nativeTransferAmount =
+                nativeTransfers[i].amount / LAMPORTS_PER_SOL;
+            if (nativeTransferAmount > mintAmount) {
+                mintAmount = nativeTransferAmount;
             }
         }
     }
-
     return generateNftTransaction({
         actions: [
             {
