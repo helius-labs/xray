@@ -1,4 +1,10 @@
 {
-    "root"    : true,
-    "extends" : [ "custom" ]
+    "extends": ["custom"],
+    "prettier/prettier": [
+        "error",
+        {
+            "endOfLine": "auto"
+        }
+    ],
+    "root": true
 }
