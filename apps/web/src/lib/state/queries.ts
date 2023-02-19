@@ -56,3 +56,7 @@ export const xrayConfig = {
 export const solanaToken = {
     loader: actions.getSolanaToken,
 };
+
+export const recentActivity = {
+    loader: actions.getTokenPrice,
+};

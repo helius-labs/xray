@@ -101,3 +101,23 @@ export const getSolanaTransactions = async (
 
     return data;
 };
+
+const recentActivityKey = "xray:recent-activity";
+
+export const getRecentActity = () => {
+    const activity = window.localStorage.getItem(recentActivityKey);
+
+    return JSON.parse(activity || "[]");
+};
+
+export const addRecentActivity = (item: string) => {
+    let data = [];
+
+    try {
+        data = JSON.parse(
+            window.localStorage.getItem(recentActivityKey) || "[]"
+        );
+    } catch (error) {}
+
+    window.localStorage.setItem(recentActivityKey, JSON.stringify(data));
+};

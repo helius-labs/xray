@@ -8,7 +8,7 @@
         mergeTransactionActions,
     } from "$lib/util/transactions";
 
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
 
@@ -54,7 +54,9 @@
             <a
                 class="mb-2 block cursor-pointer hover:opacity-75"
                 data-sveltekit-reload
-                href="/{action.signature}/tx?wallet={$page.params.search}"
+                href="/{action.signature}/tx?prev={window.encodeURI(
+                    $page.params.search
+                )}"
                 in:fly={{
                     delay: actionIndex * 100,
                     easing: cubicOut,
