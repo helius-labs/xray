@@ -16,7 +16,7 @@ export async function GET({ params }: RequestEvent) {
     }
 
     const response = await fetch(
-        `https://api.helius.xyz/v0/token-metadata/?api-key=${HELIUS_KEY}`,
+        `https://api.helius.xyz/v0/token-metadata?api-key=${HELIUS_KEY}`,
         {
             body: JSON.stringify({
                 includeOffChain: true,
