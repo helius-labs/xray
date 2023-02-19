@@ -19,11 +19,13 @@
     import formatHighlight from "json-format-highlight";
 
     import shortenString from "$lib/util/shorten-string";
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Namor from "src/lib/components/providers/namor-provider.svelte";
+    import CopyButton from "$lib/components/copy-button.svelte";
+    import DetailsPage from "$lib/components/details-page.svelte";
 
     import {
         groupTransactionActions,
@@ -58,24 +60,265 @@
 
         groups = groupTransactionActions(merged);
     }
+
+    $: prev = $page.url.searchParams.get("prev")
+        ? $page.url.searchParams.get("prev")
+        : "";
 </script>
 
-<div class="flex items-center justify-between">
-    <Namor
-        text={$page.params.search}
-        let:result
-        let:shortenedOriginal
-    >
-        <h1
-            class="tooltip text-3xl font-bold"
-            data-tip="Tx: {shortenedOriginal}"
+<DetailsPage>
+    {#if $transaction?.isLoading}
+        {#each Array(3) as _}
+            <div class="mb-3">
+                <IconCard />
+            </div>
+        {/each}
+    {:else if $transaction?.isError}
+        <p>Error: {$transaction?.error}</p>
+    {:else if $transaction?.hasFetched}
+        <div class="mb-3">
+            <IconCard>
+                <div slot="icon">
+                    <div class="center h-10 w-10 rounded-full bg-success">
+                        <Icon
+                            id="check"
+                            fill="black"
+                            size="sm"
+                        />
+                    </div>
+                </div>
+                <div
+                    slot="title"
+                    class="flex items-center justify-between"
+                >
+                    <div>
+                        <p>Status</p>
+                        <p class="text-xs opacity-50">
+                            This transaction has successfully processed.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="badge-success badge">Success</div>
+                    </div>
+                </div>
+            </IconCard>
+        </div>
+
+        <div
+            in:fade={{
+                delay: 500,
+                duration: 750,
+            }}
         >
-            {result}
-        </h1>
-    </Namor>
+            <h1 class="text-1xl mt-10 font-bold">Actions</h1>
+            {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
+                <div
+                    class="pb-4"
+                    in:fade={{
+                        delay: groupIndex * 100,
+                        duration: 500,
+                    }}
+                >
+                    {#each actions as action, actionIndex}
+                        {#if action.type === "TRANSFER" || action.type === "SWAP"}
+                            <a
+                                class="mb-2 block cursor-pointer hover:opacity-75"
+                                data-sveltekit-reload
+                                href="/{action.sent}/token?prev={window.encodeURI(
+                                    action.signature
+                                )}"
+                                in:fly={{
+                                    delay: actionIndex * 100,
+                                    easing: cubicOut,
+                                    y: 50,
+                                }}
+                            >
+                                <TransactionAction {action} />
+                            </a>
+                        {:else}
+                            <a
+                                class="mb-2 block cursor-pointer hover:opacity-75"
+                                data-sveltekit-reload
+                                href="/{action.signature}/tx?prev={window.encodeURI(
+                                    $page.params.search
+                                )}"
+                                in:fly={{
+                                    delay: actionIndex * 100,
+                                    easing: cubicOut,
+                                    y: 50,
+                                }}
+                            >
+                                <TransactionAction {action} />
+                            </a>
+                        {/if}
+                    {/each}
+                </div>
+            {/each}
+
+            <h1 class="text-1xl mt-5 font-bold">Details</h1>
+
+            <div class="mb-3">
+                <IconCard>
+                    <div slot="icon">
+                        <div class="center h-10 w-10 rounded-full bg-secondary">
+                            <Icon
+                                id="network"
+                                size="sm"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        slot="title"
+                        class="flex items-center justify-between"
+                    >
+                        <div>
+                            <p>Network Fee</p>
+                            <p class="text-xs opacity-50">
+                                Cost for processing this transaction.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="opacity-50">
+                                {$transaction?.data?.parsed?.fee}
+                            </p>
+                        </div>
+                    </div>
+                </IconCard>
+            </div>
+
+            <div class="mb-3">
+                <IconCard>
+                    <div slot="icon">
+                        <div class="center h-10 w-10 rounded-full bg-secondary">
+                            <Icon
+                                id="signature"
+                                size="sm"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        slot="title"
+                        class="flex items-center justify-between"
+                    >
+                        <div>
+                            <p>Signature</p>
+                            <p class="text-xs opacity-50">
+                                {shortenString($page.params.search)}
+                            </p>
+                        </div>
+                        <div>
+                            <CopyButton text={$page.params.search} />
+                        </div>
+                    </div>
+                </IconCard>
+            </div>
+
+            <div class="mb-3">
+                <IconCard>
+                    <div slot="icon">
+                        <div class="center h-10 w-10 rounded-full bg-secondary">
+                            <Icon
+                                id="json"
+                                size="sm"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        slot="title"
+                        class="flex items-center justify-between"
+                    >
+                        <div>
+                            <p>JSON</p>
+                            <p class="text-xs opacity-50">
+                                View the raw transaction data.
+                            </p>
+                        </div>
+                        <div>
+                            {#if showCode}
+                                <button
+                                    class="btn-ghost btn-sm btn"
+                                    on:click={() => (showCode = false)}
+                                >
+                                    <Icon
+                                        id="cancel"
+                                        size="md"
+                                    />
+                                </button>
+                            {:else}
+                                <button
+                                    class="btn-ghost btn-sm btn"
+                                    on:click={() => (showCode = true)}
+                                >
+                                    <Icon
+                                        id="dots"
+                                        size="md"
+                                    />
+                                </button>
+                            {/if}
+                        </div>
+                    </div>
+                </IconCard>
+
+                {#if showCode}
+                    <div
+                        class="card mt-4 w-full overflow-hidden"
+                        in:fade={{ duration: 500 }}
+                    >
+                        <div class="code overflow-hidden">
+                            <pre><code class="text-xs"
+                                    >{@html metadataHTML}</code
+                                ></pre>
+                        </div>
+                    </div>
+                {/if}
+            </div>
+
+            <div class="my-5 flex justify-center">
+                <a
+                    class="btn-ghost btn text-xs text-success hover:bg-transparent"
+                    href={`https://explorer.solana.com/tx/${$page?.params?.search}`}
+                    >View on Solana Explorer</a
+                >
+            </div>
+        </div>
+    {/if}
+</DetailsPage>
+
+<!-- 
+<div
+    class="sticky top-16 z-10 mb-5 flex items-center justify-between rounded-lg border p-4 pt-5"
+>
+    <div>
+        <Namor
+            text={$page.params.search}
+            let:result
+            let:shortenedOriginal
+        >
+            <div class="flex items-center">
+                <Icon id="lightning" />
+
+                <h3 class="tooltip tooltip-right ml-2">
+                    Transaction
+                    <span class="text-xs opacity-50">
+                        {shortenedOriginal}
+                    </span>
+                </h3>
+            </div>
+            <h1
+                class="tooltip text-lg font-bold lg:text-3xl"
+                data-tip="Tx: {shortenedOriginal}"
+            >
+                {result}
+            </h1>
+        </Namor>
+    </div>
 
     {#if !$transaction?.hasFetched}
-        <button class="loading btn-ghost btn pr-0" />
+        <button class="btn-ghost loading btn pr-0" />
+    {:else}
+        <div>
+            <CopyButton text={window.location.href} />
+        </div>
     {/if}
 </div>
 
@@ -88,43 +331,6 @@
 {:else if $transaction?.isError}
     <p>Error: {$transaction?.error}</p>
 {:else if $transaction?.hasFetched}
-    {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
-        <div
-            class="py-6"
-            in:fade={{
-                delay: groupIndex * 100,
-                duration: 500,
-            }}
-        >
-            <div class="mb-2 flex opacity-75">
-                <div class="flex items-center">
-                    <Icon
-                        id={icon}
-                        size="md"
-                    />
-                    <h1 class="ml-2">
-                        {label}
-                    </h1>
-                </div>
-            </div>
-
-            {#each actions as action, actionIndex}
-                <a
-                    class="mb-2 block cursor-pointer hover:opacity-75"
-                    data-sveltekit-reload
-                    href="/{action.sent}/token?tx={action.signature}"
-                    in:fly={{
-                        delay: actionIndex * 100,
-                        easing: cubicOut,
-                        y: 50,
-                    }}
-                >
-                    <TransactionAction {action} />
-                </a>
-            {/each}
-        </div>
-    {/each}
-
     <div
         in:fade={{
             delay: 500,
@@ -137,7 +343,7 @@
                     <div class="center h-10 w-10 rounded-full bg-success">
                         <Icon
                             id="check"
-                            fill="base-100"
+                            fill="black"
                             size="sm"
                         />
                     </div>
@@ -209,12 +415,7 @@
                         </p>
                     </div>
                     <div>
-                        <button class="btn-ghost btn-sm btn">
-                            <Icon
-                                id="copy"
-                                size="md"
-                            />
-                        </button>
+                        <CopyButton text={$page.params.search} />
                     </div>
                 </div>
             </IconCard>
@@ -268,7 +469,7 @@
 
             {#if showCode}
                 <div
-                    class="card mt-3"
+                    class="card mt-4 w-full overflow-hidden"
                     in:fade={{ duration: 500 }}
                 >
                     <div class="code overflow-hidden">
@@ -277,6 +478,63 @@
                     </div>
                 </div>
             {/if}
+
+            <h1 class="mt-5 text-2xl font-bold">Transaction Actions</h1>
+            {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
+                <div
+                    class="pb-6"
+                    in:fade={{
+                        delay: groupIndex * 100,
+                        duration: 500,
+                    }}
+                >
+                    <div class="mb-2 flex opacity-75">
+                        <div class="flex items-center">
+                            <Icon
+                                id={icon}
+                                size="md"
+                            />
+                            <h1 class="ml-2">
+                                {label}
+                            </h1>
+                        </div>
+                    </div>
+
+                    {#each actions as action, actionIndex}
+                        {#if action.type === "TRANSFER" || action.type === "SWAP"}
+                            <a
+                                class="mb-2 block cursor-pointer hover:opacity-75"
+                                data-sveltekit-reload
+                                href="/{action.sent}/token?prev={window.encodeURI(
+                                    action.signature
+                                )}"
+                                in:fly={{
+                                    delay: actionIndex * 100,
+                                    easing: cubicOut,
+                                    y: 50,
+                                }}
+                            >
+                                <TransactionAction {action} />
+                            </a>
+                        {:else}
+                            <a
+                                class="mb-2 block cursor-pointer hover:opacity-75"
+                                data-sveltekit-reload
+                                href="/{action.signature}/tx?prev={window.encodeURI(
+                                    $page.params.search
+                                )}"
+                                in:fly={{
+                                    delay: actionIndex * 100,
+                                    easing: cubicOut,
+                                    y: 50,
+                                }}
+                            >
+                                <TransactionAction {action} />
+                            </a>
+                        {/if}
+                    {/each}
+                </div>
+            {/each}
         </div>
 
         <div class="my-5 flex justify-center">
@@ -287,4 +545,4 @@
             >
         </div>
     </div>
-{/if}
+{/if} -->

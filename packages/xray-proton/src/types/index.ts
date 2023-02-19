@@ -10,6 +10,7 @@ export enum ProtonSupportedType {
     NFT_CANCEL_LISTING,
     NFT_LISTING,
     NFT_SALE,
+    NFT_MINT,
     SWAP,
     TRANSFER,
     UNKNOWN,
@@ -60,8 +61,9 @@ export const parsers: ProtonParsers = {
     NFT_BID_CANCELLED: parser.parseNftCancelBid,
     NFT_CANCEL_LISTING: parser.parseNftCancelList,
     NFT_LISTING: parser.parseNftList,
+    NFT_MINT: parser.parseNftMint,
     NFT_SALE: parser.parseNftSale,
     SWAP: parser.parseSwap,
     TRANSFER: parser.parseTransfer,
-    UNKNOWN: (data: any) => data,
+    UNKNOWN: parser.parseUnknown,
 };

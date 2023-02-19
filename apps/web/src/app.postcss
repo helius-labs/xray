@@ -5,11 +5,19 @@
 
 body,
 html {
-    width: 100vw;
     min-height: 100vh;
-    overflow-x: hidden;
     background: #000000;
     letter-spacing: 0.05rem;
+    margin: 0;
+
+    font-size: 14px;
+}
+
+@media (min-width: 640px) {
+    body,
+    html {
+        font-size: 16px;
+    }
 }
 
 body {
@@ -42,8 +50,12 @@ input::placeholder {
     @apply fill-green-500;
 }
 
-.icon-fill-base-100 {
-    @apply fill-base-100;
+.icon-fill-black {
+    @apply fill-black;
+}
+
+.icon-fill-warning {
+    @apply fill-warning;
 }
 
 .icon-md {
@@ -103,29 +115,4 @@ h6 {
         #40d2ff,
         #0a50dc
     );
-}
-
-/* Libs */
-:root {
-    /* color */
-    --json-tree-string-color: #00e45d;
-    --json-tree-symbol-color: #00e45d;
-    --json-tree-boolean-color: #52b6ff;
-    --json-tree-function-color: #52b6ff;
-    --json-tree-number-color: #52b6ff;
-    --json-tree-label-color: #c9d1d9;
-    --json-tree-property-color: ##c9d1d9;
-    --json-tree-arrow-color: #727272;
-    --json-tree-operator-color: #727272;
-    --json-tree-null-color: #8d8d8d;
-    --json-tree-undefined-color: #8d8d8d;
-    --json-tree-date-color: #8d8d8d;
-    --json-tree-internal-color: grey;
-    --json-tree-regex-color: #00e45d;
-    /* position */
-    --json-tree-li-indentation: 1em;
-    --json-tree-li-line-height: 1.3;
-    /* font */
-    --json-tree-font-size: 12px;
-    --json-tree-font-family: "Courier New", Courier, monospace;
 }

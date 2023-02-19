@@ -172,28 +172,40 @@ export const parseNftBid: ProtonParser = (transaction) => {
     });
 };
 
-export const parseNftBurn: ProtonParser = (transaction) => {
+export const parseNftMint: ProtonParser = (transaction) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
+    const { nativeTransfers } = transaction;
 
     if (!nftEvent) {
         return generateDefaultTransaction(transaction.type);
     }
 
+    let mintAmount = 0;
+    if (nativeTransfers) {
+        for (let i = 0; i < nativeTransfers.length; i++) {
+            const nativeTransferAmount =
+                nativeTransfers[i].amount / LAMPORTS_PER_SOL;
+            if (nativeTransferAmount > mintAmount) {
+                mintAmount = nativeTransferAmount;
+            }
+        }
+    }
     return generateNftTransaction({
         actions: [
             {
                 // @ts-ignore
-                amount: nftEvent.amount / LAMPORTS_PER_SOL,
+                amount: mintAmount,
                 from: "",
                 fromName: "",
-                sent: (nftEvent.tokensInvolved || [{}])[0]?.mint,
+                received: (nftEvent.tokensInvolved || [{}])[0]?.mint,
+                sent: SOL,
                 to: nftEvent.buyer,
                 toName: getSolanaName(nftEvent.buyer),
             },
         ],
         event: nftEvent,
-        primaryUser: nftEvent.seller,
+        primaryUser: nftEvent.buyer,
         transaction,
     });
 };

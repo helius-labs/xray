@@ -16,9 +16,6 @@
         "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'"
     },
     "devDependencies": {
-        "@solana/wallet-adapter-wallets": "^0.19.11",
-        "@svelte-on-solana/wallet-adapter-core": "^1.0.11-alpha.0",
-        "@svelte-on-solana/wallet-adapter-ui": "^1.0.21-alpha.0",
         "@sveltejs/adapter-auto": "^2.0.0",
         "@sveltejs/adapter-vercel": "^2.0.2",
         "@tailwindcss/typography": "^0.5.8",
@@ -35,6 +32,9 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@solana/wallet-adapter-wallets": "^0.19.11",
+        "@svelte-on-solana/wallet-adapter-core": "^1.0.11-alpha.0",
+        "@svelte-on-solana/wallet-adapter-ui": "^1.0.21-alpha.0",
         "@helius-labs/helius-namor": "*",
         "@helius-labs/xray-database": "*",
         "@helius-labs/xray-proton": "*",
@@ -42,9 +42,10 @@
         "@solana/spl-token-registry": "^0.2.7",
         "@sveltejs/kit": "^1.6.0",
         "highlight.js": "^11.7.0",
+        "json-viewer-js": "^1.0.8",
         "svelte-highlight": "^7.1.2",
         "svelte-intersection-observer": "^0.10.0",
-        "svelte-snacks": "*",
-        "tailwindcss-neumorphism": "^0.1.0"
+        "svelte-json-tree": "^1.0.0",
+        "svelte-snacks": "*"
     }
 }

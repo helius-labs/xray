@@ -108,13 +108,13 @@ A SvelteKit app that contains the main X-Ray UI and various endpoints used for v
 
 ## Icons
 
-See list of available icons at `$lib/icons/index.ts`.
+See list of available icons at `$lib/components/icon.sveltes/index.ts`.
 
 ### Use Icons
 
 ```js
 <script>
-    import Icon from "$lib/icon";
+    import Icon from "$lib/components/icon.svelte";
 </script>
 
 <Icon id="paper-plane">
@@ -124,7 +124,7 @@ See list of available icons at `$lib/icons/index.ts`.
 
 1. Find the icon you want on [IconMon](https://iconmonstr.com/). Most of these should render fine.
 2. Click "Embed" -> "Inline" and copy only the `<path>`.
-3. Add a new key to `$lib/icons/index.ts` that is similar to the Icon Monsters name for the icon and add your `<path>`.
+3. Add a new key to `$lib/components/icon.sveltes/index.ts` that is similar to the Icon Monsters name for the icon and add your `<path>`.
 
 ## State Management
 

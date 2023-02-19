@@ -1,52 +1,54 @@
-export default (timestamp: number) => {
+interface ParsedDateTime {
+    clockHours: number;
+    day: number;
+    hours: number;
+    minutes: number;
+    month: string;
+    seconds: number;
+    suffix: string;
+    year: number;
+    formatted: string;
+}
+
+const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+];
+
+export default (timestamp: number): ParsedDateTime => {
     const date = new Date(timestamp * 1000);
-    // Months array
-    const monthsArr = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        "Jul",
-        "Aug",
-        "Sep",
-        "Oct",
-        "Nov",
-        "Dec",
-    ];
-    // Year
-    const year = date.getFullYear();
 
-    // Month
-    const month = monthsArr[date.getMonth()];
-
-    // Day
-    const day = date.getDate();
-
-    // Hours
     const hours = date.getHours();
-
-    // Minutes
-    const minutes = date.getMinutes();
-
-    // Seconds
-    const seconds = date.getSeconds();
-
-    // Convert hours & minutes to 12 hour format
-
-    const suffix = hours >= 12 ? "pm" : "am";
 
     const clockHours = ((hours + 11) % 12) + 1;
 
-    return {
-        year,
-        month,
-        day,
-        hours,
-        minutes,
-        seconds,
+    const result: ParsedDateTime = {
         clockHours,
-        suffix,
+        day: date.getDate(),
+        formatted: "",
+        hours: date.getHours(),
+        minutes: date.getMinutes(),
+        month: months[date.getMonth()],
+        seconds: date.getSeconds(),
+        suffix: hours >= 12 ? "pm" : "am",
+        year: date.getFullYear(),
     };
+
+    result.formatted = `${clockHours}:${result.minutes < 10 ? "0" : ""}${
+        result.minutes
+    } ${result.suffix} ${result.month} ${result.day} '${String(
+        result.year
+    ).slice(-2)}`;
+
+    return result;
 };
