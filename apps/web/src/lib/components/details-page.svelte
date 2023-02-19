@@ -1,9 +1,22 @@
 <script>
     import { page } from "$app/stores";
+    import { fade } from "svelte/transition";
 
     import Namor from "$lib/components/providers/namor-provider.svelte";
     import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
+
+    let pageType = "";
+
+    export let tokenName = "";
+
+    if ($page.url.pathname.endsWith("/wallet")) {
+        pageType = "wallet";
+    } else if ($page.url.pathname.endsWith("/token")) {
+        pageType = "token";
+    } else {
+        pageType = "transaction";
+    }
 </script>
 
 <section class="pb-96">
@@ -18,10 +31,10 @@
                     let:shortenedOriginal
                 >
                     <div class="flex items-center">
-                        {#if $page.url.pathname.endsWith("/wallet")}
+                        {#if pageType === "wallet"}
                             <Icon id="person" />
                             <span class="ml-2"> Account </span>
-                        {:else if $page.url.pathname.endsWith("/token")}
+                        {:else if pageType === "token"}
                             <Icon id="coins" />
                             <span class="ml-2"> Token </span>
                         {:else}
@@ -35,12 +48,17 @@
                             </span>
                         </h3>
                     </div>
-
-                    <h1 class="text-lg font-bold lg:text-2xl">{result}</h1>
+                    {#if pageType === "token"}
+                        <h2 class="text-3xl font-bold lg:text-4xl">
+                            {tokenName}
+                        </h2>
+                    {:else}
+                        <h1 class="text-3xl font-bold lg:text-2xl">{result}</h1>
+                    {/if}
                 </Namor>
             </div>
             <div
-                class="col-span-6 mt-2 flex md:col-span-1 lg:items-center lg:justify-end"
+                class="col-span-6 justify-end flex md:col-span-1 lg:items-center"
             >
                 <CopyButton
                     text={$page.url.pathname}
