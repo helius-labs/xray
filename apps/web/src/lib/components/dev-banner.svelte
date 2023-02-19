@@ -1,11 +1,3 @@
-<style>
-    .dev {
-        width: 10rem;
-        z-index: 1000;
-        max-height: 50vh;
-    }
-</style>
-
 <script lang="ts">
     import { state } from "svelte-snacks";
 

@@ -1,25 +1,71 @@
+<style>
+    .input {
+        background: rgba(0, 0, 0, 0.25);
+    }
+</style>
+
 <script lang="ts">
-    import { onMount } from "svelte";
+    import type { Icon as IconType } from "$lib/types";
 
     import { nameFromString } from "@helius-labs/helius-namor";
 
-    import Icon from "$lib/icon";
+    import { state } from "svelte-snacks";
 
-    let inputEl: HTMLInputElement;
+    import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
+
+    import { pasteFromClipboard } from "$lib/util/clipboard";
+
+    import { showConnectWallet } from "$lib/state/stores/connect-wallet";
+
+    import Icon from "$lib/components/icon.svelte";
+
+    import Modal from "$lib/components/modal.svelte";
+
+    export let inputEl: HTMLInputElement | null = null;
+    export let searchError = "";
+    export let size = "sm" as "sm" | "lg";
+
+    export const focusInput = () => {
+        inputEl?.focus();
+    };
+
+    export const clearSearch = () => {
+        inputValue = "";
+
+        inputEl?.focus();
+    };
+
     let inputValue: string = "";
-    let recent: string[] = [];
-    let searchError = "";
     let isSearching = false;
+    let connected = false;
+
+    let showSearchError = () => "";
+
+    const recentActivity = state("recentActivity");
+
+    const setFromClipboard = async () => {
+        const clipboard = await pasteFromClipboard();
+
+        if (clipboard) {
+            inputValue = clipboard;
+        }
+    };
+
+    const connectWallet = () => {
+        connected = false;
+
+        showConnectWallet();
+    };
+
+    const searchFailed = () => {
+        isSearching = false;
+
+        showSearchError();
+    };
 
     const newSearch = async () => {
         searchError = "";
         isSearching = true;
-
-        const searchFailed = () => {
-            searchError =
-                "Invalid search. Ensure you've provided a valid wallet address, token ID, or transaction signature.";
-            isSearching = false;
-        };
 
         try {
             const response = await fetch(`/$/api/search/${inputValue}`);
@@ -30,69 +76,109 @@
                 return searchFailed();
             }
 
-            const recentStorage = window?.localStorage?.getItem(
-                "xray:recent-searches"
-            );
-
-            const recentJson = JSON.parse(recentStorage || "[]");
-
-            if (!recent.includes(inputValue)) {
-                window.localStorage?.setItem(
-                    "xray:recent-searches",
-                    JSON.stringify([inputValue, ...recentJson.slice(0, 5)])
-                );
-            }
-
             window.location.href = data?.url || "/";
         } catch (error) {
             searchFailed();
         }
     };
 
-    onMount(() => {
-        const recentStorage = window?.localStorage?.getItem(
-            "xray:recent-searches"
-        );
+    const supportedSearches: Array<[IconType, string]> = [
+        ["globe", "Bonfida .sol Domains"],
+        ["backpack", "xNFT Backpack Usernames"],
+        ["person", "Wallet/Account Addresses"],
+        ["coins", "Token Addresses"],
+        ["lightning", "Transaction Signatures"],
+    ];
 
-        recent = JSON.parse(recentStorage || "[]");
-    });
+    $: if ($walletStore.connected && !connected) {
+        focusInput();
+
+        inputValue = $walletStore.publicKey?.toBase58() || "";
+
+        window.location.href = `/${inputValue}`;
+
+        connected = true;
+    }
 </script>
 
-<form
-    class="relative my-2  w-full"
-    on:submit|preventDefault={newSearch}
+<Modal
+    id="search-error"
+    bind:show={showSearchError}
 >
-    <svg
-        class="absolute left-4 bottom-1/2 h-7 translate-y-1/2 fill-white opacity-50"
-        clip-rule="evenodd"
-        fill-rule="evenodd"
-        stroke-linejoin="round"
-        stroke-miterlimit="2"
-        viewBox="0 0 24 24"
-        xmlns="http://www.w3.org/2000/svg"
-        ><path
-            d="m15.97 17.031c-1.479 1.238-3.384 1.985-5.461 1.985-4.697 0-8.509-3.812-8.509-8.508s3.812-8.508 8.509-8.508c4.695 0 8.508 3.812 8.508 8.508 0 2.078-.747 3.984-1.985 5.461l4.749 4.75c.146.146.219.338.219.531 0 .587-.537.75-.75.75-.192 0-.384-.073-.531-.22zm-5.461-13.53c-3.868 0-7.007 3.14-7.007 7.007s3.139 7.007 7.007 7.007c3.866 0 7.007-3.14 7.007-7.007s-3.141-7.007-7.007-7.007z"
-            fill-rule="nonzero"
-        /></svg
-    >
+    <h1 class="text-2xl font-bold">Invalid Search</h1>
+    <p class="mb-3">
+        Invalid search. Make sure you provided a valid search that contains one
+        of the following.
+    </p>
 
+    <strong class="uppercase">Supported Searches</strong>
+
+    {#each supportedSearches as [icon, text]}
+        <div class="my-2 grid grid-cols-6 items-center">
+            <div class="center col-span-1">
+                <Icon
+                    id={icon}
+                    size="md"
+                />
+            </div>
+            <div class="col-span-5">
+                <p>{text}</p>
+            </div>
+        </div>
+    {/each}
+</Modal>
+
+<form
+    class="relative my-2 w-full"
+    on:submit|preventDefault={newSearch}
+    on:keydown={(event) => {
+        if (event.key === "Enter") {
+            newSearch();
+        }
+    }}
+>
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
             class="input-bordered input h-10 w-full  rounded-lg focus:input-success"
+            class:h-14={size === "lg"}
             placeholder="Search Solana"
             tabindex="0"
             type="text"
             bind:value={inputValue}
         />
 
-        {#if recent.length}
-            <ul
-                class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
-            >
-                <p class="mt-2 mb-1 text-xs font-bold">Recent</p>
-                {#each recent as address}
-                    <li class="m1-ds2 relative w-full truncate px-0">
+        <ul
+            class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
+        >
+            <div class="flex flex-wrap items-center justify-between">
+                <p class="text-md mb-1 mt-2 font-bold">Recents</p>
+                <div class="mb-1">
+                    <button
+                        class="btn-outline btn-sm btn"
+                        on:click|preventDefault={clearSearch}
+                    >
+                        <span class="text-sm"> Clear </span>
+                    </button>
+
+                    <button
+                        class="btn-outline btn-sm btn ml-2"
+                        on:click|preventDefault={setFromClipboard}
+                    >
+                        <span class="text-sm"> Paste </span>
+                    </button>
+
+                    <button
+                        class="btn-outline btn-sm btn ml-2"
+                        on:click|preventDefault={connectWallet}
+                    >
+                        <span class="text-sm">Connect Wallet</span>
+                    </button>
+                </div>
+            </div>
+            {#if $recentActivity?.data?.length}
+                {#each $recentActivity.data as address}
+                    <li class="m1-ds2 relative z-30 w-full truncate px-0">
                         <a
                             class="block w-full max-w-full text-ellipsis px-1 py-2"
                             data-sveltekit-preload-data="hover"
@@ -111,8 +197,12 @@
                         </a>
                     </li>
                 {/each}
-            </ul>
-        {/if}
+            {:else}
+                <i class="pt-2 text-xs opacity-50"
+                    >Paste an address or connect a wallet to get started.</i
+                >
+            {/if}
+        </ul>
     </div>
 
     <button

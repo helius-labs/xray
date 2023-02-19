@@ -16,9 +16,6 @@
         "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'"
     },
     "devDependencies": {
-        "@solana/wallet-adapter-wallets": "^0.19.11",
-        "@svelte-on-solana/wallet-adapter-core": "^1.0.11-alpha.0",
-        "@svelte-on-solana/wallet-adapter-ui": "^1.0.21-alpha.0",
         "@sveltejs/adapter-auto": "^2.0.0",
         "@sveltejs/adapter-vercel": "^2.0.2",
         "@tailwindcss/typography": "^0.5.8",
@@ -35,6 +32,9 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@solana/wallet-adapter-wallets": "^0.19.11",
+        "@svelte-on-solana/wallet-adapter-core": "^1.0.11-alpha.0",
+        "@svelte-on-solana/wallet-adapter-ui": "^1.0.21-alpha.0",
         "@helius-labs/helius-namor": "*",
         "@helius-labs/xray-database": "*",
         "@helius-labs/xray-proton": "*",
