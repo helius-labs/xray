@@ -46,30 +46,22 @@ export const parseTransfer = (
 
         const from = tx.fromUserAccount || "";
         let fromName;
-
         if (tx.fromUserAccount) {
             fromName = getSolanaName(tx.fromUserAccount);
         }
 
         const to = tx.toUserAccount || "";
-
         let toName;
-
         if (tx.toUserAccount) {
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        const actionType =
-            tx.fromUserAccount === address
-                ? "TRANSFER_SENT"
-                : "TRANSFER_RECEIVED";
-
         const amount = tx?.tokenAmount;
 
-        if (actionType === "TRANSFER_SENT") {
+        if (address === undefined) {
             const sent = tx.mint;
             actions.push({
-                actionType,
+                actionType: "TRANSFER",
                 amount,
                 from,
                 fromName,
@@ -77,17 +69,35 @@ export const parseTransfer = (
                 to,
                 toName,
             });
-        } else if (actionType === "TRANSFER_RECEIVED") {
-            const received = tx.mint;
-            actions.push({
-                actionType,
-                amount,
-                from,
-                fromName,
-                received,
-                to,
-                toName,
-            });
+        } else {
+            const actionType =
+                tx.fromUserAccount === address
+                    ? "TRANSFER_SENT"
+                    : "TRANSFER_RECEIVED";
+
+            if (actionType === "TRANSFER_SENT") {
+                const sent = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    sent,
+                    to,
+                    toName,
+                });
+            } else if (actionType === "TRANSFER_RECEIVED") {
+                const received = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    received,
+                    to,
+                    toName,
+                });
+            }
         }
     }
 
@@ -111,16 +121,11 @@ export const parseTransfer = (
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        const actionType =
-            tx.fromUserAccount === address
-                ? "TRANSFER_SENT"
-                : "TRANSFER_RECEIVED";
-
         const amount = tx.amount / LAMPORTS_PER_SOL;
-        if (actionType === "TRANSFER_SENT") {
+        if (address === undefined) {
             const sent = SOL;
             actions.push({
-                actionType,
+                actionType: "TRANSFER",
                 amount,
                 from,
                 fromName,
@@ -128,19 +133,39 @@ export const parseTransfer = (
                 to,
                 toName,
             });
-        } else if (actionType === "TRANSFER_RECEIVED") {
-            const received = SOL;
-            actions.push({
-                actionType,
-                amount,
-                from,
-                fromName,
-                received,
-                to,
-                toName,
-            });
+        } else {
+            const actionType =
+                tx.fromUserAccount === address
+                    ? "TRANSFER_SENT"
+                    : "TRANSFER_RECEIVED";
+
+            if (actionType === "TRANSFER_SENT") {
+                const sent = SOL;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    sent,
+                    to,
+                    toName,
+                });
+            } else if (actionType === "TRANSFER_RECEIVED") {
+                const received = SOL;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    received,
+                    to,
+                    toName,
+                });
+            }
         }
     }
+
+    console.log(actions);
 
     return {
         actions,
