@@ -165,7 +165,7 @@ export const burnToken = {
     type: "BURN",
 };
 
-export const burnNft = {
+export const burnNFT = {
     accountData: [
         {
             account: "BGkpRfK8L5Yy7A8wimA4CXra2GhFxdSWK944Ap6dPKCu",
