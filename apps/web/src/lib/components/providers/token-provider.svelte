@@ -42,7 +42,6 @@
 
 
     onMount(() => {
-        console.log("Mounted");
         isReady = true;
     });
 </script>
