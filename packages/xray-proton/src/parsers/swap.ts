@@ -11,7 +11,8 @@ interface TempTokenTransfer extends TokenTransfer {
 }
 
 export const parseSwap = (
-    transaction: EnrichedTransaction
+    transaction: EnrichedTransaction,
+    address: string | undefined
 ): ProtonTransaction => {
     const type = "SWAP";
     let source = "SYSTEM_PROGRAM" as Source;
@@ -39,14 +40,6 @@ export const parseSwap = (
 
     for (let i = 0; i < tokenTransfers.length; i++) {
         const tx = tokenTransfers[i] as TempTokenTransfer;
-        let sent;
-        let received;
-
-        if (tx.fromUserAccount === primaryUser) {
-            sent = tx.mint;
-        } else if (tx.toUserAccount === primaryUser) {
-            received = tx.mint;
-        }
 
         const from = tx.fromUserAccount || "";
         let fromName;
@@ -64,24 +57,60 @@ export const parseSwap = (
 
         const amount = tx.tokenAmount;
 
-        if (sent) {
-            actions.push({
-                amount,
-                from,
-                fromName,
-                sent,
-                to,
-                toName,
-            });
+        if (address === undefined) {
+            const actionType = "SWAP";
+            if (tx.fromUserAccount === primaryUser) {
+                const sent = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    sent,
+                    to,
+                    toName,
+                });
+            } else if (tx.toUserAccount === primaryUser) {
+                const received = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    received,
+                    to,
+                    toName,
+                });
+            }
         } else {
-            actions.push({
-                amount,
-                from,
-                fromName,
-                received,
-                to,
-                toName,
-            });
+            const actionType =
+                tx.fromUserAccount === primaryUser
+                    ? "SWAP_SENT"
+                    : "SWAP_RECEIVED";
+
+            if (actionType === "SWAP_SENT") {
+                const sent = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    sent,
+                    to,
+                    toName,
+                });
+            } else if (actionType === "SWAP_RECEIVED") {
+                const received = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    received,
+                    to,
+                    toName,
+                });
+            }
         }
     }
 

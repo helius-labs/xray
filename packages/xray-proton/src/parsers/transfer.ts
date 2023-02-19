@@ -165,8 +165,6 @@ export const parseTransfer = (
         }
     }
 
-    console.log(actions);
-
     return {
         actions,
         fee,
