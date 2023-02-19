@@ -119,7 +119,6 @@ export const parseUnknown = (
                 toName = getSolanaName(tx.toUserAccount);
             }
 
-            const sent = "So11111111111111111111111111111111111111112";
             const amount = tx.amount / LAMPORTS_PER_SOL;
 
             if (!address) {

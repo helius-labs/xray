@@ -3,6 +3,7 @@ import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
 import { ProtonTransaction, ProtonTransactionAction, SOL } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
+import { rentTransferCheck } from "../utils/rent-transfer-check";
 
 interface TempTokenTransfer extends TokenTransfer {
     tokenAmount: number;
@@ -104,45 +105,28 @@ export const parseTransfer = (
     const nativeTransfersLength =
         nativeTransfers.length - tokenTransfers.length;
 
-    for (let i = 0; i < nativeTransfersLength; i++) {
+    for (let i = 0; i < nativeTransfers.length; i++) {
         const tx = nativeTransfers[i];
 
-        const from = tx.fromUserAccount || "";
-        let fromName;
+        if (!rentTransferCheck(tx.amount)) {
+            const from = tx.fromUserAccount || "";
+            let fromName;
+            if (tx.fromUserAccount) {
+                fromName = getSolanaName(tx.fromUserAccount);
+            }
 
-        if (tx.fromUserAccount) {
-            fromName = getSolanaName(tx.fromUserAccount);
-        }
+            const to = tx.toUserAccount || "";
+            let toName;
+            if (tx.toUserAccount) {
+                toName = getSolanaName(tx.toUserAccount);
+            }
 
-        const to = tx.toUserAccount || "";
-        let toName;
+            const amount = tx.amount / LAMPORTS_PER_SOL;
 
-        if (tx.toUserAccount) {
-            toName = getSolanaName(tx.toUserAccount);
-        }
-
-        const amount = tx.amount / LAMPORTS_PER_SOL;
-        if (!address) {
-            const sent = SOL;
-            actions.push({
-                actionType: "TRANSFER",
-                amount,
-                from,
-                fromName,
-                sent,
-                to,
-                toName,
-            });
-        } else {
-            const actionType =
-                tx.fromUserAccount === address
-                    ? "TRANSFER_SENT"
-                    : "TRANSFER_RECEIVED";
-
-            if (actionType === "TRANSFER_SENT") {
+            if (!address) {
                 const sent = SOL;
                 actions.push({
-                    actionType,
+                    actionType: "TRANSFER",
                     amount,
                     from,
                     fromName,
@@ -150,17 +134,35 @@ export const parseTransfer = (
                     to,
                     toName,
                 });
-            } else if (actionType === "TRANSFER_RECEIVED") {
-                const received = SOL;
-                actions.push({
-                    actionType,
-                    amount,
-                    from,
-                    fromName,
-                    received,
-                    to,
-                    toName,
-                });
+            } else {
+                const actionType =
+                    tx.fromUserAccount === address
+                        ? "TRANSFER_SENT"
+                        : "TRANSFER_RECEIVED";
+
+                if (actionType === "TRANSFER_SENT") {
+                    const sent = SOL;
+                    actions.push({
+                        actionType,
+                        amount,
+                        from,
+                        fromName,
+                        sent,
+                        to,
+                        toName,
+                    });
+                } else if (actionType === "TRANSFER_RECEIVED") {
+                    const received = SOL;
+                    actions.push({
+                        actionType,
+                        amount,
+                        from,
+                        fromName,
+                        received,
+                        to,
+                        toName,
+                    });
+                }
             }
         }
     }
