@@ -34,8 +34,6 @@ export const solanaAccountInfo = {
 export const solanaTransactions = {
     formatter: (data: any) => {
         const parsed = data.map((tx: EnrichedTransaction) => {
-            console.log(parseTransaction(tx));
-
             return {
                 parsed: parseTransaction(tx),
                 raw: tx,

@@ -75,8 +75,6 @@ export const parseTransactionActions = (
             type: TransactionType.SWAP,
         });
     } else if (tx.parsed.type === TransactionType.NFT_SALE) {
-        console.log("NFT_SALE", tx.parsed);
-
         (actions || []).forEach((action) => {
             let actionType: UITransactionActionType =
                 UITransactionActionType.UNKNOWN;
