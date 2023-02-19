@@ -65,5 +65,5 @@ export const parsers: ProtonParsers = {
     NFT_SALE: parser.parseNftSale,
     SWAP: parser.parseSwap,
     TRANSFER: parser.parseTransfer,
-    UNKNOWN: (data: any) => data,
+    UNKNOWN: parser.parseUnknown,
 };
