@@ -106,7 +106,7 @@
             <IconCard>
                 <div slot="icon">
                     {#if isLoading}
-                        <button class="btn-ghost loading" />
+                        <button class="loading btn-ghost" />
                     {:else if supported && action?.type !== "UNKNOWN"}
                         <img
                             class="max-w-3 w-full rounded"
