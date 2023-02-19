@@ -87,13 +87,15 @@
         ["backpack", "xNFT Backpack Usernames"],
         ["person", "Wallet/Account Addresses"],
         ["coins", "Token Addresses"],
-        ["lighting", "Transaction Signatures"],
+        ["lightning", "Transaction Signatures"],
     ];
 
     $: if ($walletStore.connected && !connected) {
         focusInput();
 
         inputValue = $walletStore.publicKey?.toBase58() || "";
+
+        window.location.href = `/${inputValue}`;
 
         connected = true;
     }

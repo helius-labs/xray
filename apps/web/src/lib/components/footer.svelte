@@ -1,10 +1,18 @@
+<script>
+    import { page } from "$app/stores";
+
+    import Icon from "$lib/components/icon.svelte";
+    import PoweredByHelius from "$lib/components/powered-by-helius.svelte";
+</script>
+
 <footer
-    class="footer bottom-0 w-full items-center border bg-black p-3"
+    class="footer bottom-0 w-full items-center border bg-black p-3 pb-5"
     class:fixed={$page.url.pathname === "/"}
 >
     <div class="grid-flow-col items-center">
         <PoweredByHelius />
     </div>
+
     <div class="grid-flow-col gap-4 md:place-self-center md:justify-self-end">
         <a
             href="https://discord.gg/Wkn3uuSby7"

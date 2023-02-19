@@ -10,8 +10,8 @@
     <div
         class="title sticky top-16 z-10 mb-5 flex w-full items-center justify-between rounded-lg border bg-black p-4"
     >
-        <div class="item-center flex w-full justify-between">
-            <div>
+        <div class="item-center grid w-full grid-cols-6">
+            <div class="col-span-6 md:col-span-5">
                 <Namor
                     text={$page.params.search}
                     let:result
@@ -39,12 +39,15 @@
                     <h1 class="text-lg font-bold lg:text-2xl">{result}</h1>
                 </Namor>
             </div>
-            <div>
+            <div
+                class="col-span-6 mt-2 flex md:col-span-1 lg:items-center lg:justify-end"
+            >
                 <CopyButton
                     text={$page.url.pathname}
                     icon="share"
                     label="Share"
                     success="Copied Link"
+                    classList="btn -ml-3 md:-ml-auto"
                 />
             </div>
         </div>

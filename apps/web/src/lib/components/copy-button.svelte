@@ -8,7 +8,7 @@
     let copied = false;
 
     export let text: string = "";
-    export let className: string = "";
+    export let classList: string = "";
     export let icon: IconType = "copy";
     export let label: string = "";
     export let success: string = "";
@@ -25,7 +25,7 @@
 </script>
 
 <button
-    class="btn {className} btn-sm"
+    class="btn {classList} btn-sm"
     class:btn-success={copied}
     class:btn-ghost={!copied}
     on:click={copy}

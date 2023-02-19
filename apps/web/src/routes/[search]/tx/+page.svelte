@@ -74,39 +74,86 @@
     {:else if $transaction?.isError}
         <p>Error: {$transaction?.error}</p>
     {:else if $transaction?.hasFetched}
+        <div class="mb-3">
+            <IconCard>
+                <div slot="icon">
+                    <div class="center h-10 w-10 rounded-full bg-success">
+                        <Icon
+                            id="check"
+                            fill="black"
+                            size="sm"
+                        />
+                    </div>
+                </div>
+                <div
+                    slot="title"
+                    class="flex items-center justify-between"
+                >
+                    <div>
+                        <p>Status</p>
+                        <p class="text-xs opacity-50">
+                            This transaction has successfully processed.
+                        </p>
+                    </div>
+                    <div>
+                        <div class="badge-success badge">Success</div>
+                    </div>
+                </div>
+            </IconCard>
+        </div>
+
         <div
             in:fade={{
                 delay: 500,
                 duration: 750,
             }}
         >
-            <div class="mb-3">
-                <IconCard>
-                    <div slot="icon">
-                        <div class="center h-10 w-10 rounded-full bg-success">
-                            <Icon
-                                id="check"
-                                fill="black"
-                                size="sm"
-                            />
-                        </div>
-                    </div>
-                    <div
-                        slot="title"
-                        class="flex items-center justify-between"
-                    >
-                        <div>
-                            <p>Status</p>
-                            <p class="text-xs opacity-50">
-                                This transaction has successfully processed.
-                            </p>
-                        </div>
-                        <div>
-                            <div class="badge-success badge">Success</div>
-                        </div>
-                    </div>
-                </IconCard>
-            </div>
+            <h1 class="text-1xl mt-10 font-bold">Actions</h1>
+            {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
+                <div
+                    class="pb-4"
+                    in:fade={{
+                        delay: groupIndex * 100,
+                        duration: 500,
+                    }}
+                >
+                    {#each actions as action, actionIndex}
+                        {#if action.type === "TRANSFER" || action.type === "SWAP"}
+                            <a
+                                class="mb-2 block cursor-pointer hover:opacity-75"
+                                data-sveltekit-reload
+                                href="/{action.sent}/token?prev={window.encodeURI(
+                                    action.signature
+                                )}"
+                                in:fly={{
+                                    delay: actionIndex * 100,
+                                    easing: cubicOut,
+                                    y: 50,
+                                }}
+                            >
+                                <TransactionAction {action} />
+                            </a>
+                        {:else}
+                            <a
+                                class="mb-2 block cursor-pointer hover:opacity-75"
+                                data-sveltekit-reload
+                                href="/{action.signature}/tx?prev={window.encodeURI(
+                                    $page.params.search
+                                )}"
+                                in:fly={{
+                                    delay: actionIndex * 100,
+                                    easing: cubicOut,
+                                    y: 50,
+                                }}
+                            >
+                                <TransactionAction {action} />
+                            </a>
+                        {/if}
+                    {/each}
+                </div>
+            {/each}
+
+            <h1 class="text-1xl mt-5 font-bold">Details</h1>
 
             <div class="mb-3">
                 <IconCard>
@@ -222,63 +269,6 @@
                         </div>
                     </div>
                 {/if}
-
-                <h1 class="mt-5 text-2xl font-bold">Transaction Actions</h1>
-                {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
-                    <div
-                        class="pb-6"
-                        in:fade={{
-                            delay: groupIndex * 100,
-                            duration: 500,
-                        }}
-                    >
-                        <div class="mb-2 flex opacity-75">
-                            <div class="flex items-center">
-                                <Icon
-                                    id={icon}
-                                    size="md"
-                                />
-                                <h1 class="ml-2">
-                                    {label}
-                                </h1>
-                            </div>
-                        </div>
-
-                        {#each actions as action, actionIndex}
-                            {#if action.type === "TRANSFER" || action.type === "SWAP"}
-                                <a
-                                    class="mb-2 block cursor-pointer hover:opacity-75"
-                                    data-sveltekit-reload
-                                    href="/{action.sent}/token?prev={window.encodeURI(
-                                        action.signature
-                                    )}"
-                                    in:fly={{
-                                        delay: actionIndex * 100,
-                                        easing: cubicOut,
-                                        y: 50,
-                                    }}
-                                >
-                                    <TransactionAction {action} />
-                                </a>
-                            {:else}
-                                <a
-                                    class="mb-2 block cursor-pointer hover:opacity-75"
-                                    data-sveltekit-reload
-                                    href="/{action.signature}/tx?prev={window.encodeURI(
-                                        $page.params.search
-                                    )}"
-                                    in:fly={{
-                                        delay: actionIndex * 100,
-                                        easing: cubicOut,
-                                        y: 50,
-                                    }}
-                                >
-                                    <TransactionAction {action} />
-                                </a>
-                            {/if}
-                        {/each}
-                    </div>
-                {/each}
             </div>
 
             <div class="my-5 flex justify-center">
