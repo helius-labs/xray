@@ -35,6 +35,7 @@ export enum ProtonSupportedActionType {
     "NFT_BID_CANCELLED",
     "NFT_MINT",
     "NFT_MINT_AIRDROP",
+    "BURN",
 }
 
 export type ProtonParser = (
