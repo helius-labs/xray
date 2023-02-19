@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import type { UITokenMetadata } from "$lib/types";
     import { state, type QueryStore } from "svelte-snacks";
 
@@ -18,26 +19,32 @@
         name: "",
     };
 
+    let isReady = false;
+
     $: tokenDetails = $tokenRegistry.data.get
         ? $tokenRegistry.data.get(search)
         : {};
 
-    $: if (tokenDetails) {
-        metadata.name = tokenDetails?.symbol;
-        metadata.image = tokenDetails?.logoURI;
-    } else {
-        metadata.address = $solanaToken.data?.account;
-        metadata.name = $solanaToken.data?.offChainMetadata?.metadata?.name;
-        metadata.image = $solanaToken.data?.offChainMetadata?.metadata?.image;
-        metadata.description = $solanaToken.data?.offChainMetadata?.metadata?.description;
-        metadata.attributes = $solanaToken.data?.offChainMetadata?.metadata?.attributes;
-        metadata.creators = $solanaToken.data?.onChainMetadata?.metadata?.data?.creators;
-        metadata.collectionKey = $solanaToken.data?.onChainMetadata?.metadata?.collection?.key;
-    }
+    $: if (isReady) {
+        if (tokenDetails) {
+            metadata.name = tokenDetails?.symbol;
+            metadata.image = tokenDetails?.logoURI;
+        } else {
+            metadata.address = $solanaToken.data?.account;
+            metadata.name = $solanaToken.data?.offChainMetadata?.metadata?.name;
+            metadata.image = $solanaToken.data?.offChainMetadata?.metadata?.image;
+            metadata.description = $solanaToken.data?.offChainMetadata?.metadata?.description;
+            metadata.attributes = $solanaToken.data?.offChainMetadata?.metadata?.attributes;
+            metadata.creators = $solanaToken.data?.onChainMetadata?.metadata?.data?.creators;
+            metadata.collectionKey = $solanaToken.data?.onChainMetadata?.metadata?.collection?.key;
+        }
+    };
 
-    $: console.log("This is token", $solanaToken);
-    $: console.log("This is attributes", $solanaToken.data);
-    $: console.log("This is it's METADATA", metadata);
+
+    onMount(() => {
+        console.log("Mounted");
+        isReady = true;
+    });
 </script>
 
 <slot {metadata} token={$solanaToken} />

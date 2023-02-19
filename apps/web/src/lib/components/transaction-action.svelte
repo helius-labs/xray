@@ -1,8 +1,5 @@
 <script lang="ts">
-    import type { UITokenMetadata, UITransactionAction } from "$lib/types";
-    import type { QueryStore } from "svelte-snacks";
-
-    import { state } from "svelte-snacks";
+    import type { UITransactionAction } from "$lib/types";
 
     import IntersectionObserver from "svelte-intersection-observer";
 
@@ -21,42 +18,16 @@
 
     export let action: UITransactionAction;
 
-    const tokenRegistry = state("solanaTokenRegistry");
-
     const address = action?.received || action?.sent || "unknown";
 
     let label = "";
     let isLoading = true;
     let intersecting = false;
     let element: HTMLElement;
-    // let solanaToken: QueryStore;
-
-    // if (address) {
-    //     solanaToken = state(["solanaToken", address], address);
-    // }
-
-    const metadata: UITokenMetadata = {
-        address,
-        image: "",
-        name: "",
-    };
-
+   
     $: ({ formatted: date } = prettyDate(action.timestamp));
 
-    $: tokenDetails = $tokenRegistry.data.get
-        ? $tokenRegistry.data.get(address)
-        : {};
-
     $: if (intersecting) {
-        if (tokenDetails) {
-            metadata.name = tokenDetails?.symbol;
-            metadata.image = tokenDetails?.logoURI;
-        } else {
-            metadata.name = $solanaToken.data?.offChainMetadata?.metadata?.name;
-            metadata.image =
-                $solanaToken.data?.offChainMetadata?.metadata?.image;
-        }
-
         isLoading = false;
     }
 
@@ -70,8 +41,6 @@
         ?.split(" ")
         .slice(0, 3)
         .join(" ");
-
-    $: title = metadata?.name || txName;
 
     $: supported = Object.keys(ProtonSupportedType).includes(action?.type);
 
@@ -99,6 +68,7 @@
     rootMargin="100px"
     bind:intersecting
 >
+<TokenProvider search={address} let:metadata>
     <div
         bind:this={element}
         class="min-h-28"
@@ -129,7 +99,7 @@
                                 class="text-md m-0 font-bold"
                                 class:text-lg={metadata.name}
                             >
-                                {title}
+                                {metadata.name ? metadata.name : txName}
                             </h4>
 
                             <p class="m-0 text-xs opacity-50">{label}</p>
@@ -164,4 +134,5 @@
             </IconCard>
         {/if}
     </div>
+</TokenProvider>
 </IntersectionObserver>

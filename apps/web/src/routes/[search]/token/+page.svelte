@@ -1,99 +1,114 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import shortenString from "$lib/util/shorten-string";
+    import { fade } from "svelte/transition";
 
+    import DetailsPage from "$lib/components/details-page.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
+    import TokenPgLoader from "$lib/components/token-pg-loader.svelte";
+    import Modal from "$lib/components/modal.svelte";
     
     const search = $page.params.search;
 </script>
-
-<TokenProvider
-    { search }
-    let:metadata
-    let:token
->
-    {#if token.isLoading}
-    <button class="loading btn-ghost btn" />
-    {:else}
-    <div class="grid grid-cols-1 md:grid-cols-2 items-center justify-center">
-        <a 
-            class="rounded-md mx-auto overflow-hidden"
-            href="#token-fs-modal"
-        >
-            <img
-                alt="token symbol"
-                src={metadata.image}
-            />
-        </a>
-        <div class="modal" id="token-fs-modal">
-            <div class="modal-box">
-                <div class="rounded-md mx-auto overflow-hidden">
+    <TokenProvider
+        { search }
+        let:metadata
+        let:token
+    >
+        {#if token.isLoading}
+            <TokenPgLoader />
+        {:else}
+    
+        <div>
+            <div 
+            class="flex flex-col items-center justify-center"
+            in:fade={{ delay: 100, duration: 800}}
+            >
+                <a href="#modal-token-fs-modal">
                     <img
-                        class="w-full h-auto"
+                        class="md:w-1/2 m-auto h-auto rounded-md mt-3"
                         alt="token symbol"
                         src={metadata.image}
+                        in:fade={{ delay: 600, duration: 1000}}
                     />
+                </a>
+            </div>
+            
+            <Modal id="token-fs-modal" fullScreenModal>
+                <img
+                    alt="token symbol"
+                    src={metadata.image}
+                />
+                <div class="mt-2">
+                    <h1>{metadata.name}</h1>
                 </div>
-              <div class="mt-2">
-                <h1>{metadata.name}</h1>
-              </div>
-              <div class="modal-action">
-               <a href="#" class="btn">Close</a>
-              </div>
-            </div>
-        </div>
-
-        {#if metadata.description}
-            <div class="mt-3 md:ml-5 md:mt-0">
-                <h3 class="text-lg font-medium text-gray-500">Name</h3>
-                <h1>{metadata.name}</h1>
-                <h3 class="mt-3 text-lg font-medium text-gray-500">Description</h3>
-                <p class="text-sm">
-                    {metadata.description}
-                </p>
-                <h3 class="mt-3 text-lg font-medium text-gray-500">Collection</h3>
-                <TokenProvider search={metadata.collectionKey} let:metadata>
-                    <p>{metadata.name}</p>
-                </TokenProvider>
-            </div>
-        {/if}
-        {#if metadata.attributes && metadata.attributes.length}
-            <div class="mt-3 md:mt-10 md:col-span-2">
-                <h3 class="text-lg font-medium">Properties</h3>
-                <div class="flex flex-wrap">
-                    {#each metadata.attributes as attribute}
-                        <div class="card mr-3 mt-3 p-0">
-                            <h4 class="text-sm font-medium text-gray-500">
-                                {attribute.traitType.toUpperCase()}
-                            </h4>
-                            <p class="text-sm">
-                                {attribute.value}
-                            </p>
+            </Modal>
+            <DetailsPage tokenName={metadata.name}>
+                {#if metadata.description}
+                    <div 
+                        class="mt-3"
+                        in:fade={{ delay: 700, duration: 800}}
+                    >
+                        <h3 class="mt-3 text-lg font-medium text-gray-500">Description</h3>
+                        <p class="text-sm">
+                            {metadata.description}
+                        </p>
+                        {#if metadata.collectionKey}
+                        <h3 class="mt-3 text-lg font-medium text-gray-500">Collection</h3>
+                        <TokenProvider search={metadata.collectionKey} let:metadata>
+                            <p>{metadata.name}</p>
+                        </TokenProvider>
+                        {/if}
+                    </div>
+                {/if}
+                {#if metadata.attributes && metadata.attributes.length}
+                    <div 
+                        class="mt-3"
+                        in:fade={{ delay: 850, duration: 800}}
+                    >
+                        <h3 class="text-lg font-medium text-gray-500">Properties</h3>
+                        <div class="flex flex-wrap">
+                            {#each metadata.attributes as attribute, idx}
+                                <div 
+                                    class="card mr-3 mt-3 p-0"
+                                    in:fade={{ delay: (idx * 75) + 900, duration: 800}}
+                                >
+                                    <h4 class="text-sm font-medium">
+                                        {attribute.traitType.toUpperCase()}
+                                    </h4>
+                                    <p class="text-sm">
+                                        {attribute.value}
+                                    </p>
+                                </div>
+                            {/each}
                         </div>
-                    {/each}
-                </div>
-            </div>
+                    </div>
+                {/if}
+                {#if metadata.creators && metadata.creators.length > 0}
+                    <div 
+                        class="mt-3"
+                        in:fade={{ delay: 1000, duration: 800}}
+                    >
+                        <h3 class="text-lg font-medium text-gray-500">Creators</h3>
+                        <div class="flex flex-wrap">
+                            {#each metadata.creators as creator, idx}
+                                <a 
+                                    class="card mr-3 mt-3 p-0"
+                                    href="/{creator.address}/wallet"
+                                    in:fade={{ delay: (idx * 75) + 1000, duration: 800}}
+                                >
+                                    <h4 class="text-sm font-medium">
+                                        Creator {idx + 1}
+                                    </h4>
+                                    <p class="text-sm">
+                                        {shortenString(creator.address)}
+                                    </p>
+                                </a>
+                            {/each}
+                        </div>
+                    </div>
+                {/if}
+            </DetailsPage>
+        </div>
         {/if}
-        {#if metadata.creators && metadata.creators.length > 0}
-            <div class="mt-3 md:mt-10 md:col-span-2">
-                <h3 class="text-lg font-medium">Creators</h3>
-                <div class="flex flex-wrap">
-                    {#each metadata.creators as creator, idx}
-                        <a 
-                            class="card mr-3 mt-3 p-0"
-                            href="/{creator.address}/wallet"
-                        >
-                            <h4 class="text-sm font-medium text-gray-500">
-                                Creator {idx + 1}
-                            </h4>
-                            <p class="text-sm">
-                                {shortenString(creator.address)}
-                            </p>
-                        </a>
-                    {/each}
-                </div>
-            </div>
-        {/if}
-    </div>
-    {/if}
-</TokenProvider>
+    </TokenProvider>

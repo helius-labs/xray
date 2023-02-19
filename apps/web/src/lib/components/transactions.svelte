@@ -25,8 +25,6 @@
         const merged = mergeTransactionActions(transactions, user);
 
         groups = groupTransactionActions(merged);
-
-        groups.map((g) => console.log(g.actions));
     }
 </script>
 
