@@ -59,6 +59,7 @@ export const publicKeyMappings = {
     HUfVysibcL4u6EVoi4GsSDnV993tRX47ntoYH123q9AB: "BSL GEM FARM",
     HYPERfwdTjyJ2SCaKHmpF2MtrXqWxrsotYDsTrshHWq8: "HYPERSPACE",
     HedgeEohwU6RqokrvPU4Hb6XKPub8NuKbnPmY7FoMMtN: "HEDGE",
+    JCFRaPv7852ESRwJJGRy2mysUMydXZgVVhrMLmExvmVp: "FOXY CITRUS",
     JUP2jxvXaqu7NQY1GmNF4m1vodw12LVXYxbFL2uJvfo: "JUPITER V2",
     JUP3c2Uh3WA4Ng34tw6kPd2G4C5BB21Xo36Je1s32Ph: "JUPITER V3",
     JUP6i4ozu5ydDCnLiMogSckDPpbtr7BJ4FtzYWkb5Rk: "JUPITER V1",

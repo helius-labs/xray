@@ -16,6 +16,7 @@
     import cap from "$lib/util/cap";
     import formatMoney from "$lib/util/format-money";
     import shortenString from "$lib/util/shorten-string";
+    import prettyDate from "../util/pretty-date";
 
     export let action: UITransactionAction;
 
@@ -38,6 +39,8 @@
         image: "",
         name: "",
     };
+
+    $: ({ formatted: date } = prettyDate(action.timestamp));
 
     $: tokenDetails = $tokenRegistry.data.get
         ? $tokenRegistry.data.get(address)
@@ -79,8 +82,13 @@
         label = `For: ${displayName} / ${shortenString(action.received, 6)}`;
     } else if (action?.actionType === "SWAP_SENT") {
         label = `Swapped: ${displayName}`;
+    } else if (action?.type === "TRANSFER" || action?.type === "SWAP") {
+        label = `From: ${shortenString(
+            action?.receivedFrom,
+            4
+        )}  To: ${shortenString(action?.sentTo, 4)}`;
     } else {
-        label = `Tx: ${shortenString(action?.signature, 10)}`;
+        label = `Tx: ${shortenString(action?.signature, 4)}`;
     }
 </script>
 
@@ -98,7 +106,7 @@
             <IconCard>
                 <div slot="icon">
                     {#if isLoading}
-                        <button class="loading btn-ghost" />
+                        <button class="btn-ghost loading" />
                     {:else if supported && action?.type !== "UNKNOWN"}
                         <img
                             class="max-w-3 w-full rounded"
@@ -107,47 +115,50 @@
                         />
                     {:else}
                         <Icon
-                            id="lighting"
+                            id="lightning"
                             fill="success"
                             size="md"
                         />
                     {/if}
                 </div>
                 <div slot="title">
-                    <div>
-                        <h4
-                            class="text-md m-0 font-bold"
-                            class:text-lg={metadata.name}
-                        >
-                            {title}
-                        </h4>
+                    <div class="flex justify-between">
+                        <div>
+                            <h4
+                                class="text-md m-0 font-bold"
+                                class:text-lg={metadata.name}
+                            >
+                                {title}
+                            </h4>
 
-                        <p class="m-0 text-xs opacity-50">{label}</p>
+                            <p class="m-0 text-xs opacity-50">{label}</p>
+                        </div>
+
+                        <div class="text-right">
+                            {#if action?.actionType === "TRANSFER_SENT" || action?.actionType === "SWAP_SENT"}
+                                <h4
+                                    class="mb-1 text-sm font-bold text-error md:text-lg"
+                                >
+                                    - {metadata.name === "USDC"
+                                        ? formatMoney(action.amount)
+                                        : action.amount}
+                                </h4>
+                            {:else if action?.actionType === "TRANSFER_RECEIVED" || action?.actionType === "SWAP_RECEIVED"}
+                                <h4
+                                    class="mb-1 text-sm font-bold text-success md:text-lg"
+                                >
+                                    + {metadata.name === "USDC"
+                                        ? formatMoney(action.amount)
+                                        : action.amount}
+                                </h4>
+                            {:else if action?.type === "TRANSFER"}
+                                <h4 class="mb-2 text-sm font-bold">
+                                    {action?.amount}
+                                </h4>
+                            {/if}
+                            <p class="m-0 text-xs opacity-50">{date}</p>
+                        </div>
                     </div>
-
-                    {#if action?.actionType === "TRANSFER_SENT" || action?.actionType === "SWAP_SENT"}
-                        <h4
-                            class="absolute right-2 top-3 text-sm font-bold text-error md:text-lg"
-                        >
-                            - {metadata.name === "USDC"
-                                ? formatMoney(action.amount)
-                                : action.amount}
-                        </h4>
-                    {:else if action?.actionType === "TRANSFER_RECEIVED" || action?.actionType === "SWAP_RECEIVED"}
-                        <h4
-                            class="absolute right-2 top-3 text-sm font-bold text-success md:text-lg"
-                        >
-                            + {metadata.name === "USDC"
-                                ? formatMoney(action.amount)
-                                : action.amount}
-                        </h4>
-                    {:else if action?.type === "TRANSFER"}
-                        <h4
-                            class="absolute right-2 top-3 text-sm font-bold text-black"
-                        >
-                            {action?.amount}
-                        </h4>
-                    {/if}
                 </div>
             </IconCard>
         {/if}

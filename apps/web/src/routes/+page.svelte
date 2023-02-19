@@ -14,17 +14,19 @@
     onMount(focusInput);
 </script>
 
-<div class="mx-auto max-w-2xl pt-20 md:pt-48">
+<div class="md:pt-50 mx-auto max-w-2xl pt-20">
     <div>
         <h1 class="text-center text-8xl font-bold text-white opacity-80">
-            XRAY
+            <span class="opacity-50">X</span>RAY
         </h1>
     </div>
 
-    <Search
-        {searchError}
-        bind:focusInput
-        bind:clearSearch
-        size="lg"
-    />
+    <div class="w-full">
+        <Search
+            {searchError}
+            bind:focusInput
+            bind:clearSearch
+            size="lg"
+        />
+    </div>
 </div>

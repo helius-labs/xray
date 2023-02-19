@@ -1,8 +1,18 @@
 <script lang="ts">
+    import { onMount } from "svelte";
+
+    import Icon from "$lib/components/icon.svelte";
+
     export let id: string;
 
     export const show = () => (window.location.href = `#modal-${id}`);
     export const hide = () => (window.location.href = `#`);
+
+    onMount(() => {
+        if (window.location.hash === `#modal-${id}`) {
+            show();
+        }
+    });
 </script>
 
 <div
@@ -13,9 +23,11 @@
 >
     <div class="modal-box cursor-auto">
         <button
-            class="btn-sm btn-circle btn absolute right-2 top-2"
-            on:click={hide}>✕</button
+            class="btn-outline btn-sm btn absolute right-2 top-2"
+            on:click={hide}
         >
+            <Icon id="cancel" />
+        </button>
         <slot />
     </div>
 </div>

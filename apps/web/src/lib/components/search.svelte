@@ -5,6 +5,8 @@
 </style>
 
 <script lang="ts">
+    import type { Icon as IconType } from "$lib/types";
+
     import { nameFromString } from "@helius-labs/helius-namor";
 
     import { state } from "svelte-snacks";
@@ -80,6 +82,14 @@
         }
     };
 
+    const supportedSearches: Array<[IconType, string]> = [
+        ["globe", "Bonfida .sol Domains"],
+        ["backpack", "xNFT Backpack Usernames"],
+        ["person", "Wallet/Account Addresses"],
+        ["coins", "Token Addresses"],
+        ["lighting", "Transaction Signatures"],
+    ];
+
     $: if ($walletStore.connected && !connected) {
         focusInput();
 
@@ -93,15 +103,31 @@
     id="search-error"
     bind:show={showSearchError}
 >
-    <h1 class="text-xl">Invalid Search</h1>
-    <p>
+    <h1 class="text-2xl font-bold">Invalid Search</h1>
+    <p class="mb-3">
         Invalid search. Make sure you provided a valid search that contains one
         of the following.
     </p>
+
+    <strong class="uppercase">Supported Searches</strong>
+
+    {#each supportedSearches as [icon, text]}
+        <div class="my-2 grid grid-cols-6 items-center">
+            <div class="center col-span-1">
+                <Icon
+                    id={icon}
+                    size="md"
+                />
+            </div>
+            <div class="col-span-5">
+                <p>{text}</p>
+            </div>
+        </div>
+    {/each}
 </Modal>
 
 <form
-    class="relative my-2  w-full"
+    class="relative my-2 w-full"
     on:submit|preventDefault={newSearch}
     on:keydown={(event) => {
         if (event.key === "Enter") {
@@ -150,7 +176,7 @@
             </div>
             {#if $recentActivity?.data?.length}
                 {#each $recentActivity.data as address}
-                    <li class="m1-ds2 relative w-full truncate px-0">
+                    <li class="m1-ds2 relative z-30 w-full truncate px-0">
                         <a
                             class="block w-full max-w-full text-ellipsis px-1 py-2"
                             data-sveltekit-preload-data="hover"
