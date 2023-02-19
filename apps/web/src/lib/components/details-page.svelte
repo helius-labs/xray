@@ -6,9 +6,9 @@
     import CopyButton from "$lib/components/copy-button.svelte";
 </script>
 
-<section>
+<section class="pb-96">
     <div
-        class="title sticky top-16 z-10 mb-5 flex w-full items-center justify-between rounded-lg border bg-black p-4"
+        class="title sticky top-16 z-10 mb-3 flex w-full items-center justify-between rounded-lg border bg-black p-4"
     >
         <div class="item-center grid w-full grid-cols-6">
             <div class="col-span-6 md:col-span-5">
