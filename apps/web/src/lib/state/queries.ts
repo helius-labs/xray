@@ -32,11 +32,19 @@ export const solanaAccountInfo = {
 };
 
 export const solanaTransactions = {
-    formatter: (data: any) =>
-        data.map((tx: EnrichedTransaction) => ({
-            parsed: parseTransaction(tx),
-            raw: tx,
-        })),
+    formatter: (data: any) => {
+        const parsed = data.map((tx: EnrichedTransaction) => {
+            console.log(parseTransaction(tx));
+
+            return {
+                parsed: parseTransaction(tx),
+                raw: tx,
+            };
+        });
+
+        return parsed;
+    },
+
     loader: actions.getSolanaTransactions,
 };
 
