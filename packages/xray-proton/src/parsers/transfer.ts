@@ -1,6 +1,6 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
-import { ProtonTransaction, ProtonTransactionAction } from "../types";
+import { ProtonTransaction, ProtonTransactionAction, SOL } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 
@@ -9,7 +9,8 @@ interface TempTokenTransfer extends TokenTransfer {
 }
 
 export const parseTransfer = (
-    transaction: EnrichedTransaction
+    transaction: EnrichedTransaction,
+    address: string | undefined
 ): ProtonTransaction => {
     const {
         signature,
@@ -58,24 +59,43 @@ export const parseTransfer = (
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        const sent = tx.mint;
+        const actionType =
+            tx.fromUserAccount === address
+                ? "TRANSFER_SENT"
+                : "TRANSFER_RECEIVED";
+
         const amount = tx?.tokenAmount;
 
-        actions.push({
-            amount,
-            from,
-            fromName,
-            sent,
-            to,
-            toName,
-        });
+        if (actionType === "TRANSFER_SENT") {
+            const sent = tx.mint;
+            actions.push({
+                actionType,
+                amount,
+                from,
+                fromName,
+                sent,
+                to,
+                toName,
+            });
+        } else if (actionType === "TRANSFER_RECEIVED") {
+            const received = tx.mint;
+            actions.push({
+                actionType,
+                amount,
+                from,
+                fromName,
+                received,
+                to,
+                toName,
+            });
+        }
     }
 
     const nativeTransfersLength =
         nativeTransfers.length - tokenTransfers.length;
 
     for (let i = 0; i < nativeTransfersLength; i++) {
-        const [tx] = nativeTransfers;
+        const tx = nativeTransfers[i];
 
         const from = tx.fromUserAccount || "";
         let fromName;
@@ -91,17 +111,35 @@ export const parseTransfer = (
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        const sent = "So11111111111111111111111111111111111111112";
-        const amount = tx.amount / LAMPORTS_PER_SOL;
+        const actionType =
+            tx.fromUserAccount === address
+                ? "TRANSFER_SENT"
+                : "TRANSFER_RECEIVED";
 
-        actions.push({
-            amount,
-            from,
-            fromName,
-            sent,
-            to,
-            toName,
-        });
+        const amount = tx.amount / LAMPORTS_PER_SOL;
+        if (actionType === "TRANSFER_SENT") {
+            const sent = SOL;
+            actions.push({
+                actionType,
+                amount,
+                from,
+                fromName,
+                sent,
+                to,
+                toName,
+            });
+        } else if (actionType === "TRANSFER_RECEIVED") {
+            const received = SOL;
+            actions.push({
+                actionType,
+                amount,
+                from,
+                fromName,
+                received,
+                to,
+                toName,
+            });
+        }
     }
 
     return {
