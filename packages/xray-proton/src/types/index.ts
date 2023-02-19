@@ -26,6 +26,15 @@ export enum ProtonSupportedActionType {
     "SWAP_SENT",
     "SWAP_RECEIVED",
     "UNKNOWN",
+    "NFT_SALE",
+    "NFT_BUY",
+    "NFT_SELL",
+    "NFT_LISTING",
+    "NFT_CANCEL_LISTING",
+    "NFT_BID",
+    "NFT_BID_CANCELLED",
+    "NFT_MINT",
+    "NFT_MINT_AIRDROP",
 }
 
 export type ProtonParser = (

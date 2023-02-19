@@ -58,7 +58,7 @@ export const parseTransfer = (
 
         const amount = tx?.tokenAmount;
 
-        if (address === undefined) {
+        if (!address) {
             const sent = tx.mint;
             actions.push({
                 actionType: "TRANSFER",
@@ -122,7 +122,7 @@ export const parseTransfer = (
         }
 
         const amount = tx.amount / LAMPORTS_PER_SOL;
-        if (address === undefined) {
+        if (!address) {
             const sent = SOL;
             actions.push({
                 actionType: "TRANSFER",

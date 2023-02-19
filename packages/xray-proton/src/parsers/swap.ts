@@ -57,7 +57,7 @@ export const parseSwap = (
 
         const amount = tx.tokenAmount;
 
-        if (address === undefined) {
+        if (!address) {
             const actionType = "SWAP";
             if (tx.fromUserAccount === primaryUser) {
                 const sent = tx.mint;
