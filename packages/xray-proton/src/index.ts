@@ -7,7 +7,7 @@ import {
 
 export * from "./types";
 
-export const parseTransaction: ProtonParser = (transaction) => {
+export const parseTransaction: ProtonParser = (transaction, address) => {
     const supportedParsers = Object.keys(parsers);
 
     let parser: ProtonParser = parsers.UNKNOWN;
@@ -21,7 +21,7 @@ export const parseTransaction: ProtonParser = (transaction) => {
     parser = Object.values(parsers)[parserIndex];
 
     try {
-        return parser(transaction);
+        return parser(transaction, address);
     } catch (error) {
         // eslint-disable-next-line no-console
         console.log(error);

@@ -2,6 +2,8 @@ import { EnrichedTransaction, Source, TransactionType } from "helius-sdk";
 
 import * as parser from "../parsers";
 
+export const SOL = "So11111111111111111111111111111111111111112";
+
 export enum ProtonSupportedType {
     BURN,
     BURN_NFT,
@@ -16,13 +18,36 @@ export enum ProtonSupportedType {
     UNKNOWN,
 }
 
+export enum ProtonSupportedActionType {
+    "TRANSFER",
+    "TRANSFER_SENT",
+    "TRANSFER_RECEIVED",
+    "SWAP",
+    "SWAP_SENT",
+    "SWAP_RECEIVED",
+    "UNKNOWN",
+    "NFT_SALE",
+    "NFT_BUY",
+    "NFT_SELL",
+    "NFT_LISTING",
+    "NFT_CANCEL_LISTING",
+    "NFT_BID",
+    "NFT_BID_CANCELLED",
+    "NFT_MINT",
+    "NFT_MINT_AIRDROP",
+    "BURN",
+}
+
 export type ProtonParser = (
-    transaction: EnrichedTransaction
+    transaction: EnrichedTransaction,
+    address?: string
 ) => ProtonTransaction;
 
 export type ProtonType = keyof typeof ProtonSupportedType;
+export type ProtonActionType = keyof typeof ProtonSupportedActionType;
 
 export interface ProtonTransactionAction {
+    actionType: ProtonActionType;
     from: string;
     fromName: string | undefined;
     to: string;
