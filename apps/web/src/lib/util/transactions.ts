@@ -74,17 +74,45 @@ export const parseTransactionActions = (
             timestamp: tx?.raw?.timestamp,
             type: TransactionType.SWAP,
         });
+    } else if (tx.parsed.type === TransactionType.NFT_SALE) {
+        (actions || []).forEach((action) => {
+            let actionType: UITransactionActionType =
+                UITransactionActionType.UNKNOWN;
+
+            if (user && user === action.to) {
+                actionType = UITransactionActionType.NFT_BOUGHT;
+            } else if (user && user === action.from) {
+                actionType = UITransactionActionType.NFT_SOLD;
+            }
+
+            merged.push({
+                actionType,
+                amount: action.amount,
+                received: action.received,
+                receivedFrom: action.from,
+                sent: action.sent,
+                sentTo: action.to,
+                signature: tx?.raw?.signature,
+                timestamp: tx?.raw?.timestamp,
+                type: TransactionType.NFT_SALE,
+            });
+        });
     } else {
-        merged.push({
-            actionType: UITransactionActionType.UNKNOWN,
-            amount: 0,
-            received: "",
-            receivedFrom: "",
-            sent: "",
-            sentTo: "",
-            signature: tx?.raw?.signature,
-            timestamp: tx?.raw?.timestamp,
-            type,
+        (actions || []).forEach((action) => {
+            let actionType: UITransactionActionType =
+                UITransactionActionType.UNKNOWN;
+
+            merged.push({
+                actionType,
+                amount: action.amount,
+                received: action.received,
+                receivedFrom: action.from,
+                sent: action.sent,
+                sentTo: action.to,
+                signature: tx?.raw?.signature,
+                timestamp: tx?.raw?.timestamp,
+                type: TransactionType.UNKNOWN,
+            });
         });
     }
 
@@ -134,15 +162,23 @@ export const groupTransactionActions = (actions: UITransactionAction[]) => {
             actionType === UITransactionActionType.TRANSFER_RECEIVED
         ) {
             groupType = UITransactionActionType.TRANSFER_RECEIVED;
+        } else if (
+            type === TransactionType.NFT_SALE &&
+            actionType === UITransactionActionType.NFT_SOLD
+        ) {
+            groupType = UITransactionActionType.NFT_SOLD;
+        } else if (
+            type === TransactionType.NFT_SALE &&
+            actionType === UITransactionActionType.NFT_BOUGHT
+        ) {
+            groupType = UITransactionActionType.NFT_BOUGHT;
         }
 
         const matchesLastGroupType =
             groupType && lastGroup && groupType === lastGroup?.type;
-        const isWithin24Hours =
-            actions[i].timestamp - lastGroup?.timestamp < 1000 * 60 * 60 * 24;
 
         const { icon, label } =
-            transactionActionsMetadata[actionType as UITransactionActionType] ||
+            transactionActionsMetadata[groupType as UITransactionActionType] ||
             transactionActionsMetadata.UNKNOWN;
 
         // Add new group
@@ -161,8 +197,6 @@ export const groupTransactionActions = (actions: UITransactionAction[]) => {
         // Add to existing group
         groups[groups.length - 1].actions.push(action);
     }
-
-    console.log({ groups });
 
     return groups;
 };

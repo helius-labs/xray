@@ -9,6 +9,7 @@
     import Search from "$lib/components/search.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
     import Stats from "$lib/components/stats.svelte";
+    import PoweredByHelius from "$lib/components/powered-by-helius.svelte";
 
     let backUrl = "";
 
@@ -26,11 +27,11 @@
 </script>
 
 <nav
-    class="sticky top-0 left-0 z-10 grid h-full grid-cols-2 items-center border bg-black p-1 px-0 lg:grid-cols-3"
+    class="sticky top-0 left-0 z-20 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
     <DevBanner />
 
-    <div class="flex items-center">
+    <div class="col-span-5 flex items-center lg:col-span-4">
         {#if backUrl}
             <div
                 class="ml-2 flex items-center"
@@ -70,24 +71,30 @@
             </div>
         {/if}
 
+        <div class="mx-2">
+            <PoweredByHelius />
+        </div>
+
         <Stats />
     </div>
 
-    <div class="hidden justify-center lg:flex">
-        {#if $page.url.pathname !== "/"}
-            <Search />
-        {/if}
-    </div>
+    <div class="col-span-1 flex items-center justify-end lg:col-span-2">
+        <div class="hidden flex-1 justify-center lg:flex">
+            {#if $page.url.pathname !== "/"}
+                <Search />
+            {/if}
+        </div>
 
-    <div class="flex justify-end pr-2">
-        <a href="#modal-menu">
-            <div class="btn-ghost btn">
-                <Icon
-                    id="hamburger"
-                    size="lg"
-                />
-            </div>
-        </a>
+        <div class="flex justify-end pr-2">
+            <a href="#modal-menu">
+                <div class="btn-ghost btn">
+                    <Icon
+                        id="hamburger"
+                        size="lg"
+                    />
+                </div>
+            </a>
+        </div>
     </div>
 </nav>
 

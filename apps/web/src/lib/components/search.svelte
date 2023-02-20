@@ -140,69 +140,68 @@
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
-            class="input-bordered input h-10 w-full  rounded-lg focus:input-success"
+            class="input-bordered input h-10  w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
             placeholder="Search Solana"
             tabindex="0"
             type="text"
             bind:value={inputValue}
         />
-
-        <ul
-            class="dropdown-content menu relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
-        >
-            <div class="flex flex-wrap items-center justify-between">
-                <p class="text-md mb-1 mt-2 font-bold">Recents</p>
-                <div class="mb-1">
-                    <button
-                        class="btn-outline btn-sm btn"
-                        on:click|preventDefault={clearSearch}
-                    >
-                        <span class="text-sm"> Clear </span>
-                    </button>
-
-                    <button
-                        class="btn-outline btn-sm btn ml-2"
-                        on:click|preventDefault={setFromClipboard}
-                    >
-                        <span class="text-sm"> Paste </span>
-                    </button>
-
-                    <button
-                        class="btn-outline btn-sm btn ml-2"
-                        on:click|preventDefault={connectWallet}
-                    >
-                        <span class="text-sm">Connect Wallet</span>
-                    </button>
-                </div>
-            </div>
-            {#if $recentActivity?.data?.length}
-                {#each $recentActivity.data as address}
-                    <li class="m1-ds2 relative z-30 w-full truncate px-0">
-                        <a
-                            class="block w-full max-w-full text-ellipsis px-1 py-2"
-                            data-sveltekit-preload-data="hover"
-                            href="/{address}"
+        {#if size !== "lg"}
+            <ul
+                class="dropdown-content relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
+            >
+                <div class="flex flex-wrap items-center justify-between">
+                    <p class="text-md mb-1 mt-2 font-bold">Recents</p>
+                    <div class="mb-1">
+                        <button
+                            class="btn-outline btn-sm btn"
+                            on:click|preventDefault={clearSearch}
                         >
-                            <p class="text-micro text-xs opacity-50">
-                                {nameFromString(address)}
-                            </p>
-                            <p class="text-micro text-xs">
-                                {#if address.length > 20}
-                                    {address}
-                                {:else}
-                                    {address}
-                                {/if}
-                            </p>
-                        </a>
-                    </li>
-                {/each}
-            {:else}
-                <i class="pt-2 text-xs opacity-50"
-                    >Paste an address or connect a wallet to get started.</i
-                >
-            {/if}
-        </ul>
+                            <span class="text-sm"> Clear </span>
+                        </button>
+                        <button
+                            class="btn-outline btn-sm btn ml-2"
+                            on:click|preventDefault={setFromClipboard}
+                        >
+                            <span class="text-sm"> Paste </span>
+                        </button>
+                        <button
+                            class="btn-outline btn-sm btn ml-2"
+                            on:click|preventDefault={connectWallet}
+                        >
+                            <span class="text-sm">Connect Wallet</span>
+                        </button>
+                    </div>
+                </div>
+                {#if $recentActivity?.data?.length}
+                    {#each $recentActivity.data as address}
+                        <li class="m1-ds2 relative z-30 w-full truncate px-0">
+                            <a
+                                class="block w-full max-w-full text-ellipsis px-1 py-2"
+                                data-sveltekit-preload-data="hover"
+                                href="/{address}"
+                            >
+                                <p class="text-micro text-xs opacity-50">
+                                    {nameFromString(address)}
+                                </p>
+                                <p class="text-micro text-xs">
+                                    {#if address.length > 20}
+                                        {address}
+                                    {:else}
+                                        {address}
+                                    {/if}
+                                </p>
+                            </a>
+                        </li>
+                    {/each}
+                {:else}
+                    <i class="pt-2 text-xs opacity-50"
+                        >Paste an address or connect a wallet to get started.</i
+                    >
+                {/if}
+            </ul>
+        {/if}
     </div>
 
     <button
@@ -214,3 +213,28 @@
         {/if}
     </button>
 </form>
+
+{#if size === "lg"}
+    <div class="grid grid-cols-1 py-2 md:grid-cols-3">
+        <button
+            class="btn-outline btn"
+            on:click|preventDefault={clearSearch}
+        >
+            <span class="text-sm">Clear</span>
+        </button>
+
+        <button
+            class="btn-outline btn ml-2"
+            on:click|preventDefault={setFromClipboard}
+        >
+            <span class="text-sm">Paste</span>
+        </button>
+
+        <button
+            class="btn-outline btn ml-2"
+            on:click|preventDefault={connectWallet}
+        >
+            <span class="text-sm">Connect Wallet</span>
+        </button>
+    </div>
+{/if}

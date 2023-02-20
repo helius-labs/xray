@@ -11,13 +11,17 @@
 </script>
 
 <Modal id="menu">
-    <!-- <h1 class="text-2xl font-bold">Menu</h1> -->
+    <div slot="title">
+        <h1 class="text-2xl font-bold">Menu</h1>
+    </div>
+
     {#each [{ name: "About XRAY", url: "/$/about" }, { name: "About Helius APIs", url: "https://helius.xyz" }, { name: "Contribute", url: "https://github.com/helius-labs/xray" }, { name: "Join Discord", url: "https://discord.gg/Wkn3uuSby7" }] as { name, url }}
         <a
             href={url}
             class="btn-ghost btn w-full">{name}</a
         >
     {/each}
+
     <div class="form-control pt-4">
         <label class="label cursor-pointer">
             <span class="label-text">Developer mode</span>
