@@ -26,6 +26,7 @@
     import Namor from "src/lib/components/providers/namor-provider.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
     import DetailsPage from "$lib/components/details-page.svelte";
+    import JSONWidget from "$lib/components/json-widget.svelte";
 
     import {
         groupTransactionActions,
@@ -33,24 +34,15 @@
     } from "$lib/util/transactions";
 
     import { fade } from "svelte/transition";
-
-    let showCode = false;
-
+    
     const address = $page.params.search;
 
     
     const transaction = state(["solanaTransaction", address], address);
 
-    let metadataHTML = "";
-
     let groups: UITransactionActionGroup[] = [];
 
     $: if ($transaction?.data?.parsed) {
-        metadataHTML = formatHighlight($transaction?.data?.raw, {
-            keyColor: "#a5a3a3",
-            numberColor: "#e8a034",
-            stringColor: "#24ae67",
-        });
 
         const merged = mergeTransactionActions(
             [$transaction?.data],
@@ -65,7 +57,7 @@
         : "";
 </script>
 
-<DetailsPage>
+<DetailsPage pageDetails={{page: "transaction", tokenName: ""}}>
     {#if $transaction?.isLoading}
         {#each Array(3) as _}
             <div class="mb-3">
@@ -212,65 +204,10 @@
                 </IconCard>
             </div>
 
-            <div class="mb-3">
-                <IconCard>
-                    <div slot="icon">
-                        <div class="center h-10 w-10 rounded-full bg-secondary">
-                            <Icon
-                                id="json"
-                                size="sm"
-                            />
-                        </div>
-                    </div>
-                    <div
-                        slot="title"
-                        class="flex items-center justify-between"
-                    >
-                        <div>
-                            <p>JSON</p>
-                            <p class="text-xs opacity-50">
-                                View the raw transaction data.
-                            </p>
-                        </div>
-                        <div>
-                            {#if showCode}
-                                <button
-                                    class="btn-ghost btn-sm btn"
-                                    on:click={() => (showCode = false)}
-                                >
-                                    <Icon
-                                        id="cancel"
-                                        size="md"
-                                    />
-                                </button>
-                            {:else}
-                                <button
-                                    class="btn-ghost btn-sm btn"
-                                    on:click={() => (showCode = true)}
-                                >
-                                    <Icon
-                                        id="dots"
-                                        size="md"
-                                    />
-                                </button>
-                            {/if}
-                        </div>
-                    </div>
-                </IconCard>
-
-                {#if showCode}
-                    <div
-                        class="card mt-4 w-full overflow-hidden"
-                        in:fade={{ duration: 500 }}
-                    >
-                        <div class="code overflow-hidden">
-                            <pre><code class="text-xs"
-                                    >{@html metadataHTML}</code
-                                ></pre>
-                        </div>
-                    </div>
-                {/if}
-            </div>
+            <JSONWidget
+               jsonData={$transaction?.data?.raw}
+               page="transaction"
+            />
 
             <div class="my-5 flex justify-center">
                 <a

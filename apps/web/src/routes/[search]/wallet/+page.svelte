@@ -12,7 +12,7 @@
     const transactions = state(["solanaTransactions", address], address);
 </script>
 
-<DetailsPage>
+<DetailsPage pageDetails={{page: "wallet", tokenName: ""}}>
     {#if !$transactions.hasFetched}
         {#each Array(3) as _}
             <div class="mb-3">

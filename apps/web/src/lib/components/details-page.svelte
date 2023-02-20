@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { page } from "$app/stores";
     import { fade } from "svelte/transition";
 
@@ -6,24 +6,27 @@
     import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
 
-    let pageType = "";
+    export let pageDetails = {
+        page: "",
+        tokenName: "",
+    };
 
-    export let tokenName = "";
+    let iconId = "";
 
-    if ($page.url.pathname.endsWith("/wallet")) {
-        pageType = "wallet";
-    } else if ($page.url.pathname.endsWith("/token")) {
-        pageType = "token";
+    if (pageDetails.page === "wallet") {
+        iconId = "person";
+    } else if (pageDetails.page === "token") {
+        iconId = "coins";
     } else {
-        pageType = "transaction";
+        iconId = "lightning";
     }
 </script>
 
 <section class="pb-96">
     <div
         class="title sticky top-16 z-10 mb-3 flex w-full items-center justify-between rounded-lg border bg-black p-4"
-        class:mt-5={pageType === "token"}
-        in:fade={{ delay: 500, duration: 1000 }}
+        class:mt-5={pageDetails.page === "token"}
+        in:fade={{ delay: 300, duration: 250 }}
     >
         <div class="item-center grid w-full grid-cols-6">
             <div class="col-span-6 md:col-span-5">
@@ -33,16 +36,8 @@
                     let:shortenedOriginal
                 >
                     <div class="flex items-center">
-                        {#if pageType === "wallet"}
-                            <Icon id="person" />
-                            <span class="ml-2"> Account </span>
-                        {:else if pageType === "token"}
-                            <Icon id="coins" />
-                            <span class="ml-2"> Token </span>
-                        {:else}
-                            <Icon id="lightning" />
-                            <span class="ml-2"> Transaction </span>
-                        {/if}
+                        <Icon id={iconId} />
+                        <span class="ml-2 capitalize"> {pageDetails.page} </span>
 
                         <h3 class="tooltip tooltip-right mx-2">
                             <span class="opacity-50">
@@ -50,9 +45,9 @@
                             </span>
                         </h3>
                     </div>
-                    {#if pageType === "token"}
+                    {#if pageDetails.page === "token"}
                         <h2 class="text-3xl font-bold lg:text-4xl">
-                            {tokenName}
+                            {pageDetails?.tokenName}
                         </h2>
                     {:else}
                         <h1 class="text-3xl font-bold lg:text-2xl">{result}</h1>
