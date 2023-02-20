@@ -4,7 +4,7 @@
 </script>
 
 <footer
-    class="footer fixed bottom-0 grid w-full grid-cols-2 items-center border bg-black p-3 pb-5"
+    class="footer fixed bottom-0 grid w-full grid-cols-2 items-center border bg-black p-3"
 >
     <div class="col-span-1 flex items-center">
         <PoweredByHelius />
