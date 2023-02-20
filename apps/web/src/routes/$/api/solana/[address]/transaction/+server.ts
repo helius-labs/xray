@@ -4,6 +4,8 @@ const { HELIUS_KEY } = process.env;
 
 import { transactions } from "@helius-labs/xray-test";
 
+import { parseTransaction } from "@helius-labs/xray-proton";
+
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {
     if (!HELIUS_KEY) {
@@ -31,5 +33,5 @@ export async function GET({ params }: RequestEvent) {
 
     const [data] = await response.json();
 
-    return json({ data });
+    return json({ data: parseTransaction(data) });
 }

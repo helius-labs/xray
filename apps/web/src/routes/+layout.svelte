@@ -67,4 +67,4 @@
     </main>
 </SnackProvider>
 
-<Footer />
+<!-- <Footer /> -->
