@@ -1,12 +1,20 @@
 <script lang="ts">
-    import type { UITransaction, UITransactionActionGroup } from "$lib/types";
+    import type { CreateQueryResult } from "@tanstack/svelte-query";
+
+    import type {
+        TRPCTransactionsInput,
+        TRPCTransactionsOutput,
+        CreateBaseQueryResult,
+    } from "$lib/types";
+
+    // import type { UITransaction, UITransactionActionGroup } from "src/lib/types";
 
     import { page } from "$app/stores";
 
-    import {
-        groupTransactionActions,
-        mergeTransactionActions,
-    } from "$lib/util/transactions";
+    // import {
+    //     groupTransactionActions,
+    //     mergeTransactionActions,
+    // } from "$lib/util/transactions";
 
     import prettyDate from "$lib/util/pretty-date";
 
@@ -14,60 +22,42 @@
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
 
-    import { fade, fly } from "svelte/transition";
+    import { fade } from "svelte/transition";
 
-    import { cubicOut } from "svelte/easing";
+    import type { ProtonTransaction } from "@helius-labs/xray-proton/dist";
+    import type { EnrichedTransaction } from "helius-sdk";
+    import IconCard from "$lib/components/icon-card.svelte";
+    import Transaction from "$lib/components/transaction.svelte";
+    import { trpcWithQuery } from "$lib/trpc/client";
+    import { Result } from "postcss";
 
-    export let transactions: UITransaction[];
-    export let user: string = "";
+    export let account: string;
 
-    let groups: UITransactionActionGroup[] = [];
+    const client = trpcWithQuery($page);
 
-    $: if (transactions?.length) {
-        const merged = mergeTransactionActions(transactions, user);
+    const transactions = client.transactions.createQuery({
+        address: [account],
+    });
+    // TODO: Janky casting because the query resykt comes back super nested and not the right type.
+    // Issue: let transaction: SerializeObject<UndefinedToOptional<ProtonTransaction>>
+    // Expexted: let transaction: ProtonTransaction
+    $: transactionsList = $transactions.data
+        ? ($transactions.data.result as ProtonTransaction[])
+        : [];
 
-        groups = groupTransactionActions(merged);
-    }
+    $: console.log($transactions);
 </script>
 
-{#each groups as { label, icon, type, actions, timestamp }, groupIndex}
-    <div
-        class="py-6"
-        in:fade={{
-            delay: groupIndex * 100,
-            duration: 500,
-        }}
-    >
-        <div class="mb-2 flex items-center justify-between opacity-75">
-            <div class="flex items-center">
-                <Icon
-                    id={icon}
-                    size="md"
-                />
-                <h1 class="ml-2">
-                    {label}
-                </h1>
-            </div>
-            <div>
-                <p class="text-xs">{prettyDate(timestamp).formatted}</p>
-            </div>
+{#if $transactions.isLoading}
+    {#each Array(3) as _}
+        <div class="py-2">
+            <IconCard />
         </div>
-
-        {#each actions as action, actionIndex}
-            <a
-                class="mb-2 block cursor-pointer hover:opacity-75"
-                data-sveltekit-reload
-                href="/{action.signature}/tx?prev={window.encodeURI(
-                    $page.params.search
-                )}"
-                in:fly={{
-                    delay: actionIndex * 100,
-                    easing: cubicOut,
-                    y: 50,
-                }}
-            >
-                <TransactionAction {action} />
-            </a>
-        {/each}
-    </div>
-{/each}
+    {/each}
+{:else if $transactions.data}
+    {#each transactionsList as transaction}
+        <div class="mb-10">
+            <Transaction {transaction} />
+        </div>
+    {/each}
+{/if}

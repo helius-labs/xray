@@ -2,9 +2,9 @@
     import Icon from "$lib/components/icon.svelte";
     import Modal from "$lib/components/modal.svelte";
 
-    import { state } from "svelte-snacks";
+    // import { state } from "svelte-snacks";
 
-    const config = state("xrayConfig");
+    // const config = state("xrayConfig");
 
     let devMode = false;
     let ready = false;

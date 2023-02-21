@@ -1,4 +1,4 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import { state } from "svelte-snacks";
 
     const xrayConfig = state("xrayConfig");
@@ -10,4 +10,4 @@
     >
         MOCKED DATA
     </div>
-{/if}
+{/if} -->

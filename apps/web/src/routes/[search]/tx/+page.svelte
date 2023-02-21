@@ -9,7 +9,7 @@
 
     import { page } from "$app/stores";
 
-    import { state } from "svelte-snacks";
+    // import { state } from "svelte-snacks";
 
     import { fly } from "svelte/transition";
 
@@ -38,8 +38,7 @@
 
     const address = $page.params.search;
 
-    
-    const transaction = state(["solanaTransaction", address], address);
+    // const transaction = state(["solanaTransaction", address], address);
 
     let metadataHTML = "";
 
@@ -132,7 +131,7 @@
                                     y: 50,
                                 }}
                             >
-                                <TransactionAction {action} />
+                                <!-- <TransactionAction {action} /> -->
                             </a>
                         {:else}
                             <a
@@ -147,7 +146,7 @@
                                     y: 50,
                                 }}
                             >
-                                <TransactionAction {action} />
+                                <!-- <TransactionAction {action} /> -->
                             </a>
                         {/if}
                     {/each}

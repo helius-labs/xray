@@ -1,6 +1,6 @@
 import {
-    parsers,
-    ProtonSupportedType,
+    protonParsers,
+    ProtonType,
     unknownProtonTransaction,
     type ProtonParser,
 } from "./types";
@@ -8,17 +8,15 @@ import {
 export * from "./types";
 
 export const parseTransaction: ProtonParser = (transaction, address) => {
-    const supportedParsers = Object.keys(parsers);
+    let parser: ProtonParser = protonParsers.UNKNOWN;
 
-    let parser: ProtonParser = parsers.UNKNOWN;
+    const transactionType = transaction.type as ProtonType;
 
-    if (!supportedParsers.includes(transaction.type)) {
+    if (typeof protonParsers[transactionType] === "undefined") {
         return unknownProtonTransaction;
     }
 
-    const parserIndex = supportedParsers.indexOf(transaction.type);
-
-    parser = Object.values(parsers)[parserIndex];
+    parser = protonParsers[transactionType];
 
     try {
         return parser(transaction, address);

@@ -1,6 +1,12 @@
+import { z } from "zod";
+
 import type { EnrichedTransaction, TransactionType } from "helius-sdk";
 
-import type { ProtonTransaction } from "@helius-labs/xray-proton";
+import type {
+    ProtonTransaction,
+    ProtonActionType,
+    ProtonTransactionAction,
+} from "@helius-labs/xray-proton";
 
 import type { IconPaths } from "$lib/icons";
 
@@ -52,36 +58,15 @@ export interface SearchResult {
 
 export type Icon = keyof typeof IconPaths;
 
-export enum UITransactionActionType {
-    BURN = "BURN",
-    SWAP = "SWAP",
-    TRANSFER = "TRANSFER",
-    TRANSFER_RECEIVED = "TRANSFER_RECEIVED",
-    TRANSFER_SENT = "TRANSFER_SENT",
-    SWAP_RECEIVED = "SWAP_RECEIVED",
-    SWAP_SENT = "SWAP_SENT",
-    NFT_SALE = "NFT_SALE",
-    NFT_LISTING = "NFT_LISTING",
-    UNKNOWN = "UNKNOWN",
-    NFT_BID_CANCELLED = "NFT_BID_CANCELLED",
-    NFT_MINT = "NFT_MINT",
-    NFT_BID = "NFT_BID",
-    NFT_SALE_CANCELLED = "NFT_SALE_CANCELLED",
-    NFT_SOLD = "NFT_SOLD",
-    NFT_BOUGHT = "NFT_BOUGHT",
-}
-
-export interface UITransactionActionsMetadataObject {
+export interface TransactionActionMetadata {
     icon: Icon;
     label: string;
 }
 
-export type UITransactionActionMetadata = Record<
-    UITransactionActionType,
-    UITransactionActionsMetadataObject
->;
-
-export const transactionActionsMetadata: UITransactionActionMetadata = {
+export const transactionActionsMetadata: Record<
+    ProtonActionType,
+    TransactionActionMetadata
+> = {
     BURN: {
         icon: "flame",
         label: "Burn",
@@ -94,27 +79,31 @@ export const transactionActionsMetadata: UITransactionActionMetadata = {
         icon: "cancel",
         label: "Canceled NFT Bid",
     },
-    NFT_BOUGHT: {
+    NFT_BUY: {
         icon: "sale",
         label: "Bought",
     },
     NFT_LISTING: {
         icon: "sale",
-        label: "NFT Sale",
+        label: "Listed NFT",
     },
     NFT_MINT: {
         icon: "mint",
         label: "Mint",
     },
+    NFT_MINT_AIRDROP: {
+        icon: "gift",
+        label: "Airdrop",
+    },
     NFT_SALE: {
         icon: "sale",
         label: "Bought",
     },
-    NFT_SALE_CANCELLED: {
+    NFT_CANCEL_LISTING: {
         icon: "cancel",
-        label: "Canceled NFT Sale",
+        label: "Canceled NFT Lising",
     },
-    NFT_SOLD: {
+    NFT_SELL: {
         icon: "sale",
         label: "Sold",
     },
@@ -148,22 +137,20 @@ export const transactionActionsMetadata: UITransactionActionMetadata = {
     },
 };
 
-export interface UITransactionAction {
-    type: TransactionType;
-    actionType?: UITransactionActionType;
-    signature: string;
-    timestamp: number;
-    receivedFrom?: string;
-    sentTo?: string;
-    received?: string;
-    sent?: string;
-    amount?: number;
-}
-
 export interface UITransactionActionGroup {
     label: string;
     icon: Icon;
     type: string;
-    actions: UITransactionAction[];
+    actions: ProtonTransactionAction[];
     timestamp: number;
 }
+
+export interface TRPCTransactionsOutput {
+    result: Array<ProtonTransaction>;
+    oldest: string;
+}
+
+export const zodTRPCTransactionsInput = z.object({
+    address: z.array(z.string()),
+    before: z.string().optional(),
+});

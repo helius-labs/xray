@@ -1,13 +1,13 @@
-<script lang="ts">
+<!-- <script lang="ts">
     import { onMount } from "svelte";
     import type { UITokenMetadata } from "$lib/types";
-    import { state, type QueryStore } from "svelte-snacks";
+    // import { state, type QueryStore } from "svelte-snacks";
 
     export let search: string = "";
 
-    const solanaToken: QueryStore = state(["solanaToken", search], search);
+    // const solanaToken: QueryStore = state(["solanaToken", search], search);
 
-    const tokenRegistry = state("solanaTokenRegistry");
+    // const tokenRegistry = state("solanaTokenRegistry");
 
     const metadata: UITokenMetadata = {
         address: "",
@@ -21,9 +21,7 @@
 
     let isReady = false;
 
-    $: tokenDetails = $tokenRegistry.data.get
-        ? $tokenRegistry.data.get(search)
-        : {};
+    $: tokenDetails = {};
 
     $: if (isReady) {
         if (tokenDetails) {
@@ -53,4 +51,4 @@
 <slot
     {metadata}
     token={$solanaToken}
-/>
+/> -->

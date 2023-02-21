@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Icon as IconType } from "$lib/types";
+    import type { Icon as IconType } from "src/lib/types";
 
     import { copyToClipboard } from "$lib/util/clipboard";
 
@@ -25,7 +25,7 @@
 </script>
 
 <button
-    class="btn {classList} btn-sm"
+    class="btn-xs btn {classList}"
     class:btn-success={copied}
     class:btn-ghost={!copied}
     on:click={copy}

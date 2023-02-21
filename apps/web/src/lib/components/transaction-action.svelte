@@ -1,11 +1,72 @@
 <script lang="ts">
+    import { transactionActionsMetadata } from "$lib/types";
+
+    import type {
+        ProtonActionType,
+        ProtonTransaction,
+    } from "@helius-labs/xray-proton";
+
+    import Icon from "$lib/components/icon.svelte";
+
+    export let transaction: ProtonTransaction;
+
+    const metadata =
+        transactionActionsMetadata[transaction.type as ProtonActionType];
+</script>
+
+<div class="flex items-center justify-between">
+    <h4>
+        <Icon
+            id="cancel"
+            path={metadata.icon}
+        />
+    </h4>
+</div>
+<div class="card rounded-lg border p-4">
+    <!-- {#each transaction?.actions as action}
+        <Namor
+            text={$page.params.search}
+            let:result
+        >
+            <TokenProvider
+                search={action.sent || action.received}
+                let:metadata
+            >
+                <div class="grid grid-cols-12 rounded-lg p-4">
+                    <div class="col-span-2 md:col-span-1">
+                        {#if metadata}
+                            <img
+                                class="max-w-3 h-full w-full rounded object-contain"
+                                alt="token symbol"
+                                src={metadata.image}
+                            />
+                        {:else}
+                            <div class="rounded bg-secondary p-3">
+                                <span class="opacity-70">
+                                    <Icon id="image" />
+                                </span>
+                            </div>
+                        {/if}
+                    </div>
+                    <div class="col-span-10 md:col-span-11">
+                        <pre class="text-xs">
+                            {JSON.stringify(action.data, null, 4)}
+                        </pre>
+                    </div>
+                </div>
+            </TokenProvider>
+        </Namor>
+    {/each} -->
+</div>
+
+<!-- <script lang="ts">
     import type { UITransactionAction } from "$lib/types";
 
     import { get } from "svelte/store";
 
     import IntersectionObserver from "svelte-intersection-observer";
 
-    import { ProtonSupportedType } from "@helius-labs/xray-proton";
+    import { ProtonType } from "@helius-labs/xray-proton";
     import { getSolanaName } from "@helius-labs/helius-namor";
 
     import Icon from "$lib/components/icon.svelte";
@@ -186,4 +247,4 @@
             </TokenProvider>
         {/if}
     </div>
-</IntersectionObserver>
+</IntersectionObserver> -->

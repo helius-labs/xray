@@ -9,7 +9,7 @@
 
     import { nameFromString } from "@helius-labs/helius-namor";
 
-    import { state } from "svelte-snacks";
+    // import { state } from "svelte-snacks";
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
 
@@ -41,7 +41,7 @@
 
     let showSearchError = () => "";
 
-    const recentActivity = state("recentActivity");
+    // const recentActivity = state("recentActivity");
 
     const setFromClipboard = async () => {
         const clipboard = await pasteFromClipboard();
@@ -174,8 +174,8 @@
                         </button>
                     </div>
                 </div>
-                {#if $recentActivity?.data?.length}
-                    {#each $recentActivity.data as address}
+                {#if [].length}
+                    {#each [""] as address}
                         <li class="m1-ds2 relative z-30 w-full truncate px-0">
                             <a
                                 class="block w-full max-w-full text-ellipsis px-1 py-2"

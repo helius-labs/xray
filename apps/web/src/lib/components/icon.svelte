@@ -4,12 +4,19 @@
     import { type Icon, IconPaths } from "$lib/types";
 
     export let id: Icon;
+    export let path: string = "";
     export let fill: string = "current" as "current" | "success" | "base-100";
     export let size = "sm" as "sm" | "md" | "lg";
 
     let el: SVGElement;
 
     onMount(() => {
+        if (path) {
+            // eslint-disable-next-line no-unsanitized/property
+            el.innerHTML = path;
+            return;
+        }
+
         const icon = IconPaths[id as keyof typeof IconPaths];
 
         if (icon) {

@@ -15,6 +15,8 @@ export async function load({ params, url }: RequestEvent) {
     if (
         url.pathname.endsWith("/token") ||
         url.pathname.endsWith("/wallet") ||
+        url.pathname.endsWith("/wallet/nfts") ||
+        url.pathname.endsWith("/wallet/tokens") ||
         url.pathname.endsWith("/tx") ||
         url.pathname.startsWith("#") ||
         !url.pathname

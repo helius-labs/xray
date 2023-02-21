@@ -16,9 +16,9 @@
         "build:env": "npm run env -- turbo run build",
         "// DEV -----------------": "",
         "dev": "dotenv -- turbo run dev --parallel",
-        "// Databse -----------------": "",
-        "db:pull": "dotenv -- turbo run db:pull",
-        "db:generate": "dotenv -- turbo run db:generate",
+        "// Generate -----------------": "",
+        "generate:db": "dotenv -- turbo run db:generate",
+        "generate:zod": "turbo run generate:zod",
         "// Lint --------------------": "",
         "test": "turbo lint",
         "lint": "turbo lint",
@@ -72,6 +72,7 @@
     "dependencies": {
         "@solana/web3.js": "^1.73.2",
         "helius-sdk": "^0.3.0",
-        "json-format-highlight": "^1.0.4"
+        "json-format-highlight": "^1.0.4",
+        "yarn": "^1.22.19"
     }
 }
