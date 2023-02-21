@@ -44,10 +44,6 @@ export const solanaTransactions = {
 };
 
 export const solanaTransaction = {
-    formatter: (data: any) => ({
-        parsed: parseTransaction(data),
-        raw: data,
-    }),
     loader: actions.getSolanaTransaction,
 };
 

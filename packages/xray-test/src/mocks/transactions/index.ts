@@ -10,10 +10,14 @@ import {
     transferToken,
 } from "./transfers";
 
+import { burnToken, burnNFT } from "./burns";
+
 export const transactionsVariety = [
     transferToken,
     swapUsdcSol,
+    burnToken,
     transferNFT,
+    burnNFT,
     transferSol,
     transferMulti,
 ];

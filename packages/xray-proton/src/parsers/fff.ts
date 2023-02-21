@@ -153,8 +153,6 @@ export const parseLoanFox = (
         amount: 0,
     });
 
-    console.log(actions);
-
     return {
         actions,
         fee,

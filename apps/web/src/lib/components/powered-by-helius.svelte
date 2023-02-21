@@ -3,7 +3,7 @@
 </script>
 
 <a
-    class="btn-outline btn flex items-center text-left"
+    class="btn-ghost btn flex items-center text-left"
     href="https://helius.xyz/"
 >
     <div class="relative mr-3">

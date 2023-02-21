@@ -8,6 +8,8 @@
         mergeTransactionActions,
     } from "$lib/util/transactions";
 
+    import prettyDate from "$lib/util/pretty-date";
+
     import Icon from "$lib/components/icon.svelte";
 
     import TransactionAction from "$lib/components/transaction-action.svelte";
@@ -36,7 +38,7 @@
             duration: 500,
         }}
     >
-        <div class="mb-2 flex opacity-75">
+        <div class="mb-2 flex items-center justify-between opacity-75">
             <div class="flex items-center">
                 <Icon
                     id={icon}
@@ -45,6 +47,9 @@
                 <h1 class="ml-2">
                     {label}
                 </h1>
+            </div>
+            <div>
+                <p class="text-xs">{prettyDate(timestamp).formatted}</p>
             </div>
         </div>
 
