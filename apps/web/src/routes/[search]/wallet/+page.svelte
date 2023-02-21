@@ -24,12 +24,7 @@
     let:result
     let:shortenedOriginal
 >
-    <DetailsPage
-        type="Account"
-        title={result}
-        icon="person"
-        copyText={$page.url.href}
-    >
+    <DetailsPage pageDetails={{page: "wallet", tokenName: ""}>
         <!-- <div class="mb-3">
             <IconCard>
                 <div slot="icon">
