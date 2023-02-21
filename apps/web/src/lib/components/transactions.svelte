@@ -11,6 +11,7 @@
     import Transaction from "$lib/components/transaction.svelte";
 
     export let account: string;
+    export let ref = "";
 
     const client = trpcWithQuery($page);
 
@@ -48,6 +49,7 @@
                     }}
                 >
                     <Transaction
+                        {ref}
                         {transaction}
                         clickableTokens={false}
                     />
@@ -55,6 +57,7 @@
             {:else}
                 <div class="mb-4">
                     <Transaction
+                        {ref}
                         {transaction}
                         clickableTokens={false}
                         clickableTransaction={true}

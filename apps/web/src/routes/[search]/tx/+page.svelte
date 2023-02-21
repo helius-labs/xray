@@ -55,6 +55,7 @@
                     clickableTokens={true}
                     clickableTransaction={false}
                     copyButtons={true}
+                    ref="@tx:{data.signature}"
                 />
             </div>
 
@@ -80,7 +81,7 @@
                             </p>
                         </div>
                         <div>
-                            <div class="badge-success badge">Success</div>
+                            <div class="badge badge-success">Success</div>
                         </div>
                     </div>
                 </IconCard>

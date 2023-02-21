@@ -4,6 +4,8 @@
         ProtonActionType,
     } from "@helius-labs/xray-proton";
 
+    import { page } from "$app/stores";
+
     import { fly, fade } from "svelte/transition";
 
     import { transactionActionsMetadata } from "$lib/types";
@@ -14,6 +16,7 @@
     export let clickableTokens = false;
     export let clickableTransaction = true;
     export let copyButtons = false;
+    export let ref = "";
 
     import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
@@ -33,11 +36,15 @@
     const metadata = supported
         ? transactionActionsMetadata[transaction.type as ProtonActionType]
         : transactionActionsMetadata["UNKNOWN"];
+
+    $: existingRef = $page.url.searchParams.get("ref") || "";
 </script>
 
 <div>
     <a
-        href="/{transaction.signature}/tx?"
+        href="/{transaction.signature}/tx?{ref
+            ? `ref=${ref}${existingRef}`
+            : ''}"
         class="block rounded-lg bg-black {clickableTransaction
             ? 'cursor-pointer border p-2 hover:border-white'
             : 'cursor-pointer-none'}"
@@ -144,7 +151,9 @@
                                     </div>
                                 {:else if metadata?.image}
                                     <a
-                                        href="/{address}/token?tx={transaction.signature}"
+                                        href="/{address}/token?{existingRef
+                                            ? `ref=${ref}${existingRef}`
+                                            : ''}"
                                         class:pointer-events-none={!clickableTokens}
                                         in:fade={{
                                             duration: 500,
@@ -161,7 +170,7 @@
                                                 <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                                 <div
                                                     style="background-image: url('{metadata.image}')"
-                                                    class="aspect-square w-full rounded-lg bg-cover"
+                                                    class="rounded-lgd aspect-square w-full bg-cover"
                                                 />
                                             </div>
 

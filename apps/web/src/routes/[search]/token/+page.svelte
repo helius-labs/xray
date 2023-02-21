@@ -5,7 +5,6 @@
 
     import PageLoader from "./_loader.svelte";
 
-    import DetailsPage from "$lib/components/details-page.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
     import Modal from "$lib/components/modal.svelte";
 
@@ -34,7 +33,6 @@
                     />
                 </a>
             </div>
-
             <Modal
                 id="token-fs-modal"
                 fullScreenModal
@@ -47,89 +45,85 @@
                     <h1>{metadata.name}</h1>
                 </div>
             </Modal>
-            <DetailsPage tokenName={metadata.name}>
-                {#if metadata.description}
-                    <div
-                        class="mt-3"
-                        in:fade={{ delay: 700, duration: 800 }}
-                    >
+            {#if metadata.description}
+                <div
+                    class="mt-3"
+                    in:fade={{ delay: 700, duration: 800 }}
+                >
+                    <h3 class="mt-3 text-lg font-medium text-gray-500">
+                        Description
+                    </h3>
+                    <p class="text-sm">
+                        {metadata.description}
+                    </p>
+                    {#if metadata.collectionKey}
                         <h3 class="mt-3 text-lg font-medium text-gray-500">
-                            Description
+                            Collection
                         </h3>
-                        <p class="text-sm">
-                            {metadata.description}
-                        </p>
-                        {#if metadata.collectionKey}
-                            <h3 class="mt-3 text-lg font-medium text-gray-500">
-                                Collection
-                            </h3>
-                            <TokenProvider
-                                search={metadata.collectionKey}
-                                let:metadata
+                        <TokenProvider
+                            search={metadata.collectionKey}
+                            let:metadata
+                        >
+                            <p>{metadata.name}</p>
+                        </TokenProvider>
+                    {/if}
+                </div>
+            {/if}
+            {#if metadata.attributes && metadata.attributes.length}
+                <div
+                    class="mt-3"
+                    in:fade={{ delay: 850, duration: 800 }}
+                >
+                    <h3 class="text-lg font-medium text-gray-500">
+                        Properties
+                    </h3>
+                    <div class="flex flex-wrap">
+                        {#each metadata.attributes as attribute, idx}
+                            <div
+                                class="card mr-3 mt-3 p-0"
+                                in:fade={{
+                                    delay: idx * 75 + 900,
+                                    duration: 800,
+                                }}
                             >
-                                <p>{metadata.name}</p>
-                            </TokenProvider>
-                        {/if}
+                                <h4 class="text-sm font-medium">
+                                    {attribute.traitType.toUpperCase()}
+                                </h4>
+                                <p class="text-sm">
+                                    {attribute.value}
+                                </p>
+                            </div>
+                        {/each}
                     </div>
-                {/if}
-                {#if metadata.attributes && metadata.attributes.length}
-                    <div
-                        class="mt-3"
-                        in:fade={{ delay: 850, duration: 800 }}
-                    >
-                        <h3 class="text-lg font-medium text-gray-500">
-                            Properties
-                        </h3>
-                        <div class="flex flex-wrap">
-                            {#each metadata.attributes as attribute, idx}
-                                <div
-                                    class="card mr-3 mt-3 p-0"
-                                    in:fade={{
-                                        delay: idx * 75 + 900,
-                                        duration: 800,
-                                    }}
-                                >
-                                    <h4 class="text-sm font-medium">
-                                        {attribute.traitType.toUpperCase()}
-                                    </h4>
-                                    <p class="text-sm">
-                                        {attribute.value}
-                                    </p>
-                                </div>
-                            {/each}
-                        </div>
+                </div>
+            {/if}
+            {#if metadata.creators && metadata.creators.length > 0}
+                <div
+                    class="mt-3"
+                    in:fade={{ delay: 1000, duration: 800 }}
+                >
+                    <h3 class="text-lg font-medium text-gray-500">Creators</h3>
+                    <div class="flex flex-wrap">
+                        {#each metadata.creators as creator, idx}
+                            <a
+                                class="card mr-3 mt-3 p-0"
+                                href="/{creator.address}/wallet"
+                                in:fade={{
+                                    delay: idx * 75 + 1000,
+                                    duration: 800,
+                                }}
+                            >
+                                <h4 class="text-sm font-medium">
+                                    Creator {idx + 1}
+                                </h4>
+                                <p class="text-sm">
+                                    {shortenString(creator.address)}
+                                </p>
+                            </a>
+                        {/each}
                     </div>
-                {/if}
-                {#if metadata.creators && metadata.creators.length > 0}
-                    <div
-                        class="mt-3"
-                        in:fade={{ delay: 1000, duration: 800 }}
-                    >
-                        <h3 class="text-lg font-medium text-gray-500">
-                            Creators
-                        </h3>
-                        <div class="flex flex-wrap">
-                            {#each metadata.creators as creator, idx}
-                                <a
-                                    class="card mr-3 mt-3 p-0"
-                                    href="/{creator.address}/wallet"
-                                    in:fade={{
-                                        delay: idx * 75 + 1000,
-                                        duration: 800,
-                                    }}
-                                >
-                                    <h4 class="text-sm font-medium">
-                                        Creator {idx + 1}
-                                    </h4>
-                                    <p class="text-sm">
-                                        {shortenString(creator.address)}
-                                    </p>
-                                </a>
-                            {/each}
-                        </div>
-                    </div>
-                {/if}
-            </DetailsPage>
+                </div>
+            {/if}
         </div>
     {/if}
 </TokenProvider>

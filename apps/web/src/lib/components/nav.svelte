@@ -13,17 +13,13 @@
 
     let backUrl = "";
 
-    $: if ($page.url.searchParams.has("wallet")) {
-        backUrl = `/${$page.url.searchParams.get("wallet")}/wallet`;
-    } else if ($page.url.searchParams.has("tx")) {
-        backUrl = `/${$page.url.searchParams.get("tx")}/tx`;
-    } else if ($page.url.searchParams.has("token")) {
-        backUrl = `/${$page.url.searchParams.get("token")}/token`;
-    } else if ($page.url.pathname !== "/") {
-        backUrl = "/";
-    } else {
-        backUrl = "";
-    }
+    $: ref = $page.url.searchParams.get("ref");
+
+    $: [refType, refValue, ...refRest] = ref?.split(":") || [];
+
+    $: backUrl = refType
+        ? `/${refValue}/${refType}${refRest.length ? refRest : ""}`
+        : "/";
 </script>
 
 <nav

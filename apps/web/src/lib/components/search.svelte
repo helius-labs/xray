@@ -151,26 +151,6 @@
             >
                 <div class="flex flex-wrap items-center justify-between">
                     <p class="text-md mb-1 mt-2 font-bold">Recents</p>
-                    <div class="mb-1">
-                        <button
-                            class="btn-outline btn-sm btn"
-                            on:click|preventDefault={clearSearch}
-                        >
-                            <span class="text-sm"> Clear </span>
-                        </button>
-                        <button
-                            class="btn-outline btn-sm btn ml-2"
-                            on:click|preventDefault={setFromClipboard}
-                        >
-                            <span class="text-sm"> Paste </span>
-                        </button>
-                        <button
-                            class="btn-outline btn-sm btn ml-2"
-                            on:click|preventDefault={connectWallet}
-                        >
-                            <span class="text-sm">Connect Wallet</span>
-                        </button>
-                    </div>
                 </div>
                 {#if [].length}
                     {#each [""] as address}

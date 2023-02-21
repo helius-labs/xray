@@ -22,4 +22,7 @@
     }
 </script>
 
-<Transactions {account} />
+<Transactions
+    {account}
+    ref="@wallet:{$page.params.search}"
+/>
