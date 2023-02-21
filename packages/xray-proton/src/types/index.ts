@@ -95,25 +95,5 @@ export const protonParsers = {
     LOAN_FOX: parser.parseLoanFox,
 };
 
-export enum ProtonSupportedActionType {
-    "TRANSFER",
-    "TRANSFER_SENT",
-    "TRANSFER_RECEIVED",
-    "SWAP",
-    "SWAP_SENT",
-    "SWAP_RECEIVED",
-    "UNKNOWN",
-    "NFT_SALE",
-    "NFT_BUY",
-    "NFT_SELL",
-    "NFT_LISTING",
-    "NFT_CANCEL_LISTING",
-    "NFT_BID",
-    "NFT_BID_CANCELLED",
-    "NFT_MINT",
-    "NFT_MINT_AIRDROP",
-    "BURN",
-}
-
 export type ProtonType = keyof typeof protonParsers;
 export type ProtonActionType = keyof typeof ProtonSupportedActionType;
