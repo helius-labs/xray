@@ -4,6 +4,43 @@ import * as parser from "../parsers";
 
 export const SOL = "So11111111111111111111111111111111111111112";
 
+export enum ProtonSupportedType {
+    BURN,
+    BURN_NFT,
+    NFT_BID,
+    NFT_BID_CANCELLED,
+    NFT_CANCEL_LISTING,
+    NFT_LISTING,
+    NFT_SALE,
+    NFT_MINT,
+    SWAP,
+    TRANSFER,
+    UNKNOWN,
+    BORROW_FOX,
+    LOAN_FOX,
+}
+
+export enum ProtonSupportedActionType {
+    "TRANSFER",
+    "TRANSFER_SENT",
+    "TRANSFER_RECEIVED",
+    "SWAP",
+    "SWAP_SENT",
+    "SWAP_RECEIVED",
+    "UNKNOWN",
+    "NFT_SALE",
+    "NFT_BUY",
+    "NFT_SELL",
+    "NFT_LISTING",
+    "NFT_CANCEL_LISTING",
+    "NFT_BID",
+    "NFT_BID_CANCELLED",
+    "NFT_MINT",
+    "NFT_MINT_AIRDROP",
+    "BURN",
+    "FREEZE",
+}
+
 export type ProtonParser = (
     transaction: EnrichedTransaction,
     address?: string
@@ -54,6 +91,8 @@ export const protonParsers = {
     SWAP: parser.parseSwap,
     TRANSFER: parser.parseTransfer,
     UNKNOWN: parser.parseUnknown,
+    BORROW_FOX: parser.parseBorrowFox,
+    LOAN_FOX: parser.parseLoanFox,
 };
 
 export enum ProtonSupportedActionType {

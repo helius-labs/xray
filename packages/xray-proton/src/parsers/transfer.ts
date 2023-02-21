@@ -80,30 +80,27 @@ export const parseTransfer = (
                 const sent = tx.mint;
                 actions.push({
                     actionType,
-                    amount,
                     from,
                     fromName,
                     sent,
                     to,
                     toName,
+                    amount,
                 });
             } else if (actionType === "TRANSFER_RECEIVED") {
                 const received = tx.mint;
                 actions.push({
                     actionType,
-                    amount,
                     from,
                     fromName,
                     received,
                     to,
                     toName,
+                    amount,
                 });
             }
         }
     }
-
-    const nativeTransfersLength =
-        nativeTransfers.length - tokenTransfers.length;
 
     for (let i = 0; i < nativeTransfers.length; i++) {
         const tx = nativeTransfers[i];
