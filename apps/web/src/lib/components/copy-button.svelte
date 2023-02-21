@@ -31,7 +31,7 @@
     on:click={copy}
 >
     {#if copied}
-        <span>{success || "Copied"}</span>
+        <span class="my-1">{success || "Copied"}</span>
     {:else}
         <Icon id={icon} />
 

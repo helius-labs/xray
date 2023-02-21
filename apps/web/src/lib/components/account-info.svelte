@@ -33,7 +33,7 @@
     let:shortenedOriginal
 >
     <div
-        class="sticky top-20 z-10 flex flex-row-reverse items-center justify-between bg-base-100 md:flex-row"
+        class="flex flex-row-reverse items-center justify-between bg-base-100 md:flex-row"
     >
         <div>
             <h3 class="m-0 text-3xl font-bold">{result}</h3>

@@ -1,13 +1,15 @@
-<!-- <script lang="ts">
-    import { onMount } from "svelte";
+<script lang="ts">
     import type { UITokenMetadata } from "$lib/types";
-    // import { state, type QueryStore } from "svelte-snacks";
 
-    export let search: string = "";
+    import { page } from "$app/stores";
 
-    // const solanaToken: QueryStore = state(["solanaToken", search], search);
+    import { trpcWithQuery } from "$lib/trpc/client";
 
-    // const tokenRegistry = state("solanaTokenRegistry");
+    export let address: string;
+
+    const client = trpcWithQuery($page);
+
+    const token = client.token.createQuery([address]);
 
     const metadata: UITokenMetadata = {
         address: "",
@@ -19,36 +21,27 @@
         name: "",
     };
 
-    let isReady = false;
+    $: data = $token?.data?.length ? $token.data[0] : {};
 
-    $: tokenDetails = {};
+    $: !data?.offChainMetadata?.metadata?.name && console.log({ data });
 
-    $: if (isReady) {
-        if (tokenDetails) {
-            metadata.name = tokenDetails?.symbol;
-            metadata.image = tokenDetails?.logoURI;
-        } else {
-            metadata.address = $solanaToken.data?.account;
-            metadata.name = $solanaToken.data?.offChainMetadata?.metadata?.name;
-            metadata.image =
-                $solanaToken.data?.offChainMetadata?.metadata?.image;
-            metadata.description =
-                $solanaToken.data?.offChainMetadata?.metadata?.description;
-            metadata.attributes =
-                $solanaToken.data?.offChainMetadata?.metadata?.attributes;
-            metadata.creators =
-                $solanaToken.data?.onChainMetadata?.metadata?.data?.creators;
-            metadata.collectionKey =
-                $solanaToken.data?.onChainMetadata?.metadata?.collection?.key;
-        }
+    $: {
+        metadata.address = data?.account;
+        metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
+        metadata.creators = data?.onChainMetadata?.metadata?.data?.creators;
+        metadata.description = data?.offChainMetadata?.metadata?.description;
+        metadata.collectionKey =
+            data?.onChainMetadata?.metadata?.collection?.key;
+        metadata.image =
+            data?.offChainMetadata?.metadata?.image ||
+            data?.onChainMetadata?.metadata?.data.image ||
+            data?.legacyMetadata?.logoURI;
+        metadata.name =
+            data?.offChainMetadata?.metadata?.name ||
+            data?.legacyMetadata?.name ||
+            data?.onChainMetadata?.metadata?.data.name;
     }
-
-    onMount(() => {
-        isReady = true;
-    });
 </script>
 
-<slot
-    {metadata}
-    token={$solanaToken}
-/> -->
+<slot {metadata} />
+<!-- {JSON.stringify(metadata)} -->

@@ -29,7 +29,6 @@
     import IconCard from "$lib/components/icon-card.svelte";
     import Transaction from "$lib/components/transaction.svelte";
     import { trpcWithQuery } from "$lib/trpc/client";
-    import { Result } from "postcss";
 
     export let account: string;
 
@@ -56,8 +55,8 @@
     {/each}
 {:else if $transactions.data}
     {#each transactionsList as transaction}
-        <div class="mb-10">
+        {#if transaction?.signature}
             <Transaction {transaction} />
-        </div>
+        {/if}
     {/each}
 {/if}

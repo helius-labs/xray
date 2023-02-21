@@ -89,15 +89,15 @@ export const transactionActionsMetadata: Record<
     },
     NFT_MINT: {
         icon: "mint",
-        label: "Mint",
+        label: "NFT Mint",
     },
     NFT_MINT_AIRDROP: {
         icon: "gift",
-        label: "Airdrop",
+        label: "Airdroped",
     },
     NFT_SALE: {
         icon: "sale",
-        label: "Bought",
+        label: "Sold",
     },
     NFT_CANCEL_LISTING: {
         icon: "cancel",
@@ -120,7 +120,7 @@ export const transactionActionsMetadata: Record<
         label: "Swap",
     },
     TRANSFER: {
-        icon: "arrowRight",
+        icon: "lightning",
         label: "Transfer",
     },
     TRANSFER_RECEIVED: {
