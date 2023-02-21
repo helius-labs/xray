@@ -1,5 +1,6 @@
 <script lang="ts">
     import type { UITokenMetadata } from "$lib/types";
+    import { SOL } from "@helius-labs/xray-proton";
 
     import { page } from "$app/stores";
 
@@ -21,11 +22,13 @@
         name: "",
     };
 
-    $: data = $token?.data?.length ? $token.data[0] : {};
+    $: if (address === SOL) {
+        metadata.name = "Solana";
+        metadata.image = "/media/tokens/solana.png";
+    } else {
+        // Kicks off the query
+        const data = $token?.data?.length ? $token.data[0] : {};
 
-    $: !data?.offChainMetadata?.metadata?.name && console.log({ data });
-
-    $: {
         metadata.address = data?.account;
         metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
         metadata.creators = data?.onChainMetadata?.metadata?.data?.creators;
@@ -41,7 +44,13 @@
             data?.legacyMetadata?.name ||
             data?.onChainMetadata?.metadata?.data.name;
     }
+
+    $: tokenIsLoading = address !== SOL && $token.isLoading;
+    $: tokenFailed = $token.isError;
 </script>
 
-<slot {metadata} />
-<!-- {JSON.stringify(metadata)} -->
+<slot
+    {metadata}
+    {tokenIsLoading}
+    {tokenFailed}
+/>

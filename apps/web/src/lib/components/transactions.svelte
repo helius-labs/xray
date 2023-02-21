@@ -1,34 +1,14 @@
 <script lang="ts">
-    import type { CreateQueryResult } from "@tanstack/svelte-query";
-
-    import type {
-        TRPCTransactionsInput,
-        TRPCTransactionsOutput,
-        CreateBaseQueryResult,
-    } from "$lib/types";
-
-    // import type { UITransaction, UITransactionActionGroup } from "src/lib/types";
-
     import { page } from "$app/stores";
 
-    // import {
-    //     groupTransactionActions,
-    //     mergeTransactionActions,
-    // } from "$lib/util/transactions";
-
-    import prettyDate from "$lib/util/pretty-date";
-
-    import Icon from "$lib/components/icon.svelte";
-
-    import TransactionAction from "$lib/components/transaction-action.svelte";
-
-    import { fade } from "svelte/transition";
-
     import type { ProtonTransaction } from "@helius-labs/xray-proton/dist";
-    import type { EnrichedTransaction } from "helius-sdk";
+
+    import { trpcWithQuery } from "$lib/trpc/client";
+
+    import { fly } from "svelte/transition";
+
     import IconCard from "$lib/components/icon-card.svelte";
     import Transaction from "$lib/components/transaction.svelte";
-    import { trpcWithQuery } from "$lib/trpc/client";
 
     export let account: string;
 
@@ -37,6 +17,7 @@
     const transactions = client.transactions.createQuery({
         address: [account],
     });
+
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
     // Issue: let transaction: SerializeObject<UndefinedToOptional<ProtonTransaction>>
     // Expexted: let transaction: ProtonTransaction
@@ -54,9 +35,32 @@
         </div>
     {/each}
 {:else if $transactions.data}
-    {#each transactionsList as transaction}
+    {#each transactionsList as transaction, idx}
         {#if transaction?.signature}
-            <Transaction {transaction} />
+            <!-- Only animate the first few intro transactions -->
+            {#if idx < 8}
+                <div
+                    class="mb-4"
+                    in:fly={{
+                        duration: 500,
+                        delay: idx * 100,
+                        y: 30,
+                    }}
+                >
+                    <Transaction
+                        {transaction}
+                        clickableTokens={false}
+                    />
+                </div>
+            {:else}
+                <div class="mb-4">
+                    <Transaction
+                        {transaction}
+                        clickableTokens={false}
+                        clickableTransaction={true}
+                    />
+                </div>
+            {/if}
         {/if}
     {/each}
 {/if}

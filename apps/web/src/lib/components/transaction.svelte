@@ -1,25 +1,20 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-
-    import {
-        type ProtonTransaction,
-        type ProtonActionType,
+    import type {
+        ProtonTransaction,
+        ProtonActionType,
     } from "@helius-labs/xray-proton";
 
-    import {
-        transactionActionsMetadata,
-        type TransactionActionMetadata,
-    } from "$lib/types";
+    import { fly, fade } from "svelte/transition";
+
+    import { transactionActionsMetadata } from "$lib/types";
 
     import formatDate from "$lib/util/format-date";
-
-    import { fly } from "svelte/transition";
 
     export let transaction: ProtonTransaction;
     export let clickableTokens = false;
     export let clickableTransaction = true;
+    export let copyButtons = false;
 
-    import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
     import shortenString from "../util/shorten-string";
@@ -29,45 +24,65 @@
     let element: HTMLDivElement;
     let intersecting = false;
 
-    const key = transaction.type as ProtonActionType;
-
     const supported = Object.keys(transactionActionsMetadata).includes(
         transaction.type
     );
 
+    // TODO: Make this work without casting
+    // but, if it exists then it will be a ProtonActionType
     const metadata = supported
         ? transactionActionsMetadata[transaction.type as ProtonActionType]
         : transactionActionsMetadata["UNKNOWN"];
 </script>
 
 <div>
-    <div
-        class="rounded-lg border bg-black p-2 {clickableTransaction
-            ? 'cursor-pointer hover:border-white'
-            : ''}"
+    <a
+        href="/{transaction.signature}/tx?"
+        class="block rounded-lg bg-black {clickableTransaction
+            ? 'cursor-pointer border p-2 hover:border-white'
+            : 'cursor-pointer-none'}"
     >
-        <div class="grid grid-cols-12 gap-3">
+        <div
+            class="grid grid-cols-12 gap-3 rounded-lg"
+            class:pb-2={clickableTokens}
+        >
             <div class="center col-span-1 opacity-50">
                 <Icon
                     id={metadata.icon}
                     size="md"
                 />
             </div>
-            <div class="col-span-7">
-                <h3 class="text-xl font-semibold">
-                    {metadata.label}
-                </h3>
-                <div class="text-xs opacity-50">
-                    {transaction.signature
-                        ? shortenString(transaction.signature, 8)
-                        : "Unknown"}
+            <div class="col-span-11">
+                <div class="flex justify-between">
+                    <h3 class="text-xl font-semibold">
+                        {metadata.label}
+                    </h3>
+                    <h3 class="ml-2 mt-1 text-xs opacity-50">
+                        {formatDate(transaction.timestamp)}
+                    </h3>
                 </div>
-            </div>
+                <div class="flex items-center justify-between">
+                    <div class="text-xs opacity-50">
+                        {transaction.signature
+                            ? shortenString(transaction.signature, 8)
+                            : "Unknown"}
+                    </div>
 
-            <div class="col-span-4 text-right opacity-50">
-                <h3 class="ml-2 mt-1 text-xs">
-                    {formatDate(transaction.timestamp)}
-                </h3>
+                    {#if copyButtons}
+                        <!-- Prevent default so copy button doesn't trigger link -->
+                        <div
+                            class="flex"
+                            on:click|preventDefault
+                            on:keydown|preventDefault
+                        >
+                            <CopyButton success="copied ID" />
+                            <CopyButton
+                                icon="share"
+                                success="copied link"
+                            />
+                        </div>
+                    {/if}
+                </div>
             </div>
         </div>
 
@@ -92,112 +107,146 @@
                             in:fly={{
                                 y: 20,
                                 duration: 500,
-                                delay: idx * 100,
+                                delay: idx * 50,
                             }}
                         >
                             <TokenProvider
                                 {address}
                                 let:metadata
+                                let:tokenIsLoading
                             >
-                                <a
-                                    href="/{address}/token?tx={transaction.signature}"
-                                    class="hover:boder"
-                                >
+                                {#if tokenIsLoading}
                                     <div
-                                        class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1"
+                                        class="mt-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg p-1"
                                     >
                                         <div
                                             class="col-span-2 p-1 md:col-span-1"
                                         >
-                                            <img
-                                                src={metadata?.image ||
-                                                    "/media/tokens/unknown-token.png"}
-                                                alt=""
-                                                class="aspect-square w-full rounded-lg object-cover"
+                                            <div
+                                                class="aspect-square w-full rounded-full bg-secondary"
                                             />
                                         </div>
-
                                         <div
                                             class="col-span-10 flex items-center justify-between md:col-span-11"
                                         >
                                             <div>
-                                                <h4
-                                                    class="text-sm font-semibold"
-                                                >
-                                                    {metadata?.name ||
-                                                        "Unknown"}
-                                                </h4>
-
-                                                {#if !action.actionType.includes("NFT")}
-                                                    {#if action.actionType === "TRANSFER" || action.actionType === "SWAP"}
-                                                        <div class="flex">
-                                                            <h3
-                                                                class="mr-2 text-xs"
-                                                            >
-                                                                From <span
-                                                                    class="opacity-50"
-                                                                >
-                                                                    {shortenString(
-                                                                        action.from
-                                                                    )}
-                                                                </span>
-                                                            </h3>
-                                                            <Icon
-                                                                id="arrowRight"
-                                                            />
-                                                            <h3
-                                                                class="ml-2 text-xs"
-                                                            >
-                                                                To <span
-                                                                    class="opacity-50"
-                                                                >
-                                                                    {shortenString(
-                                                                        action.to
-                                                                    )}
-                                                                </span>
-                                                            </h3>
-                                                        </div>
-                                                    {:else}
-                                                        <h3
-                                                            class="text-xs opacity-50"
-                                                        >
-                                                            {transactionActionsMetadata[
-                                                                action
-                                                                    .actionType
-                                                            ].label}
-                                                        </h3>
-                                                    {/if}
-                                                {/if}
+                                                <div
+                                                    class="mb-2 h-3 w-32 animate-pulse rounded-full bg-secondary"
+                                                />
+                                                <div
+                                                    class="h-2 w-20 animate-pulse rounded-full bg-secondary"
+                                                />
                                             </div>
-                                            <div>
-                                                {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL")}
-                                                    <h3
-                                                        class="text-bold text-success"
-                                                    >
-                                                        + {action.amount.toLocaleString()}
-                                                    </h3>
-                                                {:else if action.actionType.includes("SENT") || action.actionType.includes("NFT_BUY")}
-                                                    <h3
-                                                        class="text-bold text-error"
-                                                    >
-                                                        - {action.amount.toLocaleString()}
-                                                    </h3>
-                                                {:else if action.actionType.includes("BURN")}
-                                                    <h3
-                                                        class="text-bold text-warning"
-                                                    >
-                                                        - {action.amount.toLocaleString()}
-                                                    </h3>
-                                                {/if}
-                                            </div>
+                                            <div
+                                                class="h-2 w-5 animate-pulse rounded-full bg-secondary"
+                                            />
                                         </div>
                                     </div>
-                                </a>
+                                {:else if metadata?.image}
+                                    <a
+                                        href="/{address}/token?tx={transaction.signature}"
+                                        class:pointer-events-none={!clickableTokens}
+                                        in:fade={{
+                                            duration: 500,
+                                        }}
+                                    >
+                                        <div
+                                            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1 {clickableTokens
+                                                ? 'border p-2 hover:border-white'
+                                                : ''}"
+                                        >
+                                            <div
+                                                class="col-span-2 p-1 md:col-span-1"
+                                            >
+                                                <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                                                <div
+                                                    style="background-image: url('{metadata.image}')"
+                                                    class="aspect-square w-full rounded-lg bg-cover"
+                                                />
+                                            </div>
+
+                                            <div
+                                                class="col-span-10 flex items-center justify-between md:col-span-11"
+                                            >
+                                                <div>
+                                                    <h4
+                                                        class="text-lg font-semibold md:text-sm"
+                                                    >
+                                                        {metadata?.name ||
+                                                            "Unknown"}
+                                                    </h4>
+
+                                                    {#if !action.actionType.includes("NFT")}
+                                                        {#if action.actionType === "TRANSFER" || action.actionType === "SWAP"}
+                                                            <div class="flex">
+                                                                <h3
+                                                                    class="mr-2 text-xs"
+                                                                >
+                                                                    From <span
+                                                                        class="opacity-50"
+                                                                    >
+                                                                        {shortenString(
+                                                                            action.from
+                                                                        )}
+                                                                    </span>
+                                                                </h3>
+                                                                <Icon
+                                                                    id="arrowRight"
+                                                                />
+                                                                <h3
+                                                                    class="ml-2 text-xs"
+                                                                >
+                                                                    To <span
+                                                                        class="opacity-50"
+                                                                    >
+                                                                        {shortenString(
+                                                                            action.to
+                                                                        )}
+                                                                    </span>
+                                                                </h3>
+                                                            </div>
+                                                        {:else}
+                                                            <h3
+                                                                class="text-xs opacity-50"
+                                                            >
+                                                                {transactionActionsMetadata[
+                                                                    action
+                                                                        .actionType
+                                                                ].label}
+                                                            </h3>
+                                                        {/if}
+                                                    {/if}
+                                                </div>
+                                                <div>
+                                                    {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL")}
+                                                        <h3
+                                                            class="text-bold text-success"
+                                                        >
+                                                            + {action.amount.toLocaleString()}
+                                                        </h3>
+                                                    {:else if action.actionType.includes("SENT") || action.actionType.includes("NFT_BUY")}
+                                                        <h3
+                                                            class="text-bold text-error"
+                                                        >
+                                                            - {action.amount.toLocaleString()}
+                                                        </h3>
+                                                    {:else if action.actionType.includes("BURN")}
+                                                        <h3
+                                                            class="text-bold text-warning"
+                                                        >
+                                                            - {action.amount.toLocaleString()}
+                                                        </h3>
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {/if}
                             </TokenProvider>
                         </div>
                     {/if}
                 </IntersectionObserver>
             {/if}
         {/each}
-    </div>
+    </a>
 </div>

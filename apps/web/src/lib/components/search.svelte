@@ -5,11 +5,9 @@
 </style>
 
 <script lang="ts">
-    import type { Icon as IconType } from "$lib/types";
+    import type { Icon as IconType } from "src/lib/types";
 
     import { nameFromString } from "@helius-labs/helius-namor";
-
-    // import { state } from "svelte-snacks";
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
 

@@ -8,9 +8,9 @@ import type {
     ProtonTransactionAction,
 } from "@helius-labs/xray-proton";
 
-import type { IconPaths } from "$lib/icons";
+import type { IconPaths } from "$lib/config";
 
-export * from "$lib/icons";
+export * from "$lib/config";
 
 export interface UIConfig {
     dev: boolean;
@@ -62,80 +62,6 @@ export interface TransactionActionMetadata {
     icon: Icon;
     label: string;
 }
-
-export const transactionActionsMetadata: Record<
-    ProtonActionType,
-    TransactionActionMetadata
-> = {
-    BURN: {
-        icon: "flame",
-        label: "Burn",
-    },
-    NFT_BID: {
-        icon: "sale",
-        label: "NFT Bid",
-    },
-    NFT_BID_CANCELLED: {
-        icon: "cancel",
-        label: "Canceled NFT Bid",
-    },
-    NFT_BUY: {
-        icon: "sale",
-        label: "Bought",
-    },
-    NFT_LISTING: {
-        icon: "sale",
-        label: "Listed NFT",
-    },
-    NFT_MINT: {
-        icon: "mint",
-        label: "NFT Mint",
-    },
-    NFT_MINT_AIRDROP: {
-        icon: "gift",
-        label: "Airdroped",
-    },
-    NFT_SALE: {
-        icon: "sale",
-        label: "Sold",
-    },
-    NFT_CANCEL_LISTING: {
-        icon: "cancel",
-        label: "Canceled NFT Lising",
-    },
-    NFT_SELL: {
-        icon: "sale",
-        label: "Sold",
-    },
-    SWAP: {
-        icon: "swap",
-        label: "Swap",
-    },
-    SWAP_RECEIVED: {
-        icon: "swap",
-        label: "Swap",
-    },
-    SWAP_SENT: {
-        icon: "swap",
-        label: "Swap",
-    },
-    TRANSFER: {
-        icon: "lightning",
-        label: "Transfer",
-    },
-    TRANSFER_RECEIVED: {
-        icon: "arrowDown",
-        label: "Received",
-    },
-    TRANSFER_SENT: {
-        icon: "arrowUp",
-        label: "Sent",
-    },
-    UNKNOWN: {
-        icon: "box",
-        label: "Generic Transaction",
-    },
-};
 
 export interface UITransactionActionGroup {
     label: string;

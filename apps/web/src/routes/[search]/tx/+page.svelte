@@ -31,43 +31,9 @@
     $: data = $transaction?.data
         ? ($transaction.data as ProtonTransaction)
         : null;
-
-    $: console.log();
 </script>
 
 {#if animate}
-    <div
-        in:fade={{
-            duration: 1000,
-        }}
-    >
-        <div class="sticky top-16 z-10 mb-3 bg-base-100 py-1">
-            <div
-                class="flex flex-row-reverse items-center justify-between bg-base-100 md:flex-row"
-            >
-                <div>
-                    <h3 class="m-0 text-3xl font-bold">Transaction</h3>
-                </div>
-                <div>
-                    <CopyButton
-                        text={signature}
-                        success="Copied Address"
-                        classList="px-3"
-                    />
-
-                    <CopyButton
-                        text={$page.url.href}
-                        success="Copied Link"
-                        classList="px-3"
-                        icon="share"
-                    />
-                </div>
-            </div>
-
-            <p class="opacity-50">{shortenAddress(signature)}</p>
-        </div>
-    </div>
-
     <div
         in:fly={{
             duration: 1000,
@@ -83,6 +49,15 @@
                 </div>
             {/each}
         {:else if data}
+            <div class="pb-5">
+                <Transaction
+                    transaction={data}
+                    clickableTokens={true}
+                    clickableTransaction={false}
+                    copyButtons={true}
+                />
+            </div>
+
             <div class="mb-3">
                 <IconCard>
                     <div slot="icon">
@@ -110,12 +85,6 @@
                     </div>
                 </IconCard>
             </div>
-
-            <Transaction
-                transaction={data}
-                clickableTokens={true}
-                clickableTransaction={false}
-            />
         {/if}
     </div>
 {/if}
