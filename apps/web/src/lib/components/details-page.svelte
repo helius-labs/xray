@@ -2,9 +2,11 @@
     import { page } from "$app/stores";
     import { fade } from "svelte/transition";
 
-    import Namor from "$lib/components/providers/namor-provider.svelte";
+    import type { Icon as IconType } from "$lib/types";
+
     import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
+
 
     export let pageDetails = {
         page: "",

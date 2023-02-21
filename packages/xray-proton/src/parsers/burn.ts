@@ -28,7 +28,7 @@ export const parseBurn = (
 
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
 
-    const { signature, timestamp } = transaction;
+    const { signature, timestamp, type } = transaction;
     const fee = transaction.fee / LAMPORTS_PER_SOL;
 
     source = transaction.source;
@@ -55,6 +55,7 @@ export const parseBurn = (
         const amount = tx.tokenAmount;
 
         actions.push({
+            actionType: "BURN",
             amount,
             from,
             fromName,
@@ -71,6 +72,6 @@ export const parseBurn = (
         signature,
         source,
         timestamp,
-        type: "BURN",
+        type,
     };
 };

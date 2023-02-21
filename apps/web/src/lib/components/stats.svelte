@@ -14,13 +14,12 @@
 </script>
 
 <div class="ml-1 hidden items-center text-xs md:flex">
-    <div class="mx-2">
+    <!-- <div class="mx-2">
         <Icon
             id="stats"
             size="md"
-            fill="success"
         />
-    </div>
+    </div> -->
     <div>
         <div class="mr-5">
             <span class="font-bold">TPS </span>

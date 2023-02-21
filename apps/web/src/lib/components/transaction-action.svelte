@@ -93,11 +93,14 @@
                     class="min-h-28"
                 >
                     <IconCard>
-                        <div slot="icon">
+                        <div
+                            slot="icon"
+                            class="h-full"
+                        >
                             {#if supported && action?.type !== "UNKNOWN"}
                                 {#if metadata.image}
                                     <img
-                                        class="max-w-3 w-full rounded"
+                                        class="max-w-3 h-full w-full rounded object-contain"
                                         alt="token symbol"
                                         src={metadata.image}
                                     />

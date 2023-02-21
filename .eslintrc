@@ -1,4 +1,4 @@
 {
-    "root"    : true,
-    "extends" : [ "custom" ]
+    "extends": ["custom"],
+    "root": true
 }
