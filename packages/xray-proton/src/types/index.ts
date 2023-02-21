@@ -16,6 +16,7 @@ export enum ProtonSupportedType {
     SWAP,
     TRANSFER,
     UNKNOWN,
+    BORROW_FOX,
 }
 
 export enum ProtonSupportedActionType {
@@ -91,4 +92,5 @@ export const parsers: ProtonParsers = {
     SWAP: parser.parseSwap,
     TRANSFER: parser.parseTransfer,
     UNKNOWN: parser.parseUnknown,
+    BORROW_FOX: parser.parseBorrowFox,
 };
