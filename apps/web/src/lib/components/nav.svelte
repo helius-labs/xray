@@ -13,12 +13,14 @@
 
     let backUrl = "";
 
-    $: ref = $page.url.searchParams.get("ref");
+    $: refs = $page.url.searchParams.get("ref")?.split("@") || [];
 
-    $: [refType, refValue, ...refRest] = ref?.split(":") || [];
+    $: restOfRefs = refs.slice(1).join("@");
+
+    $: [refType, refValue] = refs[0].split(":") || [];
 
     $: backUrl = refType
-        ? `/${refValue}/${refType}${refRest.length ? refRest : ""}`
+        ? `/${refValue}/${refType}${restOfRefs.length ? restOfRefs : ""}`
         : "/";
 </script>
 
