@@ -162,4 +162,8 @@ export const parseLoanFox = (
         timestamp,
         type,
     };
+<<<<<<< HEAD
 };
+=======
+};
+>>>>>>> d40918a (chore: rebase)
