@@ -110,7 +110,6 @@ export const parseBorrowFox = (
         }
     }
 
-    console.log(actions);
     return {
         actions,
         fee,
@@ -122,7 +121,47 @@ export const parseBorrowFox = (
     };
 };
 
-// export const parseLoanFox = (
-//     transaction: EnrichedTransaction,
-//     address: string | undefined
-// ): ProtonTransaction => {};
+export const parseLoanFox = (
+    transaction: EnrichedTransaction
+): ProtonTransaction => {
+    const { signature, timestamp, type, source, accountData } = transaction;
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+    const actions: ProtonTransactionAction[] = [];
+
+    if (!accountData) {
+        return {
+            actions,
+            fee,
+            primaryUser: "",
+            signature,
+            source,
+            timestamp,
+            type,
+        };
+    }
+
+    const primaryUser = accountData[0]?.account || "";
+    const sent = accountData[8]?.account;
+
+    actions.push({
+        actionType: "FREEZE",
+        from: primaryUser,
+        fromName: getSolanaName(primaryUser),
+        to: "",
+        toName: undefined,
+        sent,
+        amount: 0,
+    });
+
+    console.log(actions);
+
+    return {
+        actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
+    };
+};
