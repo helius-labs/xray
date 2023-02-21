@@ -16,7 +16,6 @@
     import { cubicOut } from "svelte/easing";
 
     // @ts-ignore old lib, not typed
-    import formatHighlight from "json-format-highlight";
 
     import shortenString from "$lib/util/shorten-string";
     import Icon from "$lib/components/icon.svelte";
@@ -37,6 +36,7 @@
     
     const address = $page.params.search;
 
+    const wallet = $page.url.searchParams.get("wallet");
     
     const transaction = state(["solanaTransaction", address], address);
 
@@ -117,7 +117,7 @@
                                 data-sveltekit-reload
                                 href="/{action.sent}/token?prev={window.encodeURI(
                                     action.signature
-                                )}"
+                                )}&wallet={window.encodeURI(wallet)}"
                                 in:fly={{
                                     delay: actionIndex * 100,
                                     easing: cubicOut,
