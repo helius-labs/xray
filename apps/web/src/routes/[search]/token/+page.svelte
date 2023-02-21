@@ -7,7 +7,7 @@
     import DetailsPage from "$lib/components/details-page.svelte";
     import TxHistory from "$lib/components/tx-history.svelte";
     import JSONWidget from "$lib/components/json-widget.svelte";
-    import TokenSection from "$src/lib/components/token-section.svelte;
+    import TokenSection from "$src/lib/components/token-section.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
     import TokenPgLoader from "$lib/components/token-pg-loader.svelte";
     import Modal from "$lib/components/modal.svelte";
