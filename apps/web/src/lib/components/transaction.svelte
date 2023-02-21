@@ -72,6 +72,12 @@
         </div>
 
         {#each transaction.actions as action, idx}
+            {@const address = action.actionType.includes("SENT")
+                ? action.sent || ""
+                : action.actionType.includes("RECEIVED")
+                ? action.received || ""
+                : action.sent || action.received || ""}
+
             {#if action.actionType !== "UNKNOWN"}
                 <IntersectionObserver
                     once={true}
@@ -90,94 +96,103 @@
                             }}
                         >
                             <TokenProvider
-                                address={action.actionType.includes("SENT")
-                                    ? action.sent || ""
-                                    : action.actionType.includes("RECEIVED")
-                                    ? action.received || ""
-                                    : action.sent || action.received || ""}
+                                {address}
                                 let:metadata
                             >
-                                <div
-                                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1"
+                                <a
+                                    href="/{address}/token?tx={transaction.signature}"
+                                    class="hover:boder"
                                 >
-                                    <div class="col-span-2 p-1 md:col-span-1">
-                                        <img
-                                            src={metadata?.image ||
-                                                "/media/tokens/unknown-token.png"}
-                                            alt=""
-                                            class="aspect-square w-full rounded-lg object-cover"
-                                        />
-                                    </div>
-
                                     <div
-                                        class="col-span-10 flex items-center justify-between md:col-span-11"
+                                        class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1"
                                     >
-                                        <div>
-                                            <h4 class="text-sm font-semibold">
-                                                {metadata?.name || "Unknown"}
-                                            </h4>
+                                        <div
+                                            class="col-span-2 p-1 md:col-span-1"
+                                        >
+                                            <img
+                                                src={metadata?.image ||
+                                                    "/media/tokens/unknown-token.png"}
+                                                alt=""
+                                                class="aspect-square w-full rounded-lg object-cover"
+                                            />
+                                        </div>
 
-                                            {#if !action.actionType.includes("NFT")}
-                                                {#if action.actionType === "TRANSFER" || action.actionType === "SWAP"}
-                                                    <div class="flex">
-                                                        <h3
-                                                            class="mr-2 text-xs"
-                                                        >
-                                                            From <span
-                                                                class="opacity-50"
+                                        <div
+                                            class="col-span-10 flex items-center justify-between md:col-span-11"
+                                        >
+                                            <div>
+                                                <h4
+                                                    class="text-sm font-semibold"
+                                                >
+                                                    {metadata?.name ||
+                                                        "Unknown"}
+                                                </h4>
+
+                                                {#if !action.actionType.includes("NFT")}
+                                                    {#if action.actionType === "TRANSFER" || action.actionType === "SWAP"}
+                                                        <div class="flex">
+                                                            <h3
+                                                                class="mr-2 text-xs"
                                                             >
-                                                                {shortenString(
-                                                                    action.from
-                                                                )}
-                                                            </span>
-                                                        </h3>
-                                                        <Icon id="arrowRight" />
-                                                        <h3
-                                                            class="ml-2 text-xs"
-                                                        >
-                                                            To <span
-                                                                class="opacity-50"
+                                                                From <span
+                                                                    class="opacity-50"
+                                                                >
+                                                                    {shortenString(
+                                                                        action.from
+                                                                    )}
+                                                                </span>
+                                                            </h3>
+                                                            <Icon
+                                                                id="arrowRight"
+                                                            />
+                                                            <h3
+                                                                class="ml-2 text-xs"
                                                             >
-                                                                {shortenString(
-                                                                    action.to
-                                                                )}
-                                                            </span>
+                                                                To <span
+                                                                    class="opacity-50"
+                                                                >
+                                                                    {shortenString(
+                                                                        action.to
+                                                                    )}
+                                                                </span>
+                                                            </h3>
+                                                        </div>
+                                                    {:else}
+                                                        <h3
+                                                            class="text-xs opacity-50"
+                                                        >
+                                                            {transactionActionsMetadata[
+                                                                action
+                                                                    .actionType
+                                                            ].label}
                                                         </h3>
-                                                    </div>
-                                                {:else}
+                                                    {/if}
+                                                {/if}
+                                            </div>
+                                            <div>
+                                                {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL")}
                                                     <h3
-                                                        class="text-xs opacity-50"
+                                                        class="text-bold text-success"
                                                     >
-                                                        {transactionActionsMetadata[
-                                                            action.actionType
-                                                        ].label}
+                                                        + {action.amount.toLocaleString()}
+                                                    </h3>
+                                                {:else if action.actionType.includes("SENT") || action.actionType.includes("NFT_BUY")}
+                                                    <h3
+                                                        class="text-bold text-error"
+                                                    >
+                                                        - {action.amount.toLocaleString()}
+                                                    </h3>
+                                                {:else if action.actionType.includes("BURN")}
+                                                    <h3
+                                                        class="text-bold text-warning"
+                                                    >
+                                                        - {action.amount.toLocaleString()}
                                                     </h3>
                                                 {/if}
-                                            {/if}
-                                        </div>
-                                        <div>
-                                            {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL")}
-                                                <h3
-                                                    class="text-bold text-success"
-                                                >
-                                                    + {action.amount.toLocaleString()}
-                                                </h3>
-                                            {:else if action.actionType.includes("SENT") || action.actionType.includes("NFT_BUY")}
-                                                <h3
-                                                    class="text-bold text-error"
-                                                >
-                                                    - {action.amount.toLocaleString()}
-                                                </h3>
-                                            {:else if action.actionType.includes("BURN")}
-                                                <h3
-                                                    class="text-bold text-warning"
-                                                >
-                                                    - {action.amount.toLocaleString()}
-                                                </h3>
-                                            {/if}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </TokenProvider>
                         </div>
                     {/if}
