@@ -231,7 +231,7 @@
                                                     {/if}
                                                 </div>
                                                 <div>
-                                                    {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL")}
+                                                    {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL") || action.actionType.includes("NFT_MINT_AIRDROP")}
                                                         <h3
                                                             class="text-bold text-success"
                                                         >
