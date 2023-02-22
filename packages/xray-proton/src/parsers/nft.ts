@@ -48,43 +48,61 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
         return generateDefaultTransaction(transaction.type);
     }
 
+    const actions: ProtonTransactionAction[] = [];
+
     if (address) {
         const actionType = nftEvent.buyer === address ? "NFT_BUY" : "NFT_SELL";
 
         if (actionType === "NFT_BUY") {
+            actions.push(
+                {
+                    actionType: "SENT",
+                    amount: nftEvent.amount / LAMPORTS_PER_SOL,
+                    from: nftEvent.buyer,
+                    fromName: getSolanaName(nftEvent.buyer),
+                    sent: SOL,
+                    to: nftEvent.seller,
+                    toName: getSolanaName(nftEvent.seller),
+                },
+                {
+                    actionType: "RECEIVED",
+                    amount: 1,
+                    from: nftEvent.seller,
+                    fromName: getSolanaName(nftEvent.seller),
+                    received: (nftEvent.nfts || [{}])[0]?.mint,
+                    to: nftEvent.buyer,
+                    toName: getSolanaName(nftEvent.buyer),
+                }
+            );
             return generateNftTransaction({
-                actions: [
-                    {
-                        // @ts-ignore
-                        actionType,
-                        amount: nftEvent.amount / LAMPORTS_PER_SOL,
-                        from: nftEvent.buyer,
-                        fromName: getSolanaName(nftEvent.buyer),
-                        received: (nftEvent.nfts || [{}])[0]?.mint,
-                        sent: SOL,
-                        to: nftEvent.seller,
-                        toName: getSolanaName(nftEvent.seller),
-                    },
-                ],
+                actions,
                 event: nftEvent,
                 primaryUser: nftEvent.buyer,
                 transaction,
             });
         } else if (actionType === "NFT_SELL") {
+            actions.push(
+                {
+                    actionType: "SENT",
+                    amount: 1,
+                    from: nftEvent.seller,
+                    fromName: getSolanaName(nftEvent.seller),
+                    sent: (nftEvent.nfts || [{}])[0]?.mint,
+                    to: nftEvent.buyer,
+                    toName: getSolanaName(nftEvent.buyer),
+                },
+                {
+                    actionType: "RECEIVED",
+                    amount: nftEvent.amount / LAMPORTS_PER_SOL,
+                    from: nftEvent.buyer,
+                    fromName: getSolanaName(nftEvent.buyer),
+                    received: SOL,
+                    to: nftEvent.seller,
+                    toName: getSolanaName(nftEvent.seller),
+                }
+            );
             return generateNftTransaction({
-                actions: [
-                    {
-                        // @ts-ignore
-                        actionType,
-                        amount: nftEvent.amount / LAMPORTS_PER_SOL,
-                        from: nftEvent.seller,
-                        fromName: getSolanaName(nftEvent.seller),
-                        received: SOL,
-                        sent: (nftEvent.nfts || [{}])[0]?.mint,
-                        to: nftEvent.buyer,
-                        toName: getSolanaName(nftEvent.buyer),
-                    },
-                ],
+                actions,
                 event: nftEvent,
                 primaryUser: nftEvent.seller,
                 transaction,
@@ -92,20 +110,29 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
         }
     }
 
+    actions.push(
+        {
+            actionType: "SENT",
+            amount: nftEvent.amount / LAMPORTS_PER_SOL,
+            from: nftEvent.buyer,
+            fromName: getSolanaName(nftEvent.buyer),
+            sent: SOL,
+            to: nftEvent.seller,
+            toName: getSolanaName(nftEvent.seller),
+        },
+        {
+            actionType: "RECEIVED",
+            amount: 1,
+            from: nftEvent.seller,
+            fromName: getSolanaName(nftEvent.seller),
+            received: (nftEvent.nfts || [{}])[0]?.mint,
+            to: nftEvent.buyer,
+            toName: getSolanaName(nftEvent.buyer),
+        }
+    );
+
     return generateNftTransaction({
-        actions: [
-            {
-                // @ts-ignore
-                actionType: "NFT_SALE",
-                amount: nftEvent.amount / LAMPORTS_PER_SOL,
-                from: nftEvent.seller,
-                fromName: getSolanaName(nftEvent.seller),
-                received: SOL,
-                sent: (nftEvent.nfts || [{}])[0]?.mint,
-                to: nftEvent.buyer,
-                toName: getSolanaName(nftEvent.buyer),
-            },
-        ],
+        actions,
         event: nftEvent,
         primaryUser: nftEvent.seller,
         transaction,
