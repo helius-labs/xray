@@ -1,24 +1,30 @@
-<script>
-    import { state } from "svelte-snacks";
+<script lang="ts">
+    import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
 
-    import shortenString from "$lib/util/shorten-string";
+    import { tweened } from "svelte/motion";
 
     import Transactions from "$lib/components/transactions.svelte";
-    import IconCard from "$lib/components/icon-card.svelte";
-    import DetailsPage from "$lib/components/details-page.svelte";
-    import Namor from "$lib/components/providers/namor-provider.svelte";
-    import Icon from "$lib/components/icon.svelte";
-    import CopyButton from "$lib/components/copy-button.svelte";
-    import { onMount } from "svelte";
 
-    const address = $page.params.search;
+    const account = $page.params.search;
 
-    const transactions = state(["solanaTransactions", address], address);
-    const accountInfo = state(["solanaAccountInfo", address], address);
+    const client = trpcWithQuery($page);
+
+    const accountInfo = client.accountInfo.createQuery(account);
+
+    const balance = tweened(0, {
+        duration: 1000,
+    });
+
+    $: if ($accountInfo?.data?.balance) {
+        balance.set($accountInfo.data.balance);
+    }
+
+    $: console.log(`@wallet:${$page.params.search}`);
 </script>
 
+<<<<<<< HEAD
 <Namor
     text={$page.params.search}
     let:result
@@ -108,3 +114,9 @@
         {/if}
     </DetailsPage>
 </Namor>
+=======
+<Transactions
+    {account}
+    ref="@wallet:{$page.params.search}"
+/>
+>>>>>>> q/trpc

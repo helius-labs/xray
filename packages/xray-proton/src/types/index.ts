@@ -46,9 +46,6 @@ export type ProtonParser = (
     address?: string
 ) => ProtonTransaction;
 
-export type ProtonType = keyof typeof ProtonSupportedType;
-export type ProtonActionType = keyof typeof ProtonSupportedActionType;
-
 export interface ProtonTransactionAction {
     actionType: ProtonActionType;
     from: string;
@@ -68,9 +65,10 @@ export interface ProtonTransaction {
     timestamp: number;
     source: Source;
     actions: ProtonTransactionAction[];
+    raw?: EnrichedTransaction;
 }
 
-export type ProtonParsers = Record<ProtonType, ProtonParser>;
+export type ProtonParsers = Record<string, ProtonParser>;
 
 export const unknownProtonTransaction: ProtonTransaction = {
     actions: [],
@@ -82,7 +80,7 @@ export const unknownProtonTransaction: ProtonTransaction = {
     type: "UNKNOWN",
 };
 
-export const parsers: ProtonParsers = {
+export const protonParsers = {
     BURN: parser.parseBurn,
     BURN_NFT: parser.parseBurn,
     NFT_BID: parser.parseNftBid,
@@ -97,3 +95,6 @@ export const parsers: ProtonParsers = {
     BORROW_FOX: parser.parseBorrowFox,
     LOAN_FOX: parser.parseLoanFox,
 };
+
+export type ProtonType = keyof typeof protonParsers;
+export type ProtonActionType = keyof typeof ProtonSupportedActionType;

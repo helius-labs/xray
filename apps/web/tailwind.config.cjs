@@ -7,7 +7,7 @@ const config = {
                 helius: {
                     accent: "#ea580c",
 
-                    "base-100": "#010101",
+                    "base-100": "black",
 
                     error: "#ee2222",
 

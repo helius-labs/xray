@@ -1,75 +1,69 @@
 <script lang="ts">
-    import type { UITransaction, UITransactionActionGroup } from "$lib/types";
-
     import { page } from "$app/stores";
 
-    import {
-        groupTransactionActions,
-        mergeTransactionActions,
-    } from "$lib/util/transactions";
+    import type { ProtonTransaction } from "@helius-labs/xray-proton/dist";
 
-    import prettyDate from "$lib/util/pretty-date";
+    import { trpcWithQuery } from "$lib/trpc/client";
 
-    import Icon from "$lib/components/icon.svelte";
+    import { fly } from "svelte/transition";
 
-    import TransactionAction from "$lib/components/transaction-action.svelte";
+    import IconCard from "$lib/components/icon-card.svelte";
+    import Transaction from "$lib/components/transaction.svelte";
 
-    import { fade, fly } from "svelte/transition";
+    export let account: string;
+    export let ref = "";
 
-    import { cubicOut } from "svelte/easing";
+    const client = trpcWithQuery($page);
 
-    export let transactions: UITransaction[];
-    export let user: string = "";
+    const transactions = client.transactions.createQuery({
+        address: [account],
+    });
 
-    let groups: UITransactionActionGroup[] = [];
+    // TODO: Janky casting because the query resykt comes back super nested and not the right type.
+    // Issue: let transaction: SerializeObject<UndefinedToOptional<ProtonTransaction>>
+    // Expexted: let transaction: ProtonTransaction
+    $: transactionsList = $transactions.data
+        ? ($transactions.data.result as ProtonTransaction[])
+        : [];
 
-    $: if (transactions?.length) {
-        const merged = mergeTransactionActions(transactions, user);
-
-        groups = groupTransactionActions(merged);
-    }
+    $: console.log($transactions);
 </script>
 
-{#each groups as { label, icon, type, actions, timestamp }, groupIndex}
-    <div
-        class="py-6"
-        in:fade={{
-            delay: groupIndex * 100,
-            duration: 500,
-        }}
-    >
-        <div class="mb-2 flex items-center justify-between opacity-75">
-            <div class="flex items-center">
-                <Icon
-                    id={icon}
-                    size="md"
-                />
-                <h1 class="ml-2">
-                    {label}
-                </h1>
-            </div>
-            <div>
-                <p class="text-xs">{prettyDate(timestamp).formatted}</p>
-            </div>
+{#if $transactions.isLoading}
+    {#each Array(3) as _}
+        <div class="py-2">
+            <IconCard />
         </div>
-
-        {#each actions as action, actionIndex}
-            <a
-                class="mb-2 block cursor-pointer hover:opacity-75"
-                data-sveltekit-reload
-                href="/{action.signature}/tx?prev={window.encodeURI(
-                    $page.params.search
-                )}&wallet={window.encodeURI(
-                    user
-                )}"
-                in:fly={{
-                    delay: actionIndex * 100,
-                    easing: cubicOut,
-                    y: 50,
-                }}
-            >
-                <TransactionAction {action} />
-            </a>
-        {/each}
-    </div>
-{/each}
+    {/each}
+{:else if $transactions.data}
+    {#each transactionsList as transaction, idx}
+        {#if transaction?.signature}
+            <!-- Only animate the first few intro transactions -->
+            {#if idx < 8}
+                <div
+                    class="mb-4"
+                    in:fly={{
+                        duration: 500,
+                        delay: idx * 100,
+                        y: 30,
+                    }}
+                >
+                    <Transaction
+                        {ref}
+                        {transaction}
+                        clickableTokens={false}
+                    />
+                </div>
+            {:else}
+                <div class="mb-4">
+                    <Transaction
+                        {ref}
+                        {transaction}
+                        clickableTokens={false}
+                        clickableTransaction={true}
+                    />
+                </div>
+            {/if}
+        {/if}
+    {/each}
+{/if}

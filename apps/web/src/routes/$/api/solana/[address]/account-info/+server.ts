@@ -4,7 +4,6 @@ import connect from "$lib/util/solana/connect";
 
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
-// Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {
     const connection = connect();
 

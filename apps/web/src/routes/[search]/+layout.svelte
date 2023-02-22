@@ -1,18 +1,6 @@
-<script>
-    import { onMount } from "svelte";
-
-    import { state } from "svelte-snacks";
-
-    const tokenRegistry = state("solanaTokenRegistry");
-
-    onMount(() => {
-        $tokenRegistry.load();
-    });
-</script>
-
 <!-- The layout for /wallet /tx /token -->
-<div class="max-w-screen pt-10">
-    <div class="mx-auto w-full max-w-2xl">
+<div class="max-w-screen pt-5">
+    <div class="relative mx-auto w-full max-w-2xl pb-32">
         <slot />
     </div>
 </div>

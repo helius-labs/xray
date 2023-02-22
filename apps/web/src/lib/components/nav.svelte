@@ -13,47 +13,51 @@
 
     let backUrl = "";
 
-    $: if ($page.url.searchParams.has("wallet")) {
-        backUrl = `/${$page.url.searchParams.get("wallet")}/wallet`;
-    } else if ($page.url.searchParams.has("tx")) {
-        backUrl = `/${$page.url.searchParams.get("tx")}/tx`;
-    } else if ($page.url.searchParams.has("token")) {
-        backUrl = `/${$page.url.searchParams.get("token")}/token`;
-    } else if ($page.url.pathname !== "/") {
-        backUrl = "/";
-    } else {
-        backUrl = "";
-    }
+    $: refs = $page.url.searchParams.get("ref")?.split("@") || ["", ""];
+
+    $: restOfRefs = refs.slice(2).join("@");
+
+    $: console.log({ restOfRefs });
+
+    $: [refType, refValue] = refs[1].split(":") || [];
+
+    $: ref = restOfRefs.length ? "@" + restOfRefs : "";
+
+    $: backUrl = refType
+        ? `/${refValue}/${refType}${ref ? "?ref=" + ref : ""}`
+        : "/";
 </script>
 
+<!-- http://localhost:5173/2eLppZeW3P7THrueryq6Bu4apuHT9CVBhPT2KVEdcojw9ErEaLy4JbTQdaiDL1Ga2i7mb5tHpkjAUg33pj7Y899/txref=@wallet:MatrfYnDmsBrdnETpW2S6uksrChkGwyN4RRCXtTPZsv -->
 <nav
     class="sticky top-0 left-0 z-20 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
     <DevBanner />
-
     <div class="col-span-5 flex items-center lg:col-span-4">
         {#if backUrl}
-            <div
-                class="ml-2 flex items-center"
-                in:fly={{
-                    delay: 500,
-                    duration: 750,
-                    x: -25,
-                }}
-            >
-                <a
-                    class="btn-ghost btn px-2"
-                    href={backUrl}
-                    rel="noreferrer"
+            {#if backUrl !== "/"}
+                <div
+                    class="ml-2 flex items-center"
+                    in:fly={{
+                        duration: 750,
+                        x: -25,
+                    }}
                 >
-                    <span class="text-3xl">
-                        <Icon
-                            id="arrowLeft"
-                            size="md"
-                        />
-                    </span>
-                </a>
-            </div>
+                    <a
+                        class="btn-ghost btn px-2"
+                        href={backUrl}
+                        rel="noreferrer"
+                    >
+                        <span class="text-3xl">
+                            <Icon
+                                id="arrowLeft"
+                                size="md"
+                            />
+                        </span>
+                    </a>
+                </div>
+            {/if}
+
             <div
                 class="mx-2 flex items-center"
                 in:fly={{
