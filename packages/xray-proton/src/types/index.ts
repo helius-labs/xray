@@ -65,6 +65,7 @@ export interface ProtonTransaction {
     timestamp: number;
     source: Source;
     actions: ProtonTransactionAction[];
+    raw?: EnrichedTransaction;
 }
 
 export type ProtonParsers = Record<string, ProtonParser>;

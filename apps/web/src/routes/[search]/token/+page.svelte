@@ -60,12 +60,12 @@
                         <h3 class="mt-3 text-lg font-medium text-gray-500">
                             Collection
                         </h3>
-                        <TokenProvider
+                        <!-- <TokenProvider
                             search={metadata.collectionKey}
                             let:metadata
                         >
                             <p>{metadata.name}</p>
-                        </TokenProvider>
+                        </TokenProvider> -->
                     {/if}
                 </div>
             {/if}

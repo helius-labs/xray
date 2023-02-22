@@ -12,14 +12,14 @@ const { HELIUS_KEY } = process.env;
 export const transactions = t.procedure
     .input(zodTRPCTransactionsInput)
     .query(async ({ input }) => {
-        // if (!HELIUS_KEY) {
-        //     return {
-        //         result:
-        //             mock.transactionsVariety.map((tx: any) =>
-        //                 parseTransaction(tx, input.address[0])
-        //             ) || [],
-        //     };
-        // }
+        if (!HELIUS_KEY) {
+            return {
+                result:
+                    mock.transactionsVariety.map((tx: any) =>
+                        parseTransaction(tx, input.address[0])
+                    ) || [],
+            };
+        }
 
         const url = `https://api.helius.xyz/v0/addresses/${
             input.address

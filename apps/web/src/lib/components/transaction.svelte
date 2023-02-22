@@ -38,12 +38,16 @@
         : transactionActionsMetadata["UNKNOWN"];
 
     $: existingRef = $page.url.searchParams.get("ref") || "";
+
+    $: combinedRef = ref + existingRef;
+
+    $: console.log({ combinedRef });
 </script>
 
 <div>
     <a
-        href="/{transaction.signature}/tx?{ref
-            ? `ref=${ref}${existingRef}`
+        href="/{transaction.signature}/tx{combinedRef
+            ? '?ref=' + combinedRef
             : ''}"
         class="block rounded-lg bg-black {clickableTransaction
             ? 'cursor-pointer border p-2 hover:border-white'
@@ -151,8 +155,8 @@
                                     </div>
                                 {:else if metadata?.image}
                                     <a
-                                        href="/{address}/token?{existingRef
-                                            ? `ref=${ref}${existingRef}`
+                                        href="/{address}/token{combinedRef
+                                            ? '?ref=' + combinedRef
                                             : ''}"
                                         class:pointer-events-none={!clickableTokens}
                                         in:fade={{
@@ -244,6 +248,10 @@
                                                             class="text-bold text-warning"
                                                         >
                                                             - {action.amount.toLocaleString()}
+                                                        </h3>
+                                                    {:else if action.amount}
+                                                        <h3 class="text-bold">
+                                                            {action.amount.toLocaleString()}
                                                         </h3>
                                                     {/if}
                                                 </div>

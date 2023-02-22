@@ -11,22 +11,27 @@ import { transactions } from "@helius-labs/xray-test";
 const { HELIUS_KEY } = process.env;
 
 export const transaction = t.procedure
-    .input(z.array(z.string()))
+    .input(
+        z.object({
+            account: z.string().optional(),
+            transaction: z.string(),
+        })
+    )
     .query(async ({ input }) => {
         if (!HELIUS_KEY) {
             const data = transactions.transactionsVariety.find(
-                ({ signature = "" }) => input[0] === signature
+                ({ signature = "" }) => input?.transaction === signature
             );
 
             // @ts-ignore
-            return parseTransaction(data);
+            return parseTransaction(data, input?.account);
         }
 
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({
-                transactions: input,
+                transactions: [input?.transaction],
             }),
 
             method: "POST",
@@ -34,7 +39,10 @@ export const transaction = t.procedure
 
         const [tx]: EnrichedTransaction[] = await response.json();
 
-        const parsed = parseTransaction(tx);
+        const parsed = parseTransaction(tx, input?.account);
+
+        console.log(input?.account);
+        parsed.raw = tx;
 
         return parsed;
     });

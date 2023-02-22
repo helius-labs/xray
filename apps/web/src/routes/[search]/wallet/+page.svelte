@@ -20,6 +20,8 @@
     $: if ($accountInfo?.data?.balance) {
         balance.set($accountInfo.data.balance);
     }
+
+    $: console.log(`@wallet:${$page.params.search}`);
 </script>
 
 <Transactions
