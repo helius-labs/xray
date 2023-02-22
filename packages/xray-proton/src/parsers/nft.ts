@@ -229,7 +229,9 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
         return generateDefaultTransaction(transaction.type);
     }
 
-    let mintAmount = 0;
+    const actions: ProtonTransactionAction[] = [];
+
+    let mintAmount = nftEvent.amount / LAMPORTS_PER_SOL;
     let index = 0;
     if (nativeTransfers) {
         for (let i = 0; i < nativeTransfers.length; i++) {
@@ -242,40 +244,78 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
         }
 
         if (nativeTransfers[index].fromUserAccount !== address) {
+            actions.push({
+                actionType: "NFT_MINT_AIRDROP",
+                amount: 1,
+                from: "",
+                fromName: "",
+                received: (nftEvent.nfts || [{}])[0]?.mint,
+                to: nftEvent.buyer,
+                toName: getSolanaName(nftEvent.buyer),
+            });
             return generateNftTransaction({
-                actions: [
-                    {
-                        // @ts-ignore
-                        actionType: "NFT_MINT_AIRDROP",
-                        amount: mintAmount,
-                        from: "",
-                        fromName: "",
-                        received: (nftEvent.nfts || [{}])[0]?.mint,
-                        sent: SOL,
-                        to: nftEvent.buyer,
-                        toName: getSolanaName(nftEvent.buyer),
-                    },
-                ],
+                actions,
                 event: nftEvent,
                 primaryUser: nftEvent.buyer,
                 transaction,
             });
+            // return generateNftTransaction({
+            //     actions: [
+            //         {
+            //             // @ts-ignore
+            //             actionType: "NFT_MINT_AIRDROP",
+            //             amount: mintAmount,
+            //             from: "",
+            //             fromName: "",
+            //             received: (nftEvent.nfts || [{}])[0]?.mint,
+            //             sent: SOL,
+            //             to: nftEvent.buyer,
+            //             toName: getSolanaName(nftEvent.buyer),
+            //         },
+            //     ],
+            //     event: nftEvent,
+            //     primaryUser: nftEvent.buyer,
+            //     transaction,
+            // });
+        } else {
+            actions.push(
+                {
+                    actionType: "NFT_MINT_RECEIVE",
+                    amount: 1,
+                    from: "",
+                    fromName: "",
+                    received: (nftEvent.nfts || [{}])[0]?.mint,
+                    to: nftEvent.buyer,
+                    toName: getSolanaName(nftEvent.buyer),
+                },
+                {
+                    actionType: "NFT_MINT_BUY",
+                    amount: mintAmount,
+                    from: nftEvent.buyer,
+                    fromName: getSolanaName(nftEvent.buyer),
+                    sent: SOL,
+                    to: "",
+                    toName: "",
+                }
+            );
         }
     }
+
     return generateNftTransaction({
-        actions: [
-            {
-                // @ts-ignore
-                actionType: "NFT_MINT",
-                amount: mintAmount,
-                from: "",
-                fromName: "",
-                received: (nftEvent.nfts || [{}])[0]?.mint,
-                sent: SOL,
-                to: nftEvent.buyer,
-                toName: getSolanaName(nftEvent.buyer),
-            },
-        ],
+        // actions: [
+        //     {
+        //         // @ts-ignore
+        //         actionType: "NFT_MINT",
+        //         amount: mintAmount,
+        //         from: "",
+        //         fromName: "",
+        //         received: (nftEvent.nfts || [{}])[0]?.mint,
+        //         sent: SOL,
+        //         to: nftEvent.buyer,
+        //         toName: getSolanaName(nftEvent.buyer),
+        //     },
+        // ],
+        actions,
         event: nftEvent,
         primaryUser: nftEvent.buyer,
         transaction,
