@@ -7,6 +7,8 @@
 <script lang="ts">
     import type { Icon as IconType } from "src/lib/types";
 
+    import { onMount } from "svelte";
+
     import { nameFromString } from "@helius-labs/helius-namor";
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
@@ -39,8 +41,6 @@
 
     let showSearchError = () => "";
 
-    // const recentActivity = state("recentActivity");
-
     const setFromClipboard = async () => {
         const clipboard = await pasteFromClipboard();
 
@@ -61,6 +61,21 @@
         showSearchError();
     };
 
+    const addRecent = (value: string) => {
+        const recentStorage = window?.localStorage?.getItem(
+            "xray:recent-searches"
+        );
+
+        const recentJson = JSON.parse(recentStorage || "[]");
+
+        if (!recent.includes(value)) {
+            window.localStorage?.setItem(
+                "xray:recent-searches",
+                JSON.stringify([value, ...recentJson.slice(0, 5)])
+            );
+        }
+    };
+
     const newSearch = async () => {
         searchError = "";
         isSearching = true;
@@ -74,11 +89,23 @@
                 return searchFailed();
             }
 
+            addRecent(inputValue);
+
             window.location.href = data?.url || "/";
         } catch (error) {
             searchFailed();
         }
     };
+
+    let recent: string[] = [];
+
+    onMount(() => {
+        const recentStorage = window?.localStorage?.getItem(
+            "xray:recent-searches"
+        );
+
+        recent = JSON.parse(recentStorage || "[]");
+    });
 
     const supportedSearches: Array<[IconType, string]> = [
         ["globe", "Bonfida .sol Domains"],
@@ -92,6 +119,8 @@
         focusInput();
 
         inputValue = $walletStore.publicKey?.toBase58() || "";
+
+        addRecent(inputValue);
 
         window.location.href = `/${inputValue}`;
 
@@ -145,15 +174,15 @@
             type="text"
             bind:value={inputValue}
         />
-        {#if size !== "lg"}
-            <ul
-                class="dropdown-content relative mt-3 w-full rounded-lg bg-base-100 p-2 px-4 shadow"
-            >
-                <div class="flex flex-wrap items-center justify-between">
-                    <p class="text-md mb-1 mt-2 font-bold">Recents</p>
-                </div>
-                {#if [].length}
-                    {#each [""] as address}
+        <ul
+            class="dropdown-content relative mt-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
+        >
+            <div class="flex flex-wrap items-center justify-between">
+                <p class="text-md mb-1 mt-2 font-bold">Recents</p>
+            </div>
+            {#if recent.length}
+                {#each recent as address}
+                    {#if address}
                         <li class="m1-ds2 relative z-30 w-full truncate px-0">
                             <a
                                 class="block w-full max-w-full text-ellipsis px-1 py-2"
@@ -172,14 +201,14 @@
                                 </p>
                             </a>
                         </li>
-                    {/each}
-                {:else}
-                    <i class="pt-2 text-xs opacity-50"
-                        >Paste an address or connect a wallet to get started.</i
-                    >
-                {/if}
-            </ul>
-        {/if}
+                    {/if}
+                {/each}
+            {:else}
+                <i class="pt-2 text-xs opacity-50"
+                    >Paste an address or connect a wallet to get started.</i
+                >
+            {/if}
+        </ul>
     </div>
 
     <button
@@ -195,21 +224,21 @@
 {#if size === "lg"}
     <div class="grid grid-cols-1 py-2 md:grid-cols-3">
         <button
-            class="btn-outline btn"
+            class="btn-outline btn mb-4"
             on:click|preventDefault={clearSearch}
         >
             <span class="text-sm">Clear</span>
         </button>
 
         <button
-            class="btn-outline btn ml-2"
+            class="btn-outline btn mb-4 md:ml-2"
             on:click|preventDefault={setFromClipboard}
         >
             <span class="text-sm">Paste</span>
         </button>
 
         <button
-            class="btn-outline btn ml-2"
+            class="btn-outline btn mb-4 md:ml-2"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">Connect Wallet</span>
