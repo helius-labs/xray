@@ -76,6 +76,13 @@ module.exports = {
         "sort-keys-fix/sort-keys-fix": "warn",
         "this/no-this": "error",
         "write-good-comments/write-good-comments": "warn",
+        extends: ["custom"],
+        "prettier/prettier": [
+            "error",
+            {
+                endOfLine: "auto",
+            },
+        ],
     },
     settings: {
         "svelte3/typescript": () => require("typescript"), // pass the TypeScript package to the Svelte plugin

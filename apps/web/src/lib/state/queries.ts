@@ -32,25 +32,18 @@ export const solanaAccountInfo = {
 };
 
 export const solanaTransactions = {
-    formatter: (data: any) => {
-        const parsed = data.map((tx: EnrichedTransaction) => {
-            return {
-                parsed: parseTransaction(tx),
-                raw: tx,
-            };
-        });
-
-        return parsed;
-    },
-
+    formatter: (data: any) =>
+        data.map((tx: EnrichedTransaction) => ({
+            parsed: parseTransaction(
+                tx,
+                "BGkpRfK8L5Yy7A8wimA4CXra2GhFxdSWK944Ap6dPKCu"
+            ),
+            raw: tx,
+        })),
     loader: actions.getSolanaTransactions,
 };
 
 export const solanaTransaction = {
-    formatter: (data: any) => ({
-        parsed: parseTransaction(data),
-        raw: data,
-    }),
     loader: actions.getSolanaTransaction,
 };
 

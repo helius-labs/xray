@@ -1,6 +1,6 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
-import { ProtonTransaction, ProtonTransactionAction } from "../types";
+import { ProtonTransaction, ProtonTransactionAction, SOL } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
 import { rentTransferCheck } from "../utils/rent-transfer-check";
@@ -10,7 +10,8 @@ interface TempTokenTransfer extends TokenTransfer {
 }
 
 export const parseUnknown = (
-    transaction: EnrichedTransaction
+    transaction: EnrichedTransaction,
+    address: string | undefined
 ): ProtonTransaction => {
     const {
         signature,
@@ -57,17 +58,49 @@ export const parseUnknown = (
             toName = getSolanaName(tx.toUserAccount);
         }
 
-        const sent = tx.mint;
         const amount = tx.tokenAmount;
 
-        actions.push({
-            amount,
-            from,
-            fromName,
-            sent,
-            to,
-            toName,
-        });
+        if (!address) {
+            const sent = tx.mint;
+            actions.push({
+                actionType: "TRANSFER",
+                amount,
+                from,
+                fromName,
+                sent,
+                to,
+                toName,
+            });
+        } else {
+            const actionType =
+                address === tx.fromUserAccount
+                    ? "TRANSFER_SENT"
+                    : "TRANSFER_RECEIVED";
+
+            if (actionType === "TRANSFER_SENT") {
+                const sent = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    sent,
+                    to,
+                    toName,
+                });
+            } else if (actionType === "TRANSFER_RECEIVED") {
+                const received = tx.mint;
+                actions.push({
+                    actionType,
+                    amount,
+                    from,
+                    fromName,
+                    received,
+                    to,
+                    toName,
+                });
+            }
+        }
     }
 
     for (let i = 0; i < nativeTransfers.length; i++) {
@@ -86,17 +119,49 @@ export const parseUnknown = (
                 toName = getSolanaName(tx.toUserAccount);
             }
 
-            const sent = "So11111111111111111111111111111111111111112";
             const amount = tx.amount / LAMPORTS_PER_SOL;
 
-            actions.push({
-                amount,
-                from,
-                fromName,
-                sent,
-                to,
-                toName,
-            });
+            if (!address) {
+                const sent = SOL;
+                actions.push({
+                    actionType: "TRANSFER",
+                    amount,
+                    from,
+                    fromName,
+                    sent,
+                    to,
+                    toName,
+                });
+            } else {
+                const actionType =
+                    address === tx.fromUserAccount
+                        ? "TRANSFER_SENT"
+                        : "TRANSFER_RECEIVED";
+
+                if (actionType === "TRANSFER_SENT") {
+                    const sent = SOL;
+                    actions.push({
+                        actionType,
+                        amount,
+                        from,
+                        fromName,
+                        sent,
+                        to,
+                        toName,
+                    });
+                } else if (actionType === "TRANSFER_RECEIVED") {
+                    const received = SOL;
+                    actions.push({
+                        actionType,
+                        amount,
+                        from,
+                        fromName,
+                        received,
+                        to,
+                        toName,
+                    });
+                }
+            }
         }
     }
 

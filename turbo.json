@@ -1,28 +1,29 @@
 {
-  "$schema": "https://turbo.build/schema.json",
-  "pipeline": {
-    "build": {
-      "dependsOn": [ "^build" ],
-      "outputs": [ "dist/**" ]
-    },
-    "lint": {
-      "outputs": []
-    },
-    "dev": {
-      "dependsOn": ["^db:generate"],
-      "cache": false
-    },
-    "db:generate": {
-      "cache": false
-    },
-    "db:push": {
-      "cache": false
-    },
-    "db:pull": {
-      "cache": false
+    "$schema": "https://turbo.build/schema.json",
+    "globalDependencies": [".env"],
+    "pipeline": {
+        "build": {
+            "dependsOn": ["^build"],
+            "outputs": ["dist/**"]
+        },
+        "lint": {
+            "outputs": []
+        },
+        "dev": {
+            "dependsOn": ["^generate:db"],
+            "cache": false
+        },
+        "generate:db": {
+            "cache": false
+        },
+        "generate:zod": {
+            "cache": false
+        },
+        "db:push": {
+            "cache": false
+        },
+        "db:pull": {
+            "cache": false
+        }
     }
-  },
-  "globalDependencies": [
-    ".env"
-  ]
 }

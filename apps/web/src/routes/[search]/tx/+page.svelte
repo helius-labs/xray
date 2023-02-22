@@ -1,164 +1,109 @@
-<style>
-    :global(.code span) {
-        font-size: 0.65rem;
-    }
-</style>
-
 <script lang="ts">
-    import type { UITransactionActionGroup } from "$lib/types";
+    import type { ProtonTransaction } from "@helius-labs/xray-proton";
+
+    import { onMount } from "svelte";
 
     import { page } from "$app/stores";
 
-    import { state } from "svelte-snacks";
+    import { fly, fade } from "svelte/transition";
 
-    import { fly } from "svelte/transition";
+    import { trpcWithQuery } from "$lib/trpc/client";
 
-    import { cubicOut } from "svelte/easing";
+    import shortenAddress from "$lib/util/shorten-string";
 
-    // @ts-ignore old lib, not typed
-    import formatHighlight from "json-format-highlight";
-
-    import shortenString from "$lib/util/shorten-string";
-    import Icon from "$lib/components/icon.svelte";
-
-    import TransactionAction from "$lib/components/transaction-action.svelte";
-    import IconCard from "$lib/components/icon-card.svelte";
-    import Namor from "src/lib/components/providers/namor-provider.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
-    import DetailsPage from "$lib/components/details-page.svelte";
+    import Transaction from "$lib/components/transaction.svelte";
+    import IconCard from "$lib/components/icon-card.svelte";
+    import Icon from "$lib/components/icon.svelte";
+    import JSON from "$lib/components/json.svelte";
 
-    import {
-        groupTransactionActions,
-        mergeTransactionActions,
-    } from "$lib/util/transactions";
-
-    import { fade } from "svelte/transition";
-
+    let animate = false;
     let showCode = false;
 
-    const address = $page.params.search;
+    const signature = $page.params.search;
 
-    
-    const transaction = state(["solanaTransaction", address], address);
+    const client = trpcWithQuery($page);
 
-    let metadataHTML = "";
+    const transaction = client.transaction.createQuery({
+        account: $page.url.searchParams
+            .get("ref")
+            ?.split("@")
+            .reduce(
+                (acc, ref) =>
+                    ref.startsWith("wallet") ? ref.split(":")[1] : acc,
+                ""
+            ),
+        transaction: signature || "",
+    });
 
-    let groups: UITransactionActionGroup[] = [];
+    onMount(() => {
+        animate = true;
+    });
 
-    $: if ($transaction?.data?.parsed) {
-        metadataHTML = formatHighlight($transaction?.data?.raw, {
-            keyColor: "#a5a3a3",
-            numberColor: "#e8a034",
-            stringColor: "#24ae67",
-        });
-
-        const merged = mergeTransactionActions(
-            [$transaction?.data],
-            $page.url.searchParams.get("wallet") || ""
-        );
-
-        groups = groupTransactionActions(merged);
-    }
-
-    $: prev = $page.url.searchParams.get("prev")
-        ? $page.url.searchParams.get("prev")
-        : "";
+    $: data = $transaction?.data
+        ? ($transaction.data as ProtonTransaction)
+        : null;
 </script>
 
-<DetailsPage>
-    {#if $transaction?.isLoading}
-        {#each Array(3) as _}
-            <div class="mb-3">
-                <IconCard />
-            </div>
-        {/each}
-    {:else if $transaction?.isError}
-        <p>Error: {$transaction?.error}</p>
-    {:else if $transaction?.hasFetched}
-        <div class="mb-3">
-            <IconCard>
-                <div slot="icon">
-                    <div class="center h-10 w-10 rounded-full bg-success">
-                        <Icon
-                            id="check"
-                            fill="black"
-                            size="sm"
-                        />
-                    </div>
-                </div>
-                <div
-                    slot="title"
-                    class="flex items-center justify-between"
-                >
-                    <div>
-                        <p>Status</p>
-                        <p class="text-xs opacity-50">
-                            This transaction has successfully processed.
-                        </p>
-                    </div>
-                    <div>
-                        <div class="badge-success badge">Success</div>
-                    </div>
-                </div>
-            </IconCard>
-        </div>
-
-        <div
-            in:fade={{
-                delay: 500,
-                duration: 750,
-            }}
-        >
-            <h1 class="text-1xl mt-10 font-bold">Actions</h1>
-            {#each groups as { label, icon, type, actions, timestamp }, groupIndex}
-                <div
-                    class="pb-4"
-                    in:fade={{
-                        delay: groupIndex * 100,
-                        duration: 500,
-                    }}
-                >
-                    {#each actions as action, actionIndex}
-                        {#if action.type === "TRANSFER" || action.type === "SWAP"}
-                            <a
-                                class="mb-2 block cursor-pointer hover:opacity-75"
-                                data-sveltekit-reload
-                                href="/{action.sent}/token?prev={window.encodeURI(
-                                    action.signature
-                                )}"
-                                in:fly={{
-                                    delay: actionIndex * 100,
-                                    easing: cubicOut,
-                                    y: 50,
-                                }}
-                            >
-                                <TransactionAction {action} />
-                            </a>
-                        {:else}
-                            <a
-                                class="mb-2 block cursor-pointer hover:opacity-75"
-                                data-sveltekit-reload
-                                href="/{action.signature}/tx?prev={window.encodeURI(
-                                    $page.params.search
-                                )}"
-                                in:fly={{
-                                    delay: actionIndex * 100,
-                                    easing: cubicOut,
-                                    y: 50,
-                                }}
-                            >
-                                <TransactionAction {action} />
-                            </a>
-                        {/if}
-                    {/each}
+{#if animate}
+    <div
+        in:fly={{
+            duration: 1000,
+            delay: 500,
+            y: 50,
+            opacity: 0,
+        }}
+    >
+        {#if $transaction.isLoading}
+            {#each Array(3) as _}
+                <div class="py-2">
+                    <IconCard />
                 </div>
             {/each}
-
-            <h1 class="text-1xl mt-5 font-bold">Details</h1>
+        {:else if data}
+            <div class="pb-5">
+                <Transaction
+                    transaction={data}
+                    clickableTokens={true}
+                    clickableTransaction={false}
+                    copyButtons={true}
+                    ref="@tx:{data.signature}"
+                />
+            </div>
 
             <div class="mb-3">
-                <IconCard>
-                    <div slot="icon">
+                <div
+                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
+                >
+                    <div class="col-span-2 p-1 md:col-span-1">
+                        <div class="center h-10 w-10 rounded-full bg-success">
+                            <Icon
+                                id="check"
+                                fill="black"
+                                size="sm"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        class="col-span-10 flex items-center justify-between md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="text-lg font-semibold md:text-sm">
+                                Status
+                            </h4>
+                            <h3 class="mr-2 text-xs opacity-50">
+                                This transaction has successfully processed.
+                            </h3>
+                        </div>
+                        <div class="badge-success badge mr-1">Success</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <div
+                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
+                >
+                    <div class="col-span-2 p-1 md:col-span-1">
                         <div class="center h-10 w-10 rounded-full bg-secondary">
                             <Icon
                                 id="network"
@@ -167,118 +112,25 @@
                         </div>
                     </div>
                     <div
-                        slot="title"
-                        class="flex items-center justify-between"
+                        class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
                     >
                         <div>
-                            <p>Network Fee</p>
-                            <p class="text-xs opacity-50">
+                            <h4 class="text-lg font-semibold md:text-sm">
+                                Network Fee
+                            </h4>
+                            <h3 class="mr-2 text-xs opacity-50">
                                 Cost for processing this transaction.
-                            </p>
+                            </h3>
                         </div>
-                        <div>
-                            <p class="opacity-50">
-                                {$transaction?.data?.parsed?.fee}
-                            </p>
-                        </div>
+                        <p>{data.fee} SOL</p>
                     </div>
-                </IconCard>
+                </div>
             </div>
-
-            <div class="mb-3">
-                <IconCard>
-                    <div slot="icon">
-                        <div class="center h-10 w-10 rounded-full bg-secondary">
-                            <Icon
-                                id="signature"
-                                size="sm"
-                            />
-                        </div>
-                    </div>
-                    <div
-                        slot="title"
-                        class="flex items-center justify-between"
-                    >
-                        <div>
-                            <p>Signature</p>
-                            <p class="text-xs opacity-50">
-                                {shortenString($page.params.search)}
-                            </p>
-                        </div>
-                        <div>
-                            <CopyButton text={$page.params.search} />
-                        </div>
-                    </div>
-                </IconCard>
-            </div>
-
-            <div class="mb-3">
-                <IconCard>
-                    <div slot="icon">
-                        <div class="center h-10 w-10 rounded-full bg-secondary">
-                            <Icon
-                                id="json"
-                                size="sm"
-                            />
-                        </div>
-                    </div>
-                    <div
-                        slot="title"
-                        class="flex items-center justify-between"
-                    >
-                        <div>
-                            <p>JSON</p>
-                            <p class="text-xs opacity-50">
-                                View the raw transaction data.
-                            </p>
-                        </div>
-                        <div>
-                            {#if showCode}
-                                <button
-                                    class="btn-ghost btn-sm btn"
-                                    on:click={() => (showCode = false)}
-                                >
-                                    <Icon
-                                        id="cancel"
-                                        size="md"
-                                    />
-                                </button>
-                            {:else}
-                                <button
-                                    class="btn-ghost btn-sm btn"
-                                    on:click={() => (showCode = true)}
-                                >
-                                    <Icon
-                                        id="dots"
-                                        size="md"
-                                    />
-                                </button>
-                            {/if}
-                        </div>
-                    </div>
-                </IconCard>
-
-                {#if showCode}
-                    <div
-                        class="card mt-4 w-full overflow-hidden"
-                        in:fade={{ duration: 500 }}
-                    >
-                        <div class="code overflow-hidden">
-                            <pre><code class="text-xs"
-                                    >{@html metadataHTML}</code
-                                ></pre>
-                        </div>
-                    </div>
-                {/if}
-            </div>
-
-            <div class="my-5 flex justify-center">
-                <a
-                    class="btn-ghost btn text-xs text-success hover:bg-transparent"
-                    href={`https://explorer.solana.com/tx/${$page?.params?.search}`}
-                    >View on Solana Explorer</a
-                >
-            </div>
-        </div>
-    {/if}
-</DetailsPage>
+            {#if data?.raw}
+                <div class="mb-3">
+                    <JSON data={data?.raw} />
+                </div>
+            {/if}
+        {/if}
+    </div>
+{/if}

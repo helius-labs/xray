@@ -9,7 +9,12 @@
 <script lang="ts">
     import "../app.postcss";
 
+    import type { LayoutData } from "./$types";
+
     import { page } from "$app/stores";
+    import { browser } from "$app/environment";
+
+    import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
 
     import { clusterApiUrl } from "@solana/web3.js";
 
@@ -28,16 +33,14 @@
         connectWallet,
     } from "src/lib/state/stores/connect-wallet";
 
-    const localStorageKey = "walletAdapter";
-    const network = clusterApiUrl("mainnet-beta");
-
     import Nav from "$lib/components/nav.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
     import Footer from "$lib/components/footer.svelte";
 
-    import { SnackProvider } from "svelte-snacks";
+    export let data: LayoutData;
 
-    import * as queries from "$lib/state/queries";
+    const localStorageKey = "walletAdapter";
+    const network = clusterApiUrl("mainnet-beta");
 </script>
 
 {#if $isConnectingWallet}
@@ -55,7 +58,7 @@
 />
 
 <ConnectionProvider {network} />
-
+<!-- 
 <SnackProvider config={{ queries }}>
     <main class="grid min-h-screen">
         <DevBanner />
@@ -65,6 +68,17 @@
             <slot />
         </div>
     </main>
-</SnackProvider>
+</SnackProvider> -->
 
-<Footer />
+<QueryClientProvider client={data.queryClient}>
+    <main class="grid min-h-screen">
+        <DevBanner />
+        <Nav />
+
+        <div class="relative mx-auto w-full px-3">
+            <slot />
+        </div>
+    </main>
+</QueryClientProvider>
+
+<!-- <Footer /> -->

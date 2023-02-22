@@ -22,16 +22,27 @@
     on:click|self={hide}
     on:keydown|self={hide}
 >
-    <div 
-        class="modal-box cursor-auto"
-        class:max-w-3xl={fullScreenModal}
+    <div
+        class="modal-box cursor-auto overflow-y-auto p-1 pb-10"
+        style={fullScreenModal ? "max-width: 80%; max-height:100vh;" : ""}
     >
-        <button
-            class="btn-outline btn-sm btn absolute right-2 top-2"
-            on:click={hide}
-        >
-            <Icon id="cancel" />
-        </button>
+        <div class="title flex items-center justify-between">
+            <div>
+                <slot name="title" />
+            </div>
+            <div>
+                <button
+                    class="btn-ghost btn-md btn"
+                    on:click={hide}
+                >
+                    <Icon
+                        id="cancel"
+                        size="md"
+                    />
+                </button>
+            </div>
+        </div>
+
         <slot />
     </div>
 </div>
