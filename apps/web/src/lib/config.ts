@@ -5,6 +5,14 @@ export const transactionActionsMetadata: Record<
     ProtonActionType,
     TransactionActionMetadata
 > = {
+    SENT: {
+        icon: "arrowUp",
+        label: "Sent",
+    },
+    RECEIVED: {
+        icon: "arrowDown",
+        label: "Received",
+    },
     BURN: {
         icon: "flame",
         label: "Burn",

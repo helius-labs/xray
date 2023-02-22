@@ -21,6 +21,8 @@ export enum ProtonSupportedType {
 }
 
 export enum ProtonSupportedActionType {
+    "SENT",
+    "RECEIVED",
     "TRANSFER",
     "TRANSFER_SENT",
     "TRANSFER_RECEIVED",

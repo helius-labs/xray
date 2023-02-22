@@ -1,12 +1,12 @@
 <script lang="ts">
     import type {
-        ProtonTransaction,
         ProtonActionType,
+        ProtonTransaction,
     } from "@helius-labs/xray-proton";
 
     import { page } from "$app/stores";
 
-    import { fly, fade } from "svelte/transition";
+    import { fade, fly } from "svelte/transition";
 
     import { transactionActionsMetadata } from "$lib/types";
 
@@ -18,11 +18,11 @@
     export let copyButtons = false;
     export let ref = "";
 
-    import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
+    import Icon from "$lib/components/icon.svelte";
+    import IntersectionObserver from "svelte-intersection-observer";
     import shortenString from "../util/shorten-string";
     import TokenProvider from "./providers/token-provider.svelte";
-    import IntersectionObserver from "svelte-intersection-observer";
 
     let element: HTMLDivElement;
     let intersecting = false;
