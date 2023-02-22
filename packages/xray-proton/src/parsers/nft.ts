@@ -259,62 +259,31 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
                 primaryUser: nftEvent.buyer,
                 transaction,
             });
-            // return generateNftTransaction({
-            //     actions: [
-            //         {
-            //             // @ts-ignore
-            //             actionType: "NFT_MINT_AIRDROP",
-            //             amount: mintAmount,
-            //             from: "",
-            //             fromName: "",
-            //             received: (nftEvent.nfts || [{}])[0]?.mint,
-            //             sent: SOL,
-            //             to: nftEvent.buyer,
-            //             toName: getSolanaName(nftEvent.buyer),
-            //         },
-            //     ],
-            //     event: nftEvent,
-            //     primaryUser: nftEvent.buyer,
-            //     transaction,
-            // });
         } else {
             actions.push(
                 {
-                    actionType: "NFT_MINT_RECEIVE",
-                    amount: 1,
-                    from: "",
-                    fromName: "",
-                    received: (nftEvent.nfts || [{}])[0]?.mint,
-                    to: nftEvent.buyer,
-                    toName: getSolanaName(nftEvent.buyer),
-                },
-                {
-                    actionType: "NFT_MINT_BUY",
+                    actionType: "SENT",
                     amount: mintAmount,
                     from: nftEvent.buyer,
                     fromName: getSolanaName(nftEvent.buyer),
                     sent: SOL,
                     to: "",
                     toName: "",
+                },
+                {
+                    actionType: "RECEIVED",
+                    amount: 1,
+                    from: "",
+                    fromName: "",
+                    received: (nftEvent.nfts || [{}])[0]?.mint,
+                    to: nftEvent.buyer,
+                    toName: getSolanaName(nftEvent.buyer),
                 }
             );
         }
     }
 
     return generateNftTransaction({
-        // actions: [
-        //     {
-        //         // @ts-ignore
-        //         actionType: "NFT_MINT",
-        //         amount: mintAmount,
-        //         from: "",
-        //         fromName: "",
-        //         received: (nftEvent.nfts || [{}])[0]?.mint,
-        //         sent: SOL,
-        //         to: nftEvent.buyer,
-        //         toName: getSolanaName(nftEvent.buyer),
-        //     },
-        // ],
         actions,
         event: nftEvent,
         primaryUser: nftEvent.buyer,

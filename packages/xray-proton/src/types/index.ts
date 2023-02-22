@@ -21,6 +21,8 @@ export enum ProtonSupportedType {
 }
 
 export enum ProtonSupportedActionType {
+    "SENT",
+    "RECEIVED",
     "TRANSFER",
     "TRANSFER_SENT",
     "TRANSFER_RECEIVED",
@@ -35,8 +37,7 @@ export enum ProtonSupportedActionType {
     "NFT_CANCEL_LISTING",
     "NFT_BID",
     "NFT_BID_CANCELLED",
-    "NFT_MINT_BUY",
-    "NFT_MINT_RECEIVE",
+    "NFT_MINT",
     "NFT_MINT_AIRDROP",
     "BURN",
     "FREEZE",
