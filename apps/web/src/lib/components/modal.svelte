@@ -23,8 +23,8 @@
     on:keydown|self={hide}
 >
     <div
-        class="modal-box cursor-auto"
-        class:max-w-3xl={fullScreenModal}
+        class="modal-box cursor-auto overflow-y-auto"
+        style={fullScreenModal ? "max-width: 80%; max-height:100vh;" : ""}
     >
         <div class="title flex items-center justify-between">
             <div>

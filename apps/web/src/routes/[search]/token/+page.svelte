@@ -4,22 +4,15 @@
     import { fade, fly } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
 
-    import TxHistory from "$lib/components/tx-history.svelte";
-    import JSONWidget from "$lib/components/json-widget.svelte";
-    import Collapse from "$libsrc/lib/components/collapse.svelte
+    import Transactions from "$lib/components/transactions.svelte";
+    import JSON from "$lib/components/json.svelte";
+    import Collapse from "$lib/components/collapse.svelte";
 
     import PageLoader from "./_loader.svelte";
 
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
     import Modal from "$lib/components/modal.svelte";
-
-    $: wallet = $page.url.searchParams
-        .get("ref")
-        ?.split("@")
-        .reduce(
-            (acc, ref) => (ref.startsWith("wallet") ? ref.split(":")[1] : acc),
-            ""
-        );
+    import CopyButton from "$lib/components/copy-button.svelte";
 
     const address = $page.params.search;
 </script>
@@ -32,19 +25,50 @@
     {#if tokenIsLoading}
         <PageLoader />
     {:else}
+        <div class="sticky top-16 z-10 bg-base-100 py-1">
+            <div
+                class="flex flex-wrap  items-center justify-between bg-base-100"
+            >
+                <div>
+                    <h3 class="m-0 text-xl font-bold md:text-3xl">
+                        {metadata.name}
+                    </h3>
+                </div>
+
+                <div>
+                    <div class="my-2">
+                        <CopyButton
+                            text={address}
+                            success="Copied Address"
+                            label="Address"
+                            classList="px-3 btn-outline"
+                        />
+
+                        <CopyButton
+                            text={$page.url.href}
+                            success="Copied Link"
+                            label="Share"
+                            classList="px-3 btn-outline"
+                            icon="share"
+                        />
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div>
             <div
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
             >
-                <a href="#modal-token-fs-modal">
-                    <img
-                        class="m-auto mt-3 h-auto rounded-md md:w-1/2"
-                        alt="token symbol"
-                        src={metadata.image}
-                        in:fade={{ delay: 600, duration: 1000 }}
-                    />
-                </a>
+                <!-- <a href="#modal-token-fs-modal"> -->
+                <img
+                    class="m-auto mt-3 h-auto w-full rounded-md"
+                    alt="token symbol"
+                    src={metadata.image}
+                    in:fade={{ delay: 600, duration: 1000 }}
+                />
+                <!-- </a> -->
             </div>
             <Modal
                 id="token-fs-modal"
@@ -166,22 +190,13 @@
                 </div>
             {/if}
             <div class="mt-3">
-                <Collapse
-                    sectionTitle="Transaction history"
-                    iconId="history"
-                    showDetails
-                >
-                    <TxHistory
-                        nft={token}
-                        user={wallet}
-                    />
-                </Collapse>
+                <Transactions
+                    account={address}
+                    ref="@token:{address}"
+                />
             </div>
             <div class="mt-3">
-                <JSONWidget
-                    jsonData={token?.data}
-                    page="token"
-                />
+                <JSON data={metadata} />
             </div>
         </div>
     {/if}

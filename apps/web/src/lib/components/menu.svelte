@@ -21,7 +21,7 @@
             class="btn-ghost btn w-full">{name}</a
         >
     {/each}
-
+    <!-- 
     <div class="form-control pt-4">
         <label class="label cursor-pointer">
             <span class="label-text">Developer mode</span>
@@ -31,5 +31,5 @@
                 class="toggle-success toggle"
             />
         </label>
-    </div>
+    </div> -->
 </Modal>

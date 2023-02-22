@@ -11,12 +11,14 @@
     import Transaction from "$lib/components/transaction.svelte";
 
     export let account: string;
+    export let user = "";
     export let ref = "";
 
     const client = trpcWithQuery($page);
 
     const transactions = client.transactions.createQuery({
-        address: [account],
+        account,
+        user,
     });
 
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
@@ -25,8 +27,6 @@
     $: transactionsList = $transactions.data
         ? ($transactions.data.result as ProtonTransaction[])
         : [];
-
-    $: console.log($transactions);
 </script>
 
 {#if $transactions.isLoading}
