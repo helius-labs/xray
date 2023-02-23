@@ -18,6 +18,7 @@ export enum ProtonSupportedType {
     UNKNOWN,
     BORROW_FOX,
     LOAN_FOX,
+    TOKEN_MINT,
 }
 
 export enum ProtonSupportedActionType {
@@ -96,6 +97,7 @@ export const protonParsers = {
     UNKNOWN: parser.parseUnknown,
     BORROW_FOX: parser.parseBorrowFox,
     LOAN_FOX: parser.parseLoanFox,
+    TOKEN_MINT: parser.parseTokenMint,
 };
 
 export type ProtonType = keyof typeof protonParsers;
