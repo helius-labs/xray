@@ -3,7 +3,6 @@ import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
 import { ProtonTransaction, ProtonTransactionAction, SOL } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
-import { groupActions } from "../utils/group-actions";
 import { rentTransferCheck } from "../utils/rent-transfer-check";
 
 interface TempTokenTransfer extends TokenTransfer {
@@ -168,8 +167,6 @@ export const parseTransfer = (
             }
         }
     }
-
-    actions = groupActions(actions);
 
     return {
         actions,
