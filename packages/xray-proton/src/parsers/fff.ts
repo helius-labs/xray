@@ -58,12 +58,12 @@ export const parseBorrowFox = (
                 const sent = tx.mint;
                 actions.push({
                     actionType: "TRANSFER",
+                    amount,
                     from,
                     fromName,
+                    sent,
                     to,
                     toName,
-                    sent,
-                    amount,
                 });
             } else {
                 const actionType =
@@ -75,23 +75,23 @@ export const parseBorrowFox = (
                     const sent = tx.mint;
                     actions.push({
                         actionType,
+                        amount,
                         from,
                         fromName,
+                        sent,
                         to,
                         toName,
-                        sent,
-                        amount,
                     });
                 } else if (actionType === "TRANSFER_RECEIVED") {
                     const received = tx.mint;
                     actions.push({
                         actionType,
+                        amount,
                         from,
                         fromName,
+                        received,
                         to,
                         toName,
-                        received,
-                        amount,
                     });
                 }
             }
@@ -100,12 +100,12 @@ export const parseBorrowFox = (
             const sent = tx.mint;
             actions.push({
                 actionType: "BURN",
+                amount,
                 from,
                 fromName,
+                sent,
                 to,
                 toName,
-                sent,
-                amount,
             });
         }
     }
@@ -145,12 +145,12 @@ export const parseLoanFox = (
 
     actions.push({
         actionType: "FREEZE",
+        amount: 0,
         from: primaryUser,
         fromName: getSolanaName(primaryUser),
+        sent,
         to: "",
         toName: undefined,
-        sent,
-        amount: 0,
     });
 
     return {
