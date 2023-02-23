@@ -3,6 +3,7 @@ import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
 import { ProtonTransaction, ProtonTransactionAction, SOL } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
+import { groupActions } from "../utils/group-actions";
 import { rentTransferCheck } from "../utils/rent-transfer-check";
 
 interface TempTokenTransfer extends TokenTransfer {
@@ -40,7 +41,7 @@ export const parseTransfer = (
 
     source = transaction.source;
 
-    const actions: ProtonTransactionAction[] = [];
+    let actions: ProtonTransactionAction[] = [];
 
     for (let i = 0; i < tokenTransfers.length; i++) {
         const tx = tokenTransfers[i] as TempTokenTransfer;
@@ -71,32 +72,34 @@ export const parseTransfer = (
                 toName,
             });
         } else {
-            const actionType =
-                tx.fromUserAccount === address
-                    ? "TRANSFER_SENT"
-                    : "TRANSFER_RECEIVED";
+            let actionType = "";
+            if (tx.fromUserAccount === address) {
+                actionType = "TRANSFER_SENT";
+            } else if (tx.toUserAccount === address) {
+                actionType = "TRANSFER_RECEIVED";
+            }
 
             if (actionType === "TRANSFER_SENT") {
                 const sent = tx.mint;
                 actions.push({
                     actionType,
+                    amount,
                     from,
                     fromName,
                     sent,
                     to,
                     toName,
-                    amount,
                 });
             } else if (actionType === "TRANSFER_RECEIVED") {
                 const received = tx.mint;
                 actions.push({
                     actionType,
+                    amount,
                     from,
                     fromName,
                     received,
                     to,
                     toName,
-                    amount,
                 });
             }
         }
@@ -132,10 +135,12 @@ export const parseTransfer = (
                     toName,
                 });
             } else {
-                const actionType =
-                    tx.fromUserAccount === address
-                        ? "TRANSFER_SENT"
-                        : "TRANSFER_RECEIVED";
+                let actionType = "";
+                if (tx.fromUserAccount === address) {
+                    actionType = "TRANSFER_SENT";
+                } else if (tx.toUserAccount === address) {
+                    actionType = "TRANSFER_RECEIVED";
+                }
 
                 if (actionType === "TRANSFER_SENT") {
                     const sent = SOL;
@@ -163,6 +168,8 @@ export const parseTransfer = (
             }
         }
     }
+
+    actions = groupActions(actions);
 
     return {
         actions,
