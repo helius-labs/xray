@@ -42,6 +42,7 @@ export enum ProtonSupportedActionType {
     "NFT_MINT_AIRDROP",
     "BURN",
     "FREEZE",
+    "TOKEN_MINT",
 }
 
 export type ProtonParser = (

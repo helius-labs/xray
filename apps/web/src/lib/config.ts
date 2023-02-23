@@ -81,6 +81,10 @@ export const transactionActionsMetadata: Record<
         icon: "cold",
         label: "Freeze",
     },
+    TOKEN_MINT: {
+        icon: "coins",
+        label: "Token Mint",
+    },
     UNKNOWN: {
         icon: "box",
         label: "Generic Transaction",
