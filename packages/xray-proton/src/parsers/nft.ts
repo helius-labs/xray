@@ -112,7 +112,7 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
 
     actions.push(
         {
-            actionType: "SENT",
+            actionType: "TRANSFER",
             amount: nftEvent.amount / LAMPORTS_PER_SOL,
             from: nftEvent.buyer,
             fromName: getSolanaName(nftEvent.buyer),
@@ -121,7 +121,7 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
             toName: getSolanaName(nftEvent.seller),
         },
         {
-            actionType: "RECEIVED",
+            actionType: "TRANSFER",
             amount: 1,
             from: nftEvent.seller,
             fromName: getSolanaName(nftEvent.seller),
