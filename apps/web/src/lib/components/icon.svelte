@@ -18,7 +18,7 @@
         }
 
         // Should be fine since this component
-        // is usually static and the prop is typed
+        // is static and the prop typed
         // @ts-ignore
         const icon = IconPaths[id];
 

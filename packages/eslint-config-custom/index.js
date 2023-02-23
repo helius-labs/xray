@@ -6,6 +6,8 @@ module.exports = {
         node: true,
     },
 
+    extends: ["custom"],
+
     extends: ["plugin:prettier/recommended", "plugin:svelte/recommended"],
     globals: {
         APP_NAME: "readonly",
@@ -82,7 +84,6 @@ module.exports = {
                 endOfLine: "auto",
             },
         ],
-        extends: ["custom"],
     },
     settings: {
         "svelte3/typescript": () => require("typescript"), // pass the TypeScript package to the Svelte plugin

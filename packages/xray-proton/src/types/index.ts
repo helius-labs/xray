@@ -43,6 +43,8 @@ export enum ProtonSupportedActionType {
     "BURN",
     "FREEZE",
     "TOKEN_MINT",
+    "BORROW_FOX",
+    "LOAN_FOX",
 }
 
 export type ProtonParser = (
@@ -85,8 +87,10 @@ export const unknownProtonTransaction: ProtonTransaction = {
 };
 
 export const protonParsers = {
+    BORROW_FOX: parser.parseBorrowFox,
     BURN: parser.parseBurn,
     BURN_NFT: parser.parseBurn,
+    LOAN_FOX: parser.parseLoanFox,
     NFT_BID: parser.parseNftBid,
     NFT_BID_CANCELLED: parser.parseNftCancelBid,
     NFT_CANCEL_LISTING: parser.parseNftCancelList,
