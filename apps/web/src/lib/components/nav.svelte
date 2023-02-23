@@ -17,8 +17,6 @@
 
     $: restOfRefs = refs.slice(2).join("@");
 
-    $: console.log({ restOfRefs });
-
     $: [refType, refValue] = refs[1].split(":") || [];
 
     $: ref = restOfRefs.length ? "@" + restOfRefs : "";
@@ -28,7 +26,6 @@
         : "/";
 </script>
 
-<!-- http://localhost:5173/2eLppZeW3P7THrueryq6Bu4apuHT9CVBhPT2KVEdcojw9ErEaLy4JbTQdaiDL1Ga2i7mb5tHpkjAUg33pj7Y899/txref=@wallet:MatrfYnDmsBrdnETpW2S6uksrChkGwyN4RRCXtTPZsv -->
 <nav
     class="sticky top-0 left-0 z-20 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >

@@ -48,10 +48,10 @@
 {#if animate}
     <div
         in:fly={{
-            duration: 1000,
             delay: 500,
-            y: 50,
+            duration: 1000,
             opacity: 0,
+            y: 50,
         }}
     >
         {#if $transaction.isLoading}
