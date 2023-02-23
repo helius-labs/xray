@@ -205,6 +205,7 @@
                                 class="block w-full max-w-full text-ellipsis px-1 py-2"
                                 data-sveltekit-preload-data="hover"
                                 href="/{address}"
+                                on:click={addRecent(address)}
                             >
                                 <p class="text-micro text-xs opacity-50">
                                     {nameFromString(address)}
