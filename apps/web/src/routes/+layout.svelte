@@ -81,4 +81,4 @@
     </main>
 </QueryClientProvider>
 
-<!-- <Footer /> -->
+<Footer />

@@ -11,31 +11,37 @@
     // );
 
     // const solanaTPS = state("solanaTps");
+
+    import { SOL } from "@helius-labs/xray-proton";
+
+    import { page } from "$app/stores";
+
+    import { trpcWithQuery } from "$lib/trpc/client";
+
+    const client = trpcWithQuery($page);
+
+    const tps = client.tps.createQuery();
+
+    const price = client.price.createQuery(SOL);
 </script>
 
 <div class="ml-1 hidden items-center text-xs md:flex">
-    <!-- <div class="mx-2">
-        <Icon
-            id="stats"
-            size="md"
-        />
-    </div> -->
     <div>
         <div class="mr-5">
             <span class="font-bold">TPS </span>
-            <!-- {#if $solanaTPS.hasFetched}
-                <span class="ml-1 opacity-50"
-                    >{$solanaTPS?.data?.tps.toFixed(0)}</span
-                >
-            {/if} -->
+            {#if !$tps.isLoading}
+                <span class="ml-1 opacity-50">{$tps?.data?.toFixed(0)}</span>
+            {:else}
+                ...
+            {/if}
         </div>
         <div>
             <span class="font-bold">SOL/USD </span>
-            <!-- {#if $solanaPrice?.hasFetched}
-                <span class="ml-1 opacity-50"
-                    >{formatMoney($solanaPrice?.data)}</span
-                >
-            {/if} -->
+            {#if !$price?.isLoading}
+                <span class="ml-1 opacity-50">{formatMoney($price?.data)}</span>
+            {:else}
+                ...
+            {/if}
         </div>
     </div>
 </div>
