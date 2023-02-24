@@ -12,7 +12,12 @@ import { publicKeyMappings } from "./types";
 
 export const nameFromString = (str: string) =>
     uniqueNamesGenerator({
-        dictionaries: [colors, adjectives, colors, animals],
+        dictionaries: [
+            [...colors, ...names],
+            adjectives,
+            colors,
+            [...animals, ...names],
+        ],
         length: 4,
         seed: str + "namor",
         separator: " ",
