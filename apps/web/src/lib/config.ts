@@ -77,6 +77,10 @@ export const transactionActionsMetadata: Record<
         icon: "swap",
         label: "Swap",
     },
+    TOKEN_MINT: {
+        icon: "coins",
+        label: "Token Mint",
+    },
     TRANSFER: {
         icon: "lightning",
         label: "Transfer",
