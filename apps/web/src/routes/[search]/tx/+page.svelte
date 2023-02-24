@@ -71,8 +71,7 @@
             <div class="pb-5">
                 <Transaction
                     transaction={data}
-                    clickableTokens={true}
-                    clickableTransaction={false}
+                    moreDetails={true}
                     copyButtons={true}
                     ref="@tx:{data.signature}"
                 />

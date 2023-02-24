@@ -15,7 +15,7 @@ const config = {
 
                     neutral: "#616161",
 
-                    primary: "#f5f5f4",
+                    primary: "#c7c7c7",
 
                     "primary-content": "#f5f5f4",
 

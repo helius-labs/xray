@@ -14,8 +14,8 @@ export const transactions = t.procedure
     .input(
         z.object({
             account: z.string(),
-            user: z.string().optional(),
             before: z.string().optional(),
+            user: z.string().optional(),
         })
     )
     .query(async ({ input }) => {
@@ -41,7 +41,7 @@ export const transactions = t.procedure
         const result = json.map((tx) => parseTransaction(tx, input.user)) || [];
 
         return {
-            result,
             oldest: json[json.length - 1].signature,
+            result,
         };
     });

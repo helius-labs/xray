@@ -4,8 +4,9 @@ import { t } from "$lib/trpc/t";
 
 const { HELIUS_KEY } = process.env;
 
-export const price = t.router({
-    price: t.procedure.input(z.string()).query(async ({ input: token }) => {
+export const price = t.procedure
+    .input(z.string())
+    .query(async ({ input: token }) => {
         if (!HELIUS_KEY) {
             return 25;
         }
@@ -16,6 +17,5 @@ export const price = t.router({
 
         const json = await response.json();
 
-        return json.value;
-    }),
-});
+        return json.data.value;
+    });
