@@ -1,10 +1,11 @@
 <script lang="ts">
     // @ts-ignore
+    import Icon from "$lib/components/icon.svelte";
     import formatHighlight from "json-format-highlight";
     import { fade } from "svelte/transition";
-    import Icon from "$lib/components/icon.svelte";
 
     export let data: any;
+    export let label: string;
 
     $: metadataHTML = formatHighlight(JSON.stringify(data || {}, null, 4), {
         keyColor: "#a5a3a3",
@@ -34,9 +35,23 @@
             class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
         >
             <div>
-                <h4 class="text-lg font-semibold md:text-sm">JSON</h4>
+                <h4 class="text-lg font-semibold md:text-sm">
+                    {#if label === "proton"}
+                        Simple
+                    {:else if label === "enriched"}
+                        Medium
+                    {:else if label === "raw"}
+                        Advanced
+                    {/if}
+                </h4>
                 <h3 class="mr-2 text-xs opacity-50">
-                    Raw transaction data from Helius.
+                    {#if label === "proton"}
+                        Parsed transaction data from XRAY's Proton
+                    {:else if label === "enriched"}
+                        Enriched transaction data from the Helius API
+                    {:else if label === "raw"}
+                        Raw transaction data from the Solana RPC
+                    {/if}
                 </h3>
             </div>
             <button
