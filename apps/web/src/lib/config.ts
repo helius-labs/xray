@@ -45,10 +45,6 @@ export const transactionActionsMetadata: Record<
         icon: "mint",
         label: "NFT Mint",
     },
-    FREEZE: {
-        icon: "cold",
-        label: "Freeze",
-    },
     NFT_MINT_AIRDROP: {
         icon: "gift",
         label: "Airdroped",

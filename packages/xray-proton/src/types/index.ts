@@ -89,9 +89,7 @@ export const unknownProtonTransaction: ProtonTransaction = {
 export const protonParsers = {
     BORROW_FOX: parser.parseBorrowFox,
     BURN: parser.parseBurn,
-    BORROW_FOX: parser.parseBorrowFox,
     BURN_NFT: parser.parseBurn,
-    LOAN_FOX: parser.parseLoanFox,
     LOAN_FOX: parser.parseLoanFox,
     NFT_BID: parser.parseNftBid,
     NFT_BID_CANCELLED: parser.parseNftCancelBid,
