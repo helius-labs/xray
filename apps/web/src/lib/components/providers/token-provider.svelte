@@ -23,7 +23,7 @@
     };
 
     $: if (address === SOL) {
-        metadata.name = "Solana";
+        metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
     } else {
         // Kicks off the query
@@ -47,10 +47,14 @@
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;
     $: tokenFailed = $token.isError;
+
+    // This could be better
+    $: isNFT = metadata?.attributes && metadata?.attributes?.length > 0;
 </script>
 
 <slot
     {metadata}
     {tokenIsLoading}
     {tokenFailed}
+    {isNFT}
 />

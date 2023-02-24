@@ -14,8 +14,8 @@
 
     export let transaction: ProtonTransaction;
     export let clickableTokens = false;
-    export let clickableTransaction = true;
     export let copyButtons = false;
+    export let moreDetails = false;
     export let ref = "";
 
     import CopyButton from "$lib/components/copy-button.svelte";
@@ -44,39 +44,42 @@
 
 <div>
     <a
-        href="/{transaction.signature}/tx{combinedRef
-            ? '?ref=' + combinedRef
-            : ''}"
-        class="block rounded-lg bg-black {clickableTransaction
-            ? 'cursor-pointer border p-2 hover:border-white'
-            : 'cursor-pointer-none'}"
+        href="/{transaction.signature}/tx"
+        class="gradient relative z-10 block border border-y-0 border-r-0 border-transparent bg-black pb-1"
     >
         <div
-            class="grid grid-cols-12 gap-3 rounded-lg"
+            class="relative grid grid-cols-12 gap-3 rounded-lg"
             class:pb-2={clickableTokens}
         >
-            <div class="center col-span-1 opacity-50">
-                <Icon
-                    id={metadata.icon}
-                    size="md"
-                />
+            <div class="relative">
+                <div
+                    class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
+                >
+                    <div class="opacity-50">
+                        <Icon
+                            id={metadata.icon}
+                            size="md"
+                        />
+                    </div>
+                </div>
             </div>
-            <div class="col-span-11">
-                <div class="flex justify-between">
-                    <h3 class="text-xl font-semibold">
-                        {metadata.label}
-                    </h3>
+            <div class="col-span-12 px-3 pl-6">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-xl font-semibold">
+                            {metadata.label}
+                        </h3>
+                        <p class="text-xs opacity-50">
+                            {transaction.signature
+                                ? shortenString(transaction.signature, 8)
+                                : "Unknown"}
+                        </p>
+                    </div>
                     <h3 class="ml-2 mt-1 text-xs opacity-50">
                         {formatDate(transaction.timestamp)}
                     </h3>
                 </div>
-                <div class="flex items-center justify-between">
-                    <div class="text-xs opacity-50">
-                        {transaction.signature
-                            ? shortenString(transaction.signature, 8)
-                            : "Unknown"}
-                    </div>
-
+                <div class="flex items-center justify-end">
                     {#if copyButtons}
                         <!-- Prevent default so copy button doesn't trigger link -->
                         <div
@@ -113,6 +116,7 @@
 
                     {#if intersecting}
                         <div
+                            class="ml-3"
                             in:fly={{
                                 delay: idx * 50,
                                 duration: 500,
@@ -123,10 +127,11 @@
                                 {address}
                                 let:metadata
                                 let:tokenIsLoading
+                                let:isNFT
                             >
                                 {#if tokenIsLoading}
                                     <div
-                                        class="mt-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg p-1"
+                                        class="grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
                                     >
                                         <div
                                             class="col-span-2 p-1 md:col-span-1"
@@ -153,18 +158,15 @@
                                     </div>
                                 {:else if metadata?.image}
                                     <a
-                                        href="/{address}/token{combinedRef
-                                            ? '?ref=' + combinedRef
-                                            : ''}"
-                                        class:pointer-events-none={!clickableTokens}
+                                        href="/{address}/token"
+                                        class:pointer-events-none={!moreDetails}
+                                        class="my-3"
                                         in:fade={{
                                             duration: 500,
                                         }}
                                     >
                                         <div
-                                            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1 {clickableTokens
-                                                ? 'border p-2 hover:border-white'
-                                                : ''}"
+                                            class="relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
                                         >
                                             <div
                                                 class="col-span-2 p-1 md:col-span-1"
@@ -172,7 +174,7 @@
                                                 <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                                 <div
                                                     style="background-image: url('{metadata.image}')"
-                                                    class="rounded-lgd aspect-square w-full bg-cover"
+                                                    class="aspect-square w-full rounded-lg bg-cover"
                                                 />
                                             </div>
 
@@ -228,7 +230,10 @@
                                                         {/if}
                                                     {/if}
                                                 </div>
-                                                <div>
+                                                <div class="mr-2">
+                                                    <div
+                                                        class="absolute top-1/2 -left-3 h-0.5 w-3 -translate-y-1/2 rounded-full bg-secondary"
+                                                    />
                                                     {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL") || action.actionType.includes("NFT_MINT_AIRDROP")}
                                                         <h3
                                                             class="text-bold text-success"

@@ -1,13 +1,13 @@
 <style>
     .input {
-        background: rgba(0, 0, 0, 0.25);
+        background: rgba(0, 0, 0, 0.95);
     }
 </style>
 
 <script lang="ts">
     import type { Icon as IconType } from "src/lib/types";
 
-    import { onMount } from "svelte";
+    import { onMount, createEventDispatcher } from "svelte";
 
     import { nameFromString } from "@helius-labs/helius-namor";
 
@@ -40,6 +40,8 @@
     let connected = false;
 
     let showSearchError = () => "";
+
+    const dispatch = createEventDispatcher();
 
     const setFromClipboard = async () => {
         const clipboard = await pasteFromClipboard();
@@ -172,6 +174,8 @@
             placeholder="Search Solana"
             tabindex="0"
             type="text"
+            on:focusin={() => dispatch("focusin")}
+            on:focusout={() => dispatch("focusout")}
             bind:value={inputValue}
         />
         <ul
@@ -222,23 +226,23 @@
 </form>
 
 {#if size === "lg"}
-    <div class="grid grid-cols-1 py-2 md:grid-cols-3">
+    <div class="relative z-10 grid grid-cols-1 py-2 md:grid-cols-3">
         <button
-            class="btn-outline btn mb-4"
+            class="bg-faint btn-outline btn mb-4"
             on:click|preventDefault={clearSearch}
         >
             <span class="text-sm">Clear</span>
         </button>
 
         <button
-            class="btn-outline btn mb-4 md:ml-2"
+            class="bg-faint btn-outline btn mb-4 md:ml-2"
             on:click|preventDefault={setFromClipboard}
         >
             <span class="text-sm">Paste</span>
         </button>
 
         <button
-            class="btn-outline btn mb-4 md:ml-2"
+            class="bg-faint btn-outline btn mb-4 md:ml-2"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">Connect Wallet</span>

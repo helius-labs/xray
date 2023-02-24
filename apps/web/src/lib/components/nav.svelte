@@ -67,14 +67,10 @@
                     href="/"
                     rel="noreferrer"
                 >
-                    <span class="text-3xl">XRAY</span>
+                    <!-- <span class="text-3xl">XRAY</span> -->
                 </a>
             </div>
         {/if}
-
-        <div class="mx-2">
-            <PoweredByHelius />
-        </div>
 
         <Stats />
     </div>

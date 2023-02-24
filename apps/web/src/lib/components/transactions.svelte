@@ -41,10 +41,10 @@
             <!-- Only animate the first few intro transactions -->
             {#if idx < 8}
                 <div
-                    class="mb-4"
+                    class="mb-8"
                     in:fly={{
-                        duration: 500,
                         delay: idx * 100,
+                        duration: 500,
                         y: 30,
                     }}
                 >
@@ -55,12 +55,11 @@
                     />
                 </div>
             {:else}
-                <div class="mb-4">
+                <div class="mb-10">
                     <Transaction
                         {ref}
                         {transaction}
                         clickableTokens={false}
-                        clickableTransaction={true}
                     />
                 </div>
             {/if}
