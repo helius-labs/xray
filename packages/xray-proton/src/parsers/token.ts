@@ -66,12 +66,12 @@ export const parseTokenMint: ProtonParser = (
                 toName,
             });
         } else {
-            const actionType =
-                tx.fromUserAccount === address
-                    ? "SENT"
-                    : tx.toUserAccount === address
-                    ? "RECEIVED"
-                    : "";
+            let actionType = "";
+            if (tx.fromUserAccount === address) {
+                actionType = "SENT";
+            } else if (tx.toUserAccount === address) {
+                actionType = "RECEIVED";
+            }
 
             if (actionType === "SENT") {
                 const sent = tx.mint;
@@ -122,27 +122,26 @@ export const parseTokenMint: ProtonParser = (
                 amount,
                 from,
                 fromName,
+                sent: SOL,
                 to,
                 toName,
-                sent: SOL,
             });
         } else {
-            const actionType =
-                tx.fromUserAccount === address
-                    ? "SENT"
-                    : tx.toUserAccount === address
-                    ? "RECEIVED"
-                    : "";
-
+            let actionType = "";
+            if (tx.fromUserAccount === address) {
+                actionType = "SENT";
+            } else if (tx.toUserAccount === address) {
+                actionType = "RECEIVED";
+            }
             if (actionType === "SENT") {
                 actions.push({
                     actionType,
                     amount,
                     from,
                     fromName,
+                    sent: SOL,
                     to,
                     toName,
-                    sent: SOL,
                 });
             } else if (actionType === "RECEIVED") {
                 actions.push({
@@ -150,9 +149,9 @@ export const parseTokenMint: ProtonParser = (
                     amount,
                     from,
                     fromName,
+                    received: SOL,
                     to,
                     toName,
-                    received: SOL,
                 });
             }
         }
