@@ -68,32 +68,34 @@ export const parseTransfer = (
                 toName,
             });
         } else {
-            const actionType =
-                tx.fromUserAccount === address
-                    ? "TRANSFER_SENT"
-                    : "TRANSFER_RECEIVED";
+            let actionType = "";
+            if (tx.fromUserAccount === address) {
+                actionType = "TRANSFER_SENT";
+            } else if (tx.toUserAccount === address) {
+                actionType = "TRANSFER_RECEIVED";
+            }
 
             if (actionType === "TRANSFER_SENT") {
                 const sent = tx.mint;
                 actions.push({
                     actionType,
+                    amount,
                     from,
                     fromName,
                     sent,
                     to,
                     toName,
-                    amount,
                 });
             } else if (actionType === "TRANSFER_RECEIVED") {
                 const received = tx.mint;
                 actions.push({
                     actionType,
+                    amount,
                     from,
                     fromName,
                     received,
                     to,
                     toName,
-                    amount,
                 });
             }
         }
@@ -129,10 +131,12 @@ export const parseTransfer = (
                     toName,
                 });
             } else {
-                const actionType =
-                    tx.fromUserAccount === address
-                        ? "TRANSFER_SENT"
-                        : "TRANSFER_RECEIVED";
+                let actionType = "";
+                if (tx.fromUserAccount === address) {
+                    actionType = "TRANSFER_SENT";
+                } else if (tx.toUserAccount === address) {
+                    actionType = "TRANSFER_RECEIVED";
+                }
 
                 if (actionType === "TRANSFER_SENT") {
                     const sent = SOL;

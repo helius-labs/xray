@@ -40,8 +40,6 @@
     $: existingRef = $page.url.searchParams.get("ref") || "";
 
     $: combinedRef = ref + existingRef;
-
-    $: console.log({ combinedRef });
 </script>
 
 <div>
@@ -116,9 +114,9 @@
                     {#if intersecting}
                         <div
                             in:fly={{
-                                y: 20,
-                                duration: 500,
                                 delay: idx * 50,
+                                duration: 500,
+                                y: 20,
                             }}
                         >
                             <TokenProvider

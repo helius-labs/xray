@@ -71,9 +71,19 @@
         if (!recent.includes(value)) {
             window.localStorage?.setItem(
                 "xray:recent-searches",
-                JSON.stringify([value, ...recentJson.slice(0, 5)])
+                JSON.stringify([value, ...recentJson.slice(0, 3)])
+            );
+        } else {
+            window.localStorage?.setItem(
+                "xray:recent-searches",
+                JSON.stringify([value, ...recentJson.filter((v:string) => v !== value)])
             );
         }
+    };
+
+    const clearRecents = () => {
+        window.localStorage?.setItem("xray:recent-searches", []);
+        recent = [];
     };
 
     const newSearch = async () => {
@@ -174,20 +184,28 @@
             type="text"
             bind:value={inputValue}
         />
+        {#if recent.length > 1}
         <ul
-            class="dropdown-content relative mt-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
+            class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
         >
             <div class="flex flex-wrap items-center justify-between">
-                <p class="text-md mb-1 mt-2 font-bold">Recents</p>
+                <p class="text-md mb-1 mt-2">Recents</p>
+                <button
+                    class="btn-xs btn bg-transparent border-none"
+                    on:click={clearRecents}
+                >
+                    <span class="my-1">Clear all</span>
+                </button>
             </div>
             {#if recent.length}
                 {#each recent as address}
                     {#if address}
-                        <li class="m1-ds2 relative z-30 w-full truncate px-0">
+                        <li class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60">
                             <a
                                 class="block w-full max-w-full text-ellipsis px-1 py-2"
                                 data-sveltekit-preload-data="hover"
                                 href="/{address}"
+                                on:click={addRecent(address)}
                             >
                                 <p class="text-micro text-xs opacity-50">
                                     {nameFromString(address)}
@@ -209,6 +227,7 @@
                 >
             {/if}
         </ul>
+        {/if}
     </div>
 
     <button

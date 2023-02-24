@@ -43,6 +43,8 @@ export enum ProtonSupportedActionType {
     "BURN",
     "FREEZE",
     "TOKEN_MINT",
+    "BORROW_FOX",
+    "LOAN_FOX",
 }
 
 export type ProtonParser = (
@@ -85,8 +87,12 @@ export const unknownProtonTransaction: ProtonTransaction = {
 };
 
 export const protonParsers = {
+    BORROW_FOX: parser.parseBorrowFox,
     BURN: parser.parseBurn,
+    BORROW_FOX: parser.parseBorrowFox,
     BURN_NFT: parser.parseBurn,
+    LOAN_FOX: parser.parseLoanFox,
+    LOAN_FOX: parser.parseLoanFox,
     NFT_BID: parser.parseNftBid,
     NFT_BID_CANCELLED: parser.parseNftCancelBid,
     NFT_CANCEL_LISTING: parser.parseNftCancelList,
@@ -94,11 +100,9 @@ export const protonParsers = {
     NFT_MINT: parser.parseNftMint,
     NFT_SALE: parser.parseNftSale,
     SWAP: parser.parseSwap,
+    TOKEN_MINT: parser.parseTokenMint,
     TRANSFER: parser.parseTransfer,
     UNKNOWN: parser.parseUnknown,
-    BORROW_FOX: parser.parseBorrowFox,
-    LOAN_FOX: parser.parseLoanFox,
-    TOKEN_MINT: parser.parseTokenMint,
 };
 
 export type ProtonType = keyof typeof protonParsers;
