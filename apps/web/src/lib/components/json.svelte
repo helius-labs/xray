@@ -42,6 +42,8 @@
                         Medium
                     {:else if label === "raw"}
                         Advanced
+                    {:else if label === "token"}
+                        JSON Metadata
                     {/if}
                 </h4>
                 <h3 class="mr-2 text-xs opacity-50">
@@ -51,6 +53,8 @@
                         Enriched transaction data from the Helius API
                     {:else if label === "raw"}
                         Raw transaction data from the Solana RPC
+                    {:else if label === "token"}
+                        View the metadata for this NFT
                     {/if}
                 </h3>
             </div>

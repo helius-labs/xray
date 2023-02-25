@@ -134,9 +134,9 @@
                 </div>
             </div>
             <Collapse
-                iconId=""
                 sectionTitle="View Transaction Data"
                 showDetails={false}
+                hideIcon={true}
             >
                 <div class="mb-3">
                     <JSON
