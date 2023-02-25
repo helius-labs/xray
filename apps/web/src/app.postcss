@@ -20,7 +20,7 @@ html {
 }
 
 body {
-    font-family: "Space Grotesk", sans-serif;
+    font-family: "Roboto", sans-serif;
     background-size: cover;
     background-position: center;
 }
@@ -58,57 +58,27 @@ input::placeholder {
 }
 
 .icon-md {
-    @apply h-6 w-6;
+    @apply h-5 w-5;
 }
 
 .icon-lg {
     @apply h-8 w-8;
 }
 
-.glow {
-    --shadow-color: hsl(0, 0%, 72%);
-    --shadow-color-light: white;
-    color: white;
-    animation: neon 3s infinite ease-in-out;
+.bg-faint {
+    background: rgba(0, 0, 0, 0.9);
 }
 
-@keyframes neon {
-    0% {
-        text-shadow: -1px -1px 1px var(--shadow-color-light),
-            -1px 1px 1px var(--shadow-color-light),
-            1px -1px 1px var(--shadow-color-light),
-            1px 1px 1px var(--shadow-color-light),
-            0 0 3px var(--shadow-color-light),
-            0 0 10px var(--shadow-color-light),
-            0 0 20px var(--shadow-color-light), 0 0 30px var(--shadow-color),
-            0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color),
-            0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color),
-            0 0 200px var(--shadow-color);
-    }
-    50% {
-        text-shadow: -1px -1px 1px var(--shadow-color-light),
-            -1px 1px 1px var(--shadow-color-light),
-            1px -1px 1px var(--shadow-color-light),
-            1px 1px 1px var(--shadow-color-light),
-            0 0 5px var(--shadow-color-light),
-            0 0 15px var(--shadow-color-light),
-            0 0 25px var(--shadow-color-light), 0 0 40px var(--shadow-color),
-            0 0 50px var(--shadow-color), 0 0 60px var(--shadow-color),
-            0 0 80px var(--shadow-color), 0 0 110px var(--shadow-color),
-            0 0 210px var(--shadow-color);
-    }
-    100% {
-        text-shadow: -1px -1px 1px var(--shadow-color-light),
-            -1px 1px 1px var(--shadow-color-light),
-            1px -1px 1px var(--shadow-color-light),
-            1px 1px 1px var(--shadow-color-light),
-            0 0 3px var(--shadow-color-light),
-            0 0 10px var(--shadow-color-light),
-            0 0 20px var(--shadow-color-light), 0 0 30px var(--shadow-color),
-            0 0 40px var(--shadow-color), 0 0 50px var(--shadow-color),
-            0 0 70px var(--shadow-color), 0 0 100px var(--shadow-color),
-            0 0 200px var(--shadow-color);
-    }
+.spot-glow {
+    position: relative;
+    width: 100vw;
+    padding-bottom: 65%;
+    background: radial-gradient(
+        circle at center,
+        #ff5e002e 1%,
+        #f8116b %,
+        transparent 55%
+    );
 }
 
 section {
@@ -122,6 +92,32 @@ h4,
 h5,
 h6 {
     font-family: "Space Grotesk", sans-serif;
+}
+
+.btn-outline-gradient:before {
+    position: absolute;
+    background: black;
+    content: "";
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    transform: translate(-50%, -50%);
+    border-radius: var(--border-radius);
+    z-index: 0;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-outline-gradient {
+    background: linear-gradient(
+        to bottom right,
+        #ec5a16 10%,
+        #cd51e9 50%,
+        #40d2ff,
+        #0a50dc
+    );
+    color: #fff;
+    position: relative;
 }
 
 .bg-transfer {

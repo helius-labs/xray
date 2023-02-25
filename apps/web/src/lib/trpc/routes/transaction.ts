@@ -41,7 +41,6 @@ export const transaction = t.procedure
 
         const parsed = parseTransaction(tx, input?.account);
 
-        console.log(input?.account);
         parsed.raw = tx;
 
         return parsed;

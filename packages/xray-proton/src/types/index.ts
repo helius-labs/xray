@@ -18,6 +18,7 @@ export enum ProtonSupportedType {
     UNKNOWN,
     BORROW_FOX,
     LOAN_FOX,
+    TOKEN_MINT,
 }
 
 export enum ProtonSupportedActionType {
@@ -41,6 +42,7 @@ export enum ProtonSupportedActionType {
     "NFT_MINT_AIRDROP",
     "BURN",
     "FREEZE",
+    "TOKEN_MINT",
     "BORROW_FOX",
     "LOAN_FOX",
 }
@@ -96,6 +98,7 @@ export const protonParsers = {
     NFT_MINT: parser.parseNftMint,
     NFT_SALE: parser.parseNftSale,
     SWAP: parser.parseSwap,
+    TOKEN_MINT: parser.parseTokenMint,
     TRANSFER: parser.parseTransfer,
     UNKNOWN: parser.parseUnknown,
 };
