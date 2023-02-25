@@ -5,17 +5,18 @@
 
     import { page } from "$app/stores";
 
-    import { fly, fade } from "svelte/transition";
+    import { fade, fly } from "svelte/transition";
 
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import shortenAddress from "$lib/util/shorten-string";
 
     import CopyButton from "$lib/components/copy-button.svelte";
-    import Transaction from "$lib/components/transaction.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
     import JSON from "$lib/components/json.svelte";
+    import Transaction from "$lib/components/transaction.svelte";
+    import Collapse from "src/lib/components/collapse.svelte";
 
     let animate = false;
     let showCode = false;
@@ -36,6 +37,8 @@
         transaction: signature || "",
     });
 
+    const rawTransaction = client.rawTransaction.createQuery(signature || "");
+
     onMount(() => {
         animate = true;
     });
@@ -43,6 +46,10 @@
     $: data = $transaction?.data
         ? ($transaction.data as ProtonTransaction)
         : null;
+
+    $: rawData = $rawTransaction?.data;
+
+    $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
 {#if animate}
@@ -125,11 +132,32 @@
                     </div>
                 </div>
             </div>
-            {#if data?.raw}
+            <Collapse
+                sectionTitle="View Transaction Data"
+                showDetails={false}
+                hideIcon={true}
+            >
                 <div class="mb-3">
-                    <JSON data={data?.raw} />
+                    <JSON
+                        data={rest}
+                        label="proton"
+                    />
                 </div>
-            {/if}
+                {#if data?.raw}
+                    <div class="mb-3">
+                        <JSON
+                            data={data?.raw}
+                            label="enriched"
+                        />
+                    </div>
+                {/if}
+                <div class="mb-3">
+                    <JSON
+                        data={rawData}
+                        label="raw"
+                    />
+                </div>
+            </Collapse>
         {/if}
     </div>
 {/if}

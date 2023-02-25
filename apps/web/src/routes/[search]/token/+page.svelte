@@ -1,18 +1,18 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import shortenString from "$lib/util/shorten-string";
-    import { fade, fly } from "svelte/transition";
     import { cubicOut } from "svelte/easing";
+    import { fade, fly } from "svelte/transition";
 
-    import Transactions from "$lib/components/transactions.svelte";
-    import JSON from "$lib/components/json.svelte";
     import Collapse from "$lib/components/collapse.svelte";
+    import JSON from "$lib/components/json.svelte";
+    import Transactions from "$lib/components/transactions.svelte";
 
     import PageLoader from "./_loader.svelte";
 
-    import TokenProvider from "$lib/components/providers/token-provider.svelte";
-    import Modal from "$lib/components/modal.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
+    import Modal from "$lib/components/modal.svelte";
+    import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     const address = $page.params.search;
 </script>
@@ -196,7 +196,10 @@
                 />
             </div>
             <div class="mt-3">
-                <JSON data={metadata} />
+                <JSON
+                    data={metadata}
+                    label="token"
+                />
             </div>
         </div>
     {/if}
