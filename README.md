@@ -12,11 +12,11 @@ An intuitive Solana transaction explorer powered by Helius.
 
 ## 📦 Packages
 
-| Name                                            | Description                                         | Directory                |
-| ----------------------------------------------- | --------------------------------------------------- | ------------------------ |
-| [@helius-labs/xray-app](#@helius-labs/xray-app) | SvelteKit app with UI and backend endpoints.        | `apps/web`               |
-| `@helius-labs/xray-proton`                      | Parses transaction data to produce UI state.        | `packages/xray-proton`   |
-| `@helius-labs/xray-database`                    | Prisma client used for communicating with database. | `packages/xray-database` |
+| Name                                                  | Description                                         | Directory                |
+| ----------------------------------------------------- | --------------------------------------------------- | ------------------------ |
+| [@helius-labs/xray-app](#@helius-labs/xray-app)       | SvelteKit app with UI and backend endpoints.        | `apps/web`               |
+| [@helius-labs/xray-proton](#@helius-labs/xray-proton) | Parses transaction data to produce UI state.        | `packages/xray-proton`   |
+| `@helius-labs/xray-database`                          | Prisma client used for communicating with database. | `packages/xray-database` |
 
 ## 🏃🏽‍♂️ Runbook
 
@@ -217,12 +217,13 @@ Used for parsing blockchain data and making it pretty for the UI.
 
 ## Important Files & Folders
 
-|                            |                                                                                                                                                                                  |
-| -------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 📁`./src/parsers`          | All parser methods that turn Helius EnrichedTransaction API calls into more easily readable objects for the UI depending on the transaction type.                                |
-| 📄`./src/parsers/index.ts` | Export new parser functions here.                                                                                                                                                |
-| 📄`./src/types/index.ts`   | Displays all supported transaction types with parsing and the interface returned from every parser function. Add new transaction w/ parsers to the supportedTransactions object. |
-| 📄`./index.ts`             | File where all transactions are parsed through. Import new parser functions here and add the transaction type with the corresponding function to the parsers object.             |
+|                            |                                                                                       |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| 📄`./index.ts`             | UI calls the function in this file to parse transactions                              |
+| 📄`./src/types/index.ts`   | Contains the types, interfaces, and enums needed to understand to work on the parser. |
+| 📁`./src/parsers`          | Contains all parser methods.                                                          |
+| 📄`./src/parsers/index.ts` | Exports parser files in `./src/parsers`.                                              |
+| 📁`./src/utils`            | Utility functions for parser functions                                                |
 
 ## General Work Flow When Adding a New Transaction Type
 
@@ -230,8 +231,8 @@ Used for parsing blockchain data and making it pretty for the UI.
     - [Helius API Docs](https://docs.helius.xyz/reference/transaction-types) - View all transaction types supported by Helius.
 2. Get to know the transaction type. Here is the resource I personally like to use for it:
     - [SwaggerHub](https://app.swaggerhub.com/apis-docs/Helius/HeliusAPI/1.1.0#/Transactions/getEnrichedTransactions) - Use `/v0/addresses/{address}/transactions ` for addresses with the specific transaction type or `/v0/transactions/` for a transaction (also supports multiple transactions). I like downloading the JSON file and looking through it constantly. More transactions + edge cases are better to battle test your parser function.
-3. Add a new file in `./src/parsers` with the name of the transaction type. (refer to other files for general structures of what a parser function should look like)
-4. Export the function in `./src/parsers/index.ts`, add the transaction type to the `supportedTransactions` object in `./src/types/index.ts`, and add the transaction type with the corresponding parser function to the `parsers` object in `./index.ts`.
+3. Add a new file or edit an existing one in `./src/parsers`. (refer to other files for general structures of what a parser function should look like)
+4. Export the function in `./src/parsers/index.ts`, add the transaction type to the `ProtonSupportedType` object in `./src/types/index.ts`, and add the transaction type with the corresponding parser function to the `protonParsers` object in `./src/types/index.ts`.
 5. Work on the parser function while testing it since it is now compatible with the UI.
 
 ## Currently Supported Transactions
@@ -243,9 +244,16 @@ Used for parsing blockchain data and making it pretty for the UI.
 | SWAP                 | `/swap.ts`                 |
 | BURN                 | `/burn.ts`                 |
 | BURN_NFT             | `/burn.ts`                 |
-| NFT_SALE             | `/nft/sale.ts`             |
-| NFT_BID              | `/nft/bid.ts`              |
-| NFT_LISTING          | `/nft/list.ts`             |
+| TOKEN_MINT           | `/token.ts`                |
+| NFT_MINT             | `/nft.ts`                  |
+| NFT_SALE             | `/nft.ts`                  |
+| NFT_LISTING          | `/nft.ts`                  |
+| NFT_CANCEL_LISTING   | `/nft.ts`                  |
+| NFT_BID              | `/nft.ts`                  |
+| NFT_BID_CANCELLED    | `/nft.ts`                  |
+| BORROW_FOX           | `/fox.ts`                  |
+| LOAN_FOX             | `/fox.ts`                  |
+| UNKNOWN              | `/unknown.ts`              |
 
 # 📦 @helius-labs/xray-database
 
