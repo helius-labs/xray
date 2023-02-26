@@ -34,7 +34,7 @@ export const parseBurn = (
     source = transaction.source;
 
     for (let i = 0; i < tokenTransfers.length; i++) {
-        const [tx] = tokenTransfers;
+        const tx = tokenTransfers[i];
         const from = tx.fromUserAccount || "";
         let fromName;
 
