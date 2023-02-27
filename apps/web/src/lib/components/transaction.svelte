@@ -99,9 +99,9 @@
         </div>
 
         {#each transaction.actions as action, idx}
-            {@const address = action.actionType.includes("SENT")
+            {@const address = action?.actionType?.includes("SENT")
                 ? action.sent || ""
-                : action.actionType.includes("RECEIVED")
+                : action?.actionType?.includes("RECEIVED")
                 ? action.received || ""
                 : action.sent || action.received || ""}
 
@@ -189,8 +189,8 @@
                                                             "Unknown"}
                                                     </h4>
 
-                                                    {#if !action.actionType.includes("NFT")}
-                                                        {#if action.actionType === "TRANSFER" || action.actionType === "SWAP"}
+                                                    {#if !action?.actionType?.includes("NFT")}
+                                                        {#if action?.actionType === "TRANSFER" || action?.actionType === "SWAP"}
                                                             <div class="flex">
                                                                 <h3
                                                                     class="mr-2 text-xs"
@@ -224,8 +224,8 @@
                                                             >
                                                                 {transactionActionsMetadata[
                                                                     action
-                                                                        .actionType
-                                                                ].label}
+                                                                        ?.actionType
+                                                                ]?.label}
                                                             </h3>
                                                         {/if}
                                                     {/if}
@@ -234,25 +234,25 @@
                                                     <div
                                                         class="absolute top-1/2 -left-3 h-0.5 w-3 -translate-y-1/2 rounded-full bg-secondary"
                                                     />
-                                                    {#if action.actionType.includes("RECEIVED") || action.actionType.includes("NFT_SELL") || action.actionType.includes("NFT_MINT_AIRDROP")}
+                                                    {#if action?.actionType?.includes("RECEIVED") || action?.actionType?.includes("NFT_SELL") || action?.actionType?.includes("AIRDROP")}
                                                         <h3
                                                             class="text-bold text-success"
                                                         >
                                                             + {action.amount.toLocaleString()}
                                                         </h3>
-                                                    {:else if action.actionType.includes("SENT") || action.actionType.includes("NFT_BUY")}
+                                                    {:else if action?.actionType?.includes("SENT") || action?.actionType?.includes("NFT_BUY")}
                                                         <h3
                                                             class="text-bold text-error"
                                                         >
                                                             - {action.amount.toLocaleString()}
                                                         </h3>
-                                                    {:else if action.actionType.includes("BURN")}
+                                                    {:else if action?.actionType?.includes("BURN")}
                                                         <h3
                                                             class="text-bold text-warning"
                                                         >
                                                             - {action.amount.toLocaleString()}
                                                         </h3>
-                                                    {:else if action.amount}
+                                                    {:else if action?.amount}
                                                         <h3 class="text-bold">
                                                             {action.amount.toLocaleString()}
                                                         </h3>
