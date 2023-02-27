@@ -50,14 +50,12 @@ export async function load({ params, url }: RequestEvent) {
 
         throw redirect(307, redirectUrl);
     } else if (probablySolanaName) {
-        const domain = params.search.slice(0, -4);
         try {
-            const { pubkey } = await getDomainKey(domain);
+            const { pubkey } = await getDomainKey(params.search);
             const data = await NameRegistryState.retrieve(connection, pubkey);
 
             throw redirect(307, `/${data.registry.owner}/wallet`);
         } catch (error) {
-            console.log(error);
             throw redirect(307, `/${params.search}/?error="invalid-search"`);
         }
     } else {

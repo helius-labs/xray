@@ -44,9 +44,8 @@ export async function GET({ params }: RequestEvent) {
             },
         });
     } else if (probablySolanaName) {
-        const domain = search.slice(0, -4);
         try {
-            const { pubkey } = await getDomainKey(domain);
+            const { pubkey } = await getDomainKey(search);
             const data = await NameRegistryState.retrieve(connection, pubkey);
 
             return json({
@@ -56,7 +55,6 @@ export async function GET({ params }: RequestEvent) {
                 },
             });
         } catch (error) {
-            console.log(error);
             return json({
                 data: {
                     url: `/`,
