@@ -32,8 +32,9 @@ export const traverseTokenTransfers = (
 
         if (!address) {
             const sent = tx.mint;
+            type = type === undefined ? "TRANSFER" : type;
             actions.push({
-                actionType: type as ProtonActionType | "TRANSFER",
+                actionType: type as ProtonActionType,
                 amount,
                 from,
                 fromName,
