@@ -13,6 +13,10 @@ export const transactionActionsMetadata: Record<
         icon: "flame",
         label: "Burn",
     },
+    BURN_NFT: {
+        icon: "flame",
+        label: "Burn NFT",
+    },
     FREEZE: {
         icon: "cold",
         label: "Freeze",

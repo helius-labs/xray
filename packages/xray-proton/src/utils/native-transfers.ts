@@ -41,12 +41,12 @@ export const traverseNativeTransfers = (
             } else {
                 let actionType = "";
                 if (tx.fromUserAccount === address) {
-                    actionType = "TRANSFER_SENT";
+                    actionType = "SENT";
                 } else if (tx.toUserAccount === address) {
-                    actionType = "TRANSFER_RECEIVED";
+                    actionType = "RECEIVED";
                 }
 
-                if (actionType === "TRANSFER_SENT") {
+                if (actionType === "SENT") {
                     const sent = SOL;
                     actions.push({
                         actionType,
@@ -57,7 +57,7 @@ export const traverseNativeTransfers = (
                         to,
                         toName,
                     });
-                } else if (actionType === "TRANSFER_RECEIVED") {
+                } else if (actionType === "RECEIVED") {
                     const received = SOL;
                     actions.push({
                         actionType,
