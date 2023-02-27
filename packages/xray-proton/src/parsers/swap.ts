@@ -4,7 +4,10 @@ import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
 
-import { ProtonTransaction, ProtonTransactionAction } from "../types";
+import { ProtonTransaction, ProtonTransactionAction, SOL } from "../types";
+import { traverseNativeTransfers } from "../utils/native-transfers";
+import { rentTransferCheck } from "../utils/rent-transfer-check";
+import { traverseTokenTransfers } from "../utils/token-transfers";
 
 interface TempTokenTransfer extends TokenTransfer {
     tokenAmount: number;
@@ -14,104 +17,37 @@ export const parseSwap = (
     transaction: EnrichedTransaction,
     address: string | undefined
 ): ProtonTransaction => {
-    const type = "SWAP";
-    let source = "SYSTEM_PROGRAM" as Source;
+    const {
+        type,
+        source,
+        signature,
+        timestamp,
+        tokenTransfers,
+        nativeTransfers,
+    } = transaction;
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
 
-    if (transaction?.tokenTransfers === null) {
+    if (tokenTransfers === null || nativeTransfers === null) {
         return {
             actions: [],
-            fee: 0,
+            fee,
             primaryUser: "",
-            signature: "",
+            signature,
             source,
-            timestamp: 0,
+            timestamp,
             type,
         };
     }
 
-    const { tokenTransfers } = transaction;
-    const actions: ProtonTransactionAction[] = [];
     const primaryUser = tokenTransfers[0].fromUserAccount || "";
+    const actions: ProtonTransactionAction[] = [];
 
-    const { signature, timestamp } = transaction;
-    const fee = transaction.fee / LAMPORTS_PER_SOL;
-
-    source = transaction.source;
-
-    for (let i = 0; i < tokenTransfers.length; i++) {
-        const tx = tokenTransfers[i] as TempTokenTransfer;
-
-        const from = tx.fromUserAccount || "";
-        let fromName;
-
-        if (tx.fromUserAccount) {
-            fromName = getSolanaName(tx.fromUserAccount);
-        }
-
-        const to = tx.toUserAccount || "";
-        let toName;
-
-        if (tx.toUserAccount) {
-            toName = getSolanaName(tx.toUserAccount);
-        }
-
-        const amount = tx.tokenAmount;
-
-        if (!address) {
-            const actionType = "SWAP";
-            if (tx.fromUserAccount === primaryUser) {
-                const sent = tx.mint;
-                actions.push({
-                    actionType,
-                    amount,
-                    from,
-                    fromName,
-                    sent,
-                    to,
-                    toName,
-                });
-            } else if (tx.toUserAccount === primaryUser) {
-                const received = tx.mint;
-                actions.push({
-                    actionType,
-                    amount,
-                    from,
-                    fromName,
-                    received,
-                    to,
-                    toName,
-                });
-            }
-        } else {
-            const actionType =
-                tx.fromUserAccount === primaryUser
-                    ? "SWAP_SENT"
-                    : "SWAP_RECEIVED";
-
-            if (actionType === "SWAP_SENT") {
-                const sent = tx.mint;
-                actions.push({
-                    actionType,
-                    amount,
-                    from,
-                    fromName,
-                    sent,
-                    to,
-                    toName,
-                });
-            } else if (actionType === "SWAP_RECEIVED") {
-                const received = tx.mint;
-                actions.push({
-                    actionType,
-                    amount,
-                    from,
-                    fromName,
-                    received,
-                    to,
-                    toName,
-                });
-            }
-        }
+    if (source === "HADESWAP") {
+        address = undefined;
+        traverseTokenTransfers(tokenTransfers, actions, address);
+        traverseNativeTransfers(nativeTransfers, actions, address);
+    } else {
+        traverseTokenTransfers(tokenTransfers, actions, address);
     }
 
     return {
