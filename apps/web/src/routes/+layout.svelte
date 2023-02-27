@@ -16,6 +16,8 @@
 
     import { QueryClient, QueryClientProvider } from "@tanstack/svelte-query";
 
+    import Modals from "$lib/components/modals.svelte";
+
     import { clusterApiUrl } from "@solana/web3.js";
 
     import {
@@ -43,6 +45,8 @@
     const network = clusterApiUrl("mainnet-beta");
 </script>
 
+<Modals />
+
 {#if $isConnectingWallet}
     <WalletModal
         maxNumberOfWallets="6"
@@ -58,17 +62,6 @@
 />
 
 <ConnectionProvider {network} />
-<!-- 
-<SnackProvider config={{ queries }}>
-    <main class="grid min-h-screen">
-        <DevBanner />
-        <Nav />
-
-        <div class="relative mx-auto w-full px-3">
-            <slot />
-        </div>
-    </main>
-</SnackProvider> -->
 
 <QueryClientProvider client={data.queryClient}>
     <main class="grid min-h-screen">

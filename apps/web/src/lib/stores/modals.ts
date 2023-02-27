@@ -1,5 +1,11 @@
+import type { Modal, Modals } from "$lib/types";
+
 import { writable } from "svelte/store";
 
-import type { Modal } from "$lib/types";
+import { modals } from "$lib/config";
 
-export const modals = writable<Modal>();
+export const modalsStore = writable<Modal | undefined>();
+
+export const showModal = (id: Modals) => modalsStore.set(modals[id]);
+
+export const hideModal = () => modalsStore.set(undefined);

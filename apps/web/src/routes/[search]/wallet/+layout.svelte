@@ -1,5 +1,5 @@
 <script>
-    import { trpcWithQuery } from "$lib/trpc/client";
+    import { onMount } from "svelte";
 
     import { page } from "$app/stores";
 
@@ -7,15 +7,22 @@
 
     import { fly, fade } from "svelte/transition";
 
+    import { SOL } from "@helius-labs/xray-proton";
+
+    import { trpcWithQuery } from "$lib/trpc/client";
+
+    import formatMoney from "$lib/util/format-money";
+
     import CopyButton from "$lib/components/copy-button.svelte";
     import Namor from "$lib/components/providers/namor-provider.svelte";
-    import { onMount } from "svelte";
 
     const account = $page.params.search;
 
     const client = trpcWithQuery($page);
 
     const accountInfo = client.accountInfo.createQuery(account);
+
+    const price = client.price.createQuery(SOL);
 
     const balance = tweened(0, {
         duration: 1000,
@@ -26,6 +33,8 @@
     $: if ($accountInfo?.data?.balance) {
         balance.set($accountInfo.data.balance);
     }
+
+    $: worth = $balance * $price?.data;
 
     onMount(() => {
         animate = true;
@@ -73,12 +82,19 @@
 
     <div>
         <div
-            class="mb-5 flex flex-wrap justify-between md:flex-row-reverse md:items-center"
+            class="mb-5 flex flex-wrap justify-between pr-3 md:flex-row-reverse md:items-end"
         >
-            <h1 class="my-1 hidden text-lg md:block">
-                <span class="">{$balance.toFixed(6)}</span>
-                <span class="opacity-50">SOL</span>
-            </h1>
+            <div class="text-right">
+                <h1 class="my-1 hidden text-xl md:block">
+                    <span class="">{$balance.toFixed(6)}</span>
+                    <span class="opacity-50">SOL</span>
+                </h1>
+                {#if !$price?.isLoading}
+                    <span class="ml-1 text-xs opacity-50"
+                        >{formatMoney(worth)} USD</span
+                    >
+                {/if}
+            </div>
 
             <div class="tabs w-full md:w-auto">
                 <a

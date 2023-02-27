@@ -1,5 +1,21 @@
-import type { TransactionActionMetadata } from "$lib/types";
+import type { TransactionActionMetadata, Modal } from "$lib/types";
 import type { ProtonActionType } from "@helius-labs/xray-proton";
+
+import InvalidSearch from "$lib/components/modals/invalid-search.svelte";
+import Menu from "$lib/components/modals/menu.svelte";
+
+export const recentSearchesKey = "xray:recent-searches";
+
+export const modals: Record<string, Modal> = {
+    INVALID_SEARCH: {
+        component: InvalidSearch,
+        title: "Invalid Search",
+    },
+    MENU: {
+        component: Menu,
+        title: "XRAY",
+    },
+};
 
 export const transactionActionsMetadata: Record<
     ProtonActionType,
@@ -10,6 +26,10 @@ export const transactionActionsMetadata: Record<
         label: "Borrow Fox",
     },
     BURN: {
+        icon: "flame",
+        label: "Burn",
+    },
+    BURN_NFT: {
         icon: "flame",
         label: "Burn",
     },

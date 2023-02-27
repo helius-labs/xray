@@ -93,11 +93,11 @@
 >
     <section
         bind:this={exploreELement}
-        class="transition-section relative z-10 mx-auto -mt-24 bg-black py-24"
+        class="transition-section relative z-10 mx-auto -mt-24 overflow-hidden bg-black py-24"
     >
         {#if intersecting}
             <div
-                class="mx-auto max-w-2xl text-center"
+                class="relative mx-auto max-w-2xl text-center"
                 in:fly={{
                     duration: 750,
                     y: 100,
