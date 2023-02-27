@@ -70,9 +70,11 @@
     },
     "packageManager": "npm@8.19.2",
     "dependencies": {
+        "@bonfida/spl-name-service": "^0.1.64",
         "@solana/web3.js": "^1.73.2",
         "helius-sdk": "^0.3.0",
         "json-format-highlight": "^1.0.4",
+        "tweetnacl": "^1.0.3",
         "yarn": "^1.22.19"
     }
 }

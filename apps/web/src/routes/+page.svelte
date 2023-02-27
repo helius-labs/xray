@@ -17,13 +17,12 @@
 
     import { fly } from "svelte/transition";
 
-    import Search from "$lib/components/search.svelte";
     import Icon from "$lib/components/icon.svelte";
     import PoweredByHelius from "$lib/components/powered-by-helius.svelte";
+    import Search from "$lib/components/search.svelte";
     import IntersectionObserver from "svelte-intersection-observer";
 
     import { browser } from "$app/environment";
-
     // @ts-ignore
     import { LottiePlayer } from "@lottiefiles/svelte-lottie-player";
 
