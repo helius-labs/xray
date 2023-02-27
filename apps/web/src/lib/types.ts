@@ -76,7 +76,7 @@ export interface TRPCTransactionsOutput {
     oldest: string;
 }
 
-export const zodTRPCTransactionsInput = z.object({
-    address: z.array(z.string()),
-    before: z.string().optional(),
-});
+export interface Modal {
+    title: string;
+    showClose: boolean;
+}

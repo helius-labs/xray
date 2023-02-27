@@ -5,6 +5,7 @@
 
     export let id: string;
     export let fullScreenModal = false;
+    let mounted = false;
 
     export const show = () => (window.location.href = `#modal-${id}`);
     export const hide = () => (window.location.href = `#`);
@@ -13,6 +14,8 @@
         if (window.location.hash === `#modal-${id}`) {
             show();
         }
+
+        mounted = true;
     });
 </script>
 

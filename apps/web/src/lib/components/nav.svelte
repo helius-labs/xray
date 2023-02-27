@@ -9,21 +9,6 @@
     import Search from "$lib/components/search.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
     import Stats from "$lib/components/stats.svelte";
-    import PoweredByHelius from "$lib/components/powered-by-helius.svelte";
-
-    let backUrl = "";
-
-    $: refs = $page.url.searchParams.get("ref")?.split("@") || ["", ""];
-
-    $: restOfRefs = refs.slice(2).join("@");
-
-    $: [refType, refValue] = refs[1].split(":") || [];
-
-    $: ref = restOfRefs.length ? "@" + restOfRefs : "";
-
-    $: backUrl = refType
-        ? `/${refValue}/${refType}${ref ? "?ref=" + ref : ""}`
-        : "/";
 </script>
 
 <nav
@@ -31,30 +16,7 @@
 >
     <DevBanner />
     <div class="col-span-5 flex items-center lg:col-span-4">
-        {#if backUrl}
-            {#if backUrl !== "/"}
-                <div
-                    class="ml-2 flex items-center"
-                    in:fly={{
-                        duration: 750,
-                        x: -25,
-                    }}
-                >
-                    <a
-                        class="btn-ghost btn px-2"
-                        href={backUrl}
-                        rel="noreferrer"
-                    >
-                        <span class="text-3xl">
-                            <Icon
-                                id="arrowLeft"
-                                size="md"
-                            />
-                        </span>
-                    </a>
-                </div>
-            {/if}
-
+        {#if $page.url.pathname !== "/"}
             <div
                 class="mx-2 flex items-center"
                 in:fly={{
@@ -67,11 +29,12 @@
                     href="/"
                     rel="noreferrer"
                 >
-                    <!-- <span class="text-3xl">XRAY</span> -->
+                    <span class="text-3xl">XRAY</span>
                 </a>
             </div>
         {/if}
 
+        <div class="ml-2" />
         <Stats />
     </div>
 

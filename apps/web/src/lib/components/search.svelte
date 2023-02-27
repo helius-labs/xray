@@ -38,6 +38,7 @@
     let inputValue: string = "";
     let isSearching = false;
     let connected = false;
+    let isBackpack = false;
 
     let showSearchError = () => "";
 
@@ -63,30 +64,39 @@
         showSearchError();
     };
 
+    // DRky4ahiHbDj7XsZULUhSxPTM9V7VcFfNZfF7VJsEqXi
+    // MatrfYnDmsBrdnETpW2S6uksrChkGwyN4RRCXtTPZsv
+    //
     const addRecent = (value: string) => {
+        if (!value) {
+            return;
+        }
+
         const recentStorage = window?.localStorage?.getItem(
             "xray:recent-searches"
         );
 
         const recentJson = JSON.parse(recentStorage || "[]");
-
-        if (!recent.includes(value)) {
-            window.localStorage?.setItem(
-                "xray:recent-searches",
-                JSON.stringify([value, ...recentJson.slice(0, 3)])
-            );
-        } else {
-            window.localStorage?.setItem(
-                "xray:recent-searches",
-                JSON.stringify([value, ...recentJson.filter((v:string) => v !== value)])
-            );
+        console.log({ recentJson });
+        if (recent.includes(value)) {
+            return;
         }
+
+        window.localStorage?.setItem(
+            "xray:recent-searches",
+            JSON.stringify([value, ...recentJson.slice(0, 3)])
+        );
     };
 
     const clearRecents = () => {
-        window.localStorage?.setItem("xray:recent-searches", []);
+        window.localStorage?.setItem(
+            "xray:recent-searches",
+            JSON.stringify([])
+        );
         recent = [];
     };
+
+    const loadSearch = (url: string) => (window.location.href = url || "/");
 
     const newSearch = async () => {
         searchError = "";
@@ -103,7 +113,7 @@
 
             addRecent(inputValue);
 
-            window.location.href = data?.url || "/";
+            loadSearch(data.url);
         } catch (error) {
             searchFailed();
         }
@@ -117,6 +127,9 @@
         );
 
         recent = JSON.parse(recentStorage || "[]");
+
+        isBackpack =
+            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
     });
 
     const supportedSearches: Array<[IconType, string]> = [
@@ -188,49 +201,50 @@
             on:focusout={() => dispatch("focusout")}
             bind:value={inputValue}
         />
-        {#if recent.length > 1}
-        <ul
-            class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
-        >
-            <div class="flex flex-wrap items-center justify-between">
-                <p class="text-md mb-1 mt-2">Recents</p>
-                <button
-                    class="btn-xs btn bg-transparent border-none"
-                    on:click={clearRecents}
-                >
-                    <span class="my-1">Clear all</span>
-                </button>
-            </div>
-            {#if recent.length}
-                {#each recent as address}
-                    {#if address}
-                        <li class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60">
-                            <a
-                                class="block w-full max-w-full text-ellipsis px-1 py-2"
-                                data-sveltekit-preload-data="hover"
-                                href="/{address}"
-                                on:click={addRecent(address)}
+        {#if recent.length > 0}
+            <ul
+                class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
+            >
+                <div class="flex flex-wrap items-center justify-between">
+                    <p class="text-md mb-1 mt-2">Recents</p>
+                    <button
+                        class="btn-xs btn border-none bg-transparent"
+                        on:click={clearRecents}
+                    >
+                        <span class="my-1">Clear all</span>
+                    </button>
+                </div>
+                {#if recent.length}
+                    {#each recent as address}
+                        {#if address}
+                            <li
+                                class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60"
                             >
-                                <p class="text-micro text-xs opacity-50">
-                                    {nameFromString(address)}
-                                </p>
-                                <p class="text-micro text-xs">
-                                    {#if address.length > 20}
-                                        {address}
-                                    {:else}
-                                        {address}
-                                    {/if}
-                                </p>
-                            </a>
-                        </li>
-                    {/if}
-                {/each}
-            {:else}
-                <i class="pt-2 text-xs opacity-50"
-                    >Paste an address or connect a wallet to get started.</i
-                >
-            {/if}
-        </ul>
+                                <button
+                                    class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
+                                    data-sveltekit-preload-data="hover"
+                                    on:click={() => loadSearch(address)}
+                                >
+                                    <p class="text-micro text-xs opacity-50">
+                                        {nameFromString(address)}
+                                    </p>
+                                    <p class="text-micro text-xs">
+                                        {#if address.length > 20}
+                                            {address}
+                                        {:else}
+                                            {address}
+                                        {/if}
+                                    </p>
+                                </button>
+                            </li>
+                        {/if}
+                    {/each}
+                {:else}
+                    <i class="pt-2 text-xs opacity-50"
+                        >Paste an address or connect a wallet to get started.</i
+                    >
+                {/if}
+            </ul>
         {/if}
     </div>
 
@@ -264,7 +278,7 @@
             class="bg-faint btn-outline btn mb-4 md:ml-2"
             on:click|preventDefault={connectWallet}
         >
-            <span class="text-sm">Connect Wallet</span>
+            <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>
         </button>
     </div>
 {/if}
