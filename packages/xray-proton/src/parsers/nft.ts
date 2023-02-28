@@ -7,6 +7,7 @@ import type {
 } from "helius-sdk";
 
 import {
+    ProtonAccount,
     ProtonParser,
     ProtonTransactionAction,
     SOL,
@@ -14,6 +15,7 @@ import {
 } from "../types";
 
 import { getSolanaName } from "@helius-labs/helius-namor";
+import { traverseAccountData } from "../utils/account-data";
 
 const generateDefaultTransaction = (type: TransactionType) => ({
     ...unknownProtonTransaction,
@@ -24,14 +26,17 @@ const generateNftTransaction = ({
     transaction,
     event,
     primaryUser,
+    accounts,
     actions,
 }: {
     transaction: EnrichedTransaction;
     event: NFTEvent;
     primaryUser: string;
+    accounts: ProtonAccount[];
     actions: ProtonTransactionAction[];
 }) => ({
     ...generateDefaultTransaction(transaction.type),
+    accounts,
     actions,
     fee: transaction.fee / LAMPORTS_PER_SOL,
     primaryUser,
@@ -49,6 +54,9 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
     }
 
     const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
+
+    traverseAccountData(transaction.accountData, accounts);
 
     if (address) {
         let actionType = "NFT_SALE";
@@ -82,6 +90,7 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
                 }
             );
             return generateNftTransaction({
+                accounts,
                 actions,
                 event: nftEvent,
                 primaryUser: nftEvent.buyer,
@@ -109,6 +118,7 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
                 }
             );
             return generateNftTransaction({
+                accounts,
                 actions,
                 event: nftEvent,
                 primaryUser: nftEvent.seller,
@@ -139,6 +149,7 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
     );
 
     return generateNftTransaction({
+        accounts,
         actions,
         event: nftEvent,
         primaryUser: nftEvent.seller,
@@ -154,7 +165,11 @@ export const parseNftList: ProtonParser = (transaction) => {
         return generateDefaultTransaction(transaction.type);
     }
 
+    const accounts: ProtonAccount[] = [];
+    traverseAccountData(transaction.accountData, accounts);
+
     return generateNftTransaction({
+        accounts,
         actions: [
             {
                 // @ts-ignore
@@ -181,7 +196,11 @@ export const parseNftCancelList: ProtonParser = (transaction) => {
         return generateDefaultTransaction(transaction.type);
     }
 
+    const accounts: ProtonAccount[] = [];
+    traverseAccountData(transaction.accountData, accounts);
+
     return generateNftTransaction({
+        accounts,
         actions: [
             {
                 // @ts-ignore
@@ -208,7 +227,11 @@ export const parseNftBid: ProtonParser = (transaction) => {
         return generateDefaultTransaction(transaction.type);
     }
 
+    const accounts: ProtonAccount[] = [];
+    traverseAccountData(transaction.accountData, accounts);
+
     return generateNftTransaction({
+        accounts,
         actions: [
             {
                 // @ts-ignore
@@ -235,7 +258,11 @@ export const parseNftCancelBid: ProtonParser = (transaction) => {
         return generateDefaultTransaction(transaction.type);
     }
 
+    const accounts: ProtonAccount[] = [];
+    traverseAccountData(transaction.accountData, accounts);
+
     return generateNftTransaction({
+        accounts,
         actions: [
             {
                 // @ts-ignore
@@ -257,13 +284,16 @@ export const parseNftCancelBid: ProtonParser = (transaction) => {
 export const parseNftMint: ProtonParser = (transaction, address) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
-    const { nativeTransfers } = transaction;
+    const { nativeTransfers, accountData } = transaction;
 
     if (!nftEvent) {
         return generateDefaultTransaction(transaction.type);
     }
 
     const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
+
+    traverseAccountData(accountData, accounts);
 
     let mintAmount = nftEvent.amount / LAMPORTS_PER_SOL;
     let index = 0;
@@ -288,6 +318,7 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
                 toName: getSolanaName(nftEvent.buyer),
             });
             return generateNftTransaction({
+                accounts,
                 actions,
                 event: nftEvent,
                 primaryUser: nftEvent.buyer,
@@ -318,6 +349,7 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
     }
 
     return generateNftTransaction({
+        accounts,
         actions,
         event: nftEvent,
         primaryUser: nftEvent.buyer,

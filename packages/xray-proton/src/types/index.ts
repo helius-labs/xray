@@ -72,12 +72,24 @@ export interface ProtonTransaction {
     timestamp: number;
     source: Source;
     actions: ProtonTransactionAction[];
+    accounts: ProtonAccount[];
     raw?: EnrichedTransaction;
+}
+
+export interface ProtonAccount {
+    account: string;
+    changes: ProtonAccountChange[];
+}
+
+export interface ProtonAccountChange {
+    mint: string;
+    amount: number;
 }
 
 export type ProtonParsers = Record<string, ProtonParser>;
 
 export const unknownProtonTransaction: ProtonTransaction = {
+    accounts: [],
     actions: [],
     fee: 0,
     primaryUser: "",

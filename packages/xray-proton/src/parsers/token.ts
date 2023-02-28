@@ -1,6 +1,7 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { EnrichedTransaction, TokenTransfer } from "helius-sdk";
-import { ProtonParser, ProtonTransactionAction, SOL } from "../types";
+import { ProtonAccount, ProtonParser, ProtonTransactionAction } from "../types";
+import { traverseAccountData } from "../utils/account-data";
 import { traverseNativeTransfers } from "../utils/native-transfers";
 import { traverseTokenTransfers } from "../utils/token-transfers";
 
@@ -11,8 +12,9 @@ export const parseTokenMint: ProtonParser = (
     const {
         signature,
         timestamp,
-        tokenTransfers = [],
-        nativeTransfers = [],
+        accountData,
+        tokenTransfers,
+        nativeTransfers,
         type,
         source,
     } = transaction;
@@ -21,6 +23,7 @@ export const parseTokenMint: ProtonParser = (
 
     if (tokenTransfers === null || nativeTransfers === null) {
         return {
+            accounts: [],
             actions: [],
             fee,
             primaryUser: "",
@@ -33,11 +36,14 @@ export const parseTokenMint: ProtonParser = (
 
     const primaryUser = nativeTransfers[0]?.fromUserAccount || "";
     const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
 
     traverseTokenTransfers(tokenTransfers, actions, address);
     traverseNativeTransfers(nativeTransfers, actions, address);
+    traverseAccountData(accountData, accounts);
 
     return {
+        accounts,
         actions,
         fee,
         primaryUser,
