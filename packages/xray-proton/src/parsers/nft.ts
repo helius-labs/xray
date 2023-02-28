@@ -51,7 +51,14 @@ export const parseNftSale: ProtonParser = (transaction, address) => {
     const actions: ProtonTransactionAction[] = [];
 
     if (address) {
-        const actionType = nftEvent.buyer === address ? "NFT_BUY" : "NFT_SELL";
+        let actionType = "NFT_SALE";
+        if (nftEvent.buyer === address) {
+            actionType = "NFT_BUY";
+        } else if (nftEvent.seller === address) {
+            actionType = "NFT_SELL";
+        }
+
+        transaction.type = actionType as TransactionType;
 
         if (actionType === "NFT_BUY") {
             actions.push(
