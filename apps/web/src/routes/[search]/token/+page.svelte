@@ -56,7 +56,7 @@
 
             <div slot="content-above">
                 <div
-                    class="sm:h-[45vh] sm:w-[45vw] sm:p-2"
+                    class="sm:h-[45vh] sm:p-2"
                     in:fade={{ delay: 100, duration: 800 }}
                 >
                     <img
