@@ -1,7 +1,12 @@
 import { getSolanaName } from "@helius-labs/helius-namor";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { EnrichedTransaction, TokenTransfer } from "helius-sdk";
-import { ProtonTransaction, ProtonTransactionAction } from "../types";
+import {
+    ProtonAccount,
+    ProtonTransaction,
+    ProtonTransactionAction,
+} from "../types";
+import { traverseAccountData } from "../utils/account-data";
 
 interface TempTokenTransfer extends TokenTransfer {
     tokenAmount: number;
@@ -11,18 +16,15 @@ export const parseBorrowFox = (
     transaction: EnrichedTransaction,
     address: string | undefined
 ): ProtonTransaction => {
-    const {
-        type,
-        source,
-        signature,
-        timestamp,
-        tokenTransfers = [],
-    } = transaction;
+    const { type, source, signature, timestamp, tokenTransfers, accountData } =
+        transaction;
     const fee = transaction.fee / LAMPORTS_PER_SOL;
     const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
 
     if (tokenTransfers === null) {
         return {
+            accounts,
             actions,
             fee,
             primaryUser: "",
@@ -110,7 +112,10 @@ export const parseBorrowFox = (
         }
     }
 
+    traverseAccountData(accountData, accounts);
+
     return {
+        accounts,
         actions,
         fee,
         primaryUser,
@@ -127,9 +132,11 @@ export const parseLoanFox = (
     const { signature, timestamp, type, source, accountData } = transaction;
     const fee = transaction.fee / LAMPORTS_PER_SOL;
     const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
 
     if (!accountData) {
         return {
+            accounts,
             actions,
             fee,
             primaryUser: "",
@@ -153,7 +160,10 @@ export const parseLoanFox = (
         toName: undefined,
     });
 
+    traverseAccountData(accountData, accounts);
+
     return {
+        accounts,
         actions,
         fee,
         primaryUser,

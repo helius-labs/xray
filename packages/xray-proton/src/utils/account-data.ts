@@ -1,11 +1,17 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { AccountData } from "helius-sdk";
-import { ProtonAccountChange, SOL } from "../types";
+import { ProtonAccount, ProtonAccountChange, SOL } from "../types";
 
-export const traverseAccountData = (accountData: AccountData[]) => {
+export const traverseAccountData = (
+    accountData: AccountData[],
+    accounts: ProtonAccount[]
+) => {
     for (let i = 0; i < accountData.length; i++) {
         const data = accountData[i];
-        if (data.nativeBalanceChange !== 0 || data.tokenBalanceChanges) {
+        if (
+            data.nativeBalanceChange !== 0 ||
+            (data.tokenBalanceChanges && data.tokenBalanceChanges.length > 0)
+        ) {
             const account = data.account;
             const changes = [] as ProtonAccountChange[];
             const a = { account, changes };
@@ -38,6 +44,7 @@ export const traverseAccountData = (accountData: AccountData[]) => {
                     });
                 }
             }
+            accounts.push(a);
         }
     }
 };

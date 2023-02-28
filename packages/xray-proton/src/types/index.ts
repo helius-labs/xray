@@ -72,11 +72,8 @@ export interface ProtonTransaction {
     timestamp: number;
     source: Source;
     actions: ProtonTransactionAction[];
-    raw?: EnrichedTransaction;
-}
-
-export interface ProtonAccountData {
     accounts: ProtonAccount[];
+    raw?: EnrichedTransaction;
 }
 
 export interface ProtonAccount {
@@ -92,6 +89,7 @@ export interface ProtonAccountChange {
 export type ProtonParsers = Record<string, ProtonParser>;
 
 export const unknownProtonTransaction: ProtonTransaction = {
+    accounts: [],
     actions: [],
     fee: 0,
     primaryUser: "",
