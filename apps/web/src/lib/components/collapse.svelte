@@ -10,10 +10,9 @@
     export let alwaysOpen = false;
     export let noBorder = false;
     export let isTxHistory = false;
-
 </script>
 
-<div 
+<div
     class="collapse rounded-md border"
     class:collapse-arrow={!alwaysOpen}
     class:collapse-open={alwaysOpen}
@@ -37,7 +36,10 @@
             <p class="text-primary">{sectionTitle}</p>
         </div>
     </div>
-    <div class="collapse-content" class:pl-8={isTxHistory}>
+    <div
+        class="collapse-content"
+        class:pl-8={isTxHistory}
+    >
         <slot />
     </div>
 </div>

@@ -13,11 +13,12 @@
         justify-content: space-between;
     }
 
-    .header-contents, .header-sub-contents, .content :global() {
+    .header-contents,
+    .header-sub-contents,
+    .content :global() {
         max-width: 42rem;
         margin: 0 auto 0 auto;
     }
-
 </style>
 
 <div class="sticky top-16 z-20 bg-base-100 py-1">

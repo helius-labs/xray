@@ -78,7 +78,10 @@
         } else {
             window.localStorage?.setItem(
                 "xray:recent-searches",
-                JSON.stringify([value, ...recentJson.filter((v:string) => v !== value)])
+                JSON.stringify([
+                    value,
+                    ...recentJson.filter((v: string) => v !== value),
+                ])
             );
         }
     };
@@ -189,48 +192,50 @@
             bind:value={inputValue}
         />
         {#if recent.length > 1}
-        <ul
-            class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
-        >
-            <div class="flex flex-wrap items-center justify-between">
-                <p class="text-md mb-1 mt-2">Recents</p>
-                <button
-                    class="btn-xs btn bg-transparent border-none"
-                    on:click={clearRecents}
-                >
-                    <span class="my-1">Clear all</span>
-                </button>
-            </div>
-            {#if recent.length}
-                {#each recent as address}
-                    {#if address}
-                        <li class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60">
-                            <a
-                                class="block w-full max-w-full text-ellipsis px-1 py-2"
-                                data-sveltekit-preload-data="hover"
-                                href="/{address}"
-                                on:click={addRecent(address)}
+            <ul
+                class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
+            >
+                <div class="flex flex-wrap items-center justify-between">
+                    <p class="text-md mb-1 mt-2">Recents</p>
+                    <button
+                        class="btn-xs btn border-none bg-transparent"
+                        on:click={clearRecents}
+                    >
+                        <span class="my-1">Clear all</span>
+                    </button>
+                </div>
+                {#if recent.length}
+                    {#each recent as address}
+                        {#if address}
+                            <li
+                                class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60"
                             >
-                                <p class="text-micro text-xs opacity-50">
-                                    {nameFromString(address)}
-                                </p>
-                                <p class="text-micro text-xs">
-                                    {#if address.length > 20}
-                                        {address}
-                                    {:else}
-                                        {address}
-                                    {/if}
-                                </p>
-                            </a>
-                        </li>
-                    {/if}
-                {/each}
-            {:else}
-                <i class="pt-2 text-xs opacity-50"
-                    >Paste an address or connect a wallet to get started.</i
-                >
-            {/if}
-        </ul>
+                                <a
+                                    class="block w-full max-w-full text-ellipsis px-1 py-2"
+                                    data-sveltekit-preload-data="hover"
+                                    href="/{address}"
+                                    on:click={addRecent(address)}
+                                >
+                                    <p class="text-micro text-xs opacity-50">
+                                        {nameFromString(address)}
+                                    </p>
+                                    <p class="text-micro text-xs">
+                                        {#if address.length > 20}
+                                            {address}
+                                        {:else}
+                                            {address}
+                                        {/if}
+                                    </p>
+                                </a>
+                            </li>
+                        {/if}
+                    {/each}
+                {:else}
+                    <i class="pt-2 text-xs opacity-50"
+                        >Paste an address or connect a wallet to get started.</i
+                    >
+                {/if}
+            </ul>
         {/if}
     </div>
 
