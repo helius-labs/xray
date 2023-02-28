@@ -59,14 +59,12 @@
                     class="sm:h-[45vh] sm:w-[45vw] sm:p-2"
                     in:fade={{ delay: 100, duration: 800 }}
                 >
-                    <!-- <a href="#modal-token-fs-modal"> -->
                     <img
                         class="mx-auto max-h-full max-w-full rounded-md"
                         alt="token symbol"
                         src={metadata.image}
                         in:fade={{ delay: 600, duration: 1000 }}
                     />
-                    <!-- </a> -->
                 </div>
                 <Modal
                     id="token-fs-modal"
