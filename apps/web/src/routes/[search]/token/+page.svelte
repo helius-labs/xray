@@ -13,6 +13,7 @@
     import CopyButton from "$lib/components/copy-button.svelte";
     import Modal from "$lib/components/modal.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
+    import Page from "$lib/layouts/page.svelte";
 
     const address = $page.params.search;
 </script>
@@ -25,51 +26,51 @@
     {#if tokenIsLoading}
         <PageLoader />
     {:else}
-        <div class="sticky top-16 z-10 bg-base-100 py-1">
-            <div
-                class="flex flex-wrap  items-center justify-between bg-base-100"
-            >
-                <div>
-                    <h3 class="m-0 text-xl font-bold md:text-3xl">
-                        {metadata.name}
-                    </h3>
-                </div>
+    <Page>
+        <div
+            slot="header-contents"
+        >
+            <div>
+                <h3 class="m-0 text-xl font-bold md:text-3xl">
+                    {metadata.name}
+                </h3>
+            </div>
 
-                <div>
-                    <div class="my-2">
-                        <CopyButton
-                            text={address}
-                            success="Copied Address"
-                            label="Address"
-                            classList="px-3 btn-outline"
-                        />
+            <div>
+                <div class="my-2">
+                    <CopyButton
+                        text={address}
+                        success="Copied Address"
+                        label="Address"
+                        classList="px-3 btn-outline"
+                    />
 
-                        <CopyButton
-                            text={$page.url.href}
-                            success="Copied Link"
-                            label="Share"
-                            classList="px-3 btn-outline"
-                            icon="share"
-                        />
-                    </div>
+                    <CopyButton
+                        text={$page.url.href}
+                        success="Copied Link"
+                        label="Share"
+                        classList="px-3 btn-outline"
+                        icon="share"
+                    />
                 </div>
             </div>
         </div>
+        
 
-        <div>
-            <div
-                class="flex flex-col items-center justify-center"
-                in:fade={{ delay: 100, duration: 800 }}
-            >
-                <!-- <a href="#modal-token-fs-modal"> -->
-                <img
-                    class="m-auto mt-3 h-auto w-full rounded-md"
-                    alt="token symbol"
-                    src={metadata.image}
-                    in:fade={{ delay: 600, duration: 1000 }}
-                />
-                <!-- </a> -->
-            </div>
+        <div slot="content-above">
+                <div 
+                    class="sm:w-[45vw] sm:h-[45vh] sm:p-2"
+                    in:fade={{ delay: 100, duration: 800 }}
+                >
+                    <!-- <a href="#modal-token-fs-modal"> -->
+                        <img
+                            class="mx-auto rounded-md max-w-full max-h-full"
+                            alt="token symbol"
+                            src={metadata.image}
+                            in:fade={{ delay: 600, duration: 1000 }}
+                        />
+                    <!-- </a> -->
+                </div>
             <Modal
                 id="token-fs-modal"
                 fullScreenModal
@@ -190,10 +191,17 @@
                 </div>
             {/if}
             <div class="mt-3">
-                <Transactions
-                    account={address}
-                    ref="@token:{address}"
-                />
+                <Collapse
+                    sectionTitle="Transaction history"
+                    iconId="history"
+                    alwaysOpen
+                    isTxHistory
+                >
+                    <Transactions
+                        account={address}
+                        ref="@token:{address}"
+                    />
+                </Collapse>
             </div>
             <div class="mt-3">
                 <JSON
@@ -202,5 +210,6 @@
                 />
             </div>
         </div>
+    </Page>
     {/if}
 </TokenProvider>

@@ -4,12 +4,21 @@
 
     export let iconId = "" as IconType;
     export let sectionTitle = "";
-    export let hideIcon = false;
 
+    export let hideIcon = false;
     export let showDetails = false;
+    export let alwaysOpen = false;
+    export let noBorder = false;
+    export let isTxHistory = false;
+
 </script>
 
-<div class="collapse-arrow collapse rounded-md border">
+<div 
+    class="collapse rounded-md border"
+    class:collapse-arrow={!alwaysOpen}
+    class:collapse-open={alwaysOpen}
+    class:border-none={noBorder}
+>
     <input
         type="checkbox"
         bind:checked={showDetails}
@@ -28,7 +37,7 @@
             <p class="text-primary">{sectionTitle}</p>
         </div>
     </div>
-    <div class="collapse-content">
+    <div class="collapse-content" class:pl-8={isTxHistory}>
         <slot />
     </div>
 </div>
