@@ -5,6 +5,10 @@ export const transactionActionsMetadata: Record<
     ProtonActionType,
     TransactionActionMetadata
 > = {
+    AIRDROP: {
+        icon: "gift",
+        label: "Airdroped",
+    },
     BORROW_FOX: {
         icon: "openHand",
         label: "Borrow Fox",
@@ -48,10 +52,6 @@ export const transactionActionsMetadata: Record<
     NFT_MINT: {
         icon: "mint",
         label: "NFT Mint",
-    },
-    NFT_MINT_AIRDROP: {
-        icon: "gift",
-        label: "Airdroped",
     },
     NFT_SALE: {
         icon: "sale",
