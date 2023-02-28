@@ -65,7 +65,7 @@ export interface ProtonTransactionAction {
 }
 
 export interface ProtonTransaction {
-    type: ProtonType | TransactionType;
+    type: ProtonType | TransactionType | ProtonActionType;
     primaryUser: string;
     fee: number;
     signature: string;

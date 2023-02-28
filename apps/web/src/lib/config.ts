@@ -55,7 +55,7 @@ export const transactionActionsMetadata: Record<
     },
     NFT_SALE: {
         icon: "sale",
-        label: "Sold",
+        label: "NFT Sale",
     },
     NFT_SELL: {
         icon: "sale",
