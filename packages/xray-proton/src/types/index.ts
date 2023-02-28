@@ -39,7 +39,7 @@ export enum ProtonSupportedActionType {
     "NFT_BID",
     "NFT_BID_CANCELLED",
     "NFT_MINT",
-    "NFT_MINT_AIRDROP",
+    "AIRDROP",
     "BURN",
     "BURN_NFT",
     "FREEZE",

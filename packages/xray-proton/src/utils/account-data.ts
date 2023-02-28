@@ -6,8 +6,7 @@ export const traverseAccountData = (
     accountData: AccountData[],
     accounts: ProtonAccount[]
 ) => {
-    for (let i = 0; i < accountData.length; i++) {
-        const data = accountData[i];
+    accountData.forEach((data) => {
         if (
             data.nativeBalanceChange !== 0 ||
             (data.tokenBalanceChanges && data.tokenBalanceChanges.length > 0)
@@ -46,5 +45,5 @@ export const traverseAccountData = (
             }
             accounts.push(a);
         }
-    }
+    });
 };

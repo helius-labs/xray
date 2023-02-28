@@ -1,7 +1,7 @@
 <script lang="ts">
     import type {
         ProtonActionType,
-        ProtonTransaction,
+        ProtonTransaction
     } from "@helius-labs/xray-proton";
 
     import { page } from "$app/stores";
