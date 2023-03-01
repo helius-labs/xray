@@ -1,21 +1,39 @@
+<style>
+    .nav::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100vw;
+        transform: translate(-50%, 0);
+        background-color: black;
+    }
+</style>
+
 <script>
+    import { onMount } from "svelte";
+
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
 
     import { tweened } from "svelte/motion";
 
-    import { fly, fade } from "svelte/transition";
+    import { SOL } from "@helius-labs/xray-proton";
+
+    import formatMoney from "$lib/util/format-money";
+    import shortenString from "$lib/util/shorten-string";
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import Namor from "$lib/components/providers/namor-provider.svelte";
-    import { onMount } from "svelte";
 
     const account = $page.params.search;
 
     const client = trpcWithQuery($page);
 
     const accountInfo = client.accountInfo.createQuery(account);
+    const price = client.price.createQuery(SOL);
 
     const balance = tweened(0, {
         duration: 1000,
@@ -30,79 +48,91 @@
     onMount(() => {
         animate = true;
     });
+
+    $: worth = $balance * $price?.data;
 </script>
 
 <Namor
     text={$page.params.search}
     let:result
 >
-    <div class="md:hidden">
+    <div class="flex items-center px-3 md:hidden">
         <h1 class="my-1 text-lg">
             <span class="">{$balance.toFixed(6)}</span>
             <span class="opacity-50">SOL</span>
         </h1>
+        <span class="ml-3 text-xs opacity-50 md:block"
+            >{formatMoney(worth)} USD</span
+        >
     </div>
-    <div class="sticky top-16 z-10 bg-base-100 py-1">
-        <div class="flex flex-wrap  items-center justify-between bg-base-100">
+
+    <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
+        <div class="flex flex-wrap items-center justify-between bg-base-100">
             <div>
-                <h3 class="m-0 text-xl font-bold md:text-3xl">
+                <h3 class="relative m-0 text-lg font-bold md:text-2xl">
                     {result}
                 </h3>
-            </div>
-
-            <div>
-                <div class="my-2">
-                    <CopyButton
-                        text={$page.params.search}
-                        success="Copied Address"
-                        label="Address"
-                        classList="px-3 btn-outline"
-                    />
-
-                    <CopyButton
-                        text={$page.url.href}
-                        success="Copied Link"
-                        label="Share"
-                        classList="px-3 btn-outline"
-                        icon="share"
-                    />
+                <div class="relative flex items-center">
+                    <p class="mr-3 text-xs opacity-50">
+                        {shortenString($page.params.search)}
+                    </p>
+                    <div class="my-2">
+                        <CopyButton text={$page.params.search} />
+                        <CopyButton
+                            text={$page.url.href}
+                            icon="link"
+                        />
+                    </div>
                 </div>
+            </div>
+            <div class="relative text-right">
+                <h1 class="text-md hidden md:block">
+                    <span class="">{$balance.toFixed(6)}</span>
+                    <span class="opacity-50">SOL</span>
+                </h1>
+
+                {#if !$price?.isLoading}
+                    <span class="ml-1 hidden text-xs opacity-50 md:block"
+                        >{formatMoney(worth)} USD</span
+                    >
+                {/if}
             </div>
         </div>
     </div>
 
     <div>
-        <div
-            class="mb-5 flex flex-wrap justify-between md:flex-row-reverse md:items-center"
-        >
-            <h1 class="my-1 hidden text-lg md:block">
-                <span class="">{$balance.toFixed(6)}</span>
-                <span class="opacity-50">SOL</span>
-            </h1>
-
+        <div class="mx-3 mb-5 mt-3 flex rounded-lg border pt-1">
             <div class="tabs w-full md:w-auto">
-                <a
+                <button
                     class="tab tab-bordered"
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet`)}
                     class:tab-active={$page.url.pathname.endsWith("wallet")}
-                    href="/{$page.params.search}/wallet">Transactions</a
+                    >Transactions</button
                 >
-                <a
+                <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(
                         "wallet/nfts"
                     )}
-                    href="/{$page.params.search}/wallet/nfts">NFTs</a
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet/nfts`)}
+                    >NFTs</button
                 >
-                <a
+                <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(
                         "wallet/tokens"
                     )}
-                    href="/{$page.params.search}/wallet/tokens">Tokens</a
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet/tokens`)}
+                    >Tokens</button
                 >
             </div>
         </div>
     </div>
 </Namor>
 
-<slot />
+<div class="px-3">
+    <slot />
+</div>

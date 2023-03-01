@@ -6,7 +6,7 @@
     export let id: Icon;
     export let path: string = "";
     export let fill: string = "current" as "current" | "success" | "base-100";
-    export let size = "sm" as "sm" | "md" | "lg";
+    export let size = "sm" as "xs" | "sm" | "md" | "lg";
 
     let el: SVGElement;
 

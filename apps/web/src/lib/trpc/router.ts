@@ -9,11 +9,13 @@ import { tps } from "$lib/trpc/routes/tps";
 import { transaction } from "$lib/trpc/routes/transaction";
 import { transactions } from "$lib/trpc/routes/transactions";
 import { rawTransaction } from "./routes/raw-transaction";
+import { balances } from "./routes/balances";
 
 export const t = initTRPC.context<Context>().create();
 
 export const router = t.router({
     accountInfo,
+    balances,
     price,
     rawTransaction,
     token,

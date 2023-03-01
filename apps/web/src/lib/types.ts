@@ -1,6 +1,6 @@
-import { z } from "zod";
+import type { ComponentType } from "svelte";
 
-import type { EnrichedTransaction, TransactionType } from "helius-sdk";
+import type { EnrichedTransaction } from "helius-sdk";
 
 import type {
     ProtonTransaction,
@@ -8,7 +8,7 @@ import type {
     ProtonTransactionAction,
 } from "@helius-labs/xray-proton";
 
-import type { IconPaths } from "$lib/config";
+import type { IconPaths, modals } from "$lib/config";
 
 export * from "$lib/config";
 
@@ -48,14 +48,6 @@ export interface UITokenMetadata {
     creators?: UITokenMetadataCreators[];
 }
 
-export interface SearchResult {
-    isValidPublicKey: boolean;
-    isToken: boolean;
-    account: UIAccount;
-    token: UITokenMetadata;
-    transaction: UITransaction;
-}
-
 export type Icon = keyof typeof IconPaths;
 
 export interface TransactionActionMetadata {
@@ -76,7 +68,22 @@ export interface TRPCTransactionsOutput {
     oldest: string;
 }
 
-export const zodTRPCTransactionsInput = z.object({
-    address: z.array(z.string()),
-    before: z.string().optional(),
-});
+export interface Modal {
+    title: string;
+    component: ComponentType;
+    showClose?: boolean;
+    fullscreen?: boolean;
+}
+
+export type Modals = keyof typeof modals;
+
+export interface SearchResult {
+    url: string;
+    address: string;
+    isToken: boolean;
+    isAccount: boolean;
+    isTransaction: boolean;
+    isDomain: boolean;
+    valid: boolean;
+    search: string;
+}

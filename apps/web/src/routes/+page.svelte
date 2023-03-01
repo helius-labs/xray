@@ -46,33 +46,21 @@
         setTimeout(() => {
             focusInput();
         }, 100);
-
-        const searchingStarback = new Starback(searchingStarsCanvas, {
-            backgroundColor: ["#0f0f0f1a"],
-            direction: 100,
-            frequency: 1,
-            quantity: 100,
-            randomOpacity: true,
-            speed: 0.2,
-            starColor: ["#ff5d05"],
-            type: "line",
-        });
     });
 </script>
 
-<div class="intro md:min-h-auto relative flex min-h-screen w-full items-center">
-    <canvas
-        class="stars absolute top-0 left-0 h-full w-full opacity-80 blur-sm"
-        class:opacity-0={!isFocused}
-        bind:this={searchingStarsCanvas}
+<div class="intro relative flex h-screen w-full items-center">
+    <div
+        style="background-image: url(/media/gradient.png);"
+        class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
     />
 
     <div class="mx-auto w-full max-w-2xl md:-translate-y-1/4">
         <div class="mb-10">
-            <h1 class="text-center text-9xl font-bold">XRAY</h1>
+            <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
         </div>
 
-        <div class="relative w-full">
+        <div class="relative w-full px-3">
             <Search
                 size="lg"
                 {searchError}
@@ -93,17 +81,17 @@
 >
     <section
         bind:this={exploreELement}
-        class="transition-section relative z-10 mx-auto -mt-24 bg-black py-24"
+        class="transition-section relative z-10 mx-auto overflow-hidden bg-black py-24"
     >
         {#if intersecting}
             <div
-                class="mx-auto max-w-2xl text-center"
+                class="relative mx-auto max-w-2xl text-center"
                 in:fly={{
                     duration: 750,
                     y: 100,
                 }}
             >
-                <h1 class="mb-4 text-6xl font-bold">
+                <h1 class="my-4 text-6xl font-bold">
                     <span
                         class="bg-gradient-to-br from-orange-700 to-yellow-400 bg-clip-text text-transparent"
                     >
@@ -114,103 +102,21 @@
             </div>
         {/if}
     </section>
-</IntersectionObserver>
-
-<IntersectionObserver
-    once={true}
-    rootMargin="100px"
-    element={transactionsElement}
-    let:intersecting
->
-    <section
-        bind:this={transactionsElement}
-        class="mx-auto max-w-5xl"
-    >
-        {#if intersecting}
-            <div
-                in:fly={{
-                    duration: 750,
-                    y: 100,
-                }}
-                class=" grid grid-cols-1 justify-center gap-x-5 md:grid-cols-12"
-            >
-                <div class="col-span-6">
-                    <div class="bg-base-300 py-3 pr-3">
-                        <div
-                            class="mb-8 grid grid-cols-12 gap-x-5 gap-y-2 rounded-lg border p-3"
-                        >
-                            <div
-                                class="col-span-2 flex items-center justify-center  opacity-50"
-                            >
-                                <Icon
-                                    id="swap"
-                                    size="md"
-                                />
-                            </div>
-                            <div class="col-span-8  opacity-50">
-                                <h1 class="text-xl font-bold">Swap</h1>
-                            </div>
-                            <div class="col-span-2" />
-                            <div
-                                class="col-span-2 aspect-square w-full rounded-lg bg-secondary"
-                            />
-                            <div class="col-span-8">
-                                <div
-                                    class="mb-3 h-5 w-1/3 rounded-lg bg-secondary"
-                                />
-                                <div
-                                    class="mb-3 h-2 w-2/3 rounded-lg bg-secondary"
-                                />
-                                <div
-                                    class="h-2 w-1/4 rounded-lg bg-secondary"
-                                />
-                            </div>
-                            <div class="col-span-2">
-                                <div
-                                    class="mb-3 h-4 w-full rounded-lg bg-secondary"
-                                />
-                            </div>
-                        </div>
-                        <div
-                            class="mb-8 grid grid-cols-12 gap-x-5 gap-y-2 rounded-lg border p-3"
-                        >
-                            <div
-                                class="col-span-2 flex items-center justify-center  opacity-50"
-                            >
-                                <Icon
-                                    id="lightning"
-                                    size="md"
-                                />
-                            </div>
-                            <div class="col-span-8  opacity-50">
-                                <h1 class="text-xl font-bold">Transfer</h1>
-                            </div>
-                            <div class="col-span-2" />
-                            <div
-                                class="col-span-2 aspect-square w-full rounded-lg bg-secondary"
-                            />
-                            <div class="col-span-8">
-                                <div
-                                    class="mb-3 h-5 w-1/3 rounded-lg bg-secondary"
-                                />
-                                <div
-                                    class="mb-3 h-2 w-2/3 rounded-lg bg-secondary"
-                                />
-                                <div
-                                    class="h-2 w-1/4 rounded-lg bg-secondary"
-                                />
-                            </div>
-                            <div class="col-span-2">
-                                <div
-                                    class="mb-3 h-4 w-full rounded-lg bg-secondary"
-                                />
-                            </div>
-                        </div>
+    <section class="px- mx-auto mb-20 max-w-6xl py-10">
+        <div class="mx-auto grid grid-cols-1 gap-10 px-5 md:grid-cols-3">
+            <div>
+                <div class="rounded-lg">
+                    <div
+                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-full border"
+                    >
+                        <Icon
+                            id="lightning"
+                            size="lg"
+                        />
                     </div>
-                </div>
-                <div class="col-span-6 flex h-full items-center">
+
                     <div>
-                        <h1 class="text-3xl font-bold">Transaction Explorer</h1>
+                        <h1 class="text-xl font-bold">Explorer</h1>
                         <p class="opacity-50">
                             We categorize and parse complicated transaction data
                             to provide an interface that neatly categorizes and
@@ -219,111 +125,19 @@
                     </div>
                 </div>
             </div>
-        {/if}
-    </section>
-</IntersectionObserver>
-
-<IntersectionObserver
-    once={true}
-    rootMargin="100px"
-    element={ecosystemsElement}
-    let:intersecting
->
-    <section
-        bind:this={ecosystemsElement}
-        class="mx-auto max-w-5xl py-10"
-    >
-        {#if intersecting}
-            <div
-                in:fly={{
-                    duration: 750,
-                    y: 100,
-                }}
-                class="grid grid-cols-1 justify-center gap-x-5 md:grid-cols-12"
-            >
-                <div class="col-span-6 flex h-full items-center">
-                    <div>
-                        <h1 class="text-3xl font-bold">
-                            Ecosystem Integrations
-                        </h1>
-                        <p class="opacity-50">
-                            Our search engine accepts more than just IDs. We
-                            offer support for searching by Bonfida .sol domains
-                            and @username xNFT Backpack usernames.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-span-6 flex items-center justify-center">
-                    <img
-                        class="w-1/2 rounded-lg border object-contain p-8 pr-6"
-                        src="/ecosystem.png"
-                        alt=""
-                    />
-                </div>
-            </div>
-        {/if}
-    </section>
-</IntersectionObserver>
-
-<IntersectionObserver
-    once={true}
-    rootMargin="100px"
-    element={nftsElement}
-    let:intersecting
->
-    <section
-        bind:this={nftsElement}
-        class="mx-auto max-w-5xl py-10"
-    >
-        {#if intersecting}
-            <div
-                in:fly={{
-                    duration: 750,
-                    y: 100,
-                }}
-                class="grid grid-cols-1 justify-center gap-x-5 md:grid-cols-12"
-            >
-                <div class="col-span-6">
+            <div>
+                <div class="rounded-lg">
                     <div
-                        class="mx-auto grid w-3/4 grid-cols-8 gap-4 bg-base-300 py-3 pr-3"
+                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-full border"
                     >
-                        {#each Array(8) as _}
-                            <div
-                                class="col-span-2 aspect-square w-full rounded-lg bg-secondary"
-                            />
-                        {/each}
-
-                        <div
-                            class="col-span-1 aspect-square w-full rounded-lg bg-secondary"
+                        <Icon
+                            id="sale"
+                            size="lg"
                         />
-                        <div class="col-span-7">
-                            <div
-                                class="mb-3 h-5 w-1/3 rounded-lg bg-secondary"
-                            />
-                            <div
-                                class="mb-3 h-2 w-2/3 rounded-lg bg-secondary"
-                            />
-                            <div class="h-2 w-1/4 rounded-lg bg-secondary" />
-                        </div>
-                        <div
-                            class="col-span-1 aspect-square w-full rounded-lg bg-secondary"
-                        />
-                        <div class="col-span-7">
-                            <div
-                                class="mb-3 h-5 w-1/3 rounded-lg bg-secondary"
-                            />
-                            <div
-                                class="mb-3 h-2 w-2/3 rounded-lg bg-secondary"
-                            />
-                            <div class="h-2 w-1/4 rounded-lg bg-secondary" />
-                        </div>
                     </div>
-                </div>
-                <div class="col-span-6 flex h-full items-center">
+
                     <div>
-                        <h1 class="text-3xl font-bold">
-                            Token Details, NFT Buy/Sell History
-                        </h1>
+                        <h1 class="text-xl font-bold">NFT Buy/Sell History</h1>
                         <p class="opacity-50">
                             View the NFTs and tokens held by a specified account
                             as well we the transaction history of a particular
@@ -333,7 +147,24 @@
                     </div>
                 </div>
             </div>
-        {/if}
+            <div>
+                <div class="rounded-lg">
+                    <div
+                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-full border"
+                    >
+                        <h1>.sol</h1>
+                    </div>
+
+                    <div>
+                        <h1 class="text-xl font-bold">Lookup by Domain</h1>
+                        <p class="opacity-50">
+                            Not only can you lookup any account or transacion,
+                            you can also search by .sol domain name.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 </IntersectionObserver>
 
@@ -345,7 +176,7 @@
 >
     <section
         bind:this={heliusElement}
-        class="mx-auto max-w-5xl py-10"
+        class="mx-auto max-w-5xl py-10 px-3"
     >
         {#if intersecting}
             <div
@@ -383,7 +214,7 @@
                         </span>
                     </h1>
                     <div class="mt-5 grid grid-cols-12 gap-4">
-                        <div class="col-span-1 flex items-center">
+                        <div class="col-span-2 flex items-center md:col-span-1">
                             <div
                                 class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
                             >
@@ -393,7 +224,7 @@
                                 />
                             </div>
                         </div>
-                        <div class="col-span-11">
+                        <div class="col-span-10 md:col-span-11">
                             <p class="opacity-50">
                                 We provide the most powerful Solana RPC hardware
                                 around. We offer the fastest speeds at the
@@ -401,7 +232,7 @@
                                 RPCs for serious users.
                             </p>
                         </div>
-                        <div class="col-span-1 flex items-center">
+                        <div class="col-span-2 flex items-center md:col-span-1">
                             <div
                                 class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
                             >
@@ -411,14 +242,14 @@
                                 />
                             </div>
                         </div>
-                        <div class="col-span-11">
+                        <div class="col-span-10 md:col-span-11">
                             <p class="opacity-50">
                                 Quickly build bots, analytics, marketplaces,
                                 portfolio or wallet trackers using the most
                                 complete Solana NFT API.
                             </p>
                         </div>
-                        <div class="col-span-1 flex items-center">
+                        <div class="col-span-2 flex items-center md:col-span-1">
                             <div
                                 class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
                             >
@@ -428,7 +259,7 @@
                                 />
                             </div>
                         </div>
-                        <div class="col-span-11">
+                        <div class="col-span-10 md:col-span-11">
                             <p class="opacity-50">
                                 We allow you to query historical data by
                                 multiple dimensions including transaction types
@@ -436,7 +267,7 @@
                                 underlying protocols (Jupiter, Magic Eden, etc).
                             </p>
                         </div>
-                        <div class="col-span-1 flex items-center">
+                        <div class="col-span-2 flex items-center md:col-span-1">
                             <div
                                 class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
                             >
@@ -446,7 +277,7 @@
                                 />
                             </div>
                         </div>
-                        <div class="col-span-11">
+                        <div class="col-span-10 md:col-span-11">
                             <p class="opacity-50">
                                 Stream on-chain events on up to 100k addresses
                                 for free.

@@ -5,7 +5,7 @@
 </style>
 
 <script lang="ts">
-    import type { Icon as IconType } from "src/lib/types";
+    import type { SearchResult } from "$lib/types";
 
     import { onMount, createEventDispatcher } from "svelte";
 
@@ -17,9 +17,11 @@
 
     import { showConnectWallet } from "$lib/state/stores/connect-wallet";
 
+    import { showModal } from "$lib/state/stores/modals";
+
     import Icon from "$lib/components/icon.svelte";
 
-    import Modal from "$lib/components/modal.svelte";
+    import { recentSearchesKey } from "$lib/config";
 
     export let inputEl: HTMLInputElement | null = null;
     export let searchError = "";
@@ -38,6 +40,8 @@
     let inputValue: string = "";
     let isSearching = false;
     let connected = false;
+    let isBackpack = false;
+    let recent = [] as SearchResult[];
 
     let showSearchError = () => "";
 
@@ -60,33 +64,44 @@
     const searchFailed = () => {
         isSearching = false;
 
-        showSearchError();
+        showModal("INVALID_SEARCH");
     };
 
-    const addRecent = (value: string) => {
-        const recentStorage = window?.localStorage?.getItem(
-            "xray:recent-searches"
-        );
+    const getRecentSearches = () =>
+        JSON.parse(
+            localStorage.getItem(recentSearchesKey) || "[]"
+        ) as SearchResult[];
 
-        const recentJson = JSON.parse(recentStorage || "[]");
-
-        if (!recent.includes(value)) {
-            window.localStorage?.setItem(
-                "xray:recent-searches",
-                JSON.stringify([value, ...recentJson.slice(0, 3)])
-            );
-        } else {
-            window.localStorage?.setItem(
-                "xray:recent-searches",
-                JSON.stringify([value, ...recentJson.filter((v:string) => v !== value)])
-            );
+    const addRecent = (value: SearchResult) => {
+        if (!value.search) {
+            return;
         }
+
+        const stored = getRecentSearches();
+
+        // Already exists
+        const exists = stored.find(({ url }) => {
+            return url === value.url;
+        });
+
+        // console.log({ exists });
+        if (exists) {
+            return;
+        }
+
+        localStorage.setItem(
+            recentSearchesKey,
+            JSON.stringify([value, ...getRecentSearches()].slice(0, 3))
+        );
     };
 
     const clearRecents = () => {
-        window.localStorage?.setItem("xray:recent-searches", []);
+        window.localStorage.setItem(recentSearchesKey, JSON.stringify([]));
         recent = [];
     };
+
+    const loadSearch = ({ url }: SearchResult) =>
+        (window.location.href = url || "/");
 
     const newSearch = async () => {
         searchError = "";
@@ -101,81 +116,43 @@
                 return searchFailed();
             }
 
-            addRecent(inputValue);
-
-            window.location.href = data?.url || "/";
+            addRecent(data);
+            loadSearch(data);
         } catch (error) {
             searchFailed();
         }
     };
 
-    let recent: string[] = [];
-
     onMount(() => {
-        const recentStorage = window?.localStorage?.getItem(
-            "xray:recent-searches"
-        );
+        recent = getRecentSearches();
 
-        recent = JSON.parse(recentStorage || "[]");
+        isBackpack =
+            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
     });
-
-    const supportedSearches: Array<[IconType, string]> = [
-        ["globe", "Bonfida .sol Domains"],
-        ["backpack", "xNFT Backpack Usernames"],
-        ["person", "Wallet/Account Addresses"],
-        ["coins", "Token Addresses"],
-        ["lightning", "Transaction Signatures"],
-    ];
 
     $: if ($walletStore.connected && !connected) {
         focusInput();
 
         inputValue = $walletStore.publicKey?.toBase58() || "";
 
-        addRecent(inputValue);
+        addRecent({
+            address: inputValue,
+            isAccount: true,
+            isDomain: false,
+            isToken: false,
+            isTransaction: false,
+            search: inputValue,
+            url: `/${inputValue}/wallet`,
+            valid: true,
+        });
 
-        window.location.href = `/${inputValue}`;
+        window.location.href = `/${inputValue}/wallet`;
 
         connected = true;
     }
 </script>
 
-<Modal
-    id="search-error"
-    bind:show={showSearchError}
->
-    <h1 class="text-2xl font-bold">Invalid Search</h1>
-    <p class="mb-3">
-        Invalid search. Make sure you provided a valid search that contains one
-        of the following.
-    </p>
-
-    <strong class="uppercase">Supported Searches</strong>
-
-    {#each supportedSearches as [icon, text]}
-        <div class="my-2 grid grid-cols-6 items-center">
-            <div class="center col-span-1">
-                <Icon
-                    id={icon}
-                    size="md"
-                />
-            </div>
-            <div class="col-span-5">
-                <p>{text}</p>
-            </div>
-        </div>
-    {/each}
-</Modal>
-
-<form
-    class="relative my-2 w-full"
-    on:submit|preventDefault={newSearch}
-    on:keydown={(event) => {
-        if (event.key === "Enter") {
-            newSearch();
-        }
-    }}
->
+<div class="relative z-30 my-2 w-full">
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
@@ -186,63 +163,74 @@
             type="text"
             on:focusin={() => dispatch("focusin")}
             on:focusout={() => dispatch("focusout")}
+            on:keydown={(e) => {
+                if (e.key === "Enter") {
+                    newSearch();
+                }
+            }}
             bind:value={inputValue}
         />
-        {#if recent.length > 1}
-        <ul
-            class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
-        >
-            <div class="flex flex-wrap items-center justify-between">
-                <p class="text-md mb-1 mt-2">Recents</p>
-                <button
-                    class="btn-xs btn bg-transparent border-none"
-                    on:click={clearRecents}
-                >
-                    <span class="my-1">Clear all</span>
-                </button>
-            </div>
-            {#if recent.length}
-                {#each recent as address}
-                    {#if address}
-                        <li class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60">
-                            <a
-                                class="block w-full max-w-full text-ellipsis px-1 py-2"
-                                data-sveltekit-preload-data="hover"
-                                href="/{address}"
-                                on:click={addRecent(address)}
+        {#if recent.length > 0 && size !== "sm"}
+            <ul
+                class="dropdown-content relative my-3 w-full rounded-lg border bg-base-100 p-2 px-4 shadow"
+            >
+                <div class="flex flex-wrap items-center justify-between">
+                    <p class="text-md mb-1 mt-2">Recents</p>
+                    <button
+                        class="btn-xs btn border-none bg-transparent"
+                        on:click={clearRecents}
+                    >
+                        <span class="my-1">Clear all</span>
+                    </button>
+                </div>
+                {#if recent.length}
+                    {#each recent as recentSearch}
+                        {#if recentSearch}
+                            <li
+                                class="m1-ds2 relative z-30 w-full truncate px-0 hover:opacity-60"
                             >
-                                <p class="text-micro text-xs opacity-50">
-                                    {nameFromString(address)}
-                                </p>
-                                <p class="text-micro text-xs">
-                                    {#if address.length > 20}
-                                        {address}
-                                    {:else}
-                                        {address}
-                                    {/if}
-                                </p>
-                            </a>
-                        </li>
-                    {/if}
-                {/each}
-            {:else}
-                <i class="pt-2 text-xs opacity-50"
-                    >Paste an address or connect a wallet to get started.</i
-                >
-            {/if}
-        </ul>
+                                <a
+                                    class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
+                                    data-sveltekit-preload-data="hover"
+                                    href={recentSearch.url}
+                                >
+                                    <div class="flex">
+                                        <div />
+                                        <div>
+                                            <p
+                                                class="text-micro text-xs opacity-50"
+                                            >
+                                                {nameFromString(
+                                                    recentSearch?.address
+                                                )}
+                                            </p>
+                                            <p class="text-micro text-xs">
+                                                {recentSearch?.search}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        {/if}
+                    {/each}
+                {:else}
+                    <i class="pt-2 text-xs opacity-50"
+                        >Paste an address or connect a wallet to get started.</i
+                    >
+                {/if}
+            </ul>
         {/if}
     </div>
 
     <button
-        class="btn-ghost btn absolute right-4 bottom-1/2 translate-y-1/2 px-2"
+        class="btn-ghost btn-sm btn absolute right-4 bottom-1/2 translate-y-1/2 px-2"
         class:loading={isSearching}
     >
         {#if !isSearching}
             <Icon id="search" />
         {/if}
     </button>
-</form>
+</div>
 
 {#if size === "lg"}
     <div class="relative z-10 grid grid-cols-1 py-2 md:grid-cols-3">
@@ -264,7 +252,7 @@
             class="bg-faint btn-outline btn mb-4 md:ml-2"
             on:click|preventDefault={connectWallet}
         >
-            <span class="text-sm">Connect Wallet</span>
+            <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>
         </button>
     </div>
 {/if}

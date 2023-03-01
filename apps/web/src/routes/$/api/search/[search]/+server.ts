@@ -1,3 +1,5 @@
+import type { SearchResult } from "$lib/types";
+
 import { json, type RequestEvent } from "@sveltejs/kit";
 
 import type { ParsedAccountData } from "@solana/web3.js";
@@ -14,7 +16,7 @@ export async function GET({ params }: RequestEvent) {
 
     const connection = connect();
     // If it's long, assume it's a tx.
-    // They will be presented with an error on the tx page if it's not.
+    // They will present with an error on the tx page if it's not.
     const probablyTransactionSignature = search.length > 50;
     const probablySolanaName = search.length > 4 && search.slice(-4) === ".sol";
 
@@ -22,38 +24,55 @@ export async function GET({ params }: RequestEvent) {
         const pubkey = new PublicKey(search);
         const account = await connection.getParsedAccountInfo(pubkey);
 
-        // TODO: no casting
-        const { program } = account?.value?.data as ParsedAccountData;
+        // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
+        // @ts-ignore
+        const isToken = account?.value?.data?.program === "spl-token";
 
-        const url =
-            program === "spl-token"
+        const data: SearchResult = {
+            address: params.search || "",
+            isAccount: false,
+            isDomain: false,
+            isToken,
+            isTransaction: false,
+            search: params.search || "",
+            url: isToken
                 ? `/${params.search}/token`
-                : `/${params.search}/wallet`;
+                : `/${params.search}/wallet`,
+            valid: true,
+        };
 
-        return json({
-            data: {
-                url,
-                valid: true,
-            },
-        });
+        return json({ data });
     } else if (probablyTransactionSignature) {
-        return json({
-            data: {
-                url: `/${params?.search}/tx`,
-                valid: true,
-            },
-        });
+        const data: SearchResult = {
+            address: params.search || "",
+            isAccount: false,
+            isDomain: false,
+            isToken: false,
+            isTransaction: true,
+            search: params.search || "",
+            url: `/${params?.search}/tx`,
+            valid: true,
+        };
+
+        return json({ data });
     } else if (probablySolanaName) {
         try {
             const { pubkey } = await getDomainKey(search);
-            const data = await NameRegistryState.retrieve(connection, pubkey);
 
-            return json({
-                data: {
-                    url: `/${data.registry.owner}/wallet`,
-                    valid: true,
-                },
-            });
+            const domain = await NameRegistryState.retrieve(connection, pubkey);
+
+            const data: SearchResult = {
+                address: domain?.registry?.owner.toBase58() || "",
+                isAccount: false,
+                isDomain: false,
+                isToken: false,
+                isTransaction: true,
+                search: params.search || "",
+                url: `/${domain?.registry?.owner.toBase58()}/wallet`,
+                valid: true,
+            };
+
+            return json({ data });
         } catch (error) {
             return json({
                 data: {

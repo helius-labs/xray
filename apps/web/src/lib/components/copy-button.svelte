@@ -12,6 +12,7 @@
     export let icon: IconType = "copy";
     export let label: string = "";
     export let success: string = "";
+    export let size = "sm" as "xs" | "sm";
 
     const copy = () => {
         copyToClipboard(text);
@@ -20,7 +21,7 @@
 
         setTimeout(() => {
             copied = false;
-        }, 2000);
+        }, 1000);
     };
 </script>
 
@@ -30,13 +31,22 @@
     class:btn-ghost={!copied}
     on:click={copy}
 >
-    {#if copied}
-        <span class="my-1">{success || "Copied"}</span>
+    {#if copied && success}
+        <span>{success}</span>
+    {:else if copied}
+        <Icon
+            id={"check"}
+            {size}
+        />
+    {:else if label}
+        <Icon
+            id={icon || "copy"}
+            {size}
+        /> <span class="ml-2">{label}</span>
     {:else}
-        <Icon id={icon} />
-
-        {#if label}
-            <span class="ml-2">{label}</span>
-        {/if}
+        <Icon
+            id={icon || "copy"}
+            {size}
+        />
     {/if}
 </button>
