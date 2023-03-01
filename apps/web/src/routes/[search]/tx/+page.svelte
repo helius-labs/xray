@@ -52,7 +52,7 @@
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
-<div class="mb-4 flex justify-between">
+<div class="mb-4 flex justify-between px-3 ">
     <h1 class="text-xl font-bold">Transaction</h1>
     <div
         class="flex"
@@ -87,7 +87,7 @@
                 </div>
             {/each}
         {:else if data}
-            <div class="pb-5">
+            <div class="pb-5 pl-3 pr-3 md:pl-0">
                 <Transaction
                     transaction={data}
                     moreDetails={true}
@@ -95,9 +95,9 @@
                 />
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 px-3">
                 <div
-                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
+                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
                     <div class="col-span-2 p-1 md:col-span-1">
                         <div class="center h-10 w-10 rounded-full bg-success">
@@ -123,9 +123,9 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 px-3 ">
                 <div
-                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
+                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
                     <div class="col-span-2 p-1 md:col-span-1">
                         <div class="center h-10 w-10 rounded-full bg-secondary">
@@ -150,32 +150,67 @@
                     </div>
                 </div>
             </div>
-            <Collapse
-                sectionTitle="View Transaction Data"
-                showDetails={false}
-                hideIcon={true}
-            >
-                <div class="mb-3">
-                    <JSON
-                        data={rest}
-                        label="proton"
-                    />
+
+            {#if data?.raw?.description && !data?.raw?.description
+                    .toLowerCase()
+                    .includes("unknown")}
+                <div class="mb-3 px-3">
+                    <div
+                        class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
+                    >
+                        <div class="col-span-2 p-1 md:col-span-1">
+                            <div
+                                class="center h-10 w-10 rounded-full bg-secondary"
+                            >
+                                <Icon
+                                    id="info"
+                                    size="md"
+                                />
+                            </div>
+                        </div>
+                        <div
+                            class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+                        >
+                            <div class="py-1">
+                                <h4 class="text-lg font-semibold md:text-sm">
+                                    Helius Description
+                                </h4>
+                                <p class="break-all text-xs opacity-50">
+                                    {data?.raw?.description}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                {#if data?.raw}
+            {/if}
+            <div class="px-3">
+                <Collapse
+                    sectionTitle="View Transaction Data"
+                    showDetails={false}
+                    hideIcon={true}
+                >
                     <div class="mb-3">
                         <JSON
-                            data={data?.raw}
-                            label="enriched"
+                            data={rest}
+                            label="proton"
                         />
                     </div>
-                {/if}
-                <div class="mb-3">
-                    <JSON
-                        data={rawData}
-                        label="raw"
-                    />
-                </div>
-            </Collapse>
+                    {#if data?.raw}
+                        <div class="mb-3">
+                            <JSON
+                                data={data?.raw}
+                                label="enriched"
+                            />
+                        </div>
+                    {/if}
+                    <div class="mb-3">
+                        <JSON
+                            data={rawData}
+                            label="raw"
+                        />
+                    </div>
+                </Collapse>
+            </div>
         {/if}
     </div>
 {/if}
