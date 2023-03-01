@@ -158,7 +158,7 @@
                     <div>
                         <h1 class="text-xl font-bold">Lookup by Domain</h1>
                         <p class="opacity-50">
-                            Not only can you lookup any account or transacion,
+                            Not only can you lookup any account or transaction,
                             you can also search by .sol domain name.
                         </p>
                     </div>
