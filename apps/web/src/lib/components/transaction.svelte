@@ -1,7 +1,7 @@
 <script lang="ts">
     import type {
         ProtonActionType,
-        ProtonTransaction
+        ProtonTransaction,
     } from "@helius-labs/xray-proton";
 
     import { page } from "$app/stores";
@@ -13,10 +13,8 @@
     import formatDate from "$lib/util/format-date";
 
     export let transaction: ProtonTransaction;
-    export let clickableTokens = false;
     export let copyButtons = false;
     export let moreDetails = false;
-    export let ref = "";
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import Icon from "$lib/components/icon.svelte";
@@ -36,21 +34,14 @@
     const metadata = supported
         ? transactionActionsMetadata[transaction.type as ProtonActionType]
         : transactionActionsMetadata["UNKNOWN"];
-
-    $: existingRef = $page.url.searchParams.get("ref") || "";
-
-    $: combinedRef = ref + existingRef;
 </script>
 
 <div>
-    <a
-        href="/{transaction.signature}/tx"
-        class="gradient relative z-10 block border border-y-0 border-r-0 border-transparent bg-black pb-1"
+    <button
+        on:click={() => (window.location.href = `/${transaction.signature}/tx`)}
+        class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
     >
-        <div
-            class="relative grid grid-cols-12 gap-3 rounded-lg"
-            class:pb-2={clickableTokens}
-        >
+        <div class="relative grid grid-cols-12 gap-3 rounded-lg">
             <div class="relative">
                 <div
                     class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
@@ -69,11 +60,14 @@
                         <h3 class="text-xl font-semibold">
                             {metadata.label}
                         </h3>
-                        <p class="text-xs opacity-50">
+                        <a
+                            href="/{transaction.signature}/tx"
+                            class="link-neutral border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
+                        >
                             {transaction.signature
                                 ? shortenString(transaction.signature, 8)
                                 : "Unknown"}
-                        </p>
+                        </a>
                     </div>
                     <h3 class="ml-2 mt-1 text-xs opacity-50">
                         {formatDate(transaction.timestamp)}
@@ -87,10 +81,14 @@
                             on:click|preventDefault
                             on:keydown|preventDefault
                         >
-                            <CopyButton success="copied ID" />
+                            <CopyButton
+                                success="Copied Address"
+                                text={$page.url.href}
+                            />
                             <CopyButton
                                 icon="share"
-                                success="copied link"
+                                success="Copied Link"
+                                text={$page.url.href}
                             />
                         </div>
                     {/if}
@@ -157,10 +155,8 @@
                                         </div>
                                     </div>
                                 {:else if metadata?.image}
-                                    <a
-                                        href="/{address}/token"
-                                        class:pointer-events-none={!moreDetails}
-                                        class="my-3"
+                                    <div
+                                        class="my-2 w-full rounded-lg text-left"
                                         in:fade={{
                                             duration: 500,
                                         }}
@@ -171,11 +167,17 @@
                                             <div
                                                 class="col-span-2 p-1 md:col-span-1"
                                             >
-                                                <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-                                                <div
-                                                    style="background-image: url('{metadata.image}')"
-                                                    class="aspect-square w-full rounded-lg bg-cover"
-                                                />
+                                                <button
+                                                    on:click={() =>
+                                                        (window.location.href = `/${address}/token`)}
+                                                    class="w-full transition-transform hover:scale-125"
+                                                >
+                                                    <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                                                    <div
+                                                        style="background-image: url('{metadata.image}')"
+                                                        class="aspect-square w-full rounded-lg bg-cover"
+                                                    />
+                                                </button>
                                             </div>
 
                                             <div
@@ -190,44 +192,37 @@
                                                     </h4>
 
                                                     {#if !action?.actionType?.includes("NFT")}
-                                                        {#if action?.actionType === "TRANSFER" || action?.actionType === "SWAP"}
-                                                            <div class="flex">
-                                                                <h3
-                                                                    class="mr-2 text-xs"
-                                                                >
-                                                                    From <span
-                                                                        class="opacity-50"
-                                                                    >
-                                                                        {shortenString(
-                                                                            action.from
-                                                                        )}
-                                                                    </span>
-                                                                </h3>
-                                                                <Icon
-                                                                    id="arrowRight"
-                                                                />
-                                                                <h3
-                                                                    class="ml-2 text-xs"
-                                                                >
-                                                                    To <span
-                                                                        class="opacity-50"
-                                                                    >
-                                                                        {shortenString(
-                                                                            action.to
-                                                                        )}
-                                                                    </span>
-                                                                </h3>
-                                                            </div>
-                                                        {:else}
+                                                        <div class="flex">
                                                             <h3
-                                                                class="text-xs opacity-50"
+                                                                class="mr-2 text-xs"
                                                             >
-                                                                {transactionActionsMetadata[
-                                                                    action
-                                                                        ?.actionType
-                                                                ]?.label}
+                                                                <button
+                                                                    on:click|self={() =>
+                                                                        (window.location.href = `/${action.from}/wallet`)}
+                                                                    class="link-neutral border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                >
+                                                                    {shortenString(
+                                                                        action.from
+                                                                    )}
+                                                                </button>
                                                             </h3>
-                                                        {/if}
+                                                            <Icon
+                                                                id="arrowRight"
+                                                            />
+                                                            <h3
+                                                                class="ml-2 text-xs"
+                                                            >
+                                                                <button
+                                                                    on:click|self={() =>
+                                                                        (window.location.href = `/${action.to}/wallet`)}
+                                                                    class="link-neutral border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                >
+                                                                    {shortenString(
+                                                                        action.to
+                                                                    )}
+                                                                </button>
+                                                            </h3>
+                                                        </div>
                                                     {/if}
                                                 </div>
                                                 <div class="mr-2">
@@ -260,7 +255,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </a>
+                                    </div>
                                 {/if}
                             </TokenProvider>
                         </div>
@@ -268,5 +263,5 @@
                 </IntersectionObserver>
             {/if}
         {/each}
-    </a>
+    </button>
 </div>

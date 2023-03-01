@@ -9,10 +9,14 @@
     export const show = () => (window.location.href = `#modal-${id}`);
     export const hide = () => (window.location.href = `#`);
 
+    let mounted = false;
+
     onMount(() => {
         if (window.location.hash === `#modal-${id}`) {
             show();
         }
+
+        mounted = true;
     });
 </script>
 
@@ -27,9 +31,7 @@
         style={fullScreenModal ? "max-width: 80%; max-height:100vh;" : ""}
     >
         <div class="title flex items-center justify-between">
-            <div>
-                <slot name="title" />
-            </div>
+            <div />
             <div>
                 <button
                     class="btn-ghost btn-md btn"

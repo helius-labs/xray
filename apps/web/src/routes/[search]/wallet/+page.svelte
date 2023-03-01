@@ -22,8 +22,9 @@
     }
 </script>
 
-<Transactions
-    {account}
-    user={account}
-    ref="@wallet:{$page.params.search}"
-/>
+<div class="pl-2 md:pl-0">
+    <Transactions
+        {account}
+        user={account}
+    />
+</div>
