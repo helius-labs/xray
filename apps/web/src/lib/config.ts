@@ -7,7 +7,7 @@ export const transactionActionsMetadata: Record<
 > = {
     AIRDROP: {
         icon: "gift",
-        label: "Airdroped",
+        label: "Airdropped",
     },
     BORROW_FOX: {
         icon: "openHand",
