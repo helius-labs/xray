@@ -4,7 +4,7 @@
     import { page } from "$app/stores";
 
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
-    import AccountInfo from "src/lib/components/account-info.svelte";
+
     import { SOL } from "@helius-labs/xray-proton/dist";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
@@ -13,11 +13,9 @@
     const client = trpcWithQuery($page);
 
     const balances = client.balances.createQuery(account);
-
-    $: console.log($balances.data);
 </script>
 
-<div class="">
+<div class="px-3">
     <a
         class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg"
         href="/{SOL}/token"

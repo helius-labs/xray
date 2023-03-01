@@ -37,7 +37,7 @@
         <Stats />
     </div>
 
-    <div class="col-span-2 items-center justify-end">
+    <div class="col-span-2 hidden items-center justify-end md:block">
         {#if $page.url.pathname !== "/"}
             <Search />
         {/if}

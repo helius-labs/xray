@@ -1,3 +1,16 @@
+<style>
+    .nav::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100vw;
+        transform: translate(-50%, 0);
+        background-color: black;
+    }
+</style>
+
 <script lang="ts">
     import { page } from "$app/stores";
     import shortenString from "$lib/util/shorten-string";
@@ -25,7 +38,7 @@
     {#if tokenIsLoading}
         <PageLoader />
     {:else}
-        <div class="sticky top-16 z-10 z-30 bg-base-100 py-1">
+        <div class="nav sticky top-14 z-30 bg-base-100 py-2 px-3">
             <div
                 class="relative flex  flex-wrap items-center justify-between bg-base-100"
             >
@@ -47,7 +60,7 @@
             </div>
         </div>
 
-        <div>
+        <div class="px-3">
             <div
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
@@ -180,7 +193,7 @@
                     </Collapse>
                 </div>
             {/if}
-            <div class="mt-3">
+            <div class="mt-3 pl-2 md:pl-0">
                 <Transactions
                     account={address}
                     ref="@token:{address}"

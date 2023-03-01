@@ -48,19 +48,11 @@
                         y: 30,
                     }}
                 >
-                    <Transaction
-                        {ref}
-                        {transaction}
-                        clickableTokens={false}
-                    />
+                    <Transaction {transaction} />
                 </div>
             {:else}
                 <div class="mb-10">
-                    <Transaction
-                        {ref}
-                        {transaction}
-                        clickableTokens={false}
-                    />
+                    <Transaction {transaction} />
                 </div>
             {/if}
         {/if}

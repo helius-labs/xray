@@ -56,7 +56,7 @@
     text={$page.params.search}
     let:result
 >
-    <div class="flex items-center md:hidden">
+    <div class="flex items-center px-3 md:hidden">
         <h1 class="my-1 text-lg">
             <span class="">{$balance.toFixed(6)}</span>
             <span class="opacity-50">SOL</span>
@@ -66,7 +66,7 @@
         >
     </div>
 
-    <div class="nav sticky top-16 z-30 bg-base-100 pt-2">
+    <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
         <div class="flex flex-wrap items-center justify-between bg-base-100">
             <div>
                 <h3 class="relative m-0 text-lg font-bold md:text-2xl">
@@ -101,7 +101,7 @@
     </div>
 
     <div>
-        <div class="mb-5 mt-3 flex rounded-lg border pt-1">
+        <div class="mx-3 mb-5 mt-3 flex rounded-lg border pt-1">
             <div class="tabs w-full md:w-auto">
                 <button
                     class="tab tab-bordered"
@@ -133,4 +133,6 @@
     </div>
 </Namor>
 
-<slot />
+<div class="px-3">
+    <slot />
+</div>
