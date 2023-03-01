@@ -38,66 +38,72 @@
 
     <Page>
         <div slot="header-contents">
-            <div>
-                <h3 class="m-0 text-xl font-bold md:text-3xl">
-                    {result}
-                </h3>
-            </div>
-
-            <div>
-                <div class="my-2">
-                    <CopyButton
-                        text={$page.params.search}
-                        success="Copied Address"
-                        label="Address"
-                        classList="px-3 btn-outline"
-                    />
-
-                    <CopyButton
-                        text={$page.url.href}
-                        success="Copied Link"
-                        label="Share"
-                        classList="px-3 btn-outline"
-                        icon="share"
-                    />
+            <div class="flex flex-wrap items-center justify-between bg-base-100">
+                <div>
+                    <h3 class="m-0 text-xl font-bold md:text-3xl">
+                        {result}
+                    </h3>
+                </div>
+    
+                <div>
+                    <div class="my-2">
+                        <CopyButton
+                            text={$page.params.search}
+                            success="Copied Address"
+                            label="Address"
+                            classList="px-3 btn-outline"
+                        />
+    
+                        <CopyButton
+                            text={$page.url.href}
+                            success="Copied Link"
+                            label="Share"
+                            classList="px-3 btn-outline"
+                            icon="share"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
 
         <div slot="header-sub-contents">
-            <div class="tabs w-full md:w-auto">
-                <a
-                    class="tab tab-bordered"
-                    class:tab-active={$page.url.pathname.endsWith("wallet")}
-                    href="/{$page.params.search}/wallet">Transactions</a
-                >
-                <a
-                    class="tab tab-bordered"
-                    class:tab-active={$page.url.pathname.endsWith(
-                        "wallet/nfts"
-                    )}
-                    href="/{$page.params.search}/wallet/nfts">NFTs</a
-                >
-                <a
-                    class="tab tab-bordered"
-                    class:tab-active={$page.url.pathname.endsWith(
-                        "wallet/tokens"
-                    )}
-                    href="/{$page.params.search}/wallet/tokens">Tokens</a
-                >
+            <div class="flex flex-wrap justify-between mb-5">
+                <div class="tabs w-full md:w-auto">
+                    <a
+                        class="tab tab-bordered"
+                        class:tab-active={$page.url.pathname.endsWith("wallet")}
+                        href="/{$page.params.search}/wallet">Transactions</a
+                    >
+                    <a
+                        class="tab tab-bordered"
+                        class:tab-active={$page.url.pathname.endsWith(
+                            "wallet/nfts"
+                        )}
+                        href="/{$page.params.search}/wallet/nfts">NFTs</a
+                    >
+                    <a
+                        class="tab tab-bordered"
+                        class:tab-active={$page.url.pathname.endsWith(
+                            "wallet/tokens"
+                        )}
+                        href="/{$page.params.search}/wallet/tokens">Tokens</a
+                    >
+                </div>
+                <h1 class="my-1 hidden text-lg md:block">
+                    <span class="">{$balance.toFixed(6)}</span>
+                    <span class="opacity-50">SOL</span>
+                </h1>
             </div>
-            <h1 class="my-1 hidden text-lg md:block">
-                <span class="">{$balance.toFixed(6)}</span>
-                <span class="opacity-50">SOL</span>
-            </h1>
         </div>
 
-        <div slot="transactions">
-            <Transactions
-                {account}
-                user={account}
-                ref="@wallet:{$page.params.search}"
-            />
+        <div slot="body">
+            <div class="pl-5 md:pl-0">
+                <Transactions
+                    {account}
+                    user={account}
+                    ref="@wallet:{$page.params.search}"
+                />
+            </div>
         </div>
     </Page>
 </Namor>

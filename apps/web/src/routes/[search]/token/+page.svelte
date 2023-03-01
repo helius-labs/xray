@@ -28,39 +28,40 @@
     {:else}
         <Page>
             <div slot="header-contents">
-                <div>
-                    <h3 class="m-0 text-xl font-bold md:text-3xl">
-                        {metadata.name}
-                    </h3>
-                </div>
-
-                <div>
-                    <div class="my-2">
-                        <CopyButton
-                            text={address}
-                            success="Copied Address"
-                            label="Address"
-                            classList="px-3 btn-outline"
-                        />
-
-                        <CopyButton
-                            text={$page.url.href}
-                            success="Copied Link"
-                            label="Share"
-                            classList="px-3 btn-outline"
-                            icon="share"
-                        />
+                <div class="flex flex-wrap items-center justify-between bg-base-100">
+                    <div>
+                        <h3 class="m-0 text-xl font-bold md:text-3xl">
+                            {metadata.name}
+                        </h3>
+                    </div>
+    
+                    <div>
+                        <div class="my-2">
+                            <CopyButton
+                                text={address}
+                                success="Copied Address"
+                                label="Address"
+                                classList="px-3 btn-outline"
+                            />
+    
+                            <CopyButton
+                                text={$page.url.href}
+                                success="Copied Link"
+                                label="Share"
+                                classList="px-3 btn-outline"
+                                icon="share"
+                            />
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div slot="content-above">
+            <div slot="body">
                 <div
-                    class="sm:h-[45vh] sm:p-2"
                     in:fade={{ delay: 100, duration: 800 }}
                 >
                     <img
-                        class="mx-auto max-h-full max-w-full rounded-md"
+                        class="mx-auto max-h-[50vh] object-contain rounded-md"
                         alt="token symbol"
                         src={metadata.image}
                         in:fade={{ delay: 600, duration: 1000 }}

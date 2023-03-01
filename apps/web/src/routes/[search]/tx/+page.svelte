@@ -70,19 +70,15 @@
             {/each}
         {:else if data}
             <Page>
-                <div
-                    slot="transactions"
-                    class="pb-5"
-                >
-                    <Transaction
-                        transaction={data}
-                        moreDetails={true}
-                        copyButtons={true}
-                        ref="@tx:{data.signature}"
-                    />
-                </div>
-
-                <div slot="content-below">
+                <div slot="body">
+                    <div class="pb-5">
+                        <Transaction
+                            transaction={data}
+                            moreDetails={true}
+                            copyButtons={true}
+                            ref="@tx:{data.signature}"
+                        />
+                    </div>
                     <div class="mb-3">
                         <div
                             class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
