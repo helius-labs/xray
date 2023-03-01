@@ -42,7 +42,9 @@
             (window.location.href = `/${transaction.signature}/tx`)}
         class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
     >
-        <div class="relative grid grid-cols-12 gap-3 rounded-lg">
+        <div
+            class="pointer-events-none relative grid grid-cols-12 gap-3 rounded-lg"
+        >
             <div class="relative">
                 <div
                     class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
@@ -55,15 +57,15 @@
                     </div>
                 </div>
             </div>
-            <div class="col-span-12 px-3 pl-6">
-                <div class="flex items-center justify-between">
+            <div class="pointer-events-none col-span-12 px-3 pl-6">
+                <div class="flex justify-between">
                     <div>
                         <h3 class="text-xl font-semibold">
                             {metadata.label}
                         </h3>
                         <a
                             href="/{transaction.signature}/tx"
-                            class="link-neutral border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
+                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
                         >
                             {transaction.signature
                                 ? shortenString(transaction.signature, 8)
@@ -73,26 +75,6 @@
                     <h3 class="ml-2 mt-1 text-xs opacity-50">
                         {formatDate(transaction.timestamp)}
                     </h3>
-                </div>
-                <div class="flex items-center justify-end">
-                    {#if copyButtons}
-                        <!-- Prevent default so copy button doesn't trigger link -->
-                        <div
-                            class="flex"
-                            on:click|preventDefault
-                            on:keydown|preventDefault
-                        >
-                            <CopyButton
-                                success="Copied Address"
-                                text={$page.url.href}
-                            />
-                            <CopyButton
-                                icon="share"
-                                success="Copied Link"
-                                text={$page.url.href}
-                            />
-                        </div>
-                    {/if}
                 </div>
             </div>
         </div>
@@ -162,7 +144,7 @@
                                         }}
                                     >
                                         <div
-                                            class="relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
+                                            class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1 "
                                         >
                                             <div
                                                 class="col-span-2 p-1 md:col-span-1"
@@ -170,7 +152,7 @@
                                                 <button
                                                     on:click={() =>
                                                         (window.location.href = `/${metadata.address}/token`)}
-                                                    class="w-full transition-transform hover:scale-125"
+                                                    class="pointer-events-auto w-full transition-transform hover:scale-125"
                                                 >
                                                     <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                                     <div
@@ -181,7 +163,7 @@
                                             </div>
 
                                             <div
-                                                class="col-span-10 flex items-center justify-between md:col-span-11"
+                                                class="pointer-events-none col-span-10 flex items-center justify-between md:col-span-11"
                                             >
                                                 <div>
                                                     <h4
@@ -193,35 +175,39 @@
 
                                                     {#if !action?.actionType?.includes("NFT")}
                                                         <div class="flex">
-                                                            <h3
-                                                                class="mr-2 text-xs"
-                                                            >
-                                                                <button
-                                                                    on:click|self={() =>
-                                                                        (window.location.href = `/${action.from}/wallet`)}
-                                                                    class="link-neutral border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                            {#if action.from}
+                                                                <h3
+                                                                    class="mr-2 text-xs"
                                                                 >
-                                                                    {shortenString(
-                                                                        action.from
-                                                                    )}
-                                                                </button>
-                                                            </h3>
+                                                                    <button
+                                                                        on:click|self={() =>
+                                                                            (window.location.href = `/${action.from}/wallet`)}
+                                                                        class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                    >
+                                                                        {shortenString(
+                                                                            action.from
+                                                                        )}
+                                                                    </button>
+                                                                </h3>
+                                                            {/if}
                                                             <Icon
                                                                 id="arrowRight"
                                                             />
-                                                            <h3
-                                                                class="ml-2 text-xs"
-                                                            >
-                                                                <button
-                                                                    on:click|self={() =>
-                                                                        (window.location.href = `/${action.to}/wallet`)}
-                                                                    class="link-neutral border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                            {#if action.to}
+                                                                <h3
+                                                                    class="ml-2 text-xs"
                                                                 >
-                                                                    {shortenString(
-                                                                        action.to
-                                                                    )}
-                                                                </button>
-                                                            </h3>
+                                                                    <button
+                                                                        on:click|self={() =>
+                                                                            (window.location.href = `/${action.to}/wallet`)}
+                                                                        class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                    >
+                                                                        {shortenString(
+                                                                            action.to
+                                                                        )}
+                                                                    </button>
+                                                                </h3>
+                                                            {/if}
                                                         </div>
                                                     {/if}
                                                 </div>

@@ -40,9 +40,7 @@
         {/each}
     {:else}
         {#each Array(8) as _}
-            <div
-                class="grid aspect-square animate-pulse rounded-lg bg-secondary opacity-50"
-            />
+            <div class="grid aspect-square animate-pulse rounded-lg" />
         {/each}
     {/if}
 </div>

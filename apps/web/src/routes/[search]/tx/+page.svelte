@@ -52,6 +52,25 @@
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
+<div class="mb-4 flex justify-between">
+    <h1 class="text-xl font-bold">Transaction</h1>
+    <div
+        class="flex"
+        on:click|preventDefault
+        on:keydown|preventDefault
+    >
+        <CopyButton
+            success="Copied Address"
+            text={$page.url.href}
+        />
+        <CopyButton
+            icon="share"
+            success="Copied Link"
+            text={$page.url.href}
+        />
+    </div>
+</div>
+
 {#if animate}
     <div
         in:fly={{
@@ -73,7 +92,6 @@
                     transaction={data}
                     moreDetails={true}
                     copyButtons={true}
-                    ref="@tx:{data.signature}"
                 />
             </div>
 

@@ -17,7 +17,7 @@
 
 <div class="px-3">
     <a
-        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg"
+        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
         href="/{SOL}/token"
     >
         <div class="col-span-2 p-1 md:col-span-1">
@@ -42,6 +42,7 @@
             </div>
         </div>
     </a>
+
     {#if $balances.data}
         {#each $balances.data.tokens as token}
             {#if token.decimals > 0 && token.mint !== SOL}
