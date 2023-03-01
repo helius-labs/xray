@@ -31,10 +31,10 @@
             class="col-span-10 flex items-center justify-between md:col-span-11"
         >
             <div>
-                <h4 class="text-4xl font-semibold md:text-sm">SOL</h4>
+                <h4 class="font-semibold md:text-4xl md:text-sm">SOL</h4>
             </div>
             <div>
-                <h4 class="text-4xl font-semibold md:text-sm">
+                <h4 class="font-semibold md:text-4xl md:text-sm">
                     {(
                         $balances.data?.nativeBalance / LAMPORTS_PER_SOL
                     ).toLocaleString()}
@@ -65,12 +65,16 @@
                             class="col-span-10 flex items-center justify-between md:col-span-11"
                         >
                             <div>
-                                <h4 class="text-4xl font-semibold md:text-sm">
+                                <h4
+                                    class="font-semibold md:text-4xl md:text-sm"
+                                >
                                     {metadata?.name || "Unknown"}
                                 </h4>
                             </div>
                             <div>
-                                <h4 class="text-4xl font-semibold md:text-sm">
+                                <h4
+                                    class="font-semibold md:text-4xl md:text-sm"
+                                >
                                     {(
                                         token.amount /
                                         10 ** token.decimals
