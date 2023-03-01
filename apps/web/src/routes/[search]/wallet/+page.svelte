@@ -1,6 +1,8 @@
 <script lang="ts">
     import { trpcWithQuery } from "$lib/trpc/client";
 
+    import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+
     import { page } from "$app/stores";
 
     import { tweened } from "svelte/motion";
@@ -11,14 +13,14 @@
 
     const client = trpcWithQuery($page);
 
-    const accountInfo = client.accountInfo.createQuery(account);
+    const balances = client.balances.createQuery(account);
 
     const balance = tweened(0, {
         duration: 1000,
     });
 
-    $: if ($accountInfo?.data?.balance) {
-        balance.set($accountInfo.data.balance);
+    $: if ($balances?.data?.nativeBalance) {
+        balance.set($balances.data.nativeBalance / LAMPORTS_PER_SOL);
     }
 </script>
 

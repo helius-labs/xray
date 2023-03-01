@@ -85,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="text-right">
+            <div class="relative text-right">
                 <h1 class="text-md hidden md:block">
                     <span class="">{$balance.toFixed(6)}</span>
                     <span class="opacity-50">SOL</span>
@@ -103,24 +103,30 @@
     <div>
         <div class="mb-5 mt-3 flex rounded-lg border pt-1">
             <div class="tabs w-full md:w-auto">
-                <a
+                <button
                     class="tab tab-bordered"
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet`)}
                     class:tab-active={$page.url.pathname.endsWith("wallet")}
-                    href="/{$page.params.search}/wallet">Transactions</a
+                    >Transactions</button
                 >
-                <a
+                <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(
                         "wallet/nfts"
                     )}
-                    href="/{$page.params.search}/wallet/nfts">NFTs</a
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet/nfts`)}
+                    >NFTs</button
                 >
-                <a
+                <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(
                         "wallet/tokens"
                     )}
-                    href="/{$page.params.search}/wallet/tokens">Tokens</a
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet/tokens`)}
+                    >Tokens</button
                 >
             </div>
         </div>

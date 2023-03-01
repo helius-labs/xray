@@ -20,11 +20,11 @@ export const token = t.procedure
         const response = await fetch(
             `https://api.helius.xyz/v0/token-metadata/?api-key=${HELIUS_KEY}`,
             {
-                method: "POST",
                 body: JSON.stringify({
-                    mintAccounts: input,
                     includeOffChain: true,
+                    mintAccounts: input,
                 }),
+                method: "POST",
             }
         );
 

@@ -102,6 +102,16 @@ export const getSolanaTransactions = async (
     return data;
 };
 
+export const getSolanaTokens = async (
+    address: string
+): Promise<EnrichedTransaction[]> => {
+    const response = await fetch(`/$/api/solana/${address}/tokens`);
+
+    const { data } = await response.json();
+
+    return data;
+};
+
 const recentActivityKey = "xray:recent-activity";
 
 export const getRecentActity = () => {

@@ -6,7 +6,11 @@
 
     import { trpcWithQuery } from "$lib/trpc/client";
 
+    import IntersectionObserver from "svelte-intersection-observer";
+
     export let address: string;
+
+    let intersecting = false;
 
     const client = trpcWithQuery($page);
 
@@ -21,6 +25,8 @@
         image: "",
         name: "",
     };
+
+    let element: HTMLDivElement;
 
     $: if (address === SOL) {
         metadata.name = "SOL";
@@ -52,9 +58,21 @@
     $: isNFT = metadata?.attributes && metadata?.attributes?.length > 0;
 </script>
 
-<slot
-    {metadata}
-    {tokenIsLoading}
-    {tokenFailed}
-    {isNFT}
-/>
+<div>
+    <IntersectionObserver
+        once={true}
+        {element}
+        bind:intersecting
+    >
+        <div bind:this={element} />
+
+        {#if intersecting}
+            <slot
+                {metadata}
+                {tokenIsLoading}
+                {tokenFailed}
+                {isNFT}
+            />
+        {/if}
+    </IntersectionObserver>
+</div>

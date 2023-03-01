@@ -38,7 +38,8 @@
 
 <div>
     <button
-        on:click={() => (window.location.href = `/${transaction.signature}/tx`)}
+        on:click|self={() =>
+            (window.location.href = `/${transaction.signature}/tx`)}
         class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
     >
         <div class="relative grid grid-cols-12 gap-3 rounded-lg">
@@ -125,7 +126,6 @@
                                 {address}
                                 let:metadata
                                 let:tokenIsLoading
-                                let:isNFT
                             >
                                 {#if tokenIsLoading}
                                     <div
@@ -169,7 +169,7 @@
                                             >
                                                 <button
                                                     on:click={() =>
-                                                        (window.location.href = `/${address}/token`)}
+                                                        (window.location.href = `/${metadata.address}/token`)}
                                                     class="w-full transition-transform hover:scale-125"
                                                 >
                                                     <!-- background so that if it doesn't load you dont' get ugly no image icons -->

@@ -25,9 +25,9 @@
     {#if tokenIsLoading}
         <PageLoader />
     {:else}
-        <div class="sticky top-16 z-10 bg-base-100 py-1">
+        <div class="sticky top-16 z-10 z-30 bg-base-100 py-1">
             <div
-                class="flex flex-wrap  items-center justify-between bg-base-100"
+                class="relative flex  flex-wrap items-center justify-between bg-base-100"
             >
                 <div>
                     <h3 class="m-0 text-xl font-bold md:text-3xl">
@@ -37,19 +37,10 @@
 
                 <div>
                     <div class="my-2">
-                        <CopyButton
-                            text={address}
-                            success="Copied Address"
-                            label="Address"
-                            classList="px-3 btn-outline"
-                        />
-
+                        <CopyButton text={$page.params.search} />
                         <CopyButton
                             text={$page.url.href}
-                            success="Copied Link"
-                            label="Share"
-                            classList="px-3 btn-outline"
-                            icon="share"
+                            icon="link"
                         />
                     </div>
                 </div>

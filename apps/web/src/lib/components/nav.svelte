@@ -15,7 +15,7 @@
     class="sticky top-0 left-0 z-40 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
     <DevBanner />
-    <div class="col-span-4 flex items-center lg:col-span-3">
+    <div class="col-span-4 flex items-center md:col-span-2">
         <div
             class="mx-2 flex items-center"
             in:fly={{
@@ -37,13 +37,13 @@
         <Stats />
     </div>
 
-    <div class="col-span-1 items-center justify-end lg:col-span-2">
+    <div class="col-span-2 items-center justify-end">
         {#if $page.url.pathname !== "/"}
             <Search />
         {/if}
     </div>
 
-    <div class="col-span-1 flex items-center justify-end">
+    <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
             <a href="#modal-menu">
                 <div class="btn-ghost btn">
