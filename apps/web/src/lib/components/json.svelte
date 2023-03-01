@@ -4,10 +4,13 @@
     import formatHighlight from "json-format-highlight";
     import { fade } from "svelte/transition";
 
+    import CopyButton from "$lib/components/copy-button.svelte";
+    import { prevent_default } from "svelte/internal";
+
     export let data: any;
     export let label: string;
 
-    $: metadataHTML = formatHighlight(JSON.stringify(data || {}, null, 4), {
+    $: metadataHTML = formatHighlight(JSON.stringify(data || {}, null, 2), {
         keyColor: "#a5a3a3",
         numberColor: "#e8a034",
         stringColor: "#24ae67",
@@ -58,22 +61,28 @@
                     {/if}
                 </h3>
             </div>
-            <button
-                class="btn-ghost btn-sm btn"
-                on:click={() => (showCode = !showCode)}
-            >
-                {#if showCode}
-                    <Icon
-                        id="cancel"
-                        size="md"
-                    />
-                {:else}
-                    <Icon
-                        id="dots"
-                        size="md"
-                    />
-                {/if}
-            </button>
+            <div class="flex items-center">
+                <CopyButton
+                    text={JSON.stringify(data, null, 2)}
+                    success="copied json"
+                />
+                <button
+                    class="btn-ghost btn-sm btn"
+                    on:click={() => (showCode = !showCode)}
+                >
+                    {#if showCode}
+                        <Icon
+                            id="cancel"
+                            size="md"
+                        />
+                    {:else}
+                        <Icon
+                            id="dots"
+                            size="md"
+                        />
+                    {/if}
+                </button>
+            </div>
         </div>
         {#if showCode}
             <div class="code col-span-12 w-full overflow-hidden px-3">
