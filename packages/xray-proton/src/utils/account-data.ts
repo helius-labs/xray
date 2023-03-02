@@ -54,7 +54,13 @@ export const traverseAccountData = (
                             accounts[nativeIndex].changes[0].amount === amount
                         )
                     ) {
-                        indexChecker(accounts, index, account, amount, mint);
+                        indexChecker(
+                            accounts,
+                            index,
+                            tokenBalanceData.userAccount,
+                            amount,
+                            mint
+                        );
                     }
                 }
             }
