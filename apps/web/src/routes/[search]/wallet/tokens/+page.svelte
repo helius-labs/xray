@@ -13,6 +13,12 @@
     const client = trpcWithQuery($page);
 
     const balances = client.balances.createQuery(account);
+
+    $: sorted = $balances?.data?.tokens
+        ?.filter(({ decimals, amount }) => decimals && amount)
+        .sort(({ amount: a, decimals: ad }, { amount: b, decimals: bd }) =>
+            a / 10 ** ad < b / 10 ** bd ? 1 : -1
+        );
 </script>
 
 <div class="px-3">
@@ -43,8 +49,8 @@
         </div>
     </a>
 
-    {#if $balances.data}
-        {#each $balances.data.tokens as token}
+    {#if sorted}
+        {#each sorted as token (token.mint)}
             {#if token.decimals > 0 && token.mint !== SOL}
                 <TokenProvider
                     address={token.mint}
@@ -87,9 +93,9 @@
             {/if}
         {/each}
     {:else}
-        {#each Array(8) as _}
+        {#each Array(3) as _}
             <div
-                class="grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
+                class="mb-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
             >
                 <div class="col-span-2 p-1 md:col-span-1">
                     <div

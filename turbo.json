@@ -6,12 +6,15 @@
             "dependsOn": ["^build"],
             "outputs": ["dist/**"]
         },
-        "lint": {
-            "outputs": []
+        "db:pull": {
+            "cache": false
+        },
+        "db:push": {
+            "cache": false
         },
         "dev": {
-            "dependsOn": ["^generate:db"],
-            "cache": false
+            "cache": false,
+            "dependsOn": ["^generate:db"]
         },
         "generate:db": {
             "cache": false
@@ -19,11 +22,8 @@
         "generate:zod": {
             "cache": false
         },
-        "db:push": {
-            "cache": false
-        },
-        "db:pull": {
-            "cache": false
+        "lint": {
+            "outputs": []
         }
     }
 }
