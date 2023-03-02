@@ -47,6 +47,7 @@ export enum ProtonSupportedActionType {
     "TOKEN_MINT",
     "BORROW_FOX",
     "LOAN_FOX",
+    "EXECUTE_TRANSACTION",
 }
 
 export type ProtonParser = (
