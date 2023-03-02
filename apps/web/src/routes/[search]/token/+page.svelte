@@ -199,10 +199,7 @@
                 </div>
             {/if}
             <div class="mt-3 pl-2 md:pl-0">
-                <Transactions
-                    account={address}
-                    ref="@token:{address}"
-                />
+                <Transactions account={address} />
             </div>
             <div class="mt-3">
                 <JSON

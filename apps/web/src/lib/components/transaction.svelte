@@ -22,8 +22,6 @@
     let element: HTMLDivElement;
     let intersecting = false;
 
-    let cachedAddress = "";
-
     const supported = Object.keys(transactionActionsMetadata).includes(
         transaction.type
     );
@@ -45,7 +43,6 @@
 </script>
 
 <div>
-    <!-- TODO: made this a link but when that happens, any nested clicks trigger the top one  -->
     <a
         href="/{transaction.signature}/tx"
         class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
@@ -166,7 +163,7 @@
                                             class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1 "
                                         >
                                             <div
-                                                class="col-span-2 p-1 md:col-span-1"
+                                                class="col-span-2 flex items-center p-1 md:col-span-1"
                                             >
                                                 <button
                                                     on:click={() =>
@@ -193,17 +190,26 @@
                                                     </h4>
                                                     {#if Object.keys(ProtonCustomActionLabelTypes).includes(action.actionType)}
                                                         <h3
-                                                            class="ml-2 text-xs"
+                                                            class="flex text-xs"
                                                         >
-                                                            <a
-                                                                data-sveltekit-reload
-                                                                href="/{action.to}/wallet"
-                                                                class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                            <p
+                                                                class="link-neutral"
                                                             >
                                                                 {transactionActionsMetadata[
                                                                     action
                                                                         ?.actionType
-                                                                ].label}
+                                                                ].label} via
+                                                            </p>
+
+                                                            <a
+                                                                data-sveltekit-reload
+                                                                href="/{action.to}/wallet"
+                                                                class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                            >
+                                                                {shortenString(
+                                                                    action.from ||
+                                                                        action.to
+                                                                )}
                                                             </a>
                                                         </h3>
                                                     {:else if !action?.actionType?.includes("NFT")}

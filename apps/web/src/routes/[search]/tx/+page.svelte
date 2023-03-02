@@ -85,11 +85,7 @@
             {/each}
         {:else if data}
             <div class="px-3 pb-5">
-                <Transaction
-                    transaction={data}
-                    moreDetails={true}
-                    copyButtons={true}
-                />
+                <Transaction transaction={data} />
             </div>
 
             <div class="mb-3 px-3">
