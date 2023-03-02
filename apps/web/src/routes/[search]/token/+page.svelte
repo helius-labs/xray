@@ -9,6 +9,10 @@
         transform: translate(-50%, 0);
         background-color: black;
     }
+
+    .img {
+        max-height: 50vh;
+    }
 </style>
 
 <script lang="ts">
@@ -67,7 +71,7 @@
             >
                 <!-- <a href="#modal-token-fs-modal"> -->
                 <img
-                    class="m-auto mt-3 h-auto w-full rounded-md"
+                    class="img m-auto mt-3 h-auto w-full rounded-md object-contain"
                     alt="token symbol"
                     src={metadata.image}
                     in:fade={{ delay: 600, duration: 1000 }}
@@ -79,6 +83,7 @@
                 fullScreenModal
             >
                 <img
+                    class="img"
                     alt="token symbol"
                     src={metadata.image}
                 />
