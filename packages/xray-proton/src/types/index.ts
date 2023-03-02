@@ -54,7 +54,7 @@ export const ProtonCustomActionLabelTypes = {
     AIRDROP: "Airdropped",
     BURN: "Burned",
     BURN_NFT: "Burned NFT",
-    FREEZE: "Froze",
+    FREEZE: "Frozen",
 };
 
 export type ProtonParser = (

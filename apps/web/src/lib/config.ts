@@ -43,7 +43,7 @@ export const transactionActionsMetadata: Record<
     },
     FREEZE: {
         icon: "cold",
-        label: "Froze",
+        label: "Frozen",
     },
     LOAN_FOX: {
         icon: "handshake",
