@@ -5,11 +5,9 @@
 
     import { page } from "$app/stores";
 
-    import { fade, fly } from "svelte/transition";
+    import { fly } from "svelte/transition";
 
     import { trpcWithQuery } from "$lib/trpc/client";
-
-    import shortenAddress from "$lib/util/shorten-string";
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
@@ -19,7 +17,6 @@
     import Collapse from "src/lib/components/collapse.svelte";
 
     let animate = false;
-    let showCode = false;
 
     const signature = $page.params.search;
 
@@ -52,7 +49,7 @@
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
-<div class="mb-4 flex justify-between px-3 ">
+<div class="mb-4 flex justify-between px-3">
     <h1 class="text-xl font-bold">Transaction</h1>
     <div
         class="flex"
@@ -61,10 +58,10 @@
     >
         <CopyButton
             success="Copied Address"
-            text={$page.url.href}
+            text={$page.params.search}
         />
         <CopyButton
-            icon="share"
+            icon="link"
             success="Copied Link"
             text={$page.url.href}
         />
@@ -87,7 +84,7 @@
                 </div>
             {/each}
         {:else if data}
-            <div class="pb-5 pl-3 pr-3 md:pl-0">
+            <div class="px-3 pb-5">
                 <Transaction
                     transaction={data}
                     moreDetails={true}
@@ -123,6 +120,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="mb-3 px-3 ">
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"

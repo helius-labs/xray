@@ -12,7 +12,6 @@
 
     export let account: string;
     export let user = "";
-    export let ref = "";
 
     const client = trpcWithQuery($page);
 
@@ -35,7 +34,9 @@
             <IconCard />
         </div>
     {/each}
-{:else if $transactions.data}
+{:else if !transactionsList.length}
+    <p class="opacity-50">No transactions</p>
+{:else}
     {#each transactionsList as transaction, idx}
         {#if transaction?.signature}
             <!-- Only animate the first few intro transactions -->
