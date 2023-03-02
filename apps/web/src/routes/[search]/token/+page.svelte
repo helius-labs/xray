@@ -11,7 +11,7 @@
     }
 
     .img {
-        max-height: 50vh;
+        max-height: 25vh;
     }
 </style>
 
@@ -71,7 +71,7 @@
             >
                 <!-- <a href="#modal-token-fs-modal"> -->
                 <img
-                    class="img m-auto mt-3 h-auto w-full rounded-md object-contain"
+                    class="img m-auto my-3 h-auto w-full rounded-md object-contain"
                     alt="token symbol"
                     src={metadata.image}
                     in:fade={{ delay: 600, duration: 1000 }}
@@ -199,10 +199,7 @@
                 </div>
             {/if}
             <div class="mt-3 pl-2 md:pl-0">
-                <Transactions
-                    account={address}
-                    ref="@token:{address}"
-                />
+                <Transactions account={address} />
             </div>
             <div class="mt-3">
                 <JSON

@@ -12,11 +12,12 @@
 
     export let account: string;
     export let user = "";
-    export let ref = "";
+
+    let cachedAddress = "";
 
     const client = trpcWithQuery($page);
 
-    const transactions = client.transactions.createQuery({
+    let transactions = client.transactions.createQuery({
         account,
         user,
     });
@@ -27,6 +28,15 @@
     $: transactionsList = $transactions.data
         ? ($transactions.data.result as ProtonTransaction[])
         : [];
+
+    $: if (cachedAddress !== account) {
+        cachedAddress = account;
+
+        transactions = client.transactions.createQuery({
+            account,
+            user,
+        });
+    }
 </script>
 
 {#if $transactions.isLoading}
@@ -35,7 +45,9 @@
             <IconCard />
         </div>
     {/each}
-{:else if $transactions.data}
+{:else if !transactionsList.length}
+    <p class="opacity-50">No transactions</p>
+{:else}
     {#each transactionsList as transaction, idx}
         {#if transaction?.signature}
             <!-- Only animate the first few intro transactions -->
