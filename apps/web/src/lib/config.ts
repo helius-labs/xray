@@ -31,11 +31,11 @@ export const transactionActionsMetadata: Record<
     },
     BURN: {
         icon: "flame",
-        label: "Burn",
+        label: "Burned",
     },
     BURN_NFT: {
         icon: "flame",
-        label: "Burn NFT",
+        label: "Burned NFT",
     },
     EXECUTE_TRANSACTION: {
         icon: "lightning",
@@ -43,7 +43,7 @@ export const transactionActionsMetadata: Record<
     },
     FREEZE: {
         icon: "cold",
-        label: "Freeze",
+        label: "Froze",
     },
     LOAN_FOX: {
         icon: "handshake",

@@ -1,8 +1,10 @@
 <script lang="ts">
     import type {
         ProtonActionType,
-        ProtonTransaction,
+        ProtonTransaction
     } from "@helius-labs/xray-proton";
+
+    import { ProtonCustomActionLabelTypes } from "@helius-labs/xray-proton";
 
     import { page } from "$app/stores";
 
@@ -191,8 +193,22 @@
                                                         {metadata?.name ||
                                                             "Unknown"}
                                                     </h4>
-
-                                                    {#if !action?.actionType?.includes("NFT")}
+                                                    {#if Object.keys(ProtonCustomActionLabelTypes).includes(action.actionType)}
+                                                        <h3
+                                                            class="ml-2 text-xs"
+                                                        >
+                                                            <button
+                                                                on:click|self={() =>
+                                                                    (window.location.href = `/${action.from}/wallet`)}
+                                                                class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                            >
+                                                                {transactionActionsMetadata[
+                                                                    action
+                                                                        ?.actionType
+                                                                ].label}
+                                                            </button>
+                                                        </h3>
+                                                    {:else if !action?.actionType?.includes("NFT")}
                                                         <div class="flex">
                                                             {#if action?.actionType?.includes("SENT") && action.to}
                                                                 <p
