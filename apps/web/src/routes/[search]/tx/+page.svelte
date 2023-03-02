@@ -186,7 +186,7 @@
             <div class="px-3">
                 <Collapse
                     sectionTitle="View Transaction Data"
-                    showDetails={false}
+                    showDetails={true}
                     hideIcon={true}
                 >
                     <div class="mb-3">
