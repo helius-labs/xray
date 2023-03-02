@@ -13,9 +13,11 @@
     export let account: string;
     export let user = "";
 
+    let cachedAddress = "";
+
     const client = trpcWithQuery($page);
 
-    const transactions = client.transactions.createQuery({
+    let transactions = client.transactions.createQuery({
         account,
         user,
     });
@@ -26,6 +28,15 @@
     $: transactionsList = $transactions.data
         ? ($transactions.data.result as ProtonTransaction[])
         : [];
+
+    $: if (cachedAddress !== account) {
+        cachedAddress = account;
+
+        transactions = client.transactions.createQuery({
+            account,
+            user,
+        });
+    }
 </script>
 
 {#if $transactions.isLoading}

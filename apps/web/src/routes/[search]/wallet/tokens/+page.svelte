@@ -15,13 +15,15 @@
     const balances = client.balances.createQuery(account);
 
     $: sorted = $balances?.data?.tokens
+        // @ts-ignore
         ?.filter(({ decimals, amount }) => decimals && amount)
+        // @ts-ignore
         .sort(({ amount: a, decimals: ad }, { amount: b, decimals: bd }) =>
             a / 10 ** ad < b / 10 ** bd ? 1 : -1
         );
 </script>
 
-<div class="px-3">
+<div>
     <a
         class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
         href="/{SOL}/token"
@@ -37,14 +39,16 @@
             class="col-span-10 flex items-center justify-between md:col-span-11"
         >
             <div>
-                <h4 class="font-semibold md:text-4xl md:text-sm">SOL</h4>
+                <h4 class="font-semibold md:text-sm">SOL</h4>
             </div>
             <div>
-                <h4 class="font-semibold md:text-4xl md:text-sm">
-                    {(
-                        $balances.data?.nativeBalance / LAMPORTS_PER_SOL
-                    ).toLocaleString()}
-                </h4>
+                {#if $balances.data?.nativeBalance}
+                    <h4 class="font-semibold md:text-sm">
+                        {(
+                            $balances.data?.nativeBalance / LAMPORTS_PER_SOL
+                        ).toLocaleString()}
+                    </h4>
+                {/if}
             </div>
         </div>
     </a>
