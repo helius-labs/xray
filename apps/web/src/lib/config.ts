@@ -1,4 +1,4 @@
-import type { TransactionActionMetadata, Modal } from "$lib/types";
+import type { Modal, TransactionActionMetadata } from "$lib/types";
 import type { ProtonActionType } from "@helius-labs/xray-proton";
 
 import InvalidSearch from "$lib/components/modals/invalid-search.svelte";
@@ -31,15 +31,19 @@ export const transactionActionsMetadata: Record<
     },
     BURN: {
         icon: "flame",
-        label: "Burn",
+        label: "Burned",
     },
     BURN_NFT: {
         icon: "flame",
-        label: "Burn NFT",
+        label: "Burned NFT",
+    },
+    EXECUTE_TRANSACTION: {
+        icon: "lightning",
+        label: "Multisig Transaction",
     },
     FREEZE: {
         icon: "cold",
-        label: "Freeze",
+        label: "Frozen",
     },
     LOAN_FOX: {
         icon: "handshake",

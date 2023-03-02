@@ -47,7 +47,15 @@ export enum ProtonSupportedActionType {
     "TOKEN_MINT",
     "BORROW_FOX",
     "LOAN_FOX",
+    "EXECUTE_TRANSACTION",
 }
+
+export const ProtonCustomActionLabelTypes = {
+    AIRDROP: "Airdropped",
+    BURN: "Burned",
+    BURN_NFT: "Burned NFT",
+    FREEZE: "Frozen",
+};
 
 export type ProtonParser = (
     transaction: EnrichedTransaction,
