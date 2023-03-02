@@ -34,6 +34,15 @@
     const metadata = supported
         ? transactionActionsMetadata[transaction.type as ProtonActionType]
         : transactionActionsMetadata["UNKNOWN"];
+
+    const formatSource = (str: string) =>
+        str
+            .split("_")
+            .map(
+                (word: string) =>
+                    word.slice(0, 1) + word.slice(1, word.length).toLowerCase()
+            )
+            .join(" ");
 </script>
 
 <div>
@@ -57,20 +66,30 @@
                     </div>
                 </div>
             </div>
-            <div class="pointer-events-none col-span-12 px-3 pl-6">
+            <div class="pointer-events-none col-span-12 mb-2 px-3 pl-6">
                 <div class="flex justify-between">
                     <div>
                         <h3 class="text-xl font-semibold">
                             {metadata.label}
                         </h3>
-                        <a
-                            href="/{transaction.signature}/tx"
-                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
-                        >
-                            {transaction.signature
-                                ? shortenString(transaction.signature, 8)
-                                : "Unknown"}
-                        </a>
+                        <div class="flex text-xs">
+                            <div class="mr-2 rounded">
+                                {formatSource(transaction.source)}
+                            </div>
+                            <div class="mr-2 rounded">
+                                <a
+                                    href="/{transaction.signature}/tx"
+                                    class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
+                                >
+                                    {transaction.signature
+                                        ? shortenString(
+                                              transaction.signature,
+                                              8
+                                          )
+                                        : "Unknown"}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <h3 class="ml-2 mt-1 text-xs opacity-50">
                         {formatDate(transaction.timestamp)}
@@ -175,25 +194,13 @@
 
                                                     {#if !action?.actionType?.includes("NFT")}
                                                         <div class="flex">
-                                                            {#if action.from}
-                                                                <h3
-                                                                    class="mr-2 text-xs"
+                                                            {#if action?.actionType?.includes("SENT") && action.to}
+                                                                <p
+                                                                    class="mr-1 text-xs opacity-50"
                                                                 >
-                                                                    <button
-                                                                        on:click|self={() =>
-                                                                            (window.location.href = `/${action.from}/wallet`)}
-                                                                        class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
-                                                                    >
-                                                                        {shortenString(
-                                                                            action.from
-                                                                        )}
-                                                                    </button>
-                                                                </h3>
-                                                            {/if}
-                                                            <Icon
-                                                                id="arrowRight"
-                                                            />
-                                                            {#if action.to}
+                                                                    Sent to
+                                                                </p>
+
                                                                 <h3
                                                                     class="ml-2 text-xs"
                                                                 >
@@ -207,6 +214,67 @@
                                                                         )}
                                                                     </button>
                                                                 </h3>
+                                                            {:else if action?.actionType?.includes("RECEIVED") && action.from}
+                                                                <p
+                                                                    class="mr-2 text-xs opacity-50"
+                                                                >
+                                                                    Received
+                                                                    from
+                                                                </p>
+
+                                                                <h3
+                                                                    class="ml-2 text-xs"
+                                                                >
+                                                                    <button
+                                                                        on:click|self={() =>
+                                                                            (window.location.href = `/${action.from}/wallet`)}
+                                                                        class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                    >
+                                                                        {shortenString(
+                                                                            action.from
+                                                                        )}
+                                                                    </button>
+                                                                </h3>
+                                                            {:else}
+                                                                {#if action.from}
+                                                                    <h3
+                                                                        class="ml-2 text-xs"
+                                                                    >
+                                                                        <button
+                                                                            on:click|self={() =>
+                                                                                (window.location.href = `/${action.from}/wallet`)}
+                                                                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                        >
+                                                                            {shortenString(
+                                                                                action.from
+                                                                            )}
+                                                                        </button>
+                                                                    </h3>
+                                                                {/if}
+
+                                                                <div
+                                                                    class="px-2"
+                                                                >
+                                                                    <Icon
+                                                                        id="arrowRight"
+                                                                    />
+                                                                </div>
+
+                                                                {#if action.to}
+                                                                    <h3
+                                                                        class="ml-2 text-xs"
+                                                                    >
+                                                                        <button
+                                                                            on:click|self={() =>
+                                                                                (window.location.href = `/${action.to}/wallet`)}
+                                                                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                        >
+                                                                            {shortenString(
+                                                                                action.to
+                                                                            )}
+                                                                        </button>
+                                                                    </h3>
+                                                                {/if}
                                                             {/if}
                                                         </div>
                                                     {/if}
