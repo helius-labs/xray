@@ -11,6 +11,7 @@
 
     import shortenAddress from "$lib/util/shorten-string";
 
+    import Account from "$lib/components/account-data.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
@@ -52,7 +53,7 @@
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
-<div class="mb-4 flex justify-between px-3 ">
+<div class="mb-4 flex justify-between px-3">
     <h1 class="text-xl font-bold">Transaction</h1>
     <div
         class="flex"
@@ -95,12 +96,14 @@
                 />
             </div>
 
-            <div class="mb-3 px-3">
+            <div class="mb-3">
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
                     <div class="col-span-2 p-1 md:col-span-1">
-                        <div class="center h-10 w-10 rounded-full bg-success">
+                        <div
+                            class="center ml-1 h-10 w-10 rounded-full bg-success"
+                        >
                             <Icon
                                 id="check"
                                 fill="black"
@@ -123,12 +126,14 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-3 px-3 ">
+            <div class="mb-3">
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
                     <div class="col-span-2 p-1 md:col-span-1">
-                        <div class="center h-10 w-10 rounded-full bg-secondary">
+                        <div
+                            class="center ml-1 h-10 w-10 rounded-full bg-secondary"
+                        >
                             <Icon
                                 id="network"
                                 size="sm"
@@ -154,13 +159,13 @@
             {#if data?.raw?.description && !data?.raw?.description
                     .toLowerCase()
                     .includes("unknown")}
-                <div class="mb-3 px-3">
+                <div class="mb-3">
                     <div
                         class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
                     >
                         <div class="col-span-2 p-1 md:col-span-1">
                             <div
-                                class="center h-10 w-10 rounded-full bg-secondary"
+                                class="center ml-1 h-10 w-10 rounded-full bg-secondary"
                             >
                                 <Icon
                                     id="info"
@@ -183,7 +188,22 @@
                     </div>
                 </div>
             {/if}
-            <div class="px-3">
+            {#if data.accounts}
+                <div class="py-3">
+                    <Collapse
+                        sectionTitle="View Account Data"
+                        showDetails={false}
+                        hideIcon={true}
+                    >
+                        {#each data.accounts as account}
+                            <div class="pb-5 pl-3 pr-3 md:pl-0">
+                                <Account data={account} />
+                            </div>
+                        {/each}
+                    </Collapse>
+                </div>
+            {/if}
+            <div>
                 <Collapse
                     sectionTitle="View Transaction Data"
                     showDetails={false}
