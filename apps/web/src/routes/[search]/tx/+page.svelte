@@ -191,7 +191,7 @@
             {#if data.accounts}
                 <div class="py-3">
                     <Collapse
-                        sectionTitle="View Account Data"
+                        sectionTitle="Account Data"
                         showDetails={false}
                         hideIcon={true}
                     >
@@ -205,7 +205,7 @@
             {/if}
             <div>
                 <Collapse
-                    sectionTitle="View Transaction Data"
+                    sectionTitle="Transaction Data"
                     showDetails={false}
                     hideIcon={true}
                 >
