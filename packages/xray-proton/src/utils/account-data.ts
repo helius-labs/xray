@@ -17,8 +17,15 @@ export const traverseAccountData = (
             if (data.nativeBalanceChange !== 0) {
                 const amount = data.nativeBalanceChange / LAMPORTS_PER_SOL;
                 const mint = SOL;
-
-                indexChecker(accounts, index, account, amount, mint);
+                if (
+                    data.tokenBalanceChanges &&
+                    data.tokenBalanceChanges.length > 0
+                ) {
+                    const userAccount = data.tokenBalanceChanges[0].userAccount;
+                    indexChecker(accounts, index, userAccount, amount, mint);
+                } else {
+                    indexChecker(accounts, index, account, amount, mint);
+                }
             }
 
             if (
@@ -28,6 +35,7 @@ export const traverseAccountData = (
                 for (let j = 0; j < data.tokenBalanceChanges.length; j++) {
                     const tokenBalanceData = data.tokenBalanceChanges[j];
                     const mint = tokenBalanceData.mint;
+                    const account = tokenBalanceData.userAccount;
                     const index = accounts.findIndex(
                         (a) => a.account === tokenBalanceData.userAccount
                     );
@@ -54,13 +62,7 @@ export const traverseAccountData = (
                             accounts[nativeIndex].changes[0].amount === amount
                         )
                     ) {
-                        indexChecker(
-                            accounts,
-                            index,
-                            tokenBalanceData.userAccount,
-                            amount,
-                            mint
-                        );
+                        indexChecker(accounts, index, account, amount, mint);
                     }
                 }
             }
