@@ -160,7 +160,7 @@
                                         }}
                                     >
                                         <div
-                                            class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1 "
+                                            class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
                                         >
                                             <div
                                                 class="col-span-2 flex items-center p-1 md:col-span-1"
@@ -168,7 +168,7 @@
                                                 <button
                                                     on:click={() =>
                                                         (window.location.href = `/${metadata.address}/token`)}
-                                                    class="pointer-events-auto w-full transition-transform hover:scale-125"
+                                                    class="pointer-events-auto mx-2 w-full transition-transform hover:scale-125"
                                                 >
                                                     <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                                     <div
