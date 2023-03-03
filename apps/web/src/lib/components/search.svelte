@@ -240,9 +240,7 @@
         >
             <span class="text-sm">Go</span>
         </button>
-        <div
-            class="col-span-3 mb-4 md:order-first"
-        >
+        <div class="col-span-3 mb-4 md:order-first">
             <ConnectWalletButton mobileNav={false} />
         </div>
     </div>

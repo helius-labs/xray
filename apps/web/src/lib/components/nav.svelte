@@ -44,12 +44,9 @@
         {/if}
     </div>
 
-    <div class="col-span-3 flex items-center justify-end">
-        <Search />
-        <div class="ml-2">
-            <ConnectWalletButton />
-        </div>
-        <div class="flex justify-end pr-2">
+    <div class="col-span-2 flex items-center justify-end">
+        <ConnectWalletButton />
+        <div class="ml-2 flex justify-end pr-2">
             <a href="#modal-menu">
                 <div class="btn-ghost btn">
                     <Icon
