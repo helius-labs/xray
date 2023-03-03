@@ -13,8 +13,6 @@
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
 
-    import { pasteFromClipboard } from "$lib/util/clipboard";
-
     import { showConnectWallet } from "$lib/state/stores/connect-wallet";
 
     import { showModal } from "$lib/state/stores/modals";
@@ -43,17 +41,7 @@
     let isBackpack = false;
     let recent = [] as SearchResult[];
 
-    let showSearchError = () => "";
-
     const dispatch = createEventDispatcher();
-
-    const setFromClipboard = async () => {
-        const clipboard = await pasteFromClipboard();
-
-        if (clipboard) {
-            inputValue = clipboard;
-        }
-    };
 
     const connectWallet = () => {
         connected = false;
@@ -84,7 +72,6 @@
             return url === value.url;
         });
 
-        // console.log({ exists });
         if (exists) {
             return;
         }
@@ -103,6 +90,11 @@
     const loadSearch = ({ url }: SearchResult) =>
         (window.location.href = url || "/");
 
+    const selectSearch = (data: SearchResult) => {
+        addRecent(data);
+        loadSearch(data);
+    };
+
     const newSearch = async () => {
         searchError = "";
         isSearching = true;
@@ -116,8 +108,14 @@
                 return searchFailed();
             }
 
-            addRecent(data);
-            loadSearch(data);
+            if (!data.multi) {
+                return selectSearch(data);
+            }
+
+            showModal("SELECT_MULTI_WALLET", {
+                addresses: data.multi,
+                onClick: () => selectSearch(data.multi),
+            });
         } catch (error) {
             searchFailed();
         }

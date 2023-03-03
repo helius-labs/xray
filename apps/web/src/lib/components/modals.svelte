@@ -39,7 +39,10 @@
             </div>
 
             <div class="p-3">
-                <svelte:component this={$modalsStore.component} />
+                <svelte:component
+                    this={$modalsStore.component}
+                    {...$modalsStore.props}
+                />
             </div>
         </div>
     </div>

@@ -3,6 +3,7 @@ import type { ProtonActionType } from "@helius-labs/xray-proton";
 
 import InvalidSearch from "$lib/components/modals/invalid-search.svelte";
 import Menu from "$lib/components/modals/menu.svelte";
+import WalletSelector from "$lib/components/modals/wallets.svelte";
 
 export const recentSearchesKey = "xray:recent-searches";
 
@@ -14,6 +15,10 @@ export const modals: Record<string, Modal> = {
     MENU: {
         component: Menu,
         title: "XRAY",
+    },
+    SELECT_MULTI_WALLET: {
+        component: WalletSelector,
+        title: "Select Wallet",
     },
 };
 
