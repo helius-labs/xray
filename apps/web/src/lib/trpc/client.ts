@@ -3,8 +3,6 @@ import type { QueryClient } from "@tanstack/svelte-query";
 
 import { createTRPCClient, type TRPCClientInit } from "trpc-sveltekit";
 
-import { httpBatchLink } from "@trpc/client";
-
 import { svelteQueryWrapper } from "trpc-svelte-query-adapter";
 
 let browserClient: ReturnType<typeof svelteQueryWrapper<Router>>;

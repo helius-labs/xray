@@ -19,6 +19,7 @@ export enum ProtonSupportedType {
     BORROW_FOX,
     LOAN_FOX,
     TOKEN_MINT,
+    EXECUTE_TRANSACTION,
 }
 
 export enum ProtonSupportedActionType {
@@ -46,7 +47,15 @@ export enum ProtonSupportedActionType {
     "TOKEN_MINT",
     "BORROW_FOX",
     "LOAN_FOX",
+    "EXECUTE_TRANSACTION",
 }
+
+export const ProtonCustomActionLabelTypes = {
+    AIRDROP: "Airdropped",
+    BURN: "Burned",
+    BURN_NFT: "Burned NFT",
+    FREEZE: "Frozen",
+};
 
 export type ProtonParser = (
     transaction: EnrichedTransaction,
@@ -103,6 +112,7 @@ export const protonParsers = {
     BORROW_FOX: parser.parseBorrowFox,
     BURN: parser.parseBurn,
     BURN_NFT: parser.parseBurn,
+    EXECUTE_TRANSACTION: parser.parseTransfer,
     LOAN_FOX: parser.parseLoanFox,
     NFT_BID: parser.parseNftBid,
     NFT_BID_CANCELLED: parser.parseNftCancelBid,
