@@ -73,6 +73,7 @@ export interface Modal {
     component: ComponentType;
     showClose?: boolean;
     fullscreen?: boolean;
+    props?: Record<string, any>;
 }
 
 export type Modals = keyof typeof modals;
@@ -86,4 +87,5 @@ export interface SearchResult {
     isDomain: boolean;
     valid: boolean;
     search: string;
+    multi?: Array<string>;
 }

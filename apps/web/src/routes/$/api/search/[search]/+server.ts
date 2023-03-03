@@ -2,9 +2,8 @@ import type { SearchResult } from "$lib/types";
 
 import { json, type RequestEvent } from "@sveltejs/kit";
 
-import type { ParsedAccountData } from "@solana/web3.js";
-
 import connect from "$lib/util/solana/connect";
+
 import validPublicKey from "$lib/util/solana/validate-pubkey";
 
 import { getDomainKey, NameRegistryState } from "@bonfida/spl-name-service";
@@ -19,6 +18,8 @@ export async function GET({ params }: RequestEvent) {
     // They will present with an error on the tx page if it's not.
     const probablyTransactionSignature = search.length > 50;
     const probablySolanaName = search.length > 4 && search.slice(-4) === ".sol";
+    const probablyBackpackName =
+        search.startsWith("@backpack ") && search.length > 10;
 
     if (validPublicKey(search)) {
         const pubkey = new PublicKey(search);
@@ -81,6 +82,42 @@ export async function GET({ params }: RequestEvent) {
                 },
             });
         }
+    } else if (probablyBackpackName) {
+        const username = search.slice(10);
+
+        const url = `https://xnft-api-server.xnfts.dev/v1/users/fromUsername?username=${username}`;
+
+        const response = await fetch(url);
+
+        const { user } = await response.json();
+
+        const addresses = user?.publicKeys.reduce(
+            // @ts-ignore
+            (acc, { publicKey, blockchain }) => {
+                if (blockchain === "solana") {
+                    return [publicKey, ...acc];
+                }
+
+                return acc;
+            },
+            []
+        );
+
+        const data: SearchResult = {
+            address: params.search || "",
+            isAccount: false,
+            isDomain: false,
+            isToken: false,
+            isTransaction: true,
+            multi: addresses.length > 1 ? addresses : false,
+            search: params.search || "",
+            url: `${addresses[0]}/wallet`,
+            valid: true,
+        };
+
+        console.log({ data });
+
+        return json({ data });
     }
 
     return json({

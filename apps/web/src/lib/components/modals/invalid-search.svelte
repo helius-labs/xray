@@ -2,11 +2,11 @@
     import type { Icon as IconType } from "src/lib/types";
     import Icon from "$lib/components/icon.svelte";
     const supportedSearches: Array<[IconType, string]> = [
-        ["globe", "Bonfida .sol Domains"],
-        // ["backpack", "xNFT Backpack Usernames"], wen?
-        ["person", "Wallet/Account Addresses"],
-        ["coins", "Token Addresses"],
-        ["lightning", "Transaction Signatures"],
+        ["globe", "Bonfida .sol domains"],
+        ["backpack", "xNFT Backpack usernames like @backpack yourname"],
+        ["person", "Wallet/Account addresses"],
+        ["coins", "Token addresses"],
+        ["lightning", "Transaction signatures"],
     ];
 </script>
 

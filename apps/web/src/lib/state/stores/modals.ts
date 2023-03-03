@@ -6,6 +6,10 @@ import { modals } from "$lib/config";
 
 export const modalsStore = writable<Modal | undefined>();
 
-export const showModal = (id: Modals) => modalsStore.set(modals[id]);
+export const showModal = (id: Modals, props?: Record<string, any>) =>
+    modalsStore.set({
+        ...modals[id],
+        props,
+    });
 
 export const hideModal = () => modalsStore.set(undefined);
