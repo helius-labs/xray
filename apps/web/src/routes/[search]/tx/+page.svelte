@@ -134,7 +134,7 @@
                                 This transaction has successfully processed.
                             </h3>
                         </div>
-                        <div class="badge-success badge mr-1">Success</div>
+                        <div class="badge badge-success mr-1">Success</div>
                     </div>
                 </div>
             </div>
@@ -164,6 +164,36 @@
                             </h3>
                         </div>
                         <p class="text-xs md:text-sm">{data.fee} SOL</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3 px-3">
+                <div
+                    class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+                >
+                    <div class="col-span-2 p-1 md:col-span-1">
+                        <div
+                            class="center ml-1 h-10 w-10 rounded-full bg-secondary"
+                        >
+                            <Icon
+                                id="box"
+                                size="sm"
+                            />
+                        </div>
+                    </div>
+                    <div
+                        class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="text-lg font-semibold md:text-sm">
+                                Block
+                            </h4>
+                            <h3 class="mr-2 text-xs opacity-50">
+                                The block this transaction happened on. 
+                            </h3>
+                        </div>
+                        <p class="text-xs md:text-sm">{data?.raw?.slot}</p>
                     </div>
                 </div>
             </div>
@@ -233,6 +263,26 @@
                     </div>
                 </Collapse>
             </div>
+
+            {#if rawData}
+                <div class="px-3 pt-3">
+                    <Collapse
+                        sectionTitle="Log Messages"
+                        showDetails={Boolean(
+                            $transaction?.data?.type === "UNKNOWN"
+                        )}
+                        hideIcon={true}
+                    >
+                        {#each rawData?.transaction?.meta?.logMessages as message}
+                            <p class="px-3 text-xs">
+                                <span class="mr-1 text-success">></span><span
+                                    class="text-neutral">{message}</span
+                                >
+                            </p>
+                        {/each}
+                    </Collapse>
+                </div>
+            {/if}
         {/if}
     </div>
 {/if}
