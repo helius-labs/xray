@@ -85,25 +85,13 @@ export async function GET({ params }: RequestEvent) {
     } else if (probablyBackpackName) {
         const username = search.slice(10);
 
-        const url = `https://xnft-api-server.xnfts.dev/v1/users/fromUsername?username=${username}`;
+        const url = `https://backpack-api.xnfts.dev/users/primarySolPubkey/${username}`;
 
         const response = await fetch(url);
 
-        const { user } = await response.json();
+        const { publicKey = "" } = await response.json();
 
-        const addresses = user?.publicKeys.reduce(
-            // @ts-ignore
-            (acc, { publicKey, blockchain }) => {
-                if (blockchain === "solana") {
-                    return [publicKey, ...acc];
-                }
-
-                return acc;
-            },
-            []
-        );
-
-        if (!addresses?.length) {
+        if (!publicKey) {
             return json({
                 data: {
                     url: `/`,
@@ -119,7 +107,7 @@ export async function GET({ params }: RequestEvent) {
             isToken: false,
             isTransaction: true,
             search: params.search || "",
-            url: `${addresses[0]}/wallet`,
+            url: `${publicKey}/wallet`,
             valid: true,
         };
 
