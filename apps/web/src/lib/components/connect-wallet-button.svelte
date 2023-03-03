@@ -20,7 +20,7 @@
 
 {#if mobileNav}
     <button
-        class="bg-faint btn-outline btn w-full"
+        class="bg-faint btn-outline btn"
         on:click|preventDefault={connectWallet}
     >
         <span class="hidden text-sm md:block"
@@ -35,7 +35,7 @@
     </button>
 {:else}
     <button
-        class="bg-faint btn-outline btn"
+        class="bg-faint btn-outline btn w-full"
         on:click|preventDefault={connectWallet}
     >
         <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>

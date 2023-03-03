@@ -21,6 +21,8 @@
 
     import Icon from "$lib/components/icon.svelte";
 
+    import ConnectWalletButton from "$lib/components/connect-wallet-button.svelte";
+
     import { recentSearchesKey } from "$lib/config";
 
     export let inputEl: HTMLInputElement | null = null;
@@ -40,7 +42,6 @@
     let inputValue: string = "";
     let isSearching = false;
     let connected = false;
-    let isBackpack = false;
     let recent = [] as SearchResult[];
 
     let showSearchError = () => "";
@@ -125,9 +126,6 @@
 
     onMount(() => {
         recent = getRecentSearches();
-
-        isBackpack =
-            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
     });
 
     $: if ($walletStore.connected && !connected) {
@@ -242,11 +240,10 @@
         >
             <span class="text-sm">Go</span>
         </button>
-        <button
-            class="bg-faint btn-outline btn col-span-3 mb-4 md:order-first"
-            on:click|preventDefault={connectWallet}
+        <div
+            class="col-span-3 mb-4 md:order-first"
         >
-            <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>
-        </button>
+            <ConnectWalletButton mobileNav={false} />
+        </div>
     </div>
 {/if}

@@ -9,6 +9,7 @@
     import Search from "$lib/components/search.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
     import Stats from "$lib/components/stats.svelte";
+    import ConnectWalletButton from "./connect-wallet-button.svelte";
 </script>
 
 <nav
@@ -43,7 +44,11 @@
         {/if}
     </div>
 
-    <div class="col-span-2 flex items-center justify-end">
+    <div class="col-span-3 flex items-center justify-end">
+        <Search />
+        <div class="ml-2">
+            <ConnectWalletButton />
+        </div>
         <div class="flex justify-end pr-2">
             <a href="#modal-menu">
                 <div class="btn-ghost btn">
