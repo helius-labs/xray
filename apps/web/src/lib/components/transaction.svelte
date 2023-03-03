@@ -202,34 +202,6 @@
                                                                         ?.actionType
                                                                 ].label}
                                                             </p>
-
-                                                            {#if action.to}
-                                                                <p
-                                                                    class="mx-1 text-neutral"
-                                                                >
-                                                                    to
-                                                                </p>
-                                                                <a
-                                                                    data-sveltekit-reload
-                                                                    href="/{action.to}/wallet"
-                                                                    class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
-                                                                >
-                                                                    {shortenString(
-                                                                        action.to
-                                                                    )}
-                                                                </a>
-                                                            {:else if action.from}
-                                                                <p>from</p>
-                                                                <a
-                                                                    data-sveltekit-reload
-                                                                    href="/{action.from}/wallet"
-                                                                    class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
-                                                                >
-                                                                    {shortenString(
-                                                                        action.from
-                                                                    )}
-                                                                </a>
-                                                            {/if}
                                                         </h3>
                                                     {:else if !action?.actionType?.includes("NFT")}
                                                         <div class="flex">
