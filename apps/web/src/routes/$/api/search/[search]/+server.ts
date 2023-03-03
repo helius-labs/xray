@@ -115,8 +115,6 @@ export async function GET({ params }: RequestEvent) {
             valid: true,
         };
 
-        console.log({ data });
-
         return json({ data });
     }
 
