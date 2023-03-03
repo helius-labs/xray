@@ -31,6 +31,7 @@
     $: if (address === SOL) {
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
+        metadata.address = SOL;
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};
