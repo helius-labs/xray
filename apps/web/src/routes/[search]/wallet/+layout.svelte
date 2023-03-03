@@ -110,7 +110,7 @@
                     class:tab-active={$page.url.pathname.endsWith("wallet")}
                     >Transactions</button
                 >
-                <button
+                <!-- <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(
                         "wallet/nfts"
@@ -118,7 +118,7 @@
                     on:click={() =>
                         (window.location.href = `/${$page.params.search}/wallet/nfts`)}
                     >NFTs</button
-                >
+                > -->
                 <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(

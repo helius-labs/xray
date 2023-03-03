@@ -77,8 +77,8 @@
                         />
                     {:else}
                         <Icon
-                            id="dots"
-                            size="md"
+                            id="fullscreen"
+                            size="sm"
                         />
                     {/if}
                 </button>

@@ -5,13 +5,13 @@
 
     import { page } from "$app/stores";
 
-    import { fade, fly } from "svelte/transition";
+    import { fly } from "svelte/transition";
 
     import { trpcWithQuery } from "$lib/trpc/client";
 
+    import Account from "$lib/components/account-data.svelte";
     import shortenAddress from "$lib/util/shorten-string";
 
-    import Account from "$lib/components/account-data.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
@@ -20,7 +20,6 @@
     import Collapse from "src/lib/components/collapse.svelte";
 
     let animate = false;
-    let showCode = false;
 
     const signature = $page.params.search;
 
@@ -62,10 +61,10 @@
     >
         <CopyButton
             success="Copied Address"
-            text={$page.url.href}
+            text={$page.params.search}
         />
         <CopyButton
-            icon="share"
+            icon="link"
             success="Copied Link"
             text={$page.url.href}
         />
@@ -88,12 +87,8 @@
                 </div>
             {/each}
         {:else if data}
-            <div class="pb-5 pl-3 pr-3 md:pl-0">
-                <Transaction
-                    transaction={data}
-                    moreDetails={true}
-                    copyButtons={true}
-                />
+            <div class="px-3 pb-5">
+                <Transaction transaction={data} />
             </div>
 
             <div class="mb-3">

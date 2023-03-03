@@ -41,7 +41,7 @@ export const transactions = t.procedure
         const result = json.map((tx) => parseTransaction(tx, input.user)) || [];
 
         return {
-            oldest: json[json.length - 1].signature,
+            oldest: json[json.length - 1]?.signature,
             result,
         };
     });

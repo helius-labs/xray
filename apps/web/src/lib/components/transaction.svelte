@@ -4,7 +4,7 @@
         ProtonTransaction,
     } from "@helius-labs/xray-proton";
 
-    import { page } from "$app/stores";
+    import { ProtonCustomActionLabelTypes } from "@helius-labs/xray-proton";
 
     import { fade, fly } from "svelte/transition";
 
@@ -13,10 +13,7 @@
     import formatDate from "$lib/util/format-date";
 
     export let transaction: ProtonTransaction;
-    export let copyButtons = false;
-    export let moreDetails = false;
 
-    import CopyButton from "$lib/components/copy-button.svelte";
     import Icon from "$lib/components/icon.svelte";
     import IntersectionObserver from "svelte-intersection-observer";
     import shortenString from "../util/shorten-string";
@@ -34,12 +31,20 @@
     const metadata = supported
         ? transactionActionsMetadata[transaction.type as ProtonActionType]
         : transactionActionsMetadata["UNKNOWN"];
+
+    const formatSource = (str: string) =>
+        str
+            .split("_")
+            .map(
+                (word: string) =>
+                    word.slice(0, 1) + word.slice(1, word.length).toLowerCase()
+            )
+            .join(" ");
 </script>
 
 <div>
-    <button
-        on:click|self={() =>
-            (window.location.href = `/${transaction.signature}/tx`)}
+    <a
+        href="/{transaction.signature}/tx"
         class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
     >
         <div
@@ -57,20 +62,31 @@
                     </div>
                 </div>
             </div>
-            <div class="pointer-events-none col-span-12 px-3 pl-6">
+            <div class="pointer-events-none col-span-12 mb-2 px-3 pl-6">
                 <div class="flex justify-between">
                     <div>
                         <h3 class="text-xl font-semibold">
                             {metadata.label}
                         </h3>
-                        <a
-                            href="/{transaction.signature}/tx"
-                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
-                        >
-                            {transaction.signature
-                                ? shortenString(transaction.signature, 8)
-                                : "Unknown"}
-                        </a>
+                        <div class="flex text-xs">
+                            <div class="mr-2 rounded">
+                                {formatSource(transaction.source)}
+                            </div>
+                            <div class="mr-2 rounded">
+                                <a
+                                    data-sveltekit-reload
+                                    href="/{transaction.signature}/tx"
+                                    class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
+                                >
+                                    {transaction.signature
+                                        ? shortenString(
+                                              transaction.signature,
+                                              8
+                                          )
+                                        : "Unknown"}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     <h3 class="ml-2 mt-1 text-xs opacity-50">
                         {formatDate(transaction.timestamp)}
@@ -147,7 +163,7 @@
                                             class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
                                         >
                                             <div
-                                                class="col-span-2 p-1 md:col-span-1"
+                                                class="col-span-2 flex items-center p-1 md:col-span-1"
                                             >
                                                 <button
                                                     on:click={() =>
@@ -172,41 +188,112 @@
                                                         {metadata?.name ||
                                                             "Unknown"}
                                                     </h4>
+                                                    {#if Object.keys(ProtonCustomActionLabelTypes).includes(action.actionType)}
+                                                        <h3
+                                                            class="flex text-xs"
+                                                        >
+                                                            <p
+                                                                class="link-neutral"
+                                                            >
+                                                                {transactionActionsMetadata[
+                                                                    action
+                                                                        ?.actionType
+                                                                ].label} via
+                                                            </p>
 
-                                                    {#if !action?.actionType?.includes("NFT")}
+                                                            <a
+                                                                data-sveltekit-reload
+                                                                href="/{action.to}/wallet"
+                                                                class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                            >
+                                                                {shortenString(
+                                                                    action.from ||
+                                                                        action.to
+                                                                )}
+                                                            </a>
+                                                        </h3>
+                                                    {:else if !action?.actionType?.includes("NFT")}
                                                         <div class="flex">
-                                                            {#if action.from}
-                                                                <h3
-                                                                    class="mr-2 text-xs"
+                                                            {#if action?.actionType?.includes("SENT") && action.to}
+                                                                <p
+                                                                    class="mr-1 text-xs opacity-50"
                                                                 >
-                                                                    <button
-                                                                        on:click|self={() =>
-                                                                            (window.location.href = `/${action.from}/wallet`)}
-                                                                        class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
-                                                                    >
-                                                                        {shortenString(
-                                                                            action.from
-                                                                        )}
-                                                                    </button>
-                                                                </h3>
-                                                            {/if}
-                                                            <Icon
-                                                                id="arrowRight"
-                                                            />
-                                                            {#if action.to}
+                                                                    Sent to
+                                                                </p>
+
                                                                 <h3
                                                                     class="ml-2 text-xs"
                                                                 >
-                                                                    <button
-                                                                        on:click|self={() =>
-                                                                            (window.location.href = `/${action.to}/wallet`)}
+                                                                    <a
+                                                                        data-sveltekit-reload
+                                                                        href="/{action.to}/wallet"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
                                                                         {shortenString(
                                                                             action.to
                                                                         )}
-                                                                    </button>
+                                                                    </a>
                                                                 </h3>
+                                                            {:else if action?.actionType?.includes("RECEIVED") && action.from}
+                                                                <p
+                                                                    class="mr-2 text-xs opacity-50"
+                                                                >
+                                                                    Received
+                                                                    from
+                                                                </p>
+
+                                                                <h3
+                                                                    class="ml-2 text-xs"
+                                                                >
+                                                                    <a
+                                                                        href="/{action.from}/wallet"
+                                                                        class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                    >
+                                                                        {shortenString(
+                                                                            action.from
+                                                                        )}
+                                                                    </a>
+                                                                </h3>
+                                                            {:else}
+                                                                {#if action.from}
+                                                                    <h3
+                                                                        class="mr-1 text-xs"
+                                                                    >
+                                                                        <a
+                                                                            data-sveltekit-reload
+                                                                            href="/{action.from}/wallet"
+                                                                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                        >
+                                                                            {shortenString(
+                                                                                action.from
+                                                                            )}
+                                                                        </a>
+                                                                    </h3>
+                                                                {/if}
+
+                                                                <div
+                                                                    class="mr-1"
+                                                                >
+                                                                    <Icon
+                                                                        id="arrowRight"
+                                                                    />
+                                                                </div>
+
+                                                                {#if action.to}
+                                                                    <h3
+                                                                        class="text-xs"
+                                                                    >
+                                                                        <a
+                                                                            data-sveltekit-reload
+                                                                            href="/{action.to}/wallet"
+                                                                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                        >
+                                                                            {shortenString(
+                                                                                action.to
+                                                                            )}
+                                                                        </a>
+                                                                    </h3>
+                                                                {/if}
                                                             {/if}
                                                         </div>
                                                     {/if}
@@ -249,5 +336,5 @@
                 </IntersectionObserver>
             {/if}
         {/each}
-    </button>
+    </a>
 </div>

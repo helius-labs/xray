@@ -27,7 +27,7 @@
                                 on:click={() =>
                                     (window.location.href = `/${token.mint}/token`)}
                                 class=" block aspect-square h-full w-full overflow-hidden rounded-lg border bg-cover bg-center hover:border-primary"
-                                style="background-image: url({metadata?.image})"
+                                style="basckground-image: url({metadata?.image})"
                             />
                         {:else}
                             <div
