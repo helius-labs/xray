@@ -78,7 +78,7 @@
                                 <h4
                                     class="font-semibold md:text-4xl md:text-sm"
                                 >
-                                    {metadata?.name || "Unknown"}
+                                    {metadata?.name || ""}
                                 </h4>
                             </div>
                             <div>
