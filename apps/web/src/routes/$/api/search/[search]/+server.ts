@@ -103,13 +103,21 @@ export async function GET({ params }: RequestEvent) {
             []
         );
 
+        if (!addresses?.length) {
+            return json({
+                data: {
+                    url: `/`,
+                    valid: false,
+                },
+            });
+        }
+
         const data: SearchResult = {
             address: params.search || "",
             isAccount: false,
             isDomain: false,
             isToken: false,
             isTransaction: true,
-            multi: addresses.length > 1 ? addresses : false,
             search: params.search || "",
             url: `${addresses[0]}/wallet`,
             valid: true,
