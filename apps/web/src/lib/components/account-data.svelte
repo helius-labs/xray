@@ -2,10 +2,12 @@
     import type { ProtonAccount } from "@helius-labs/xray-proton";
 
     import TokenProvider from "./providers/token-provider.svelte";
+    import Namor from "./providers/namor-provider.svelte";
 
     import { fade } from "svelte/transition";
 
     import shortenString from "$lib/util/shorten-string";
+    import CopyButton from "./copy-button.svelte";
 
     export let data: ProtonAccount;
 </script>
@@ -15,18 +17,34 @@
         class="relative mb-5 block w-full rounded-lg border-transparent bg-black px-3"
     >
         {#if data.changes}
-            <div>
-                <a
-                    href="/{data.account}/wallet"
-                    class="order link-primary pointer-events-auto  flex border-x-0 border-t-0 border-dotted font-semibold hover:link-success md:text-sm"
-                >
-                    <h3 class="text-md">
-                        {shortenString(data.account, 8)}
-                    </h3>
-                </a>
+            <Namor
+                text={data.account}
+                let:result
+            >
+                <div>
+                    <div class="flex justify-between">
+                        <div>
+                            <h3
+                                class="text-md tooltip tooltip-bottom tooltip-secondary"
+                                data-tip="A nickname generated for this account"
+                            >
+                                {result}
+                            </h3>
+                            <div class="flex items-center">
+                                <a
+                                    href="/{data.account}/wallet"
+                                    class="order link-neutral pointer-events-auto  flex border-x-0 border-t-0 border-dotted text-xs hover:link-success"
+                                >
+                                    {shortenString(data.account)}
+                                </a>
+                                <CopyButton text={data.account} />
+                            </div>
+                        </div>
+                    </div>
 
-                <div class="mb-3 mt-1 border border-x-0 border-t-0" />
-            </div>
+                    <div class="mb-3 mt-1 border border-x-0 border-t-0" />
+                </div>
+            </Namor>
             {#each data.changes as change}
                 {#if change.amount}
                     <TokenProvider

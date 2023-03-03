@@ -69,7 +69,10 @@
     <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
         <div class="flex flex-wrap items-center justify-between bg-base-100">
             <div>
-                <h3 class="relative m-0 text-lg font-bold md:text-2xl">
+                <h3
+                    class="tooltip tooltip-bottom tooltip-secondary relative m-0 text-lg font-bold md:text-2xl"
+                    data-tip="A nickname generated for this account"
+                >
                     {result}
                 </h3>
                 <div class="relative flex items-center">
