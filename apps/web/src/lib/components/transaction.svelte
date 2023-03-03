@@ -69,9 +69,11 @@
                             {metadata.label}
                         </h3>
                         <div class="flex text-xs">
-                            <div class="mr-2 rounded">
-                                {formatSource(transaction.source)}
-                            </div>
+                            {#if transaction.source !== "UNKNOWN" && transaction.source !== "SOLANA_PROGRAM_LIBRARY"}
+                                <div class="mr-2 rounded">
+                                    {formatSource(transaction.source)}
+                                </div>
+                            {/if}
                             <div class="mr-2 rounded">
                                 <a
                                     data-sveltekit-reload
@@ -81,7 +83,7 @@
                                     {transaction.signature
                                         ? shortenString(
                                               transaction.signature,
-                                              8
+                                              4
                                           )
                                         : "Unknown"}
                                 </a>
@@ -173,7 +175,7 @@
                                                     <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                                     <div
                                                         style="background-image: url('{metadata.image}')"
-                                                        class="aspect-square w-full rounded-lg bg-cover"
+                                                        class="aspect-square w-8 rounded-lg bg-cover"
                                                     />
                                                 </button>
                                             </div>
@@ -198,25 +200,42 @@
                                                                 {transactionActionsMetadata[
                                                                     action
                                                                         ?.actionType
-                                                                ].label} via
+                                                                ].label}
                                                             </p>
 
-                                                            <a
-                                                                data-sveltekit-reload
-                                                                href="/{action.to}/wallet"
-                                                                class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
-                                                            >
-                                                                {shortenString(
-                                                                    action.from ||
+                                                            {#if action.to}
+                                                                <p
+                                                                    class="mx-1 text-neutral"
+                                                                >
+                                                                    to
+                                                                </p>
+                                                                <a
+                                                                    data-sveltekit-reload
+                                                                    href="/{action.to}/wallet"
+                                                                    class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                >
+                                                                    {shortenString(
                                                                         action.to
-                                                                )}
-                                                            </a>
+                                                                    )}
+                                                                </a>
+                                                            {:else if action.from}
+                                                                <p>from</p>
+                                                                <a
+                                                                    data-sveltekit-reload
+                                                                    href="/{action.from}/wallet"
+                                                                    class="link-neutral pointer-events-auto ml-1 border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                >
+                                                                    {shortenString(
+                                                                        action.from
+                                                                    )}
+                                                                </a>
+                                                            {/if}
                                                         </h3>
                                                     {:else if !action?.actionType?.includes("NFT")}
                                                         <div class="flex">
                                                             {#if action?.actionType?.includes("SENT") && action.to}
                                                                 <p
-                                                                    class="mr-1 text-xs opacity-50"
+                                                                    class="mr-1 text-xs text-neutral"
                                                                 >
                                                                     Sent to
                                                                 </p>
@@ -236,7 +255,7 @@
                                                                 </h3>
                                                             {:else if action?.actionType?.includes("RECEIVED") && action.from}
                                                                 <p
-                                                                    class="mr-2 text-xs opacity-50"
+                                                                    class="mr-2 text-xs text-neutral"
                                                                 >
                                                                     Received
                                                                     from

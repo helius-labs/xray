@@ -1,6 +1,6 @@
 <script lang="ts">
-    // @ts-ignore
     import Icon from "$lib/components/icon.svelte";
+    // @ts-ignore
     import formatHighlight from "json-format-highlight";
     import { fade } from "svelte/transition";
 
@@ -23,9 +23,7 @@
     class="mb-3"
     in:fade={{ duration: 500 }}
 >
-    <div
-        class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
-    >
+    <div class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1">
         <div class="col-span-2 p-1 md:col-span-1">
             <div class="center h-10 w-10 rounded-full bg-secondary">
                 <Icon

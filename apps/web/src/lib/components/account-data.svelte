@@ -1,35 +1,34 @@
 <script lang="ts">
-    import type {
-        ProtonAccount,
-        ProtonAccountChange,
-    } from "@helius-labs/xray-proton";
-    import { fade } from "svelte/transition";
-    import shortenString from "../util/shorten-string";
+    import type { ProtonAccount } from "@helius-labs/xray-proton";
+
     import TokenProvider from "./providers/token-provider.svelte";
+
+    import { fade } from "svelte/transition";
+
+    import shortenString from "$lib/util/shorten-string";
 
     export let data: ProtonAccount;
 </script>
 
 <div>
-    <button
-        on:click|self={() => (window.location.href = `/${data.account}/wallet`)}
-        class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
+    <div
+        class="relative mb-5 block w-full rounded-lg border-transparent bg-black px-3"
     >
-        <div
-            class="pointer-events-none relative top-3 mb-2 grid grid-cols-12 gap-3 rounded-lg p-2"
-        >
-            <div class="pointer-events-none col-span-12 px-3 pl-6">
+        {#if data.changes}
+            <div>
                 <a
                     href="/{data.account}/wallet"
-                    class="link-primary pointer-events-auto text-xl font-semibold hover:link-success"
+                    class="order link-primary pointer-events-auto  flex border-x-0 border-t-0 border-dotted font-semibold hover:link-success md:text-sm"
                 >
-                    {shortenString(data.account, 8)}
+                    <h3 class="text-md">
+                        {shortenString(data.account, 8)}
+                    </h3>
                 </a>
+
+                <div class="mb-3 mt-1 border border-x-0 border-t-0" />
             </div>
-        </div>
-        {#if data.changes}
             {#each data.changes as change}
-                <div class="ml-3">
+                {#if change.amount}
                     <TokenProvider
                         address={change.mint}
                         let:metadata
@@ -44,6 +43,7 @@
                                         class="aspect-square w-full rounded-full bg-secondary"
                                     />
                                 </div>
+
                                 <div
                                     class="col-span-10 flex items-center justify-between md:col-span-11"
                                 >
@@ -62,56 +62,52 @@
                             </div>
                         {:else if metadata?.image}
                             <div
-                                class="my-2 w-full rounded-lg text-left"
+                                class="mb-5 ml-3 w-full rounded-lg text-left"
                                 in:fade={{
                                     duration: 500,
                                 }}
                             >
                                 <div
-                                    class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
+                                    class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg"
                                 >
-                                    <div class="col-span-2 p-1 md:col-span-1">
-                                        <button
-                                            on:click={() =>
-                                                (window.location.href = `/${metadata.address}/token`)}
-                                            class="pointer-events-auto mx-2 w-full transition-transform hover:scale-125"
+                                    <div class="col-span-">
+                                        <a
+                                            href="/{metadata.address}/token"
+                                            class="pointer-events-auto block transition-transform hover:scale-125"
                                         >
-                                            <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                             <div
                                                 style="background-image: url('{metadata.image}')"
-                                                class="aspect-square w-full rounded-lg bg-cover"
+                                                class="aspect-square w-6 rounded-lg  bg-cover object-contain"
                                             />
-                                        </button>
+                                        </a>
                                     </div>
+
                                     <div
                                         class="pointer-events-none col-span-10 flex items-center justify-between md:col-span-11"
                                     >
                                         <div>
                                             <a
                                                 href="/{metadata.address}/token"
-                                                class="link-primary pointer-events-auto text-lg font-semibold hover:link-success md:text-sm"
+                                                class="pointer-events-auto text-xs text-neutral hover:link-success"
                                             >
                                                 {metadata?.name || "Unknown"}
                                             </a>
                                         </div>
                                         <div class="mr-2">
-                                            <div
-                                                class="absolute top-1/2 -left-3 h-0.5 w-3 -translate-y-1/2 rounded-full bg-secondary"
-                                            />
                                             {#if change.amount > 0}
                                                 <h3
-                                                    class="text-bold text-success"
+                                                    class="text-bold text-sm text-success"
                                                 >
                                                     + {change.amount}
                                                 </h3>
                                             {:else if change.amount < 0}
                                                 <h3
-                                                    class="text-bold text-error"
+                                                    class="text-bold text-sm text-error"
                                                 >
-                                                    - {Math.abs(change.amount)}
+                                                    {change.amount}
                                                 </h3>
                                             {:else}
-                                                <h3 class="text-bold">
+                                                <h3 class="text-bold text-sm">
                                                     {change.amount}
                                                 </h3>
                                             {/if}
@@ -121,8 +117,8 @@
                             </div>
                         {/if}
                     </TokenProvider>
-                </div>
+                {/if}
             {/each}
         {/if}
-    </button>
+    </div>
 </div>

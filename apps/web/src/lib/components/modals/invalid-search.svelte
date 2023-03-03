@@ -11,8 +11,7 @@
 </script>
 
 <p class="mb-3">
-    Invalid search. Make sure you provided a valid search that contains one of
-    the following.
+    Make sure you provided a valid search that contains one of the following.
 </p>
 
 <strong class="uppercase">Supported Searches</strong>

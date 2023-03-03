@@ -24,7 +24,7 @@
                 : ""}
         >
             <div class="title flex items-center justify-between">
-                <div>{$modalsStore.title}</div>
+                <h3 class="ml-3">{$modalsStore.title}</h3>
                 <div>
                     <button
                         class="btn-ghost btn-md btn"

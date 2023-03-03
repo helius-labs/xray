@@ -60,12 +60,12 @@
         on:keydown|preventDefault
     >
         <CopyButton
-            success="Copied Address"
+            success=""
             text={$page.params.search}
         />
         <CopyButton
             icon="link"
-            success="Copied Link"
+            success=""
             text={$page.url.href}
         />
     </div>
@@ -79,6 +79,7 @@
             opacity: 0,
             y: 50,
         }}
+        class="pl-2 md:pl-0"
     >
         {#if $transaction.isLoading}
             {#each Array(3) as _}
@@ -87,11 +88,27 @@
                 </div>
             {/each}
         {:else if data}
-            <div class="px-3 pb-5">
+            <div class="px-3">
                 <Transaction transaction={data} />
             </div>
 
-            <div class="mb-3">
+            {#if data.accounts}
+                <div class="px-3 pt-3">
+                    <Collapse
+                        sectionTitle="Account Changes"
+                        showDetails={Boolean(
+                            $transaction?.data?.type === "UNKNOWN"
+                        )}
+                        hideIcon={true}
+                    >
+                        {#each data.accounts as account}
+                            <Account data={account} />
+                        {/each}
+                    </Collapse>
+                </div>
+            {/if}
+
+            <div class="mb-3 px-3">
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
@@ -121,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
+            <div class="mb-3 px-3">
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
@@ -146,7 +163,7 @@
                                 Cost for processing this transaction.
                             </h3>
                         </div>
-                        <p>{data.fee} SOL</p>
+                        <p class="text-xs md:text-sm">{data.fee} SOL</p>
                     </div>
                 </div>
             </div>
@@ -154,7 +171,7 @@
             {#if data?.raw?.description && !data?.raw?.description
                     .toLowerCase()
                     .includes("unknown")}
-                <div class="mb-3">
+                <div class="mb-3 px-3">
                     <div
                         class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1"
                     >
@@ -183,25 +200,11 @@
                     </div>
                 </div>
             {/if}
-            {#if data.accounts}
-                <div class="py-3">
-                    <Collapse
-                        sectionTitle="Account Data"
-                        showDetails={false}
-                        hideIcon={true}
-                    >
-                        {#each data.accounts as account}
-                            <div class="pb-5 pl-3 pr-3 md:pl-0">
-                                <Account data={account} />
-                            </div>
-                        {/each}
-                    </Collapse>
-                </div>
-            {/if}
-            <div>
+
+            <div class="px-3">
                 <Collapse
                     sectionTitle="Transaction Data"
-                    showDetails={false}
+                    showDetails={true}
                     hideIcon={true}
                 >
                     <div class="mb-3">
@@ -209,12 +212,16 @@
                             data={rest}
                             label="proton"
                         />
+                        <div class="mb-3 mt-1 border border-x-0 border-t-0" />
                     </div>
                     {#if data?.raw}
                         <div class="mb-3">
                             <JSON
                                 data={data?.raw}
                                 label="enriched"
+                            />
+                            <div
+                                class="mb-3 mt-1 border border-x-0 border-t-0"
                             />
                         </div>
                     {/if}

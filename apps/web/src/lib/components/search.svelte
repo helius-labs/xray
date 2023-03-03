@@ -233,23 +233,17 @@
 </div>
 
 {#if size === "lg"}
-    <div class="relative z-10 grid grid-cols-1 py-2 md:grid-cols-3">
+    <div
+        class="relative z-10 grid grid-flow-dense grid-cols-1 py-2 md:grid-cols-4"
+    >
         <button
-            class="bg-faint btn-outline btn mb-4"
-            on:click|preventDefault={clearSearch}
+            class="bg-faint btn-outline btn col-span-1 mb-4 md:ml-2"
+            on:click|preventDefault={newSearch}
         >
-            <span class="text-sm">Clear</span>
+            <span class="text-sm">Go</span>
         </button>
-
         <button
-            class="bg-faint btn-outline btn mb-4 md:ml-2"
-            on:click|preventDefault={setFromClipboard}
-        >
-            <span class="text-sm">Paste</span>
-        </button>
-
-        <button
-            class="bg-faint btn-outline btn mb-4 md:ml-2"
+            class="bg-faint btn-outline btn col-span-3 mb-4 md:order-first"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>
