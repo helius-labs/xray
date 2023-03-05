@@ -3,7 +3,7 @@
 </script>
 
 <Modal id="menu">
-    {#each [{ name: "Home", url: "/" }, { name: "About Helius APIs", url: "https://helius.xyz" }, { name: "Contribute", url: "https://github.com/helius-labs/xray" }, { name: "Join Discord", url: "https://discord.gg/Wkn3uuSby7" }] as { name, url }}
+    {#each [{ name: "Home", url: "/" }, { name: "About Helius APIs", url: "https://helius.xyz" }, { name: "Join Discord", url: "https://discord.gg/8Qxk7PmArt" }, { name: "Twitter", url: "https://twitter.com/xray_explorer" }] as { name, url }}
         <a
             href={url}
             class="btn-ghost btn w-full">{name}</a
