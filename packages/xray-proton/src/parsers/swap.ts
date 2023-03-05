@@ -52,7 +52,6 @@ export const parseSwap = (
     const accounts: ProtonAccount[] = [];
 
     if (source === "HADESWAP") {
-        address = undefined;
         traverseTokenTransfers(tokenTransfers, actions, address);
         traverseNativeTransfers(nativeTransfers, actions, address);
     } else {
