@@ -48,6 +48,13 @@ export const parseUnknown = (
     const actions: ProtonTransactionAction[] = [];
     const accounts: ProtonAccount[] = [];
 
+    if (
+        transaction.instructions &&
+        transaction?.instructions?.programId ===
+            "xnft5aaToUM4UFETUQfj7NUDUBdvYHTVhNFThEYTm55"
+    ) {
+    }
+
     traverseTokenTransfers(tokenTransfers, actions, address);
     traverseNativeTransfers(nativeTransfers, actions, address);
     traverseAccountData(accountData, accounts);
