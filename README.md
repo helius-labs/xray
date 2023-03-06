@@ -1,8 +1,6 @@
-![](/doc/xray.png)
+# Project XRAY
 
-# Project X-Ray
-
-An intuitive Solana transaction explorer powered by Helius.
+A human-readable Solana transaction explorer powered by Helius.
 
 ## 🚀 Deployments
 
