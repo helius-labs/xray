@@ -48,6 +48,8 @@ export enum ProtonSupportedActionType {
     "BORROW_FOX",
     "LOAN_FOX",
     "EXECUTE_TRANSACTION",
+    "XNFT_INSTALL",
+    "XNFT_UNINSTALL",
 }
 
 export const ProtonCustomActionLabelTypes = {
@@ -55,6 +57,8 @@ export const ProtonCustomActionLabelTypes = {
     BURN: "Burned",
     BURN_NFT: "Burned NFT",
     FREEZE: "Frozen",
+    XNFT_INSTALL: "xNFT Install",
+    XNFT_UNINSTALL: "xNFT Uninstall",
 };
 
 export type ProtonParser = (
