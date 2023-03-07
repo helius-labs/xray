@@ -1,5 +1,10 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import type { EnrichedTransaction, Source, TokenTransfer } from "helius-sdk";
+import type {
+    EnrichedTransaction,
+    Source,
+    TokenTransfer,
+    TransactionType,
+} from "helius-sdk";
 import {
     ProtonAccount,
     ProtonTransaction,
@@ -23,6 +28,7 @@ export const parseUnknown = (
         accountData,
         tokenTransfers,
         nativeTransfers,
+        instructions,
     } = transaction;
 
     const fee = transaction.fee / LAMPORTS_PER_SOL;
@@ -48,9 +54,49 @@ export const parseUnknown = (
     const actions: ProtonTransactionAction[] = [];
     const accounts: ProtonAccount[] = [];
 
+    traverseAccountData(accountData, accounts);
+
+    if (
+        instructions &&
+        instructions[0].programId ===
+            "xnft5aaToUM4UFETUQfj7NUDUBdvYHTVhNFThEYTm55"
+    ) {
+        let type = "XNFT_INSTALL" as TransactionType;
+        if (instructions[0].accounts.length === 6) {
+            actions.push({
+                actionType: "XNFT_INSTALL",
+                amount: 0,
+                from: "",
+                fromName: undefined,
+                to: "",
+                toName: undefined,
+            });
+            type = "XNFT_INSTALL" as TransactionType;
+        } else if (instructions[0].accounts.length === 3) {
+            actions.push({
+                actionType: "XNFT_UNINSTALL",
+                amount: 0,
+                from: "",
+                fromName: undefined,
+                to: "",
+                toName: undefined,
+            });
+            type = "XNFT_UNINSTALL" as TransactionType;
+        }
+        return {
+            accounts,
+            actions,
+            fee,
+            primaryUser,
+            signature,
+            source,
+            timestamp,
+            type,
+        };
+    }
+
     traverseTokenTransfers(tokenTransfers, actions, address);
     traverseNativeTransfers(nativeTransfers, actions, address);
-    traverseAccountData(accountData, accounts);
 
     return {
         accounts,
