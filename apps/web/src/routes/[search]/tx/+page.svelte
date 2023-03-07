@@ -134,7 +134,7 @@
                                 This transaction has successfully processed.
                             </h3>
                         </div>
-                        <div class="badge badge-success mr-1">Success</div>
+                        <div class="badge-success badge mr-1">Success</div>
                     </div>
                 </div>
             </div>
@@ -190,10 +190,12 @@
                                 Block
                             </h4>
                             <h3 class="mr-2 text-xs opacity-50">
-                                The block this transaction happened on. 
+                                The slot this transaction happened on.
                             </h3>
                         </div>
-                        <p class="text-xs md:text-sm">{data?.raw?.slot}</p>
+                        <p class="text-xs md:text-sm">
+                            {data?.raw?.slot.toLocaleString()}
+                        </p>
                     </div>
                 </div>
             </div>
