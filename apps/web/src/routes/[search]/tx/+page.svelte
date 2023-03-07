@@ -194,7 +194,7 @@
                             </h3>
                         </div>
                         <p class="text-xs md:text-sm">
-                            {data?.raw?.slot.toLocaleString()}
+                            {data?.raw?.slot?.toLocaleString()}
                         </p>
                     </div>
                 </div>
