@@ -56,11 +56,14 @@
 
 <div class="intro relative flex h-screen w-full items-center">
     <canvas
-        style="background-image: url(/media/gradient.png); z-index:-2;"
+        style="background-image: url(/media/gradient.png);"
         bind:this={sunEl}
         class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
     />
-    <div class="mx-auto w-full max-w-2xl md:-translate-y-1/4">
+    <div
+        class="mx-auto w-full max-w-2xl md:-translate-y-1/4"
+        style="z-index:1;"
+    >
         <div class="mb-10">
             <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
         </div>
