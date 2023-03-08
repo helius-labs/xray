@@ -213,7 +213,7 @@
                                                                 </p>
 
                                                                 <h3
-                                                                    class="ml-2 text-xs"
+                                                                    class="text-xs"
                                                                 >
                                                                     <a
                                                                         data-sveltekit-reload
@@ -227,14 +227,14 @@
                                                                 </h3>
                                                             {:else if action?.actionType?.includes("RECEIVED") && action.from}
                                                                 <p
-                                                                    class="mr-2 text-xs text-neutral"
+                                                                    class="mr-1 text-xs text-neutral"
                                                                 >
                                                                     Received
                                                                     from
                                                                 </p>
 
                                                                 <h3
-                                                                    class="ml-2 text-xs"
+                                                                    class="text-xs"
                                                                 >
                                                                     <a
                                                                         href="/{action.from}/wallet"
