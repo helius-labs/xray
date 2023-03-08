@@ -107,7 +107,7 @@ export async function GET({ params }: RequestEvent) {
             isToken: false,
             isTransaction: true,
             search: params.search || "",
-            url: `${publicKey}/wallet`,
+            url: `/${publicKey}/wallet`,
             valid: true,
         };
 
