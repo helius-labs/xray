@@ -42,19 +42,24 @@
     let clearSearch = () => null;
     let focusInput = () => null;
 
-    onMount(() => {
+    let sunEl;
+
+    onMount(async () => {
         setTimeout(() => {
             focusInput();
         }, 100);
+
+        const { createScene } = await import("$lib/util/sun/sun");
+        createScene(sunEl);
     });
 </script>
 
 <div class="intro relative flex h-screen w-full items-center">
-    <div
-        style="background-image: url(/media/gradient.png);"
+    <canvas
+        style="background-image: url(/media/gradient.png); z-index:-2;"
+        bind:this={sunEl}
         class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
     />
-
     <div class="mx-auto w-full max-w-2xl md:-translate-y-1/4">
         <div class="mb-10">
             <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
