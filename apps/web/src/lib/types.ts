@@ -3,8 +3,8 @@ import type { ComponentType } from "svelte";
 import type { EnrichedTransaction } from "helius-sdk";
 
 import type {
-    ProtonTransaction,
     ProtonActionType,
+    ProtonTransaction,
     ProtonTransactionAction,
 } from "@helius-labs/xray-proton";
 
@@ -53,6 +53,7 @@ export type Icon = keyof typeof IconPaths;
 export interface TransactionActionMetadata {
     icon: Icon;
     label: string;
+    filterLabel?: string;
 }
 
 export interface UITransactionActionGroup {

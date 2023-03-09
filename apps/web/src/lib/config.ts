@@ -1,5 +1,8 @@
 import type { Modal, TransactionActionMetadata } from "$lib/types";
-import type { ProtonActionType } from "@helius-labs/xray-proton";
+import type {
+    ProtonActionType,
+    ProtonSupportedType,
+} from "@helius-labs/xray-proton";
 
 import InvalidSearch from "$lib/components/modals/invalid-search.svelte";
 import Menu from "$lib/components/modals/menu.svelte";
@@ -31,18 +34,22 @@ export const transactionActionsMetadata: Record<
         label: "Airdropped",
     },
     BORROW_FOX: {
+        filterLabel: "Borrow Fox",
         icon: "openHand",
         label: "Borrow Fox",
     },
     BURN: {
+        filterLabel: "Burn",
         icon: "flame",
         label: "Burned",
     },
     BURN_NFT: {
+        filterLabel: "NFT Burn",
         icon: "flame",
         label: "Burned NFT",
     },
     EXECUTE_TRANSACTION: {
+        filterLabel: "Multisig Transaction",
         icon: "lightning",
         label: "Multisig Transaction",
     },
@@ -51,10 +58,12 @@ export const transactionActionsMetadata: Record<
         label: "Frozen",
     },
     LOAN_FOX: {
+        filterLabel: "Loan Fox",
         icon: "handshake",
         label: "Loan Fox",
     },
     NFT_BID: {
+        filterLabel: "NFT Bid",
         icon: "sale",
         label: "NFT Bid",
     },
@@ -71,14 +80,17 @@ export const transactionActionsMetadata: Record<
         label: "Canceled NFT Lising",
     },
     NFT_LISTING: {
+        filterLabel: "NFT Listing",
         icon: "sale",
         label: "Listed NFT",
     },
     NFT_MINT: {
+        filterLabel: "NFT Mint",
         icon: "mint",
         label: "NFT Mint",
     },
     NFT_SALE: {
+        filterLabel: "NFT Sale",
         icon: "sale",
         label: "NFT Sale",
     },
@@ -95,6 +107,7 @@ export const transactionActionsMetadata: Record<
         label: "Sent",
     },
     SWAP: {
+        filterLabel: "Swap",
         icon: "swap",
         label: "Swap",
     },
@@ -107,10 +120,12 @@ export const transactionActionsMetadata: Record<
         label: "Swap",
     },
     TOKEN_MINT: {
+        filterLabel: "Token Mint",
         icon: "coins",
         label: "Token Mint",
     },
     TRANSFER: {
+        filterLabel: "Transfer",
         icon: "lightning",
         label: "Transfer",
     },
@@ -123,6 +138,7 @@ export const transactionActionsMetadata: Record<
         label: "Sent",
     },
     UNKNOWN: {
+        filterLabel: "Generic Transaction",
         icon: "box",
         label: "Generic Transaction",
     },
