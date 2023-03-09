@@ -40,10 +40,10 @@
     let nftsElement: HTMLElement;
     let heliusElement: HTMLElement;
 
+    let sunEl: HTMLCanvasElement;
+
     let clearSearch = () => null;
     let focusInput = () => null;
-
-    let sunEl;
 
     onMount(async () => {
         setTimeout(() => {
