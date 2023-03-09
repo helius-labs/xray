@@ -277,7 +277,7 @@
             </div>
             <button class="btn-primary btn mt-8">
                 <a
-                    href="https://helius.xys"
+                    href="https://helius.xyz"
                     class="text-black"
                 >
                     <span>Get Started</span>
