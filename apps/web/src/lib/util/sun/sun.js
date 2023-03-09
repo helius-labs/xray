@@ -1,13 +1,12 @@
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 // All bloompass necessaries
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
-export const createScene = (el) => {
+export const createScene = (el, assetsLoadedCb) => {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
         75,
@@ -74,7 +73,7 @@ export const createScene = (el) => {
             time: { value: 0 },
             color: { value: new THREE.Color(0x000000) },
             alphaTest: { value: 0.01 },
-            emissiveIntensity: { value: 1.0 },
+            emissiveIntensity: { value: 0.9 },
             edgeWidth: { value: 0.3 },
             edgeSharpness: { value: 0.01 },
         },
@@ -197,6 +196,7 @@ export const createScene = (el) => {
         });
 
         scene.add(fbx);
+        assetsLoadedCb(render);
     });
 
     /** Apply bloom */
@@ -218,7 +218,8 @@ export const createScene = (el) => {
     const clock = new THREE.Clock();
 
     function render() {
-        const elapsedTime = clock.getElapsedTime();
+        const elapsedTime = Math.max(0, clock.getElapsedTime() - 2);
+
         shader.uniforms.time.value = elapsedTime;
 
         controls.update();
@@ -226,13 +227,23 @@ export const createScene = (el) => {
         requestAnimationFrame(render);
 
         if (sunMesh) {
+            let scale = elapsedTime / 8;
+            scale = 8 * (1 - Math.exp(-8 * scale));
+            scale = Math.min(8, scale);
+            sunMesh.scale.setScalar(scale);
             sunMesh.rotation.x += 0.0001;
             sunMesh.rotation.y += 0.0007;
         }
+
         if (sun) {
+            let scale = elapsedTime / 8;
+            scale = 8 * (1 - Math.exp(-8 * scale));
+            scale = Math.min(8, scale);
+            sun.scale.setScalar(scale);
             sun.rotation.y += 0.0007;
             sun.rotation.x += 0.0001;
         }
+
         composer.render(0.1);
     }
 

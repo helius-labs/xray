@@ -13,10 +13,10 @@
 </style>
 
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { afterUpdate, onMount } from "svelte";
     import { createScene } from "$lib/util/sun/sun";
 
-    import { fly } from "svelte/transition";
+    import { fade, fly, scale } from "svelte/transition";
 
     import Icon from "$lib/components/icon.svelte";
     import PoweredByHelius from "$lib/components/powered-by-helius.svelte";
@@ -40,7 +40,10 @@
     let nftsElement: HTMLElement;
     let heliusElement: HTMLElement;
 
-    let sunEl: HTMLCanvasElement;
+    let sunBasicElement: HTMLElement;
+    let sunCanvas: HTMLCanvasElement;
+
+    let showBasicSol: boolean = true;
 
     let clearSearch = () => null;
     let focusInput = () => null;
@@ -50,19 +53,34 @@
             focusInput();
         }, 100);
 
-        createScene(sunEl);
+        createScene(sunCanvas, function (renderFn) {
+            console.log("assets loaded");
+            showBasicSol = false;
+            renderFn();
+        });
+    });
+
+    afterUpdate(() => {
+        if (showBasicSol) {
+            sunBasicElement.style.display = "block";
+            sunCanvas.style.display = "none";
+        } else {
+            sunBasicElement.style.display = "none";
+            sunCanvas.style.display = "block";
+        }
     });
 </script>
 
 <div class="intro relative flex h-screen w-full items-center">
+    <div
+        style="background-image: url(/media/gradient.png);"
+        class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
+        bind:this={sunBasicElement}
+    />
     <canvas
         style="background-image: url(/media/gradient.png);"
-        bind:this={sunEl}
+        bind:this={sunCanvas}
         class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
-        in:fly={{
-            duration: 750,
-            y: 100,
-        }}
     />
     <div
         class="mx-auto w-full max-w-2xl md:-translate-y-1/4"
