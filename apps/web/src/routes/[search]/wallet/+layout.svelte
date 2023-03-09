@@ -11,7 +11,7 @@
     }
 </style>
 
-<script>
+<script lang="ts">
     import { onMount } from "svelte";
 
     import { trpcWithQuery } from "$lib/trpc/client";
@@ -26,7 +26,9 @@
     import shortenString from "$lib/util/shorten-string";
 
     import CopyButton from "$lib/components/copy-button.svelte";
+    import Icon from "$lib/components/icon.svelte";
     import Namor from "$lib/components/providers/namor-provider.svelte";
+    import { showModal } from "$lib/state/stores/modals";
 
     const account = $page.params.search;
 
@@ -35,11 +37,18 @@
     const accountInfo = client.accountInfo.createQuery(account);
     const price = client.price.createQuery(SOL);
 
+    const showFilter = () => {
+        showModal("TRANSACTION_FILTER", {
+            updateFilter: (key: string) => (filter = key),
+        });
+    };
+
     const balance = tweened(0, {
         duration: 1000,
     });
 
     let animate = false;
+    let filter = "";
 
     $: if ($accountInfo?.data?.balance) {
         balance.set($accountInfo.data.balance);
@@ -104,8 +113,11 @@
     </div>
 
     <div>
-        <div class="mx-3 mb-5 mt-3 flex rounded-lg border pt-1">
-            <div class="tabs w-full md:w-auto">
+        <div
+            class="mx-3 mb-5 mt-3 flex items-center justify-between rounded-lg border "
+        >
+            <div class="tabs w-full pt-1 md:w-auto">
+                <div />
                 <button
                     class="tab tab-bordered"
                     on:click={() =>
@@ -132,10 +144,18 @@
                     >Tokens</button
                 >
             </div>
+            {#if $page.url.pathname.endsWith("/wallet")}
+                <button
+                    class="btn-ghost btn-sm btn"
+                    on:click={showFilter}
+                >
+                    <Icon id="settings" />
+                </button>
+            {/if}
         </div>
     </div>
 </Namor>
 
 <div class="px-3">
-    <slot />
+    <slot {filter} />
 </div>

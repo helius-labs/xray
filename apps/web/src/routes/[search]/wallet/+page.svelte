@@ -31,7 +31,7 @@
     }
 </script>
 
-<div>
+<!-- <div>
     <select
         class="select w-full max-w-xs"
         bind:value={filter}
@@ -46,7 +46,7 @@
             <option value={key}>{value.filterLabel}</option>
         {/each}
     </select>
-</div>
+</div> -->
 <div class="pl-2 md:pl-0">
     <Transactions
         {account}
