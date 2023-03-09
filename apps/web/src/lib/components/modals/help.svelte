@@ -3,7 +3,7 @@
     import Icon from "$lib/components/icon.svelte";
     const supportedSearches: Array<[IconType, string]> = [
         ["backpack", "xNFT Backpack usernames like @username"],
-        ["globe", "Bonfida .sol domains"],
+        ["globe", ".sol, .abc, .poor, .bonk domains"],
         ["person", "Wallet/Account addresses"],
         ["coins", "Token addresses"],
         ["lightning", "Transaction signatures"],
