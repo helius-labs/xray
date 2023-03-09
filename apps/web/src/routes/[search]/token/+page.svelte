@@ -28,7 +28,6 @@
     import PageLoader from "./_loader.svelte";
 
     import CopyButton from "$lib/components/copy-button.svelte";
-    import Modal from "$lib/components/modal.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     const address = $page.params.search;
@@ -69,28 +68,13 @@
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
             >
-                <!-- <a href="#modal-token-fs-modal"> -->
                 <img
                     class="img m-auto my-3 h-auto w-full rounded-md object-contain"
                     alt="token symbol"
                     src={metadata.image}
                     in:fade={{ delay: 600, duration: 1000 }}
                 />
-                <!-- </a> -->
             </div>
-            <Modal
-                id="token-fs-modal"
-                fullScreenModal
-            >
-                <img
-                    class="img"
-                    alt="token symbol"
-                    src={metadata.image}
-                />
-                <div class="mt-2">
-                    <h1>{metadata.name}</h1>
-                </div>
-            </Modal>
 
             {#if metadata.description}
                 <div class="mt-3">

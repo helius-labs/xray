@@ -5,10 +5,11 @@
 
     import Icon from "$lib/components/icon.svelte";
 
-    import Menu from "$lib/components/menu.svelte";
     import Search from "$lib/components/search.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
     import Stats from "$lib/components/stats.svelte";
+
+    import { showModal } from "$lib/state/stores/modals";
 </script>
 
 <nav
@@ -45,16 +46,24 @@
 
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
-            <a href="#modal-menu">
-                <div class="btn-ghost btn">
-                    <Icon
-                        id="hamburger"
-                        size="lg"
-                    />
-                </div>
-            </a>
+            <button
+                class="btn-ghost btn"
+                on:click={() => showModal("HELP")}
+            >
+                <Icon
+                    id="question"
+                    size="md"
+                />
+            </button>
+            <button
+                class="btn-ghost btn"
+                on:click={() => showModal("MENU")}
+            >
+                <Icon
+                    id="hamburger"
+                    size="lg"
+                />
+            </button>
         </div>
     </div>
 </nav>
-
-<Menu />

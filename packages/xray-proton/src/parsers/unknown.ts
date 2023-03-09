@@ -71,6 +71,7 @@ export const parseUnknown = (
                 to: "",
                 toName: undefined,
             });
+
             type = "XNFT_INSTALL" as TransactionType;
         } else if (instructions[0].accounts.length === 3) {
             actions.push({

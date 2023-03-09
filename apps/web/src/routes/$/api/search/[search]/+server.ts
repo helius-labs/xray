@@ -7,19 +7,25 @@ import connect from "$lib/util/solana/connect";
 import validPublicKey from "$lib/util/solana/validate-pubkey";
 
 import { getDomainKey, NameRegistryState } from "@bonfida/spl-name-service";
+
 import { PublicKey } from "@solana/web3.js";
+
+import { TldParser } from "$lib/util/ans";
 
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {
     const search = params?.search as string;
 
     const connection = connect();
+    const ans = new TldParser(connection);
+
     // If it's long, assume it's a tx.
     // They will present with an error on the tx page if it's not.
     const probablyTransactionSignature = search.length > 50;
     const probablySolanaName = search.length > 4 && search.slice(-4) === ".sol";
-    const probablyBackpackName =
-        search.startsWith("@backpack ") && search.length > 10;
+    const isDomain = search.length > 4 && search.includes(".");
+
+    const probablyBackpackName = search.startsWith("@") && search.length > 1;
 
     if (validPublicKey(search)) {
         const pubkey = new PublicKey(search);
@@ -83,7 +89,7 @@ export async function GET({ params }: RequestEvent) {
             });
         }
     } else if (probablyBackpackName) {
-        const username = search.slice(10);
+        const username = search.slice(1);
 
         const url = `https://backpack-api.xnfts.dev/users/primarySolPubkey/${username}`;
 
@@ -112,6 +118,24 @@ export async function GET({ params }: RequestEvent) {
         };
 
         return json({ data });
+    } else if (isDomain) {
+        const owner = await ans.getOwnerFromDomainTld(search);
+
+        if (!owner) {
+            return json({
+                data: {
+                    url: `/`,
+                    valid: false,
+                },
+            });
+        }
+
+        return json({
+            data: {
+                url: `/${owner}`,
+                valid: true,
+            },
+        });
     }
 
     return json({
