@@ -59,28 +59,21 @@
             renderFn();
         });
     });
-
-    afterUpdate(() => {
-        if (showBasicSol) {
-            sunBasicElement.style.display = "block";
-            sunCanvas.style.display = "none";
-        } else {
-            sunBasicElement.style.display = "none";
-            sunCanvas.style.display = "block";
-        }
-    });
 </script>
 
 <div class="intro relative flex h-screen w-full items-center">
-    <div
-        style="background-image: url(/media/gradient.png);"
-        class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
-        bind:this={sunBasicElement}
-    />
+    {#if showBasicSol}
+        <div
+            style="background-image: url(/media/gradient.png);"
+            class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
+            bind:this={sunBasicElement}
+            out:fade
+        />
+    {/if}
     <canvas
-        style="background-image: url(/media/gradient.png);"
         bind:this={sunCanvas}
         class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
+        in:fade
     />
     <div
         class="mx-auto w-full max-w-2xl md:-translate-y-1/4"

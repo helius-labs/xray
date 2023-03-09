@@ -227,19 +227,23 @@ export const createScene = (el, assetsLoadedCb) => {
         requestAnimationFrame(render);
 
         if (sunMesh) {
-            let scale = elapsedTime / 8;
-            scale = 8 * (1 - Math.exp(-8 * scale));
-            scale = Math.min(8, scale);
-            sunMesh.scale.setScalar(scale);
+            if (elapsedTime < 10) {
+                let scale = elapsedTime / 8;
+                scale = 8 * (1 - Math.exp(-8 * scale));
+                scale = Math.min(8, scale);
+                sunMesh.scale.setScalar(scale);
+            }
             sunMesh.rotation.x += 0.0001;
             sunMesh.rotation.y += 0.0007;
         }
 
         if (sun) {
-            let scale = elapsedTime / 8;
-            scale = 8 * (1 - Math.exp(-8 * scale));
-            scale = Math.min(8, scale);
-            sun.scale.setScalar(scale);
+            if (elapsedTime < 10) {
+                let scale = elapsedTime / 8;
+                scale = 8 * (1 - Math.exp(-8 * scale));
+                scale = Math.min(8, scale);
+                sun.scale.setScalar(scale);
+            }
             sun.rotation.y += 0.0007;
             sun.rotation.x += 0.0001;
         }
