@@ -19,14 +19,32 @@
         duration: 1000,
     });
 
+    let filter = "";
+
     $: if ($balances?.data?.nativeBalance) {
         balance.set($balances.data.nativeBalance / LAMPORTS_PER_SOL);
     }
 </script>
 
+<div>
+    <select
+        class="select w-full max-w-xs"
+        bind:value={filter}
+        placeholder="Filter"
+    >
+        <option
+            disabled
+            selected
+            value="">All</option
+        >
+        <option value="TRANSFER">Transfer</option>
+        <option value="SWAP">Swap</option>
+    </select>
+</div>
 <div class="pl-2 md:pl-0">
     <Transactions
         {account}
+        {filter}
         user={account}
     />
 </div>

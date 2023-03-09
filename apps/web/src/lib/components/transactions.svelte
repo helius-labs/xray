@@ -12,13 +12,15 @@
 
     export let account: string;
     export let user = "";
+    export let filter = "";
 
     let cachedAddress = "";
 
     const client = trpcWithQuery($page);
 
-    let transactions = client.transactions.createQuery({
+    $: transactions = client.transactions.createQuery({
         account,
+        filter,
         user,
     });
 
@@ -48,7 +50,7 @@
 {:else if !transactionsList.length}
     <p class="opacity-50">No transactions</p>
 {:else}
-    {#each transactionsList as transaction, idx}
+    {#each transactionsList as transaction, idx (transaction)}
         {#if transaction?.signature}
             <!-- Only animate the first few intro transactions -->
             {#if idx < 8}
