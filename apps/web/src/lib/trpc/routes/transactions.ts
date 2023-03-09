@@ -15,6 +15,7 @@ export const transactions = t.procedure
         z.object({
             account: z.string(),
             before: z.string().optional(),
+            filter: z.string().optional(),
             user: z.string().optional(),
         })
     )
@@ -31,8 +32,8 @@ export const transactions = t.procedure
         const url = `https://api.helius.xyz/v0/addresses/${
             input.account
         }/transactions?api-key=${HELIUS_KEY}${
-            input.before ? `&before=${input.before}` : ""
-        }`;
+            input.filter ? `&type=${input.filter}` : ""
+        }${input.before ? `&before=${input.before}` : ""}`;
 
         const response = await fetch(url);
 

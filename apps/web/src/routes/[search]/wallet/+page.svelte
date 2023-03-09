@@ -8,6 +8,7 @@
     import { tweened } from "svelte/motion";
 
     import Transactions from "$lib/components/transactions.svelte";
+    import { filterStore } from "src/lib/util/stores/filter";
 
     const account = $page.params.search;
 
@@ -27,6 +28,7 @@
 <div class="pl-2 md:pl-0">
     <Transactions
         {account}
+        filter={$filterStore}
         user={account}
     />
 </div>
