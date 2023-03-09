@@ -1,16 +1,25 @@
 <script lang="ts">
-    import { transactionActionsMetadata } from "src/lib/types";
+    import { hideModal } from "$lib/state/stores/modals";
+    import { transactionActionsMetadata } from "$lib/types";
+    import { filterStore } from "$lib/util/stores/filter";
 
-    export let updateFilter: (filter: string) => void;
+    const handleClick = (key: string) => {
+        $filterStore = key;
+        hideModal();
+    };
 
-    $: filterList = Object.entries(transactionActionsMetadata).filter(
-        ([key, value]) => value.filterLabel
-    );
+    const filterEntries = Object.entries(transactionActionsMetadata);
+
+    $: filterList = filterEntries.filter(([key, value]) => value.filterLabel);
 </script>
 
+<button
+    class="btn-ghost btn w-full"
+    on:click={() => handleClick("")}>All Transactions</button
+>
 {#each filterList as [key, value]}
     <button
         class="btn-ghost btn w-full"
-        on:click={() => updateFilter(key)}>{value.filterLabel}</button
+        on:click={() => handleClick(key)}>{value.filterLabel}</button
     >
 {/each}

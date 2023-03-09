@@ -1,8 +1,4 @@
 <style>
-    .stars {
-        /* transition: opacity 1000ms 2000ms ease-in-out; */
-    }
-
     .intro {
         min-height: 65vh;
     }

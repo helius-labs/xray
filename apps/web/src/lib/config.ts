@@ -39,7 +39,6 @@ export const transactionActionsMetadata: Record<
         label: "Airdropped",
     },
     BORROW_FOX: {
-        filterLabel: "Borrow Fox",
         icon: "openHand",
         label: "Borrow Fox",
     },
@@ -63,12 +62,10 @@ export const transactionActionsMetadata: Record<
         label: "Frozen",
     },
     LOAN_FOX: {
-        filterLabel: "Loan Fox",
         icon: "handshake",
         label: "Loan Fox",
     },
     NFT_BID: {
-        filterLabel: "NFT Bid",
         icon: "sale",
         label: "NFT Bid",
     },
@@ -85,7 +82,6 @@ export const transactionActionsMetadata: Record<
         label: "Canceled NFT Lising",
     },
     NFT_LISTING: {
-        filterLabel: "NFT Listing",
         icon: "sale",
         label: "Listed NFT",
     },

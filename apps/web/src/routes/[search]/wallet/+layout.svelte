@@ -37,12 +37,6 @@
     const accountInfo = client.accountInfo.createQuery(account);
     const price = client.price.createQuery(SOL);
 
-    const showFilter = () => {
-        showModal("TRANSACTION_FILTER", {
-            updateFilter: (key: string) => (filter = key),
-        });
-    };
-
     const balance = tweened(0, {
         duration: 1000,
     });
@@ -147,7 +141,7 @@
             {#if $page.url.pathname.endsWith("/wallet")}
                 <button
                     class="btn-ghost btn-sm btn"
-                    on:click={showFilter}
+                    on:click={() => showModal("TRANSACTION_FILTER")}
                 >
                     <Icon id="settings" />
                 </button>
@@ -157,5 +151,5 @@
 </Namor>
 
 <div class="px-3">
-    <slot {filter} />
+    <slot />
 </div>
