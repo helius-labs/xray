@@ -98,7 +98,7 @@ export const createScene = (el, assetsLoadedCb) => {
   
       void main() {
         vec2 uv = vUv;
-        float speed = 0.1;
+        float speed = 0.2;
         float amplitude = 0.01;
         float frequency = 10.0;
   
@@ -174,7 +174,7 @@ export const createScene = (el, assetsLoadedCb) => {
                 } else if (child.name.toLowerCase().includes("sun")) {
                     child.material.map = sunTexture;
                     child.material.transparent = true;
-                    child.material.opacity = 0.5;
+                    child.material.opacity = 0.3;
                     child.material.alphaMap = sunTexture;
                     sunChild = child;
                     sunMesh = new THREE.Mesh().copy(child, false);
