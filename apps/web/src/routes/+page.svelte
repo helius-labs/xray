@@ -87,7 +87,12 @@
         style="z-index:1;"
     >
         <div class="mb-10">
-            <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
+            <h1
+                class="text-center text-9xl font-bold opacity-90"
+                style="text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; mix-blend-mode: screen;"
+            >
+                XRAY
+            </h1>
         </div>
 
         <div class="relative w-full px-3">
