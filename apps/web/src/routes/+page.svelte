@@ -14,6 +14,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
+    import { createScene } from "$lib/util/sun/sun";
 
     import { fly } from "svelte/transition";
 
@@ -49,7 +50,6 @@
             focusInput();
         }, 100);
 
-        const { createScene } = await import("$lib/util/sun/sun");
         createScene(sunEl);
     });
 </script>
