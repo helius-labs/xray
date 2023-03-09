@@ -52,7 +52,7 @@
     const searchFailed = () => {
         isSearching = false;
 
-        showModal("INVALID_SEARCH");
+        showModal("HELP");
     };
 
     const getRecentSearches = () =>
@@ -189,7 +189,7 @@
                             >
                                 <a
                                     class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
-                                    data-sveltekit-preload-data="hover"
+                                    data-sveltekit-reload
                                     href={recentSearch.url}
                                 >
                                     <div class="flex">

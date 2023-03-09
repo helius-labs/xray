@@ -2,17 +2,15 @@
     import type { Icon as IconType } from "src/lib/types";
     import Icon from "$lib/components/icon.svelte";
     const supportedSearches: Array<[IconType, string]> = [
-        ["globe", "Bonfida .sol domains"],
-        ["backpack", "xNFT Backpack usernames like @backpack yourname"],
+        ["backpack", "xNFT Backpack usernames like @username"],
+        ["globe", ".sol, .abc, .poor, .bonk domains"],
         ["person", "Wallet/Account addresses"],
         ["coins", "Token addresses"],
         ["lightning", "Transaction signatures"],
     ];
 </script>
 
-<p class="mb-3">
-    Make sure you provided a valid search that contains one of the following.
-</p>
+<p class="mb-3">Use the search bar to look up any of the following.</p>
 
 <strong class="uppercase">Supported Searches</strong>
 

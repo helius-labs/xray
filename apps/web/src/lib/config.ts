@@ -1,16 +1,16 @@
 import type { Modal, TransactionActionMetadata } from "$lib/types";
 import type { ProtonActionType } from "@helius-labs/xray-proton";
 
-import InvalidSearch from "$lib/components/modals/invalid-search.svelte";
+import Help from "$lib/components/modals/help.svelte";
 import Menu from "$lib/components/modals/menu.svelte";
 import WalletSelector from "$lib/components/modals/wallets.svelte";
 
 export const recentSearchesKey = "xray:recent-searches";
 
 export const modals: Record<string, Modal> = {
-    INVALID_SEARCH: {
-        component: InvalidSearch,
-        title: "Invalid Search",
+    HELP: {
+        component: Help,
+        title: "Help",
     },
     MENU: {
         component: Menu,

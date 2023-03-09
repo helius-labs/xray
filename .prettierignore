@@ -1,3 +1,6 @@
 .eslint/**/*
 packages/**/dist/**/*
 apps/**/.sveltekit/**/*
+tsconfig.cjs.json
+tsconfig.esm.json
+tsconfig.json

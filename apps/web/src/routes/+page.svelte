@@ -1,8 +1,4 @@
 <style>
-    .stars {
-        /* transition: opacity 1000ms 2000ms ease-in-out; */
-    }
-
     .intro {
         min-height: 65vh;
     }
@@ -18,7 +14,6 @@
     import { fly } from "svelte/transition";
 
     import Icon from "$lib/components/icon.svelte";
-    import PoweredByHelius from "$lib/components/powered-by-helius.svelte";
     import Search from "$lib/components/search.svelte";
     import IntersectionObserver from "svelte-intersection-observer";
 
@@ -26,18 +21,12 @@
     // @ts-ignore
     import { LottiePlayer } from "@lottiefiles/svelte-lottie-player";
 
-    import Starback from "starback";
-
     let searchError = "";
-    let searchingStarsCanvas: HTMLCanvasElement;
-    let isFocused = false;
-    let isSearching = false;
 
-    let transactionsElement: HTMLElement;
     let exploreELement: HTMLElement;
-    let ecosystemsElement: HTMLElement;
-    let nftsElement: HTMLElement;
     let heliusElement: HTMLElement;
+
+    let isFocused = false;
 
     let clearSearch = () => null;
     let focusInput = () => null;
