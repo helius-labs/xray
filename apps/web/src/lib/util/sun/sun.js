@@ -45,8 +45,8 @@ export const createScene = (el, assetsLoadedCb) => {
 
     /** Load Sun Textures */
     const textureLoader = new THREE.TextureLoader();
-    const sunTexture = textureLoader.load("textures/1_blacked.jpg");
-    const sunTexture2 = textureLoader.load("textures/2.png");
+    const sunTexture = textureLoader.load("textures/1_blacked_50.jpg");
+    const sunTexture2 = textureLoader.load("textures/2_50.png");
 
     sunTexture.wrapS = THREE.RepeatWrapping;
     sunTexture.wrapT = THREE.RepeatWrapping;
