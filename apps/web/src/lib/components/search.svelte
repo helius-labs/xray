@@ -191,6 +191,7 @@
                                     class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
                                     data-sveltekit-preload-data="hover"
                                     href={recentSearch.url}
+                                    data-sveltekit-reload
                                 >
                                     <div class="flex">
                                         <div />

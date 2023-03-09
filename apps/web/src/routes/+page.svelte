@@ -59,6 +59,10 @@
         style="background-image: url(/media/gradient.png);"
         bind:this={sunEl}
         class="absolute top-1/2 left-1/2 h-full w-full -translate-y-1/2 -translate-x-1/2 bg-cover bg-center"
+        in:fly={{
+            duration: 750,
+            y: 100,
+        }}
     />
     <div
         class="mx-auto w-full max-w-2xl md:-translate-y-1/4"
