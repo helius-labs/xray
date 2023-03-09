@@ -174,7 +174,7 @@ export const createScene = (el, assetsLoadedCb) => {
                 } else if (child.name.toLowerCase().includes("sun")) {
                     child.material.map = sunTexture;
                     child.material.transparent = true;
-                    child.material.opacity = 0.3;
+                    child.material.opacity = 0.5;
                     child.material.alphaMap = sunTexture;
                     sunChild = child;
                     sunMesh = new THREE.Mesh().copy(child, false);
@@ -217,7 +217,7 @@ export const createScene = (el, assetsLoadedCb) => {
     const clock = new THREE.Clock();
 
     function render() {
-        const elapsedTime = Math.max(0, clock.getElapsedTime() - 2);
+        const elapsedTime = Math.max(0, clock.getElapsedTime() - 1);
 
         shader.uniforms.time.value = elapsedTime;
 
