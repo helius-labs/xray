@@ -15,7 +15,7 @@ export const createScene = (el, assetsLoadedCb) => {
         1000
     );
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: el });
+    const renderer = new THREE.WebGLRenderer({ antialias: false, canvas: el });
 
     /** Lights */
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
@@ -34,14 +34,13 @@ export const createScene = (el, assetsLoadedCb) => {
     controls.enableDamping = true;
     controls.enableZoom = false;
     controls.enablePan = false;
-    controls.rotateSpeed = 0.2;
-    controls.dampingFactor = 0.03;
+    controls.rotateSpeed = 0.1;
+    controls.dampingFactor = 0.01;
     controls.minPolarAngle = Math.PI / 3;
     controls.maxPolarAngle = (Math.PI / 3) * 2;
 
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    document.body.appendChild(renderer.domElement);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1));
 
     /** Load Sun Textures */
     const textureLoader = new THREE.TextureLoader();
@@ -73,8 +72,8 @@ export const createScene = (el, assetsLoadedCb) => {
             time: { value: 0 },
             color: { value: new THREE.Color(0x000000) },
             alphaTest: { value: 0.01 },
-            emissiveIntensity: { value: 0.9 },
-            edgeWidth: { value: 0.3 },
+            emissiveIntensity: { value: 1.1 },
+            edgeWidth: { value: 0.5 },
             edgeSharpness: { value: 0.01 },
         },
         vertexShader: `
@@ -99,7 +98,7 @@ export const createScene = (el, assetsLoadedCb) => {
   
       void main() {
         vec2 uv = vUv;
-        float speed = 0.2;
+        float speed = 0.1;
         float amplitude = 0.01;
         float frequency = 10.0;
   
@@ -175,7 +174,7 @@ export const createScene = (el, assetsLoadedCb) => {
                 } else if (child.name.toLowerCase().includes("sun")) {
                     child.material.map = sunTexture;
                     child.material.transparent = true;
-                    child.material.opacity = 0.4;
+                    child.material.opacity = 0.3;
                     child.material.alphaMap = sunTexture;
                     sunChild = child;
                     sunMesh = new THREE.Mesh().copy(child, false);

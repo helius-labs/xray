@@ -56,7 +56,6 @@
         createScene(sunCanvas, function (renderFn) {
             console.log("assets loaded");
             showBasicSol = false;
-            renderFn();
         });
     });
 </script>
