@@ -148,7 +148,25 @@
                         <h1 class="text-xl font-bold">Lookup by Domain</h1>
                         <p class="opacity-50">
                             Not only can you lookup any account or transaction,
-                            you can also search by .sol domain name.
+                            you can also search .sol, .abc, .poor, and .bonk
+                            domains.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="rounded-lg">
+                    <div
+                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-full border"
+                    >
+                        <h1>🎒</h1>
+                    </div>
+
+                    <div>
+                        <h1 class="text-xl font-bold">xNFT Backpack Support</h1>
+                        <p class="opacity-50">
+                            You can Lookup Backpack usernames by searching
+                            "@yourname", like "@xray".
                         </p>
                     </div>
                 </div>
@@ -277,8 +295,10 @@
             </div>
             <button class="btn-primary btn mt-8">
                 <a
-                    href="https://helius.xys"
+                    href="https://helius.xyz"
                     class="text-black"
+                    target="_blank"
+                    rel="noreferrer"
                 >
                     <span>Get Started</span>
                 </a>
