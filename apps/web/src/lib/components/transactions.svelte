@@ -3,9 +3,11 @@
 
     import type { ProtonTransaction } from "@helius-labs/xray-proton/dist";
 
-    import { trpcWithQuery } from "$lib/trpc/client";
+    import { trpcWithQuery, trpc } from "$lib/trpc/client";
 
     import { fly } from "svelte/transition";
+
+    import { createInfiniteQuery } from "@tanstack/svelte-query";
 
     import IconCard from "$lib/components/icon-card.svelte";
     import Transaction from "$lib/components/transaction.svelte";
@@ -18,11 +20,41 @@
 
     const client = trpcWithQuery($page);
 
-    $: transactions = client.transactions.createQuery({
+    const t = trpc($page);
+
+    const createInfiniteTransactionsQuery = ({
         account,
-        filter,
         user,
-    });
+        before,
+        filter,
+    }) =>
+        createInfiniteQuery({
+            //@ts-ignore
+            getNextPageParam: (lastPage) => {
+                // if (lastPage.next) {
+                //     const nextUrl = new URLSearchParams(
+                //         new URL(lastPage.next).search
+                //     );
+                //     const nextCursor = nextUrl.get("page");
+                //     if (nextCursor) {
+                //         return +nextCursor;
+                //     }
+                // }
+                // return undefined;
+            },
+
+            queryFn: t.transactions.query(),
+            queryKey: [account, before, filter],
+        });
+
+    $: transactions = client.transactions.createQuery(
+        {
+            account,
+            filter,
+            user,
+        },
+        { retry: false }
+    );
 
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
     // Issue: let transaction: SerializeObject<UndefinedToOptional<ProtonTransaction>>
@@ -34,7 +66,7 @@
     $: if (cachedAddress !== account) {
         cachedAddress = account;
 
-        transactions = client.transactions.createQuery({
+        transactions = createInfiniteQuery({
             account,
             user,
         });
