@@ -187,7 +187,7 @@
                     >
                         <div>
                             <h4 class="text-lg font-semibold md:text-sm">
-                                Slot
+                                Block
                             </h4>
                             <h3 class="mr-2 text-xs opacity-50">
                                 The slot this transaction happened on.

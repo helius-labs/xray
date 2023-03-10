@@ -10,7 +10,7 @@ import { getDomainKey, NameRegistryState } from "@bonfida/spl-name-service";
 
 import { PublicKey } from "@solana/web3.js";
 
-import { TldParser } from "@onsol/tldparser";
+import { TldParser } from "$lib/util/ans";
 
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {

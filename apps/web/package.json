@@ -54,7 +54,6 @@
         "svelte-intersection-observer": "^0.10.0",
         "svelte-json-tree": "^1.0.0",
         "svelte-snacks": "*",
-        "@onsol/tldparser": "*",
         "trpc-svelte-query-adapter": "^2.0.0",
         "trpc-sveltekit": "^3.3.1",
         "zod": "^3.20.6"
