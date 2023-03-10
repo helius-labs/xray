@@ -5,6 +5,8 @@
 <a
     class="btn-ghost btn flex items-center text-left"
     href="https://helius.xyz/"
+    rel="noreferrer"
+    target="_blank"
 >
     <div class="relative mr-3">
         <img

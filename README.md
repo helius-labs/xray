@@ -68,7 +68,7 @@ npm run build:env
 
 # 📱 @helius-labs/xray-app
 
-A SvelteKit app that contains the main X-Ray UI and various endpoints used for viewing blockchain data.
+A SvelteKit app that contains the main XRAY UI.
 
 ## Important Files & Folders
 
@@ -106,7 +106,7 @@ A SvelteKit app that contains the main X-Ray UI and various endpoints used for v
 
 ## Icons
 
-See list of available icons at `$lib/components/icon.sveltes/index.ts`.
+See list of available icons in `$lib/config`.
 
 ### Use Icons
 
@@ -122,92 +122,11 @@ See list of available icons at `$lib/components/icon.sveltes/index.ts`.
 
 1. Find the icon you want on [IconMon](https://iconmonstr.com/). Most of these should render fine.
 2. Click "Embed" -> "Inline" and copy only the `<path>`.
-3. Add a new key to `$lib/components/icon.sveltes/index.ts` that is similar to the Icon Monsters name for the icon and add your `<path>`.
+3. Add a new key to `$lib/config.ts` that is similar to the Icon Monsters name for the icon and add your `<path>`.
 
 ## State Management
 
-State is managed using a custom library located in `$lib/state`.
-
-### Queries
-
-A query is a definition that contains an ID + some options on how to fetch data. This lib uses a combination of query definations and Svelte stores to create easy to load, subscribable and organized state.
-
-### Provider
-
-To access query state in components, your app needs to be wrapped with `<QueryProvider>` which provides state to any components underneath it.
-
-```html
-<script>
-    import { QueryProvider } from "$lib/state";
-</script>
-
-<QueryProvider>
-    <nav>...</nav>
-    <main class="min-h-screen">...</main>
-</QueryProvider>
-```
-
-### Use Queries
-
-Using queries is as easy as importing them as a store and subscribing with Sveltes `$`.
-
-```html
-<script>
-    import query from "$lib/state";
-
-    const price = query("solana-price");
-</script>
-
-{#if $price.isLoading} Loading... {:else if $price.isError} Error:
-{$price.error} {:else if $price.hasFetched} Price: {$price.data} {/if}
-```
-
-### Register Queries
-
-To fetch data, there needs to be a query for it. See registered queries in `$lib/state/queries`.
-
-#### Add Query
-
-1. Add a new key to the queries object with the ID you want to subcribe to your query with.
-2. Supply a loader function which should be a function that returns a Promise. Whatever is resolved will become the query value.
-3. Optional: Add a `formatter` function for the returned data to pass through. This should also be a function that returns a Promise.
-4. Optional: `fetchOnFirstSubscription`, if your loader function doesn't require any arguments, you can supply this option which will fetch data as soon as a part of your app subscribes to the query store.
-
-```js
-import getSolanaPrice from "$lib/state/actions/get-solana-price";
-
-import formatMoney from "$lib/util/format-money";
-
-const queries:Queries = {
-    "solana-price" : {
-        loader                   : getSolanaPrice,
-        formatter                : formatMoney,
-        fetchOnFirstSubscription : true,
-    },
-
-    ...
-}
-```
-
-### Dynamic Queries
-
-Pass data to your queries load function like so.
-
-```html
-<script>
-    import query from "$lib/state";
-
-    const transactions = query("solana-account-transactions");
-
-    $: if ($transactions?.load) {
-        $transactions.load($page.params.search);
-    }
-</script>
-```
-
-### Reloading Queries
-
-You can access your loader function on any query store at `$myQuery.load()`. This makes it easy to reload a certain query throughout the app. Any components that are subscribed to the reloaded query will be updated.
+WIP
 
 # 📦 @helius-labs/proton
 

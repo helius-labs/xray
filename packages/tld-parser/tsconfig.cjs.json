@@ -1,0 +1,18 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "target": "ES6",
+    "module": "CommonJS",
+    "outDir": "dist/cjs",
+    "declarationDir": "dist/types"
+  },
+  "rootDir": "./src",
+  "include": ["src/**/*.ts"],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts",
+    "tests/**/*.test.ts",
+    "tests/**/*.spec.ts"
+  ]
+}

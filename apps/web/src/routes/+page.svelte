@@ -107,9 +107,9 @@
                     <div>
                         <h1 class="text-xl font-bold">Explorer</h1>
                         <p class="opacity-50">
-                            We categorize and parse complicated transaction data
-                            to provide an interface that neatly categorizes and
-                            names account history.
+                            We categorize and parse transaction data to provide
+                            an interface that intuitively groups transaction
+                            history by type.
                         </p>
                     </div>
                 </div>
@@ -129,9 +129,9 @@
                         <h1 class="text-xl font-bold">NFT Buy/Sell History</h1>
                         <p class="opacity-50">
                             View the NFTs and tokens held by a specified account
-                            as well we the transaction history of a particular
-                            token. This lets you do things like see all of the
-                            bids, sales, lists, on a certain NFT.
+                            or the transaction history of a particular token.
+                            This lets you do things like see all of the bids,
+                            sales, listings on a certain NFT.
                         </p>
                     </div>
                 </div>
@@ -147,8 +147,26 @@
                     <div>
                         <h1 class="text-xl font-bold">Lookup by Domain</h1>
                         <p class="opacity-50">
-                            Not only can you lookup any account or transaction,
-                            you can also search by .sol domain name.
+                            Not only can you lookup any account, token or
+                            transaction, you can also search .sol, .abc, .poor,
+                            and .bonk domains.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="rounded-lg">
+                    <div
+                        class="mb-5 flex h-12 w-12 items-center justify-center rounded-full border"
+                    >
+                        <h1>🎒</h1>
+                    </div>
+
+                    <div>
+                        <h1 class="text-xl font-bold">xNFT Backpack Support</h1>
+                        <p class="opacity-50">
+                            You can Lookup Backpack usernames by searching
+                            "@yourname", like "@xray".
                         </p>
                     </div>
                 </div>
@@ -277,8 +295,10 @@
             </div>
             <button class="btn-primary btn mt-8">
                 <a
-                    href="https://helius.xys"
+                    href="https://helius.xyz"
                     class="text-black"
+                    target="_blank"
+                    rel="noreferrer"
                 >
                     <span>Get Started</span>
                 </a>
