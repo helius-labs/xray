@@ -107,9 +107,9 @@
                     <div>
                         <h1 class="text-xl font-bold">Explorer</h1>
                         <p class="opacity-50">
-                            We categorize and parse complicated transaction data
-                            to provide an interface that neatly categorizes and
-                            names account history.
+                            We categorize and parse transaction data to provide
+                            an interface that intuitively groups transaction
+                            history by type.
                         </p>
                     </div>
                 </div>
@@ -129,9 +129,9 @@
                         <h1 class="text-xl font-bold">NFT Buy/Sell History</h1>
                         <p class="opacity-50">
                             View the NFTs and tokens held by a specified account
-                            as well we the transaction history of a particular
-                            token. This lets you do things like see all of the
-                            bids, sales, lists, on a certain NFT.
+                            or the transaction history of a particular token.
+                            This lets you do things like see all of the bids,
+                            sales, listings on a certain NFT.
                         </p>
                     </div>
                 </div>
@@ -147,9 +147,9 @@
                     <div>
                         <h1 class="text-xl font-bold">Lookup by Domain</h1>
                         <p class="opacity-50">
-                            Not only can you lookup any account or transaction,
-                            you can also search .sol, .abc, .poor, and .bonk
-                            domains.
+                            Not only can you lookup any account, token or
+                            transaction, you can also search .sol, .abc, .poor,
+                            and .bonk domains.
                         </p>
                     </div>
                 </div>
