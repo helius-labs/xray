@@ -293,16 +293,14 @@
                     </div>
                 </div>
             </div>
-            <button class="btn-primary btn mt-8">
-                <a
-                    href="https://helius.xyz"
-                    class="text-black"
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <span>Get Started</span>
-                </a>
-            </button>
+            <a
+                href="https://helius.xyz"
+                class="btn-primary btn mt-8 text-black"
+                target="_blank"
+                rel="noreferrer"
+            >
+                <span>Get Started</span>
+            </a>
         {/if}
     </section>
 </IntersectionObserver>
