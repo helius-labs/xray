@@ -2,6 +2,11 @@
 
 A human-readable Solana transaction explorer powered by Helius.
 
+## 💬 Support
+
+-   https://twitter.com/xray_explorer
+-   https://discord.gg/8Qxk7PmArt
+
 ## 🚀 Deployments
 
 | Environment | Description                                 | Directory                    |
