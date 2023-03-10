@@ -4,3 +4,4 @@ apps/**/.sveltekit/**/*
 tsconfig.cjs.json
 tsconfig.esm.json
 tsconfig.json
+apps/web/src/lib/util/ans/**/*
