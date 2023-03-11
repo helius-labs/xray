@@ -54,7 +54,7 @@ export const transactionActionsMetadata: Record<
     },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
-        icon: "lightning",
+        icon: "handshake",
         label: "Multisig Transaction",
     },
     FREEZE: {
