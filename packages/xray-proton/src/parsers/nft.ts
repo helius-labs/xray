@@ -284,7 +284,7 @@ export const parseNftCancelBid: ProtonParser = (transaction) => {
 export const parseNftMint: ProtonParser = (transaction, address) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
-    const { nativeTransfers, accountData } = transaction;
+    const { source, nativeTransfers, accountData } = transaction;
 
     if (!nftEvent || !nativeTransfers) {
         return generateDefaultTransaction(transaction.type);
@@ -295,14 +295,13 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
 
     traverseAccountData(accountData, accounts);
 
-    let mintAmount = nftEvent.amount / LAMPORTS_PER_SOL;
-    let index = 0;
-    if (nativeTransfers) {
+    let mintAmount = 0;
+    if (source === "SOLANA_PROGRAM_LIBRARY") {
         for (let i = 0; i < nativeTransfers.length; i++) {
-            const nativeTransferAmount =
-                nativeTransfers[i].amount / LAMPORTS_PER_SOL;
-            mintAmount += nativeTransferAmount;
+            mintAmount += nativeTransfers[i].amount / LAMPORTS_PER_SOL;
         }
+    } else {
+        mintAmount = nftEvent.amount / LAMPORTS_PER_SOL;
     }
 
     if (!address) {
@@ -327,7 +326,7 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
             }
         );
     } else {
-        if (nativeTransfers[index].fromUserAccount !== address) {
+        if (nativeTransfers[0].fromUserAccount !== address) {
             actions.push({
                 actionType: "AIRDROP",
                 amount: 1,
