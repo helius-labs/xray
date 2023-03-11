@@ -62,10 +62,6 @@
     $: lastPageHasTransactions = lastPage
         ? transactionPages[transactionPages.length - 1].result?.length
         : false;
-
-    // If it's a full page, between 50-100 then there might be more.
-    // Ff short list less than 50, assume that's all there is.
-    $: thereAreProbablyMoreTransactions = lastPage?.result.length > 50;
 </script>
 
 {#if $transactions.isLoading}
@@ -102,7 +98,7 @@
     {/each}
 {/if}
 
-{#if $transactions.hasNextPage && lastPageHasTransactions && thereAreProbablyMoreTransactions}
+{#if $transactions.hasNextPage && lastPageHasTransactions}
     <div class="flex justify-center">
         <button
             class="btn-outline btn"
