@@ -11,9 +11,6 @@ export const traverseAccountData = (
             data.nativeBalanceChange !== 0 ||
             (data.tokenBalanceChanges && data.tokenBalanceChanges.length > 0)
         ) {
-            const account = data.account;
-            const index = accounts.findIndex((a) => a.account === account);
-
             if (data.nativeBalanceChange !== 0) {
                 const amount = data.nativeBalanceChange / LAMPORTS_PER_SOL;
                 const mint = SOL;
@@ -22,8 +19,15 @@ export const traverseAccountData = (
                     data.tokenBalanceChanges.length > 0
                 ) {
                     const userAccount = data.tokenBalanceChanges[0].userAccount;
+                    const index = accounts.findIndex(
+                        (a) => a.account === userAccount
+                    );
                     indexChecker(accounts, index, userAccount, amount, mint);
                 } else {
+                    const account = data.account;
+                    const index = accounts.findIndex(
+                        (a) => a.account === account
+                    );
                     indexChecker(accounts, index, account, amount, mint);
                 }
             }
@@ -78,7 +82,12 @@ const indexChecker = (
     mint: string
 ) => {
     if (index !== -1) {
-        accounts[index].changes.push({ amount, mint });
+        const i = accounts[index].changes.findIndex((a) => a.mint === mint);
+        if (i !== -1) {
+            accounts[index].changes[i].amount += amount;
+        } else {
+            accounts[index].changes.push({ amount, mint });
+        }
     } else {
         accounts.push({
             account,
