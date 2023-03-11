@@ -11,7 +11,7 @@
     </div>
 
     <div class="col-span-1 flex w-full justify-end">
-        <div>
+        <div class="mr-12">
             <a
                 href="https://discord.gg/Wkn3uuSby7"
                 class="btn-ghost btn"

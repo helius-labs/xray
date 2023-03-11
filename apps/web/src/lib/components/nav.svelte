@@ -67,3 +67,15 @@
         </div>
     </div>
 </nav>
+
+{#if $page.url.pathname !== "/"}
+    <button
+        class="btn-secondary btn-sm btn fixed right-3 bottom-4 z-10 cursor-pointer rounded-full"
+        on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
+    >
+        <Icon
+            id="arrowUp"
+            size="sm"
+        />
+    </button>
+{/if}

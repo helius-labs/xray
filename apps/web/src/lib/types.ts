@@ -56,6 +56,11 @@ export interface TransactionActionMetadata {
     filterLabel?: string;
 }
 
+export interface TransactionPage {
+    result: Array<ProtonTransaction>;
+    oldest: string;
+}
+
 export interface UITransactionActionGroup {
     label: string;
     icon: Icon;
