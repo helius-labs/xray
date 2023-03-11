@@ -1,13 +1,11 @@
 <script lang="ts">
     import { page } from "$app/stores";
 
-    import type { ProtonTransaction } from "@helius-labs/xray-proton/dist";
+    import type { TransactionPage } from "$lib/types";
 
-    import { trpcWithQuery, trpc } from "$lib/trpc/client";
+    import { trpcWithQuery } from "$lib/trpc/client";
 
     import { fly } from "svelte/transition";
-
-    import { createInfiniteQuery } from "@tanstack/svelte-query";
 
     import IconCard from "$lib/components/icon-card.svelte";
     import Transaction from "$lib/components/transaction.svelte";
@@ -20,57 +18,54 @@
 
     const client = trpcWithQuery($page);
 
-    const t = trpc($page);
-
-    const createInfiniteTransactionsQuery = ({
-        account,
-        user,
-        before,
-        filter,
+    const createTransactionQuery = (input: {
+        account: string;
+        filter: string;
+        user: string;
+        cursor?: string;
     }) =>
-        createInfiniteQuery({
-            //@ts-ignore
-            getNextPageParam: (lastPage) => {
-                // if (lastPage.next) {
-                //     const nextUrl = new URLSearchParams(
-                //         new URL(lastPage.next).search
-                //     );
-                //     const nextCursor = nextUrl.get("page");
-                //     if (nextCursor) {
-                //         return +nextCursor;
-                //     }
-                // }
-                // return undefined;
-            },
-
-            queryFn: t.transactions.query(),
-            queryKey: [account, before, filter],
+        client.transactions.createInfiniteQuery(input, {
+            getNextPageParam: (lastPage) => lastPage.oldest,
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
         });
 
-    $: transactions = client.transactions.createQuery(
-        {
-            account,
-            filter,
-            user,
-        },
-        { retry: false }
-    );
+    const loadMore = () => {
+        $transactions.fetchNextPage();
+    };
+
+    $: transactions = createTransactionQuery({
+        account,
+        filter,
+        user,
+    });
 
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
-    // Issue: let transaction: SerializeObject<UndefinedToOptional<ProtonTransaction>>
-    // Expexted: let transaction: ProtonTransaction
-    $: transactionsList = $transactions.data
-        ? ($transactions.data.result as ProtonTransaction[])
-        : [];
+    // Issue: Ttransaction is SerializeObject<UndefinedToOptional<ProtonTransaction>>
+    // Expected: ProtonTransaction[]
+    $: transactionPages =
+        $transactions.data?.pages || ([] as TransactionPage[]);
 
+    // Hard reset the query when the account changes
     $: if (cachedAddress !== account) {
         cachedAddress = account;
 
-        transactions = createInfiniteQuery({
+        transactions = createTransactionQuery({
             account,
+            filter,
             user,
         });
     }
+
+    $: lastPage = transactionPages[transactionPages.length - 1];
+
+    $: lastPageHasTransactions = lastPage
+        ? transactionPages[transactionPages.length - 1].result?.length
+        : false;
+
+    // If it's a full page, between 50-100 then there might be more.
+    // Ff short list less than 50, assume that's all there is.
+    $: thereAreProbablyMoreTransactions = lastPage?.result.length > 50;
 </script>
 
 {#if $transactions.isLoading}
@@ -79,28 +74,41 @@
             <IconCard />
         </div>
     {/each}
-{:else if !transactionsList.length}
+{:else if transactionPages.length === 1 && !lastPageHasTransactions}
     <p class="opacity-50">No transactions</p>
 {:else}
-    {#each transactionsList as transaction, idx (transaction)}
-        {#if transaction?.signature}
-            <!-- Only animate the first few intro transactions -->
-            {#if idx < 8}
-                <div
-                    class="mb-8"
-                    in:fly={{
-                        delay: idx * 100,
-                        duration: 500,
-                        y: 30,
-                    }}
-                >
-                    <Transaction {transaction} />
-                </div>
-            {:else}
-                <div class="mb-10">
-                    <Transaction {transaction} />
-                </div>
+    {#each transactionPages as transactionsList}
+        {#each transactionsList.result as transaction, idx (transaction)}
+            {#if transaction?.signature}
+                <!-- Only animate the first few intro transactions -->
+                {#if idx < 8}
+                    <div
+                        class="mb-8"
+                        in:fly={{
+                            delay: idx * 100,
+                            duration: 500,
+                            y: 30,
+                        }}
+                    >
+                        <Transaction {transaction} />
+                    </div>
+                {:else}
+                    <div class="mb-10">
+                        <Transaction {transaction} />
+                    </div>
+                {/if}
             {/if}
-        {/if}
+        {/each}
     {/each}
+{/if}
+
+{#if $transactions.hasNextPage && lastPageHasTransactions && thereAreProbablyMoreTransactions}
+    <div class="flex justify-center">
+        <button
+            class="btn-outline btn"
+            class:loading={$transactions.isFetching}
+            class:disabled={$transactions.isFetching}
+            on:click={loadMore}>Load More</button
+        >
+    </div>
 {/if}

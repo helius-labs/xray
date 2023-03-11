@@ -67,3 +67,13 @@
         </div>
     </div>
 </nav>
+
+<button
+    class="btn-outline btn fixed right-2 bottom-3 rounded-full"
+    on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
+>
+    <Icon
+        id="arrowUp"
+        size="sm"
+    />
+</button>

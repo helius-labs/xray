@@ -14,7 +14,10 @@
 
     const client = trpcWithQuery($page);
 
-    const token = client.token.createQuery([address]);
+    const token = client.token.createQuery([address], {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
 
     const metadata: UITokenMetadata = {
         address: "",
