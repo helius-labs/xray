@@ -82,6 +82,7 @@ export const transactionActionsMetadata: Record<
         label: "Canceled NFT Lising",
     },
     NFT_LISTING: {
+        filterLabel: "NFT List",
         icon: "sale",
         label: "Listed NFT",
     },
