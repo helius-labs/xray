@@ -284,9 +284,9 @@ export const parseNftCancelBid: ProtonParser = (transaction) => {
 export const parseNftMint: ProtonParser = (transaction, address) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
-    const { nativeTransfers, accountData } = transaction;
+    const { source, nativeTransfers, accountData } = transaction;
 
-    if (!nftEvent) {
+    if (!nftEvent || !nativeTransfers) {
         return generateDefaultTransaction(transaction.type);
     }
 
@@ -295,22 +295,58 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
 
     traverseAccountData(accountData, accounts);
 
-    let mintAmount = nftEvent.amount / LAMPORTS_PER_SOL;
-    let index = 0;
-    if (nativeTransfers) {
+    let mintAmount = 0;
+    if (source === "SOLANA_PROGRAM_LIBRARY") {
         for (let i = 0; i < nativeTransfers.length; i++) {
-            const nativeTransferAmount =
-                nativeTransfers[i].amount / LAMPORTS_PER_SOL;
-            if (nativeTransferAmount > mintAmount) {
-                mintAmount = nativeTransferAmount;
-                index = i;
-            }
+            mintAmount += nativeTransfers[i].amount / LAMPORTS_PER_SOL;
         }
+    } else {
+        mintAmount = nftEvent.amount / LAMPORTS_PER_SOL;
+    }
 
-        if (!address) {
+    if (!address) {
+        actions.push(
+            {
+                actionType: "TRANSFER",
+                amount: mintAmount,
+                from: nftEvent.buyer,
+                fromName: getSolanaName(nftEvent.buyer),
+                sent: SOL,
+                to: "",
+                toName: "",
+            },
+            {
+                actionType: "TRANSFER",
+                amount: 1,
+                from: "",
+                fromName: "",
+                received: (nftEvent.nfts || [{}])[0]?.mint,
+                to: nftEvent.buyer,
+                toName: getSolanaName(nftEvent.buyer),
+            }
+        );
+    } else {
+        if (nativeTransfers[0].fromUserAccount !== address) {
+            actions.push({
+                actionType: "AIRDROP",
+                amount: 1,
+                from: "",
+                fromName: "",
+                received: (nftEvent.nfts || [{}])[0]?.mint,
+                to: nftEvent.buyer,
+                toName: getSolanaName(nftEvent.buyer),
+            });
+            return generateNftTransaction({
+                accounts,
+                actions,
+                event: nftEvent,
+                primaryUser: nftEvent.buyer,
+                transaction,
+            });
+        } else {
             actions.push(
                 {
-                    actionType: "TRANSFER",
+                    actionType: "SENT",
                     amount: mintAmount,
                     from: nftEvent.buyer,
                     fromName: getSolanaName(nftEvent.buyer),
@@ -319,7 +355,7 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
                     toName: "",
                 },
                 {
-                    actionType: "TRANSFER",
+                    actionType: "RECEIVED",
                     amount: 1,
                     from: "",
                     fromName: "",
@@ -328,46 +364,6 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
                     toName: getSolanaName(nftEvent.buyer),
                 }
             );
-        } else {
-            if (nativeTransfers[index].fromUserAccount !== address) {
-                actions.push({
-                    actionType: "AIRDROP",
-                    amount: 1,
-                    from: "",
-                    fromName: "",
-                    received: (nftEvent.nfts || [{}])[0]?.mint,
-                    to: nftEvent.buyer,
-                    toName: getSolanaName(nftEvent.buyer),
-                });
-                return generateNftTransaction({
-                    accounts,
-                    actions,
-                    event: nftEvent,
-                    primaryUser: nftEvent.buyer,
-                    transaction,
-                });
-            } else {
-                actions.push(
-                    {
-                        actionType: "SENT",
-                        amount: mintAmount,
-                        from: nftEvent.buyer,
-                        fromName: getSolanaName(nftEvent.buyer),
-                        sent: SOL,
-                        to: "",
-                        toName: "",
-                    },
-                    {
-                        actionType: "RECEIVED",
-                        amount: 1,
-                        from: "",
-                        fromName: "",
-                        received: (nftEvent.nfts || [{}])[0]?.mint,
-                        to: nftEvent.buyer,
-                        toName: getSolanaName(nftEvent.buyer),
-                    }
-                );
-            }
         }
     }
 
