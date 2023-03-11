@@ -379,3 +379,64 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
         transaction,
     });
 };
+
+export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
+    // @ts-ignore
+    const nftEvent = transaction.events.compressed;
+    const { signature, timestamp, accountData, type, source } = transaction;
+
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+    const primaryUser = transaction.feePayer;
+
+    if (!nftEvent) {
+        return generateDefaultTransaction(transaction.type);
+    }
+
+    const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
+
+    traverseAccountData(accountData, accounts);
+
+    if (!address) {
+        actions.push({
+            actionType: "TRANSFER",
+            amount: 1,
+            from: "",
+            fromName: "",
+            sent: nftEvent[0].assetId,
+            to: transaction.feePayer,
+            toName: getSolanaName(transaction.feePayer),
+        });
+    } else if (address === transaction.feePayer) {
+        actions.push({
+            actionType: "AIRDROP",
+            amount: 1,
+            from: "",
+            fromName: "",
+            received: nftEvent[0].assetId,
+            to: transaction.feePayer,
+            toName: getSolanaName(transaction.feePayer),
+        });
+    } else {
+        actions.push({
+            actionType: "RECEIVED",
+            amount: 1,
+            from: "",
+            fromName: "",
+            received: nftEvent[0].assetId,
+            to: transaction.feePayer,
+            toName: getSolanaName(transaction.feePayer),
+        });
+    }
+
+    return {
+        accounts,
+        actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
+    };
+};
