@@ -69,7 +69,7 @@
 </nav>
 
 <button
-    class="btn-outline btn fixed right-2 bottom-3 rounded-full"
+    class="btn-secondary btn-sm btn fixed right-3 bottom-4 z-10 cursor-pointer rounded-full"
     on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
 >
     <Icon
