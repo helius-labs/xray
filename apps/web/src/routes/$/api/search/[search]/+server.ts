@@ -14,7 +14,7 @@ import { TldParser } from "@onsol/tldparser";
 
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {
-    const search = params?.search as string;
+    const search = params?.search?.toLowerCase() as string;
 
     const connection = connect();
     const ans = new TldParser(connection);

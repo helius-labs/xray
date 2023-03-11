@@ -9,6 +9,7 @@ import {
     BackpackWalletAdapter,
     GlowWalletAdapter,
     SolflareWalletAdapter,
+    BraveWalletAdapter,
 } from "@solana/wallet-adapter-wallets";
 
 export const wallets = [
@@ -16,6 +17,7 @@ export const wallets = [
     new BackpackWalletAdapter(),
     new SolflareWalletAdapter(),
     new GlowWalletAdapter(),
+    new BraveWalletAdapter(),
 ];
 
 export const isConnectingWallet = writable(false);
