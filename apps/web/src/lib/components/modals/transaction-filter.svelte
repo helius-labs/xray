@@ -23,12 +23,6 @@
         class="btn-ghost btn w-full"
         on:click={() => handleClick(key)}
     >
-        <div class="flex items-center justify-center">
-            <Icon
-                id={value.icon}
-                size="md"
-            />
-            <div class="ml-2">{value.filterLabel}</div>
-        </div>
+        {value.filterLabel}
     </button>
 {/each}
