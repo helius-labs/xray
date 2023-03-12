@@ -34,6 +34,12 @@
         $transactions.fetchNextPage();
     };
 
+    // const asset = client.asset.createQuery(
+    //     "12jAV39nSFs7cgnmgnnh6mqQw1qn3iXjd51dokfL8nig"
+    // );
+
+    // $: console.log(`hi`,  $asset.data);
+
     $: transactions = createTransactionQuery({
         account,
         filter,
