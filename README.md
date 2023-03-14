@@ -9,9 +9,9 @@ A human-readable Solana transaction explorer powered by Helius.
 
 ## 🚀 Deployments
 
-| Environment | Description                                 | Directory                    |
-| ----------- | ------------------------------------------- | ---------------------------- |
-| Production  | The main deployment attached to the domain. | https://xray-web.vercel.app/ |
+| Environment | Description                                 | Directory                |
+| ----------- | ------------------------------------------- | ------------------------ |
+| Production  | The main deployment attached to the domain. | https://xray.helius.xyz/ |
 
 ## 📦 Packages
 
