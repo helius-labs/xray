@@ -91,7 +91,7 @@ npm run format
 ### Test
 Tests the code, determines if it should be allowed to merge. We recommend running this locally before creating PRs.
 ```sh
-npm run format
+npm run test
 ```
 
 ### Build
