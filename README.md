@@ -1,8 +1,9 @@
 # XRAY
-
-🔗 https://xray.helius.xyz/
-
 A human-readable Solana transaction explorer powered by Helius.
+
+🔗 **Link**: https://xray.helius.xyz/
+
+🎥 **Demo**: https://www.loom.com/share/402a4397ebd1403f8f4b7df8f024e9b8
 
 ## 💬 Support
 
