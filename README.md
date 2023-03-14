@@ -28,7 +28,7 @@ A human-readable Solana transaction explorer powered by Helius.
 
 - Fork XRAY onto your own GitHub
 - Clone it and checkout the dev branch (`git checkout dev`)
-- Create a new branched named `[initials]/[feature]` off of `dev`. Example `q/added-a-cool-thing`.
+- Create a new branch named `[initials]/[feature]` off of `dev`. Example `q/added-a-cool-thing`.
 - When ready for us to review your changes, create a PR with your new branch to be merged into the `dev` branch on the official repo.
 
 ## 🏃🏽‍♂️ Runbook
