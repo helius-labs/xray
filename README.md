@@ -1,4 +1,6 @@
-# Project XRAY
+# XRAY
+
+🔗 https://xray.helius.xyz/
 
 A human-readable Solana transaction explorer powered by Helius.
 
@@ -11,7 +13,7 @@ A human-readable Solana transaction explorer powered by Helius.
 
 | Environment | Description                                 | Directory                    |
 | ----------- | ------------------------------------------- | ---------------------------- |
-| Production  | The main deployment attached to the domain. | https://xray-web.vercel.app/ |
+| Production  | The main deployment attached to the domain. | https://xray.helius.xyz/ |
 
 ## 📦 Packages
 
