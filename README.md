@@ -38,11 +38,12 @@ This is a TurboRepo monorepo that can run and build all apps/packages in paralle
 ### Reccomended VSCode Extensions
 
 - [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier]()
-- [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
 - [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
+- [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)
+- [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
 
-#### Tech Stack
+### Tech Stack
 
 -   [Node](https://nodejs.org/en/)
 -   [TurboRepo](https://turbo.build/repo)
