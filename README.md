@@ -5,16 +5,16 @@ A human-readable Solana transaction explorer powered by Helius.
 
 🎥 **Demo**: https://www.loom.com/share/402a4397ebd1403f8f4b7df8f024e9b8
 
-## 💬 Support
+🐤 **Twitter**: https://twitter.com/xray_explorer
 
--   https://twitter.com/xray_explorer
--   https://discord.gg/8Qxk7PmArt
+💬 **Discord**: https://discord.gg/8Qxk7PmArt
 
 ## 🚀 Deployments
 
 | Environment | Description                                 | Directory                    |
 | ----------- | ------------------------------------------- | ---------------------------- |
 | Production  | The main deployment attached to the domain. | https://xray.helius.xyz/ |
+| Staging  | Staging branch based on contents of `origin/dev`. | https://xray-web-git-dev-helius.vercel.app/ |
 
 ## 📦 Packages
 
