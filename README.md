@@ -5,36 +5,54 @@ A human-readable Solana transaction explorer powered by Helius.
 
 🎥 **Demo**: https://www.loom.com/share/402a4397ebd1403f8f4b7df8f024e9b8
 
-## 💬 Support
+🐤 **Twitter**: https://twitter.com/xray_explorer
 
--   https://twitter.com/xray_explorer
--   https://discord.gg/8Qxk7PmArt
+💬 **Discord**: https://discord.gg/8Qxk7PmArt
 
 ## 🚀 Deployments
 
 | Environment | Description                                 | Directory                    |
 | ----------- | ------------------------------------------- | ---------------------------- |
 | Production  | The main deployment attached to the domain. | https://xray.helius.xyz/ |
+| Staging  | Staging branch based on contents of `origin/dev`. | https://xray-web-git-dev-helius.vercel.app/ |
 
 ## 📦 Packages
 
 | Name                                                  | Description                                         | Directory                |
 | ----------------------------------------------------- | --------------------------------------------------- | ------------------------ |
-| [@helius-labs/xray-app](#@helius-labs/xray-app)       | SvelteKit app with UI and backend endpoints.        | `apps/web`               |
+| [@helius-labs/xray-web](#@helius-labs/xray-app)       | SvelteKit app with UI and backend endpoints.        | `apps/web`               |
 | [@helius-labs/xray-proton](#@helius-labs/xray-proton) | Parses transaction data to produce UI state.        | `packages/xray-proton`   |
-| `@helius-labs/xray-database`                          | Prisma client used for communicating with database. | `packages/xray-database` |
+| `@helius-labs/xray-database` [WIP]                    | Prisma client used for communicating with database. | `packages/xray-database` |
+
+## 🤝 Contribute
+
+- Fork XRAY onto your own GitHub
+- Clone it and checkout the dev branch (`git checkout dev`)
+- Create a new branch named `[initials]/[feature]` off of `dev`. Example `q/added-a-cool-thing`.
+- When ready for us to review your changes, create a PR with your new branch to be merged into the `dev` branch on the official repo.
 
 ## 🏃🏽‍♂️ Runbook
 
 This is a TurboRepo monorepo that can run and build all apps/packages in parallel. Apps like the UI are located in `/apps`. Packages used across apps are located in `/packages`.
 
-#### Tech Stack
+### Reccomended VSCode Extensions
+
+- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+- [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
+- [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)
+- [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
+
+### Tech Stack
 
 -   [Node](https://nodejs.org/en/)
 -   [TurboRepo](https://turbo.build/repo)
--   [Prisma](https://www.prisma.io/)
 -   [TypeScript](https://www.typescriptlang.org/)
+-   [Prisma](https://www.prisma.io/)
+-   [tRPC](https://trpc.io/)
 -   [SvelteKit](https://kit.svelte.dev/)
+-   [TanstackQuery](https://tanstack.com/query/latest)
+-   [SvelteKit tRPC SvelteQuery Adapter](https://github.com/vishalbalaji/trpc-svelte-query-adapter)
 -   [Tailwind](https://tailwindcss.com/)
 -   [DaisyUI Components](https://daisyui.com/)
 
@@ -58,6 +76,24 @@ Start all packages and apps in dev mode which watches for changes and adds your 
 npm run dev
 ```
 
+### Lint
+It's reccomended you use VSCode beacuase if you do, ESLint is setup to auto fix/format as you're working.
+```sh
+npm run lint
+```
+
+### Format
+Formats files based on the Prettier and ESlint settings.
+```sh
+npm run format
+```
+
+### Test
+Tests the code, determines if it should be allowed to merge. We recommend running this locally before creating PRs.
+```sh
+npm run format
+```
+
 ### Build
 
 Build all apps and packages for production.
@@ -74,7 +110,7 @@ Build all apps and packages for production using your `.env` file.
 npm run build:env
 ```
 
-# 📱 @helius-labs/xray-app
+# 📱 @helius-labs/xray-web
 
 A SvelteKit app that contains the main XRAY UI.
 
@@ -83,9 +119,19 @@ A SvelteKit app that contains the main XRAY UI.
 |                   |                                                                                                                                                                                                             |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 📁 `./src/lib`    | Common components, utilities, and libraries used throughout the app. Import things from this directory using the `$lib/` alias.                                                                             |
-| 📁`./src/routes`  | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure.                                                                                                |
+| 📁 `./src/lib/trpc`    | The tRPC server which has all of our backend endpoints. See `trpc/routes`. |
+
+| 📁 `./src/lib/components`    | Shared components used throughout the app. |
+
+| 📁 `./src/lib/trpc`    | The tRPC server which has all of our backend endpoints. |
+
+| 📁 `./src/lib/types`    | Global types |
+
+| 📁 `./src/lib/configs`    | Config definitions for things like the icons, modals, and generating other types. |
+
 | 📁`./src/routes`  | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure.                                                                                                |
 | 📁`./static`      | A place to put any static assets. The files in this directory are hosted at the root of the domain. When using images, try to import them in the `<script>` vs put them in `./static` when you can help it. |
+
 | 📄`./app.postcss` | Initialize/config Tailwind + global styles.                                                                                                                                                                 |
 | 📄`./app.html`    | The top level HTML template that wrapps all pages. Routes are injected into the `%sveltekit.body%` tag.                                                                                                     |
 
@@ -94,11 +140,15 @@ A SvelteKit app that contains the main XRAY UI.
 |                    |                                                                                                                                                                                                    |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `/`                | Home                                                                                                                                                                                               |
-| `/api`             | REST endpoints                                                                                                                                                                                     |
+| `/api`             | REST endpoints (This is mostly replaces by tRPC now) |
+
 | `/[search]`        | From the home page, users can navigate to `/anything` which attempts to resolve the search and then redirect them to `/[search]/tx`, `/[search]/wallet`, or `/[search]/token` based on the search. |
-| `/[search]/tx`     | Details about a particular transaction where `[search]` is a transaction signature.                                                                                                                |
-| `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key.                                                                                                                                |
-| `/[search]/token`  | Details about a particular token where `[search]` is a token mint address.                                                                                                                         |
+
+| `/[search]/tx`     | Details about a particular transaction where `[search]` is a transaction signature. |
+
+| `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key. |
+
+| `/[search]/token`  | Details about a particular token where `[search]` is a token mint address. |
 
 ## Vercel Config
 
@@ -180,6 +230,6 @@ Used for parsing blockchain data and making it pretty for the UI.
 | LOAN_FOX             | `/fox.ts`                  |
 | UNKNOWN              | `/unknown.ts`              |
 
-# 📦 @helius-labs/xray-database
+# 📦 @helius-labs/xray-database [WIP]
 
-A database for savaing anonymous data like trasaction views.
+A database for savaing metadata like transaction views or user details. 
