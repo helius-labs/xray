@@ -14,7 +14,7 @@ import validatePubkey from "$lib/util/solana/validate-pubkey";
 
 // Decide where to go based on the search param.
 export async function load({ params, url }: RequestEvent) {
-    if (!validatePubkey(params?.search)) {
+    if (!validatePubkey(params?.search) && params?.search.length < 50) {
         throw redirect(307, "/");
     }
 }
