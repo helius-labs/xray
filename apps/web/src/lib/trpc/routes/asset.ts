@@ -45,11 +45,11 @@ export const asset = t.procedure
 
         const data = await response.json();
 
-        if (data.compression.compressed === true) {
-            const assetData = await fetch(data.result.content.json_uri);
-            const returnAssetData = await assetData.json();
-        } else {
-        }
+        // if (data.compression.compressed === true) {
+        // const assetData = await fetch(data.result.content.json_uri);
+        // const returnAssetData = await assetData.json();
+        // } else {
+        // }
 
-        return returnAssetData;
+        return data;
     });

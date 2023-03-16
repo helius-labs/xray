@@ -35,7 +35,7 @@
     };
 
     const asset = client.asset.createQuery(
-        "12jAV39nSFs7cgnmgnnh6mqQw1qn3iXjd51dokfL8nig"
+        "J3AU7ZaG6fCpJNpjVKYNRsWEDwrb6bhw7gY8GzTxBjXz"
     );
 
     $: console.log(`hi`, $asset.data);
