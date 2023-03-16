@@ -1,7 +1,7 @@
 <script lang="ts">
     import type {
         ProtonActionType,
-        ProtonTransaction,
+        ProtonTransaction
     } from "@helius-labs/xray-proton";
 
     import { ProtonCustomActionLabelTypes } from "@helius-labs/xray-proton";
@@ -54,12 +54,23 @@
                 <div
                     class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
                 >
-                    <div class="opacity-50">
-                        <Icon
-                            id={metadata.icon}
-                            size="md"
-                        />
+                <div class="opacity-50">
+                    <Icon
+                    id={metadata.icon}
+                    size="md"
+                    />
+                </div>
+                {#if transaction.type === "COMPRESSED_NFT_MINT"}
+                    <div
+                    class="center absolute left-8 -top-5 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
+                    in:fade={{
+                        delay: 500,
+                        duration: 500,
+                    }}
+                    >
+                    COMPRESSED
                     </div>
+                {/if}
                 </div>
             </div>
             <div class="pointer-events-none col-span-12 mb-2 px-3 pl-6">
@@ -161,15 +172,6 @@
                                             duration: 500,
                                         }}
                                     >
-                                        <div
-                                            class="center absolute left-3 -top-2 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
-                                            in:fade={{
-                                                delay: 500,
-                                                duration: 500,
-                                            }}
-                                        >
-                                            COMPRESSED
-                                        </div>
                                         <div
                                             class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
                                         >
