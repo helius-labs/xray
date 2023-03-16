@@ -20,6 +20,7 @@ export const asset = t.procedure
                 z.object({
                     address: z.string(),
                     share: z.number(),
+                    verified: z.boolean(),
                 })
             ),
             description: z.string(),
@@ -44,12 +45,30 @@ export const asset = t.procedure
         });
 
         const data = await response.json();
+        let metadata = {
+            address: "",
+            attributes: [],
+            collectionKey: "",
+            creators: [],
+            description: "",
+            image: "",
+            name: "",
+        };
 
-        // if (data.compression.compressed === true) {
-        // const assetData = await fetch(data.result.content.json_uri);
-        // const returnAssetData = await assetData.json();
-        // } else {
-        // }
+        if (data?.result?.compression?.compressed === true) {
+            const assetData = await fetch(data.result.content.json_uri);
+            const returnAssetData = await assetData.json();
 
-        return data;
+            metadata = {
+                address: data?.result?.id,
+                attributes: returnAssetData?.attributes || [],
+                collectionKey: data?.result?.grouping.group_value || "",
+                creators: data?.result?.creators,
+                description: returnAssetData?.description,
+                image: returnAssetData?.image || returnAssetData?.files?.image,
+                name: returnAssetData?.name,
+            };
+        }
+
+        return metadata;
     });
