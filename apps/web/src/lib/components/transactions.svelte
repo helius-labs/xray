@@ -34,12 +34,6 @@
         $transactions.fetchNextPage();
     };
 
-    const asset = client.asset.createQuery(
-        "4vBszKTdzuAR5K226qxGM9sAcXwtPUNzkJVFQ7uauFcz"
-    );
-
-    $: console.log(`hi`, $asset.data);
-
     $: transactions = createTransactionQuery({
         account,
         filter,

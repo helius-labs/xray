@@ -40,33 +40,33 @@
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
         metadata.address = SOL;
-    } else {
+    } else if ($asset?.data?.compressed) {
         const data = $asset?.data;
         metadata.address = data?.address || "";
-        metadata.attributes = [];
+        metadata.attributes = data?.attributes || [];
         metadata.creators = data?.creators || [];
         metadata.description = data?.description || "";
         metadata.collectionKey = data?.collectionKey || "";
         metadata.image = data?.image || "";
         metadata.name = data?.name || "";
-
+    } else {
         // Kicks off the query
-        // const data = $token?.data?.length ? $token.data[0] : {};
+        const data = $token?.data?.length ? $token.data[0] : {};
 
-        // metadata.address = data?.account;
-        // metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
-        // metadata.creators = data?.onChainMetadata?.metadata?.data?.creators;
-        // metadata.description = data?.offChainMetadata?.metadata?.description;
-        // metadata.collectionKey =
-        //     data?.onChainMetadata?.metadata?.collection?.key;
-        // metadata.image =
-        //     data?.offChainMetadata?.metadata?.image ||
-        //     data?.onChainMetadata?.metadata?.data.image ||
-        //     data?.legacyMetadata?.logoURI;
-        // metadata.name =
-        //     data?.offChainMetadata?.metadata?.name ||
-        //     data?.legacyMetadata?.name ||
-        //     data?.onChainMetadata?.metadata?.data.name;
+        metadata.address = data?.account;
+        metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
+        metadata.creators = data?.onChainMetadata?.metadata?.data?.creators;
+        metadata.description = data?.offChainMetadata?.metadata?.description;
+        metadata.collectionKey =
+            data?.onChainMetadata?.metadata?.collection?.key;
+        metadata.image =
+            data?.offChainMetadata?.metadata?.image ||
+            data?.onChainMetadata?.metadata?.data.image ||
+            data?.legacyMetadata?.logoURI;
+        metadata.name =
+            data?.offChainMetadata?.metadata?.name ||
+            data?.legacyMetadata?.name ||
+            data?.onChainMetadata?.metadata?.data.name;
     }
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;
