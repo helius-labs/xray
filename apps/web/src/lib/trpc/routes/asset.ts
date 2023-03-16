@@ -11,7 +11,7 @@ export const asset = t.procedure
             address: z.string(),
             attributes: z.array(
                 z.object({
-                    traitType: z.string(),
+                    trait_type: z.string(),
                     value: z.string(),
                 })
             ),
@@ -57,6 +57,9 @@ export const asset = t.procedure
             name: "",
         };
 
+        console.log(data);
+        console.log(data?.result?.compression?.compressed);
+
         if (data?.result?.compression?.compressed === true) {
             const assetData = await fetch(data.result.content.json_uri);
             const returnAssetData = await assetData.json();
@@ -64,7 +67,7 @@ export const asset = t.procedure
             metadata = {
                 address: data?.result?.id || "",
                 attributes: returnAssetData?.attributes || [],
-                collectionKey: data?.result?.grouping.group_value || "",
+                collectionKey: data?.result?.grouping[0]?.group_value || "",
                 compressed: true,
                 creators: data?.result?.creators || [],
                 description: returnAssetData?.description || "",
