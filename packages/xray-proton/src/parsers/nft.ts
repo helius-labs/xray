@@ -326,7 +326,7 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
             }
         );
     } else {
-        if (nativeTransfers[0].fromUserAccount !== address) {
+        if (nftEvent.buyer !== address) {
             actions.push({
                 actionType: "AIRDROP",
                 amount: 1,
