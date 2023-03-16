@@ -2,6 +2,7 @@
     import { hideModal } from "$lib/state/stores/modals";
     import { transactionActionsMetadata } from "$lib/types";
     import { filterStore } from "$lib/util/stores/filter";
+    import Icon from "../icon.svelte";
 
     const handleClick = (key: string) => {
         $filterStore = key;
@@ -20,6 +21,8 @@
 {#each filterList as [key, value]}
     <button
         class="btn-ghost btn w-full"
-        on:click={() => handleClick(key)}>{value.filterLabel}</button
+        on:click={() => handleClick(key)}
     >
+        {value.filterLabel}
+    </button>
 {/each}
