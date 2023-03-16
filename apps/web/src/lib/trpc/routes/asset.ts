@@ -57,8 +57,6 @@ export const asset = t.procedure
             name: "",
         };
 
-        console.log("data", data);
-
         if (data?.result?.compression?.compressed === true) {
             const assetData = await fetch(data.result.content.json_uri);
             const returnAssetData = await assetData.json();
@@ -70,9 +68,7 @@ export const asset = t.procedure
                 compressed: true,
                 creators: data?.result?.creators || [],
                 description: returnAssetData?.description || "",
-                image:
-                    // returnAssetData?.properties.files[0]?.uri ||
-                    returnAssetData?.image || "",
+                image: returnAssetData?.image || "",
                 name: returnAssetData?.name || "",
             };
         }
