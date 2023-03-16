@@ -8,7 +8,7 @@ const networks = {
     solanaMainnet: "https://api.mainnet-beta.solana.com",
 };
 
-export default (network: "devnet" | "mainnet" = "mainnet") => {
+export default (network: "devnet" | "mainnet" = "devnet") => {
     if (!HELIUS_KEY) {
         return new Connection(networks.solanaMainnet, "confirmed");
     }
