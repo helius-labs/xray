@@ -91,7 +91,7 @@ npm run format
 ### Test
 Tests the code, determines if it should be allowed to merge. We recommend running this locally before creating PRs.
 ```sh
-npm run format
+npm run test
 ```
 
 ### Build
@@ -118,36 +118,26 @@ A SvelteKit app that contains the main XRAY UI.
 
 |                   |                                                                                                                                                                                                             |
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 📁 `./src/lib`    | Common components, utilities, and libraries used throughout the app. Import things from this directory using the `$lib/` alias.                                                                             |
+| 📁 `./src/lib`    | Common components, utilities, and libraries used throughout the app. Import things from this directory using the `$lib/` alias. |
 | 📁 `./src/lib/trpc`    | The tRPC server which has all of our backend endpoints. See `trpc/routes`. |
-
 | 📁 `./src/lib/components`    | Shared components used throughout the app. |
-
 | 📁 `./src/lib/trpc`    | The tRPC server which has all of our backend endpoints. |
-
 | 📁 `./src/lib/types`    | Global types |
-
 | 📁 `./src/lib/configs`    | Config definitions for things like the icons, modals, and generating other types. |
-
-| 📁`./src/routes`  | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure.                                                                                                |
+| 📁`./src/routes`  | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure. |
 | 📁`./static`      | A place to put any static assets. The files in this directory are hosted at the root of the domain. When using images, try to import them in the `<script>` vs put them in `./static` when you can help it. |
-
-| 📄`./app.postcss` | Initialize/config Tailwind + global styles.                                                                                                                                                                 |
-| 📄`./app.html`    | The top level HTML template that wrapps all pages. Routes are injected into the `%sveltekit.body%` tag.                                                                                                     |
+| 📄`./app.postcss` | Initialize/config Tailwind + global styles.|
+| 📄`./app.html`    | The top level HTML template that wrapps all pages. Routes are injected into the `%sveltekit.body%` tag.|
 
 ## Routes
 
 |                    |                                                                                                                                                                                                    |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                | Home                                                                                                                                                                                               |
+| `/`                | Home                           |
 | `/api`             | REST endpoints (This is mostly replaces by tRPC now) |
-
 | `/[search]`        | From the home page, users can navigate to `/anything` which attempts to resolve the search and then redirect them to `/[search]/tx`, `/[search]/wallet`, or `/[search]/token` based on the search. |
-
 | `/[search]/tx`     | Details about a particular transaction where `[search]` is a transaction signature. |
-
 | `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key. |
-
 | `/[search]/token`  | Details about a particular token where `[search]` is a token mint address. |
 
 ## Vercel Config

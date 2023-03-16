@@ -51,6 +51,7 @@ export enum ProtonSupportedActionType {
     "EXECUTE_TRANSACTION",
     "XNFT_INSTALL",
     "XNFT_UNINSTALL",
+    "COMPRESSED_NFT_MINT",
 }
 
 export const ProtonCustomActionLabelTypes = {

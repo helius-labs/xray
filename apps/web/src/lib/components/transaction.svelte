@@ -162,6 +162,15 @@
                                         }}
                                     >
                                         <div
+                                            class="center absolute left-3 -top-2 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
+                                            in:fade={{
+                                                delay: 500,
+                                                duration: 500,
+                                            }}
+                                        >
+                                            COMPRESSED
+                                        </div>
+                                        <div
                                             class="pointer-events-none relative grid grid-cols-12 items-center gap-3 rounded-lg p-1"
                                         >
                                             <div
