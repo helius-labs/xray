@@ -145,7 +145,7 @@
                                     <h4
                                         class="text-sm font-medium uppercase text-gray-500"
                                     >
-                                        {attribute.traitType}
+                                        {attribute.trait_type}
                                     </h4>
                                     <p class="text-sm">
                                         {attribute.value}
