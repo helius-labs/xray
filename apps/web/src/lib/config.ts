@@ -52,6 +52,10 @@ export const transactionActionsMetadata: Record<
         icon: "flame",
         label: "Burned NFT",
     },
+    COMPRESSED_NFT_MINT: {
+        icon: "mint",
+        label: "NFT Mint",
+    },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
         icon: "squad",

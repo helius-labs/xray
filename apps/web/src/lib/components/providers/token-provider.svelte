@@ -29,12 +29,26 @@
         name: "",
     };
 
+    const asset = client.asset.createQuery(address, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
+
     let element: HTMLDivElement;
 
     $: if (address === SOL) {
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
         metadata.address = SOL;
+    } else if ($asset?.data?.compressed) {
+        const data = $asset?.data;
+        metadata.address = data?.address || "";
+        metadata.attributes = data?.attributes || [];
+        metadata.creators = data?.creators || [];
+        metadata.description = data?.description || "";
+        metadata.collectionKey = data?.collectionKey || "";
+        metadata.image = data?.image || "";
+        metadata.name = data?.name || "";
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};
