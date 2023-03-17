@@ -18,7 +18,7 @@ export const token = t.procedure
         }
 
         const response = await fetch(
-            `https://api.helius.xyz/v0/token-metadata/?api-key=${HELIUS_KEY}`,
+            `https://api-devnet.helius.xyz/v0/token-metadata/?api-key=${HELIUS_KEY}`,
             {
                 body: JSON.stringify({
                     includeOffChain: true,
