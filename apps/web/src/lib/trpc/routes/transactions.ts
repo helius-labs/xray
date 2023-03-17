@@ -59,7 +59,7 @@ export const transactions = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v0/addresses/${
+        const url = `https://api-devnet.helius.xyz/v0/addresses/${
             input.account
         }/transactions?api-key=${HELIUS_KEY}${
             input.filter ? `&type=${input.filter}` : ""
