@@ -27,7 +27,7 @@ export const transaction = t.procedure
             return parseTransaction(data, input?.account);
         }
 
-        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
+        const url = `https://api-devnet.helius.xyz/transactions/?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({
