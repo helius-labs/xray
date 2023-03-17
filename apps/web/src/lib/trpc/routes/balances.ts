@@ -7,7 +7,7 @@ const { HELIUS_KEY } = process.env;
 export const balances = t.procedure
     .input(z.string())
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v0/addresses/${input}/balances?api-key=${HELIUS_KEY}`;
+        const url = `https://api-devnet.helius.xyz/v0/addresses/${input}/balances?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url);
 
