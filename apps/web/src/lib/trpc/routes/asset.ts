@@ -30,7 +30,7 @@ export const asset = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`;
+        const url = `https://rpc-devnet.helius.xyz/?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({
