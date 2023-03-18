@@ -45,8 +45,6 @@
     $: lastPageHasTransactions = lastPage
         ? transactionPages[transactionPages.length - 1].result?.length
         : false;
-
-    $: console.log($transactions);
 </script>
 
 <div class="max-w-screen pt-5">
@@ -57,7 +55,7 @@
             >
                 <div>
                     <h3 class="relative m-0 text-lg font-bold md:text-2xl">
-                        Slot {$page.params.slot}
+                        Slot {parseInt($page.params.slot).toLocaleString()}
                     </h3>
                 </div>
             </div>
@@ -71,7 +69,7 @@
                     <div />
                     <a
                         href="#"
-                        class="tab tab-bordered"
+                        class="tab tab-bordered tab-active"
                     >
                         Transactions
                     </a>
@@ -85,7 +83,7 @@
             </div>
         </div>
 
-        <div class="pl-2 md:pl-0">
+        <div class="px-3">
             {#if $transactions.isLoading}
                 {#each Array(3) as _}
                     <div class="py-2">
@@ -119,16 +117,15 @@
                 {/each}
             {/if}
         </div>
+        {#if $transactions.hasNextPage && lastPageHasTransactions}
+            <div class="flex justify-center">
+                <button
+                    class="btn-outline btn"
+                    class:loading={$transactions.isFetching}
+                    class:disabled={$transactions.isFetching}
+                    on:click={loadMore}>Load more</button
+                >
+            </div>
+        {/if}
     </div>
 </div>
-
-{#if $transactions.hasNextPage && lastPageHasTransactions}
-    <div class="flex justify-center">
-        <button
-            class="btn-outline btn"
-            class:loading={$transactions.isFetching}
-            class:disabled={$transactions.isFetching}
-            on:click={loadMore}>Load more</button
-        >
-    </div>
-{/if}
