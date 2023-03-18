@@ -1,14 +1,12 @@
 # ensure all apps and packages can still build and test
-name: Run tests
+name: Run tests & sync
 
 env:
     HELIUS_KEY: "chewed-glass"
 
 on:
-    push:
-        branches: [main]
     pull_request:
-        branches: [main]
+        branches: [main, dev]
 
 jobs:
     build:
