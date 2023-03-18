@@ -10,6 +10,12 @@ A human-readable Solana transaction explorer powered by Helius.
 
 💬 **Discord**: https://discord.gg/8Qxk7PmArt
 
+## Support
+
+- 📝 [Start Discussion](https://github.com/helius-labs/xray/discussions)
+- 💡 [Submit Feature Request](https://github.com/helius-labs/xray/issues/new?assignees=&labels=question&template=FEATURE-REQUEST.yml&title=%F0%9F%92%A1+%5BREQUEST%5D+-+%3Ctitle%3E)
+- 🐛 [Submit Bug Report](https://github.com/helius-labs/xray/issues/new?assignees=&labels=bug&template=BUG-REPORT.yml&title=%F0%9F%90%9B+%5BBUG%5D+-+%3Ctitle%3E)
+
 ## 🚀 Deployments
 
 | Environment | Description                                               | Directory                                              |
@@ -38,9 +44,11 @@ When you're ready for your changes to be reviewed, create a PR with your new bra
 **Pro Tip (Draft PR)**
 
 If you're working on something and want to share the progress but aren't ready for merge, click the little arrow next to "Create PR" and chose "draft".
+
 ![draft](/doc/draft.png)
 
 Then when you're ready to create the PR, click "Ready for review".
+
 ![ready](/doc/ready.png)
 
 **Tests**
@@ -48,9 +56,11 @@ Then when you're ready to create the PR, click "Ready for review".
 To save time, run tests locally, but they will also run on all PRs to `dev` and `master`. Tests will need to be passing for your changes to be merged.
 
 **Auto merge `dev` -> `main`**
+
 Once changes are approved and merged into `dev`, they will be assumed as good and auto merged to `main`. From here they can be deployed by merging to either the `vercel/staging` or `vercel/prod` branches.
 
 **[Temp] Auto merge `main` -> `vercel/staging`**
+
 For now we are auto deploying everything in main to staging.
 
 ## 🏃🏽‍♂️ Runbook
