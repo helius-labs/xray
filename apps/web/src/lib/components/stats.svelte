@@ -14,6 +14,8 @@
     const tps = client.tps.createQuery();
 
     const price = client.price.createQuery(SOL);
+
+    const slot = client.currentSlot.createQuery();
 </script>
 
 <div class="ml-1 items-center text-xs">
@@ -46,5 +48,20 @@
                 <div class="pulse my-2 h-2 w-20 rounded-lg bg-secondary" />
             {/if}
         </div>
+    </div>
+    <div>
+        {#if !$tps.isLoading}
+            <div
+                in:fade={{
+                    duration: 500,
+                }}
+            />
+            <span class="font-bold">Current Slot </span>
+            <span class="ml-1 opacity-50"
+                ><a>{$slot?.data?.toLocaleString()}</a></span
+            >
+        {:else}
+            <div class="pulse my-2 h-2 w-32 rounded-lg bg-secondary" />
+        {/if}
     </div>
 </div>
