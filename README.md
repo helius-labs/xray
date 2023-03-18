@@ -32,9 +32,11 @@ A human-readable Solana transaction explorer powered by Helius.
 -   Create a new branch named `[initials]/[feature]` off of `dev`. Example `q/added-a-cool-thing`.
 
 **Create PR**
+
 When you're ready for your changes to be reviewed, create a PR with your new branch to be merged into the `dev` branch on the official repo.
 
 **Pro Tip (Draft PR)**
+
 If you're working on something and want to share the progress but aren't ready for merge, click the little arrow next to "Create PR" and chose "draft".
 ![draft](/doc/draft.png)
 
@@ -42,6 +44,7 @@ Then when you're ready to create the PR, click "Ready for review".
 ![ready](/doc/ready.png)
 
 **Tests**
+
 To save time, run tests locally, but they will also run on all PRs to `dev` and `master`. Tests will need to be passing for your changes to be merged.
 
 **Auto merge `dev` -> `main`**
