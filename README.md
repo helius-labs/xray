@@ -214,6 +214,9 @@ See list of available icons in `$lib/config`.
 
 WIP
 
+-   [TanstackQuery](https://tanstack.com/query/latest)
+-   [SvelteKit tRPC SvelteQuery Adapter](https://github.com/vishalbalaji/trpc-svelte-query-adapter)
+
 # 📦 @helius-labs/proton
 
 Used for parsing blockchain data and making it pretty for the UI.
