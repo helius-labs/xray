@@ -178,9 +178,9 @@
                                             <div
                                                 class="col-span-2 flex items-center p-1 md:col-span-1"
                                             >
-                                                <button
-                                                    on:click={() =>
-                                                        (window.location.href = `/${metadata.address}/token`)}
+                                                <a
+                                                    data-sveltekit-reload
+                                                    href="/{metadata.address}/token"
                                                     class="pointer-events-auto mx-2 w-full transition-transform hover:scale-125"
                                                 >
                                                     {#if metadata?.image}
@@ -199,7 +199,7 @@
                                                             />
                                                         </div>
                                                     {/if}
-                                                </button>
+                                                </a>
                                             </div>
 
                                             <div
