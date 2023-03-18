@@ -1,4 +1,5 @@
 # XRAY
+
 A human-readable Solana transaction explorer powered by Helius.
 
 🔗 **Link**: https://xray.helius.xyz/
@@ -11,10 +12,10 @@ A human-readable Solana transaction explorer powered by Helius.
 
 ## 🚀 Deployments
 
-| Environment | Description                                 | Directory                    |
-| ----------- | ------------------------------------------- | ---------------------------- |
-| Production  | The main deployment attached to the domain. | https://xray.helius.xyz/ |
-| Staging  | Staging branch based on contents of `origin/dev`. | https://xray-web-git-dev-helius.vercel.app/ |
+| Environment | Description                                               | Directory                                              |
+| ----------- | --------------------------------------------------------- | ------------------------------------------------------ |
+| Production  | The main deployment attached to the domain. `vercel/prod` | https://xray.helius.xyz/                               |
+| Staging     | Staging branch based on contents of `vercel/staging`      | https://xray-web-git-vercel-staging-helius.vercel.app/ |
 
 ## 📦 Packages
 
@@ -26,10 +27,28 @@ A human-readable Solana transaction explorer powered by Helius.
 
 ## 🤝 Contribute
 
-- Fork XRAY onto your own GitHub
-- Clone it and checkout the dev branch (`git checkout dev`)
-- Create a new branch named `[initials]/[feature]` off of `dev`. Example `q/added-a-cool-thing`.
-- When ready for us to review your changes, create a PR with your new branch to be merged into the `dev` branch on the official repo.
+-   Fork XRAY onto your own GitHub
+-   Clone it and make sure you're on the `dev` branch.
+-   Create a new branch named `[initials]/[feature]` off of `dev`. Example `q/added-a-cool-thing`.
+
+**Create PR**
+When you're ready for your changes to be reviewed, create a PR with your new branch to be merged into the `dev` branch on the official repo.
+
+**Pro Tip (Draft PR)**
+If you're working on something and want to share the progress but aren't ready for merge, click the little arrow next to "Create PR" and chose "draft".
+![draft](/doc/draft.png)
+
+Then when you're ready to create the PR, click "Ready for review".
+![ready](/doc/ready.png)
+
+**Tests**
+To save time, run tests locally, but they will also run on all PRs to `dev` and `master`. Tests will need to be passing for your changes to be merged.
+
+**Auto merge `dev` -> `main`**
+Once changes are approved and merged into `dev`, they will be assumed as good and auto merged to `main`. From here they can be deployed by merging to either the `vercel/staging` or `vercel/prod` branches.
+
+**[Temp] Auto merge `main` -> `vercel/staging`**
+For now we are auto deploying everything in main to staging.
 
 ## 🏃🏽‍♂️ Runbook
 
@@ -37,11 +56,11 @@ This is a TurboRepo monorepo that can run and build all apps/packages in paralle
 
 ### Reccomended VSCode Extensions
 
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
-- [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
-- [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)
-- [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
+-   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
+-   [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
+-   [Prisma](https://marketplace.visualstudio.com/items?itemName=Prisma.prisma)
+-   [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode)
+-   [Better Comments](https://marketplace.visualstudio.com/items?itemName=aaron-bond.better-comments)
 
 ### Tech Stack
 
@@ -77,19 +96,25 @@ npm run dev
 ```
 
 ### Lint
+
 It's reccomended you use VSCode beacuase if you do, ESLint is setup to auto fix/format as you're working.
+
 ```sh
 npm run lint
 ```
 
 ### Format
+
 Formats files based on the Prettier and ESlint settings.
+
 ```sh
 npm run format
 ```
 
 ### Test
+
 Tests the code, determines if it should be allowed to merge. We recommend running this locally before creating PRs.
+
 ```sh
 npm run test
 ```
@@ -116,29 +141,29 @@ A SvelteKit app that contains the main XRAY UI.
 
 ## Important Files & Folders
 
-|                   |                                                                                                                                                                                                             |
-| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 📁 `./src/lib`    | Common components, utilities, and libraries used throughout the app. Import things from this directory using the `$lib/` alias. |
-| 📁 `./src/lib/trpc`    | The tRPC server which has all of our backend endpoints. See `trpc/routes`. |
-| 📁 `./src/lib/components`    | Shared components used throughout the app. |
-| 📁 `./src/lib/trpc`    | The tRPC server which has all of our backend endpoints. |
-| 📁 `./src/lib/types`    | Global types |
-| 📁 `./src/lib/configs`    | Config definitions for things like the icons, modals, and generating other types. |
-| 📁`./src/routes`  | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure. |
-| 📁`./static`      | A place to put any static assets. The files in this directory are hosted at the root of the domain. When using images, try to import them in the `<script>` vs put them in `./static` when you can help it. |
-| 📄`./app.postcss` | Initialize/config Tailwind + global styles.|
-| 📄`./app.html`    | The top level HTML template that wrapps all pages. Routes are injected into the `%sveltekit.body%` tag.|
+|                           |                                                                                                                                                                                                             |
+| ------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 📁 `./src/lib`            | Common components, utilities, and libraries used throughout the app. Import things from this directory using the `$lib/` alias.                                                                             |
+| 📁 `./src/lib/trpc`       | The tRPC server which has all of our backend endpoints. See `trpc/routes`.                                                                                                                                  |
+| 📁 `./src/lib/components` | Shared components used throughout the app.                                                                                                                                                                  |
+| 📁 `./src/lib/trpc`       | The tRPC server which has all of our backend endpoints.                                                                                                                                                     |
+| 📁 `./src/lib/types`      | Global types                                                                                                                                                                                                |
+| 📁 `./src/lib/configs`    | Config definitions for things like the icons, modals, and generating other types.                                                                                                                           |
+| 📁`./src/routes`          | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure.                                                                                                |
+| 📁`./static`              | A place to put any static assets. The files in this directory are hosted at the root of the domain. When using images, try to import them in the `<script>` vs put them in `./static` when you can help it. |
+| 📄`./app.postcss`         | Initialize/config Tailwind + global styles.                                                                                                                                                                 |
+| 📄`./app.html`            | The top level HTML template that wrapps all pages. Routes are injected into the `%sveltekit.body%` tag.                                                                                                     |
 
 ## Routes
 
 |                    |                                                                                                                                                                                                    |
 | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `/`                | Home                           |
-| `/api`             | REST endpoints (This is mostly replaces by tRPC now) |
+| `/`                | Home                                                                                                                                                                                               |
+| `/api`             | REST endpoints (This is mostly replaces by tRPC now)                                                                                                                                               |
 | `/[search]`        | From the home page, users can navigate to `/anything` which attempts to resolve the search and then redirect them to `/[search]/tx`, `/[search]/wallet`, or `/[search]/token` based on the search. |
-| `/[search]/tx`     | Details about a particular transaction where `[search]` is a transaction signature. |
-| `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key. |
-| `/[search]/token`  | Details about a particular token where `[search]` is a token mint address. |
+| `/[search]/tx`     | Details about a particular transaction where `[search]` is a transaction signature.                                                                                                                |
+| `/[search]/wallet` | Details about a particular wallet where `[search]` is a public key.                                                                                                                                |
+| `/[search]/token`  | Details about a particular token where `[search]` is a token mint address.                                                                                                                         |
 
 ## Vercel Config
 
@@ -222,4 +247,4 @@ Used for parsing blockchain data and making it pretty for the UI.
 
 # 📦 @helius-labs/xray-database [WIP]
 
-A database for savaing metadata like transaction views or user details. 
+A database for savaing metadata like transaction views or user details.
