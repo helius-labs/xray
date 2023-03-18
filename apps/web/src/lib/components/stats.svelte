@@ -57,9 +57,11 @@
                 }}
             />
             <span class="font-bold">Current Slot </span>
-            <span class="ml-1 opacity-50"
-                ><a>{$slot?.data?.toLocaleString()}</a></span
-            >
+            <span class="ml-1 opacity-50">
+                <a href="/block/{$slot?.data}/"
+                    >{$slot?.data?.toLocaleString()}</a
+                >
+            </span>
         {:else}
             <div class="pulse my-2 h-2 w-32 rounded-lg bg-secondary" />
         {/if}

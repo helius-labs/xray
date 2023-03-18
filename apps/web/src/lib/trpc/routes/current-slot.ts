@@ -1,4 +1,5 @@
 import { t } from "$lib/trpc/t";
+
 import connect from "src/lib/util/solana/connect";
 
 export const currentSlot = t.procedure.query(async () => {
