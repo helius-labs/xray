@@ -57,8 +57,11 @@
                 }}
             />
             <span class="font-bold">Current Slot </span>
-            <span class="ml-1 opacity-50">
-                <a href="/block/{$slot?.data}/"
+            <span class="ml-1 opacity-50 hover:opacity-100">
+                <a
+                    data-sveltekit-reload
+                    href="/block/{$slot?.data}/"
+                    class="pointer-events-auto hover:link-success"
                     >{$slot?.data?.toLocaleString()}</a
                 >
             </span>
