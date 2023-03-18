@@ -1,7 +1,7 @@
 <script lang="ts">
     import type {
         ProtonActionType,
-        ProtonTransaction
+        ProtonTransaction,
     } from "@helius-labs/xray-proton";
 
     import { ProtonCustomActionLabelTypes } from "@helius-labs/xray-proton";
@@ -54,23 +54,23 @@
                 <div
                     class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
                 >
-                <div class="opacity-50">
-                    <Icon
-                    id={metadata.icon}
-                    size="md"
-                    />
-                </div>
-                {#if transaction.type === "COMPRESSED_NFT_MINT"}
-                    <div
-                    class="center absolute left-8 -top-5 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
-                    in:fade={{
-                        delay: 500,
-                        duration: 500,
-                    }}
-                    >
-                    COMPRESSED
+                    <div class="opacity-50">
+                        <Icon
+                            id={metadata.icon}
+                            size="md"
+                        />
                     </div>
-                {/if}
+                    {#if transaction.type === "COMPRESSED_NFT_MINT"}
+                        <div
+                            class="center absolute left-8 -top-5 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
+                            in:fade={{
+                                delay: 500,
+                                duration: 500,
+                            }}
+                        >
+                            COMPRESSED
+                        </div>
+                    {/if}
                 </div>
             </div>
             <div class="pointer-events-none col-span-12 mb-2 px-3 pl-6">
@@ -165,7 +165,7 @@
                                             />
                                         </div>
                                     </div>
-                                {:else if metadata?.image}
+                                {:else}
                                     <div
                                         class="my-2 w-full rounded-lg text-left"
                                         in:fade={{
@@ -183,11 +183,22 @@
                                                         (window.location.href = `/${metadata.address}/token`)}
                                                     class="pointer-events-auto mx-2 w-full transition-transform hover:scale-125"
                                                 >
-                                                    <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-                                                    <div
-                                                        style="background-image: url('{metadata.image}')"
-                                                        class="aspect-square w-8 rounded-lg bg-cover"
-                                                    />
+                                                    {#if metadata?.image}
+                                                        <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                                                        <div
+                                                            style="background-image: url('{metadata.image}')"
+                                                            class="aspect-square w-8 rounded-lg bg-cover"
+                                                        />
+                                                    {:else}
+                                                        <div
+                                                            class="flex aspect-square w-8 items-center justify-center rounded-lg bg-secondary opacity-50"
+                                                        >
+                                                            <Icon
+                                                                id="image"
+                                                                size="md"
+                                                            />
+                                                        </div>
+                                                    {/if}
                                                 </button>
                                             </div>
 

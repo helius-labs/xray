@@ -57,9 +57,6 @@ export const asset = t.procedure
             name: "",
         };
 
-        console.log(data);
-        console.log(data?.result?.compression?.compressed);
-
         if (data?.result?.compression?.compressed === true) {
             const assetData = await fetch(data.result.content.json_uri);
             const returnAssetData = await assetData.json();
