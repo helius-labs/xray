@@ -123,7 +123,7 @@
                     class="btn-outline btn"
                     class:loading={$transactions.isFetching}
                     class:disabled={$transactions.isFetching}
-                    on:click={loadMore}>Load more</button
+                    on:click={loadMore}>Load More</button
                 >
             </div>
         {/if}

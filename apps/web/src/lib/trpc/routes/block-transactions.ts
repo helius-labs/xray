@@ -130,6 +130,10 @@ export const blockTransactions = t.procedure
             });
         }
 
+        const lastIndex =
+            filteredTxs?.findIndex((tx) => tx.signature === input.cursor) || -1;
+        filteredTxs = filteredTxs?.slice(lastIndex + 1);
+
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url, {
