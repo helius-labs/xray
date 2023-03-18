@@ -16,21 +16,6 @@ A human-readable Solana transaction explorer powered by Helius.
 - 💡 [Submit Feature Request](https://github.com/helius-labs/xray/issues/new?assignees=&labels=question&template=FEATURE-REQUEST.yml&title=%F0%9F%92%A1+%5BREQUEST%5D+-+%3Ctitle%3E)
 - 🐛 [Submit Bug Report](https://github.com/helius-labs/xray/issues/new?assignees=&labels=bug&template=BUG-REPORT.yml&title=%F0%9F%90%9B+%5BBUG%5D+-+%3Ctitle%3E)
 
-## 🚀 Deployments
-
-| Environment | Description                                               | Directory                                              |
-| ----------- | --------------------------------------------------------- | ------------------------------------------------------ |
-| Production  | The main deployment attached to the domain. `vercel/prod` | https://xray.helius.xyz/                               |
-| Staging     | Staging branch based on contents of `vercel/staging`      | https://xray-web-git-vercel-staging-helius.vercel.app/ |
-
-## 📦 Packages
-
-| Name                                                  | Description                                         | Directory                |
-| ----------------------------------------------------- | --------------------------------------------------- | ------------------------ |
-| [@helius-labs/xray-web](#@helius-labs/xray-app)       | SvelteKit app with UI and backend endpoints.        | `apps/web`               |
-| [@helius-labs/xray-proton](#@helius-labs/xray-proton) | Parses transaction data to produce UI state.        | `packages/xray-proton`   |
-| `@helius-labs/xray-database` [WIP]                    | Prisma client used for communicating with database. | `packages/xray-database` |
-
 ## 🤝 Contribute
 
 -   Fork XRAY onto your own GitHub
@@ -53,7 +38,7 @@ Then when you're ready to create the PR, click "Ready for review".
 
 ### Test
 
-To save time, run tests locally, but they will also run on all PRs to `dev` and `master`. Tests will need to be passing for your changes to be merged.
+To save time, run tests locally, but they will also run on all PRs to `dev` and `main`. Tests will need to be passing for your changes to be merged.
 
 ### Auto merge `dev` -> `main`**
 
@@ -147,6 +132,21 @@ Build all apps and packages for production using your `.env` file.
 ```sh
 npm run build:env
 ```
+
+## 🚀 Deployments
+
+| Environment | Description                                               | Directory                                              |
+| ----------- | --------------------------------------------------------- | ------------------------------------------------------ |
+| Production  | The main deployment attached to the domain. `vercel/prod` | https://xray.helius.xyz/                               |
+| Staging     | Staging branch based on contents of `vercel/staging`      | https://xray-web-git-vercel-staging-helius.vercel.app/ |
+
+## 📦 Packages
+
+| Name                                                  | Description                                         | Directory                |
+| ----------------------------------------------------- | --------------------------------------------------- | ------------------------ |
+| [@helius-labs/xray-web](#@helius-labs/xray-app)       | SvelteKit app with UI and backend endpoints.        | `apps/web`               |
+| [@helius-labs/xray-proton](#@helius-labs/xray-proton) | Parses transaction data to produce UI state.        | `packages/xray-proton`   |
+| `@helius-labs/xray-database` [WIP]                    | Prisma client used for communicating with database. | `packages/xray-database` |
 
 # 📱 @helius-labs/xray-web
 
