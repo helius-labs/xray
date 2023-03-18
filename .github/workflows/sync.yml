@@ -1,0 +1,26 @@
+# ensure all apps and packages can still build and test
+name: Sync dev -> main
+
+env:
+    HELIUS_KEY: "chewed-glass"
+
+on:
+    push:
+        branches: [dev]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [18.x]
+
+        steps:
+            - name: Merge dev -> main
+            uses: devmasx/merge-branch@master
+            with:
+              type: now
+              from_branch: dev
+              target_branch: main
+              github_token: ${{ secrets.GITHUB_TOKEN }}
