@@ -25,6 +25,7 @@ const voteFilter = VOTE_PROGRAM_ID.toBase58();
 export const blockTransactions = t.procedure
     .input(
         z.object({
+            // cursor: z.number().optional(),
             cursor: z.string().optional(),
             limit: z.number().min(1).max(100).optional(),
             slot: z.number(),
@@ -32,6 +33,7 @@ export const blockTransactions = t.procedure
     )
     .output(
         z.object({
+            // oldest: z.number(),
             oldest: z.string(),
             result: z.array(
                 z.object({
@@ -131,16 +133,31 @@ export const blockTransactions = t.procedure
         }
 
         const lastIndex =
-            filteredTxs?.findIndex((tx) => tx.signature === input.cursor) || -1;
-        filteredTxs = filteredTxs?.slice(lastIndex + 1);
+            filteredTxs?.findIndex((tx) => tx?.signature === input.cursor) ||
+            -1;
+        filteredTxs =
+            filteredTxs?.slice(lastIndex + 1, lastIndex + limit + 1) || [];
+
+        // if (input.cursor) {
+        //     filteredTxs = filteredTxs?.slice(input.cursor + 1, limit);
+        // } else {
+        //     filteredTxs = filteredTxs?.slice(0, limit);
+        // }
+
+        // console.log("filteredTxs", filteredTxs);
 
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
+        if (filteredTxs?.length === 0) {
+            return {
+                oldest: "",
+                result: [],
+            };
+        }
+
         const response = await fetch(url, {
             body: JSON.stringify({
-                transactions: filteredTxs
-                    ?.filter((item, index) => index < 100)
-                    .map((tx) => tx.signature),
+                transactions: filteredTxs?.map((tx) => tx.signature),
             }),
 
             method: "POST",
@@ -152,6 +169,7 @@ export const blockTransactions = t.procedure
 
         return {
             oldest: json[json.length - 1].signature || "",
+            // oldest: json.length - 1 || 0,
             result,
         };
     });
