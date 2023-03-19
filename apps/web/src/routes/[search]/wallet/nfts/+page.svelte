@@ -9,34 +9,32 @@
 
     const client = trpcWithQuery($page);
 
-    const balances = client.balances.createQuery(account);
+    const assets = client.ownerAssets.createQuery(account);
 </script>
 
 <div class="grid grid-cols-4 gap-3">
-    {#if $balances.data}
-        {#each $balances.data.tokens as token}
-            {#if token.decimals === 0}
-                <div class="aspect-square w-full">
-                    <TokenProvider
-                        address={token.mint}
-                        let:metadata
-                        let:tokenIsLoading
-                    >
-                        {#if !tokenIsLoading && metadata?.image}
-                            <button
-                                on:click={() =>
-                                    (window.location.href = `/${token.mint}/token`)}
-                                class=" block aspect-square h-full w-full overflow-hidden rounded-lg border bg-cover bg-center hover:border-primary"
-                                style="basckground-image: url({metadata?.image})"
-                            />
-                        {:else}
-                            <div
-                                class="pulse aspect-square rounded-lg bg-secondary"
-                            />
-                        {/if}
-                    </TokenProvider>
-                </div>
-            {/if}
+    {#if $assets.data}
+        {#each $assets.data.items as token}
+            <div class="aspect-square w-full">
+                <TokenProvider
+                    address={token.id}
+                    let:metadata
+                    let:tokenIsLoading
+                >
+                    {#if !tokenIsLoading && metadata?.image}
+                        <button
+                            on:click={() =>
+                                (window.location.href = `/${token.mint}/token`)}
+                            class=" block aspect-square h-full w-full overflow-hidden rounded-lg border bg-cover bg-center hover:border-primary"
+                            style="background-image: url({metadata?.image})"
+                        />
+                    {:else}
+                        <div
+                            class="pulse aspect-square rounded-lg bg-secondary"
+                        />
+                    {/if}
+                </TokenProvider>
+            </div>
         {/each}
     {:else}
         {#each Array(8) as _}
