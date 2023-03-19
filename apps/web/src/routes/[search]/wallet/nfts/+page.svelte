@@ -22,12 +22,15 @@
                     let:tokenIsLoading
                 >
                     {#if !tokenIsLoading && metadata?.image}
-                        <button
-                            on:click={() =>
-                                (window.location.href = `/${token.mint}/token`)}
-                            class=" block aspect-square h-full w-full overflow-hidden rounded-lg border bg-cover bg-center hover:border-primary"
-                            style="background-image: url({metadata?.image})"
-                        />
+                        <a
+                            data-sveltekit-reload
+                            href={`/${token.id}/token`}
+                        >
+                            <div
+                                class="block aspect-square h-full w-full overflow-hidden rounded-lg border bg-cover bg-center hover:border-primary"
+                                style="background-image: url({metadata?.image})"
+                            />
+                        </a>
                     {:else}
                         <div
                             class="pulse aspect-square rounded-lg bg-secondary"
