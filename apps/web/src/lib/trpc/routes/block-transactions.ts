@@ -25,7 +25,6 @@ const voteFilter = VOTE_PROGRAM_ID.toBase58();
 export const blockTransactions = t.procedure
     .input(
         z.object({
-            // cursor: z.number().optional(),
             cursor: z.string().optional(),
             limit: z.number().min(1).max(100).optional(),
             slot: z.number(),
@@ -33,7 +32,6 @@ export const blockTransactions = t.procedure
     )
     .output(
         z.object({
-            // oldest: z.number(),
             oldest: z.string(),
             result: z.array(
                 z.object({
@@ -125,26 +123,23 @@ export const blockTransactions = t.procedure
             });
 
         let filteredTxs: TransactionWithInvocations[] | undefined =
-            transactions;
-        if (transactions) {
-            filteredTxs = transactions.filter(({ invocations }) => {
+            transactions?.filter(({ invocations }) => {
                 return !(invocations.has(voteFilter) && invocations.size === 1);
             });
+
+        if (filteredTxs && input.cursor) {
+            const lastTxIndex = filteredTxs.findIndex(
+                (tx) => tx.signature === input.cursor
+            );
+
+            if (lastTxIndex >= 0) {
+                filteredTxs = filteredTxs.slice(lastTxIndex + 1);
+            }
         }
 
-        const lastIndex =
-            filteredTxs?.findIndex((tx) => tx?.signature === input.cursor) ||
-            -1;
-        filteredTxs =
-            filteredTxs?.slice(lastIndex + 1, lastIndex + limit + 1) || [];
-
-        // if (input.cursor) {
-        //     filteredTxs = filteredTxs?.slice(input.cursor + 1, limit);
-        // } else {
-        //     filteredTxs = filteredTxs?.slice(0, limit);
-        // }
-
-        // console.log("filteredTxs", filteredTxs);
+        if (filteredTxs) {
+            filteredTxs = filteredTxs.slice(0, limit);
+        }
 
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
@@ -168,8 +163,7 @@ export const blockTransactions = t.procedure
         const result = json.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            oldest: json[json.length - 1].signature || "",
-            // oldest: json.length - 1 || 0,
+            oldest: filteredTxs?.at(filteredTxs?.length - 1)?.signature || "",
             result,
         };
     });
