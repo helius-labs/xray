@@ -4,6 +4,7 @@ import { initTRPC } from "@trpc/server";
 
 import { accountInfo } from "$lib/trpc/routes/account-info";
 import { asset } from "$lib/trpc/routes/asset";
+import { ownerAssets } from "$lib/trpc/routes/owner-assets";
 import { price } from "$lib/trpc/routes/price";
 import { token } from "$lib/trpc/routes/token";
 import { tps } from "$lib/trpc/routes/tps";
@@ -18,6 +19,7 @@ export const router = t.router({
     accountInfo,
     asset,
     balances,
+    ownerAssets,
     price,
     rawTransaction,
     token,
