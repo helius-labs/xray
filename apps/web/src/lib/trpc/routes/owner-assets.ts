@@ -14,7 +14,7 @@ export const ownerAssets = t.procedure
             sortBy: "created",
             sortDirection: "asc",
         };
-        const limit = 50;
+        const limit = 200;
         const page = 1;
         const before = "";
         const after = "";
