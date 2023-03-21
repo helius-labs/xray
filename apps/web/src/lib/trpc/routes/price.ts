@@ -17,5 +17,5 @@ export const price = t.procedure
 
         const json = await response.json();
 
-        return json.data.value;
+        return json?.data?.value || 0;
     });
