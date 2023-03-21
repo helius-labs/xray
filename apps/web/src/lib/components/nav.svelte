@@ -5,13 +5,14 @@
 
     import Icon from "$lib/components/icon.svelte";
 
-    import Search from "$lib/components/search.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
+    import Search from "$lib/components/search.svelte";
     import Stats from "$lib/components/stats.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
 </script>
 
+<Stats />
 <nav
     class="sticky top-0 left-0 z-40 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
@@ -34,8 +35,6 @@
         </div>
 
         <div class="ml-2" />
-
-        <Stats />
     </div>
 
     <div class="col-span-2 hidden items-center justify-end md:block">
