@@ -39,7 +39,7 @@
             />
         </div>
         <div
-            class="col-span-10 flex items-center justify-between md:col-span-11"
+            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
         >
             <div>
                 <h4 class="font-semibold md:text-sm">SOL</h4>
@@ -53,25 +53,14 @@
                     </h4>
                 {/if}
 
-                <h4 class="opacity-50 md:text-4xl md:text-sm">
-                    {#if $sol.data?.value}
+                <h4 class="text-xs opacity-50">
+                    {#if $sol.data}
                         {formatMoney(
-                            ($sol.data?.value * $balances.data?.nativeBalance) /
+                            ($sol.data * $balances.data?.nativeBalance) /
                                 LAMPORTS_PER_SOL
                         )}
-                    {:else}
-                        <p class="opacity-20">...</p>
                     {/if}
                 </h4>
-
-                {#if $sol.data?.value}
-                    <h4 class="opacity-50 md:text-4xl md:text-sm">
-                        {formatMoney(
-                            ($sol.data?.value * $balances.data?.nativeBalance) /
-                                LAMPORTS_PER_SOL
-                        )}
-                    </h4>
-                {/if}
             </div>
         </div>
     </a>
@@ -98,29 +87,23 @@
                             class="col-span-10 flex items-center justify-between text-right md:col-span-11"
                         >
                             <div>
-                                <h4
-                                    class="font-semibold md:text-4xl md:text-sm"
-                                >
+                                <h4 class="font-semibold md:text-sm">
                                     {metadata?.name || ""}
                                 </h4>
                             </div>
                             <div>
-                                <h4
-                                    class="font-semibold md:text-4xl md:text-sm"
-                                >
+                                <h4 class="font-semibold md:text-sm">
                                     {(
                                         token.amount /
                                         10 ** token.decimals
                                     ).toLocaleString()}
                                 </h4>
-                                <h4 class="opacity-50 md:text-4xl md:text-sm">
+                                <h4 class="text-xs opacity-50">
                                     {#if metadata.price}
                                         {formatMoney(
                                             (metadata.price * token.amount) /
                                                 10 ** token.decimals
                                         )}
-                                    {:else}
-                                        <p class="opacity-20">...</p>
                                     {/if}
                                 </h4>
                             </div>
