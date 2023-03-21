@@ -7,12 +7,15 @@
 
     import { SOL } from "@helius-labs/xray-proton/dist";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+    import formatMoney from "src/lib/util/format-money";
 
     const account = $page.params.search;
 
     const client = trpcWithQuery($page);
 
     const balances = client.balances.createQuery(account);
+
+    const sol = client.price.createQuery(SOL);
 
     $: sorted = $balances?.data?.tokens
         // @ts-ignore
@@ -36,7 +39,7 @@
             />
         </div>
         <div
-            class="col-span-10 flex items-center justify-between md:col-span-11"
+            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
         >
             <div>
                 <h4 class="font-semibold md:text-sm">SOL</h4>
@@ -49,6 +52,15 @@
                         ).toLocaleString()}
                     </h4>
                 {/if}
+
+                <h4 class="text-xs opacity-50">
+                    {#if $sol.data}
+                        {formatMoney(
+                            ($sol.data * $balances.data?.nativeBalance) /
+                                LAMPORTS_PER_SOL
+                        )}
+                    {/if}
+                </h4>
             </div>
         </div>
     </a>
@@ -72,23 +84,27 @@
                             />
                         </div>
                         <div
-                            class="col-span-10 flex items-center justify-between md:col-span-11"
+                            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
                         >
                             <div>
-                                <h4
-                                    class="font-semibold md:text-4xl md:text-sm"
-                                >
+                                <h4 class="font-semibold md:text-sm">
                                     {metadata?.name || ""}
                                 </h4>
                             </div>
                             <div>
-                                <h4
-                                    class="font-semibold md:text-4xl md:text-sm"
-                                >
+                                <h4 class="font-semibold md:text-sm">
                                     {(
                                         token.amount /
                                         10 ** token.decimals
                                     ).toLocaleString()}
+                                </h4>
+                                <h4 class="text-xs opacity-50">
+                                    {#if metadata.price}
+                                        {formatMoney(
+                                            (metadata.price * token.amount) /
+                                                10 ** token.decimals
+                                        )}
+                                    {/if}
                                 </h4>
                             </div>
                         </div>
