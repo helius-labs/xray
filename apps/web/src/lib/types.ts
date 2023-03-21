@@ -46,6 +46,7 @@ export interface UITokenMetadata {
     description?: string;
     attributes?: UITokenMetadataAttribute[];
     creators?: UITokenMetadataCreators[];
+    price?: number;
 }
 
 export type Icon = keyof typeof IconPaths;
