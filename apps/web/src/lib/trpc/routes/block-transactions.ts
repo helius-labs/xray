@@ -122,28 +122,30 @@ export const blockTransactions = t.procedure
                 };
             });
 
-        let filteredTxs: TransactionWithInvocations[] | undefined =
+        let filteredTransactions: TransactionWithInvocations[] | undefined =
             transactions?.filter(({ invocations }) => {
                 return !(invocations.has(voteFilter) && invocations.size === 1);
             });
 
-        if (filteredTxs && input.cursor) {
-            const lastTxIndex = filteredTxs.findIndex(
+        if (filteredTransactions && input.cursor) {
+            const lastTransactionIndex = filteredTransactions.findIndex(
                 (tx) => tx.signature === input.cursor
             );
 
-            if (lastTxIndex >= 0) {
-                filteredTxs = filteredTxs.slice(lastTxIndex + 1);
+            if (lastTransactionIndex >= 0) {
+                filteredTransactions = filteredTransactions.slice(
+                    lastTransactionIndex + 1
+                );
             }
         }
 
-        if (filteredTxs) {
-            filteredTxs = filteredTxs.slice(0, limit);
+        if (filteredTransactions) {
+            filteredTransactions = filteredTransactions.slice(0, limit);
         }
 
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
-        if (filteredTxs?.length === 0) {
+        if (filteredTransactions?.length === 0) {
             return {
                 oldest: "",
                 result: [],
@@ -152,7 +154,7 @@ export const blockTransactions = t.procedure
 
         const response = await fetch(url, {
             body: JSON.stringify({
-                transactions: filteredTxs?.map((tx) => tx.signature),
+                transactions: filteredTransactions?.map((tx) => tx.signature),
             }),
 
             method: "POST",
@@ -163,7 +165,9 @@ export const blockTransactions = t.procedure
         const result = json.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            oldest: filteredTxs?.at(filteredTxs?.length - 1)?.signature || "",
+            oldest:
+                filteredTransactions?.at(filteredTransactions?.length - 1)
+                    ?.signature || "",
             result,
         };
     });
