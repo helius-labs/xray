@@ -45,6 +45,7 @@
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
         metadata.address = SOL;
+        metadata.price = $price?.data || 0;
     } else if ($asset?.data?.compressed) {
         const data = $asset?.data;
         metadata.address = data?.address || "";
@@ -74,8 +75,6 @@
             data?.onChainMetadata?.metadata?.data.name;
         metadata.price = $price?.data || 0;
     }
-
-    $: console.log(metadata.price);
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;
     $: tokenFailed = $token.isError;
