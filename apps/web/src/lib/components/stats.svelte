@@ -18,36 +18,35 @@
     const slot = client.currentSlot.createQuery();
 </script>
 
-<div class="ml-1 items-center text-xs">
-    <div>
-        <div class="mr-5">
-            {#if !$tps.isLoading}
-                <div
-                    in:fade={{
-                        duration: 500,
-                    }}
-                >
-                    <span class="font-bold">TPS </span>
-                    <span class="ml-1 opacity-50">{$tps?.data?.toFixed(0)}</span
-                    >
-                </div>
-            {:else}
-                <div class="pulse my-2 h-2 w-16 rounded-lg bg-secondary" />
-            {/if}
-        </div>
-        <div>
-            {#if !$tps.isLoading}
-                <div
-                    in:fade={{
-                        duration: 500,
-                    }}
-                />
-                <span class="font-bold">SOL/USD </span>
-                <span class="ml-1 opacity-50">{formatMoney($price?.data)}</span>
-            {:else}
-                <div class="pulse my-2 h-2 w-20 rounded-lg bg-secondary" />
-            {/if}
-        </div>
+<div
+    class="flex h-8 w-full items-center justify-center border border-x-0 border-t-0 border-transparent text-xs"
+>
+    <div class="mr-4">
+        {#if !$tps.isLoading}
+            <div
+                in:fade={{
+                    duration: 500,
+                }}
+            >
+                <span class="font-bold">TPS </span>
+                <span class="opacity-50">{$tps?.data?.toFixed(0)}</span>
+            </div>
+        {:else}
+            <div class="pulse my-2 h-2 w-16 rounded-lg bg-secondary" />
+        {/if}
+    </div>
+    <div class="mr-4">
+        {#if !$tps.isLoading}
+            <div
+                in:fade={{
+                    duration: 500,
+                }}
+            />
+            <span class="font-bold">SOL/USD </span>
+            <span class="opacity-50">{formatMoney($price?.data)}</span>
+        {:else}
+            <div class="pulse my-2 h-2 w-20 rounded-lg bg-secondary" />
+        {/if}
     </div>
     <div>
         {#if !$tps.isLoading}
@@ -57,7 +56,7 @@
                 }}
             />
             <span class="font-bold">Current Slot </span>
-            <span class="ml-1 opacity-50 hover:opacity-100">
+            <span class="opacity-50 hover:opacity-100">
                 <a
                     data-sveltekit-reload
                     href="/"
