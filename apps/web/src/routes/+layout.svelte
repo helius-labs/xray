@@ -16,24 +16,24 @@
     import { clusterApiUrl } from "@solana/web3.js";
 
     import {
-        workSpace,
-        WalletProvider,
         ConnectionProvider,
         WalletModal,
+        WalletProvider,
+        workSpace,
     } from "@svelte-on-solana/wallet-adapter-ui";
 
     import {
-        wallets,
-        showConnectWallet,
+        connectWallet,
         hideConnectWallet,
         isConnectingWallet,
-        connectWallet,
+        showConnectWallet,
+        wallets,
     } from "src/lib/state/stores/connect-wallet";
 
-    import Nav from "$lib/components/nav.svelte";
     import DevBanner from "$lib/components/dev-banner.svelte";
     import Footer from "$lib/components/footer.svelte";
     import Modals from "$lib/components/modals.svelte";
+    import Nav from "$lib/components/nav.svelte";
 
     export let data: LayoutData;
 
@@ -60,7 +60,7 @@
 <ConnectionProvider {network} />
 
 <QueryClientProvider client={data.queryClient}>
-    <main class="grid min-h-screen">
+    <main class="min-h-screen">
         <DevBanner />
         <Nav />
 
