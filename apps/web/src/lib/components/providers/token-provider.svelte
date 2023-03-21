@@ -34,6 +34,11 @@
         refetchOnWindowFocus: false,
     });
 
+    const price = client.price.createQuery(address, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
+
     let element: HTMLDivElement;
 
     $: if (address === SOL) {
@@ -67,7 +72,10 @@
             data?.offChainMetadata?.metadata?.name ||
             data?.legacyMetadata?.name ||
             data?.onChainMetadata?.metadata?.data.name;
+        metadata.price = $price?.data || 0;
     }
+
+    $: console.log(metadata.price);
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;
     $: tokenFailed = $token.isError;

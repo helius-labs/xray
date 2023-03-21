@@ -7,12 +7,15 @@
 
     import { SOL } from "@helius-labs/xray-proton/dist";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+    import formatMoney from "src/lib/util/format-money";
 
     const account = $page.params.search;
 
     const client = trpcWithQuery($page);
 
     const balances = client.balances.createQuery(account);
+
+    const sol = client.price.createQuery(SOL);
 
     $: sorted = $balances?.data?.tokens
         // @ts-ignore
@@ -49,6 +52,26 @@
                         ).toLocaleString()}
                     </h4>
                 {/if}
+
+                <h4 class="opacity-50 md:text-4xl md:text-sm">
+                    {#if $sol.data?.value}
+                        {formatMoney(
+                            ($sol.data?.value * $balances.data?.nativeBalance) /
+                                LAMPORTS_PER_SOL
+                        )}
+                    {:else}
+                        <p class="opacity-20">...</p>
+                    {/if}
+                </h4>
+
+                {#if $sol.data?.value}
+                    <h4 class="opacity-50 md:text-4xl md:text-sm">
+                        {formatMoney(
+                            ($sol.data?.value * $balances.data?.nativeBalance) /
+                                LAMPORTS_PER_SOL
+                        )}
+                    </h4>
+                {/if}
             </div>
         </div>
     </a>
@@ -72,7 +95,7 @@
                             />
                         </div>
                         <div
-                            class="col-span-10 flex items-center justify-between md:col-span-11"
+                            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
                         >
                             <div>
                                 <h4
@@ -89,6 +112,16 @@
                                         token.amount /
                                         10 ** token.decimals
                                     ).toLocaleString()}
+                                </h4>
+                                <h4 class="opacity-50 md:text-4xl md:text-sm">
+                                    {#if metadata.price}
+                                        {formatMoney(
+                                            (metadata.price * token.amount) /
+                                                10 ** token.decimals
+                                        )}
+                                    {:else}
+                                        <p class="opacity-20">...</p>
+                                    {/if}
                                 </h4>
                             </div>
                         </div>
