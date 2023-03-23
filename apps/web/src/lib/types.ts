@@ -30,7 +30,7 @@ export interface UITransaction {
 }
 
 export interface UITokenMetadataAttribute {
-    trait_type: string;
+    traitType: string;
     value: string;
 }
 export interface UITokenMetadataCreators {
