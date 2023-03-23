@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { transactions as mock } from "@helius-labs/xray-test";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_KEY, HELIUS_API_URL } = process.env;
 
 export const transactions = t.procedure
     .input(
@@ -59,7 +59,7 @@ export const transactions = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v0/addresses/${
+        const url = `${HELIUS_API_URL}/v0/addresses/${
             input.account
         }/transactions?api-key=${HELIUS_KEY}${
             input.filter ? `&type=${input.filter}` : ""

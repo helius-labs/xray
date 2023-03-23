@@ -1,6 +1,6 @@
 import { json, type RequestEvent } from "@sveltejs/kit";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_KEY, HELIUS_API_URL } = process.env;
 
 import { tokens } from "@helius-labs/xray-test";
 
@@ -17,7 +17,7 @@ export async function GET({ params }: RequestEvent) {
     }
 
     const response = await fetch(
-        `https://api.helius.xyz/v0/token-metadata?api-key=${HELIUS_KEY}`,
+        `${HELIUS_API_URL}/v0/token-metadata?api-key=${HELIUS_KEY}`,
         {
             body: JSON.stringify({
                 includeOffChain: true,

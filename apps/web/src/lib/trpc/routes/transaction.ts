@@ -8,7 +8,7 @@ import { z } from "zod";
 
 import { transactions } from "@helius-labs/xray-test";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_KEY, HELIUS_API_URL } = process.env;
 
 export const transaction = t.procedure
     .input(
@@ -27,7 +27,7 @@ export const transaction = t.procedure
             return parseTransaction(data, input?.account);
         }
 
-        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
+        const url = `${HELIUS_API_URL}/v0/transactions/?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({

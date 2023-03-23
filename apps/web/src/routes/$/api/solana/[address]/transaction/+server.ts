@@ -2,7 +2,7 @@ import { json, type RequestEvent } from "@sveltejs/kit";
 
 import type { EnrichedTransaction } from "helius-sdk";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_KEY, HELIUS_API_URL } = process.env;
 
 import { transactions } from "@helius-labs/xray-test";
 
@@ -21,7 +21,7 @@ export async function GET({ params }: RequestEvent) {
     }
 
     const response = await fetch(
-        `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`,
+        `${HELIUS_API_URL}/v0/transactions/?api-key=${HELIUS_KEY}`,
         {
             body: `{
             "transactions" : [
