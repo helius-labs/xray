@@ -25,14 +25,14 @@
                 <div>
                     <div class="flex justify-between">
                         <div>
-                            <ShortenAddress address={data.account} />
                             <div class="flex items-center">
-                                <a
+                                <ShortenAddress address={data.account} />
+                                <!-- <a
                                     href="/{data.account}/wallet"
                                     class="order link-neutral pointer-events-auto  flex border-x-0 border-t-0 border-dotted text-xs hover:link-success"
                                 >
                                     {shortenString(data.account)}
-                                </a>
+                                </a> -->
                                 <CopyButton text={data.account} />
                             </div>
                         </div>
