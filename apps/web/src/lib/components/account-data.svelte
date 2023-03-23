@@ -1,13 +1,14 @@
 <script lang="ts">
     import type { ProtonAccount } from "@helius-labs/xray-proton";
 
-    import TokenProvider from "./providers/token-provider.svelte";
     import Namor from "./providers/namor-provider.svelte";
+    import TokenProvider from "./providers/token-provider.svelte";
 
     import { fade } from "svelte/transition";
 
     import shortenString from "$lib/util/shorten-string";
     import CopyButton from "./copy-button.svelte";
+    import ShortenAddress from "./shorten-address.svelte";
 
     export let data: ProtonAccount;
 </script>
@@ -24,12 +25,7 @@
                 <div>
                     <div class="flex justify-between">
                         <div>
-                            <h3
-                                class="text-md tooltip tooltip-bottom tooltip-secondary"
-                                data-tip="A nickname generated for this account"
-                            >
-                                {result}
-                            </h3>
+                            <ShortenAddress address={data.account} />
                             <div class="flex items-center">
                                 <a
                                     href="/{data.account}/wallet"
