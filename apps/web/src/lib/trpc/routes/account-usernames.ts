@@ -12,7 +12,9 @@ const getBackpackUsername = async (address = "") => {
     );
     const data = await response.json();
 
-    return data.username || "";
+    console.log("hi", data.user.username);
+
+    return data.user.username || "";
 };
 
 const getSolanaDomain = async (address = "") => {
@@ -20,17 +22,25 @@ const getSolanaDomain = async (address = "") => {
     const domainKey = new PublicKey(address);
     const domainName = await performReverseLookup(connection, domainKey);
 
-    console.log("hi", domainName);
+    // console.log("hi", domainName);
 
     return domainName;
 };
 
 export const accountUsernames = t.procedure
     .input(z.string())
+    .output(
+        z.array(
+            z.object({
+                type: z.string(),
+                username: z.string(),
+            })
+        )
+    )
     .query(async ({ input: address }) => {
         const usernames = [];
         const backpackUsername = await getBackpackUsername(address);
-        const solanaDomain = await getSolanaDomain(address);
+        // const solanaDomain = await getSolanaDomain(address);
 
         if (backpackUsername) {
             usernames.push({
@@ -38,11 +48,11 @@ export const accountUsernames = t.procedure
                 username: backpackUsername,
             });
         }
-        if (solanaDomain) {
-            usernames.push({
-                type: "bonfida",
-                username: solanaDomain,
-            });
-        }
-        return usernames;
+        // if (solanaDomain) {
+        //     usernames.push({
+        //         type: "bonfida",
+        //         username: solanaDomain,
+        //     });
+        // }
+        return usernames || [];
     });

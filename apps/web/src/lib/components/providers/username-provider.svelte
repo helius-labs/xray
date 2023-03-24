@@ -7,10 +7,12 @@
 
     export let address: string = "";
 
-    const usernames = client.accountUsernames.createQuery(address, {
+    const usernameData = client.accountUsernames.createQuery(address, {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
+
+    $: usernames = $usernameData?.data || [];
 </script>
 
 <slot {usernames} />
