@@ -12,13 +12,15 @@ const getBackpackUsername = async (address = "") => {
     );
     const data = await response.json();
 
-    return data?.username;
+    return data.username || "";
 };
 
 const getSolanaDomain = async (address = "") => {
     const connection = connect();
     const domainKey = new PublicKey(address);
     const domainName = await performReverseLookup(connection, domainKey);
+
+    console.log("hi", domainName);
 
     return domainName;
 };
@@ -27,8 +29,8 @@ export const accountUsernames = t.procedure
     .input(z.string())
     .query(async ({ input: address }) => {
         const usernames = [];
-        const backpackUsername = getBackpackUsername(address);
-        const solanaDomain = getSolanaDomain(address);
+        const backpackUsername = await getBackpackUsername(address);
+        const solanaDomain = await getSolanaDomain(address);
 
         if (backpackUsername) {
             usernames.push({
