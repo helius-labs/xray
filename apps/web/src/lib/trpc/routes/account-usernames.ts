@@ -2,7 +2,7 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-import { performReverseLookup } from "@bonfida/spl-name-service";
+import { getAllDomains, reverseLookup } from "@bonfida/spl-name-service";
 import { PublicKey } from "@solana/web3.js";
 import connect from "src/lib/util/solana/connect";
 
@@ -12,19 +12,18 @@ const getBackpackUsername = async (address = "") => {
     );
     const data = await response.json();
 
-    console.log("hi", data.user.username);
-
-    return data.user.username || "";
+    return data?.user?.username || "";
 };
 
 const getSolanaDomain = async (address = "") => {
     const connection = connect();
-    const domainKey = new PublicKey(address);
-    const domainName = await performReverseLookup(connection, domainKey);
+    const domainKey = new PublicKey(
+        "7hPhaUpydpvm8wtiS3k4LPZKUmivQRs7YQmpE1hFshHx"
+    );
+    const allDomainKeys = await getAllDomains(connection, domainKey);
+    const domainName = await reverseLookup(connection, allDomainKeys[0]);
 
-    // console.log("hi", domainName);
-
-    return domainName;
+    return domainName || "";
 };
 
 export const accountUsernames = t.procedure
@@ -40,7 +39,7 @@ export const accountUsernames = t.procedure
     .query(async ({ input: address }) => {
         const usernames = [];
         const backpackUsername = await getBackpackUsername(address);
-        // const solanaDomain = await getSolanaDomain(address);
+        const solanaDomain = await getSolanaDomain(address);
 
         if (backpackUsername) {
             usernames.push({
@@ -48,11 +47,11 @@ export const accountUsernames = t.procedure
                 username: backpackUsername,
             });
         }
-        // if (solanaDomain) {
-        //     usernames.push({
-        //         type: "bonfida",
-        //         username: solanaDomain,
-        //     });
-        // }
+        if (solanaDomain) {
+            usernames.push({
+                type: "bonfida",
+                username: `${solanaDomain}.sol`,
+            });
+        }
         return usernames || [];
     });
