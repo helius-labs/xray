@@ -3,7 +3,8 @@ import { t } from "$lib/trpc/t";
 import { z } from "zod";
 
 import { getAllDomains, reverseLookup } from "@bonfida/spl-name-service";
-import { PublicKey } from "@solana/web3.js";
+import { TLDParser } from "@onsol/tldparser";
+import { Connection, PublicKey } from "@solana/web3.js";
 import connect from "src/lib/util/solana/connect";
 
 const getBackpackUsername = async (address = "") => {
@@ -15,15 +16,26 @@ const getBackpackUsername = async (address = "") => {
     return data?.user?.username || "";
 };
 
-const getSolanaDomain = async (address = "") => {
-    const connection = connect();
-    const domainKey = new PublicKey(
-        "7hPhaUpydpvm8wtiS3k4LPZKUmivQRs7YQmpE1hFshHx"
-    );
+const getSolanaDomain = async (address = "", connection: Connection) => {
+    const domainKey = new PublicKey(address);
     const allDomainKeys = await getAllDomains(connection, domainKey);
-    const domainName = await reverseLookup(connection, allDomainKeys[0]);
+    if (allDomainKeys) {
+        const domainName = await reverseLookup(connection, allDomainKeys[0]);
+        return domainName;
+    }
 
-    return domainName || "";
+    return "";
+};
+
+const getANSDomain = async (address = "", connection: Connection) => {
+    const parser = new TLDParser(connection);
+    const domain = await parser.getMainDomain(address);
+
+    if (domain?.domain) {
+        return `${domain.domain}${domain.tld}`;
+    }
+
+    return "";
 };
 
 export const accountUsernames = t.procedure
@@ -37,9 +49,11 @@ export const accountUsernames = t.procedure
         )
     )
     .query(async ({ input: address }) => {
+        const connection = connect();
         const usernames = [];
         const backpackUsername = await getBackpackUsername(address);
-        const solanaDomain = await getSolanaDomain(address);
+        const solanaDomain = await getSolanaDomain(address, connection);
+        const ansDomain = await getANSDomain(address, connection);
 
         if (backpackUsername) {
             usernames.push({
@@ -51,6 +65,12 @@ export const accountUsernames = t.procedure
             usernames.push({
                 type: "bonfida",
                 username: `${solanaDomain}.sol`,
+            });
+        }
+        if (ansDomain) {
+            usernames.push({
+                type: "ans",
+                username: ansDomain,
             });
         }
         return usernames || [];
