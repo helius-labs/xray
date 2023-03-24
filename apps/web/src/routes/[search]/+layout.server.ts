@@ -5,7 +5,7 @@ import type { ParsedAccountData } from "@solana/web3.js";
 
 import { redirect } from "@sveltejs/kit";
 
-import { getDomainKey, NameRegistryState } from "@bonfida/spl-name-service";
+import { getDomainKeySync, NameRegistryState } from "@bonfida/spl-name-service";
 import connect from "src/lib/util/solana/connect";
 
 import search from "src/lib/util/search";

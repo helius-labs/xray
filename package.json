@@ -70,7 +70,7 @@
     },
     "packageManager": "npm@8.19.2",
     "dependencies": {
-        "@bonfida/spl-name-service": "^0.1.64",
+        "@bonfida/spl-name-service": "^0.1.67",
         "@onsol/tldparser": "^0.4.3",
         "@solana/web3.js": "^1.73.2",
         "helius-sdk": "^0.3.0",
