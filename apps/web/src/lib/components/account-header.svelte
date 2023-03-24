@@ -65,30 +65,32 @@
                         />
                     </div>
                 </div>
-                {#if usernames?.length > 0}
-                    {#each usernames as username}
-                        {#if username.type === "backpack"}
-                            <div
-                                class="inline-block rounded-full bg-red-200 py-1 px-3 text-xs font-extrabold text-red-600"
-                            >
-                                <div class="flex items-center gap-1">
-                                    <Icon
-                                        id="backpack"
-                                        size="sm"
-                                    />
+                <div class="flex gap-2">
+                    {#if usernames && usernames?.length > 0}
+                        {#each usernames as username}
+                            {#if username.type === "backpack"}
+                                <div
+                                    class="inline-block rounded-full bg-red-200 py-1 px-3 text-xs font-extrabold text-red-600"
+                                >
+                                    <div class="flex items-center gap-1">
+                                        <Icon
+                                            id="backpack"
+                                            size="sm"
+                                        />
 
+                                        {username.username}
+                                    </div>
+                                </div>
+                            {:else}
+                                <div
+                                    class="inline-block rounded-full bg-blue-200 py-1 px-3 text-xs font-extrabold text-blue-600"
+                                >
                                     {username.username}
                                 </div>
-                            </div>
-                        {:else}
-                            <div
-                                class="inline-block rounded-full bg-blue-200 py-1 px-3 text-xs font-extrabold text-blue-600"
-                            >
-                                {username.username}
-                            </div>
-                        {/if}
-                    {/each}
-                {/if}
+                            {/if}
+                        {/each}
+                    {/if}
+                </div>
             </div>
             <div class="relative text-right">
                 <h1 class="text-md md:block">
