@@ -3,7 +3,7 @@ import { t } from "$lib/trpc/t";
 import { z } from "zod";
 
 import { getAllDomains, reverseLookup } from "@bonfida/spl-name-service";
-import { TLDParser } from "@onsol/tldparser";
+import { TldParser } from "@onsol/tldparser";
 import { Connection, PublicKey } from "@solana/web3.js";
 import connect from "src/lib/util/solana/connect";
 
@@ -28,8 +28,8 @@ const getSolanaDomain = async (address = "", connection: Connection) => {
 };
 
 const getANSDomain = async (address = "", connection: Connection) => {
-    const parser = new TLDParser(connection);
-    const domain = await parser.getMainDomain(address);
+    const ans = new TLDParser(connection);
+    const domain = await ans.getMainDomain(address);
 
     if (domain?.domain) {
         return `${domain.domain}${domain.tld}`;
