@@ -9,6 +9,7 @@
     import { tweened } from "svelte/motion";
     import { trpcWithQuery } from "../trpc/client";
     import Namor from "./providers/namor-provider.svelte";
+    import ShortenAddress from "./shorten-address.svelte";
 
     const client = trpcWithQuery($page);
 
@@ -42,16 +43,19 @@
     <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
         <div class="flex flex-wrap items-center justify-between bg-base-100">
             <div>
-                <h3
+                <!-- <h3
                     class="tooltip tooltip-bottom tooltip-secondary relative m-0 text-lg font-bold md:text-2xl"
                     data-tip="A nickname generated for this account"
                 >
                     {result.substring(0, result.indexOf(" "))}
-                </h3>
+                </h3> -->
                 <div class="relative flex items-center">
-                    <p class="mr-3 text-xs opacity-50">
+                    <h3 class="m-0 text-lg font-bold md:text-2xl">
+                        <ShortenAddress address={account} />
+                    </h3>
+                    <!-- <p class="mr-3 text-xs opacity-50">
                         {shortenString(account)}
-                    </p>
+                    </p> -->
                     <div class="my-2">
                         <CopyButton text={account} />
                         <CopyButton
