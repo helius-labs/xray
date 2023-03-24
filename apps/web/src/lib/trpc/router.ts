@@ -3,6 +3,7 @@ import type { Context } from "$lib/trpc/context";
 import { initTRPC } from "@trpc/server";
 
 import { accountInfo } from "$lib/trpc/routes/account-info";
+import { accountUsernames } from "$lib/trpc/routes/account-usernames";
 import { asset } from "$lib/trpc/routes/asset";
 import { currentSlot } from "$lib/trpc/routes/current-slot";
 import { price } from "$lib/trpc/routes/price";
@@ -17,6 +18,7 @@ export const t = initTRPC.context<Context>().create();
 
 export const router = t.router({
     accountInfo,
+    accountUsernames,
     asset,
     balances,
     currentSlot,
