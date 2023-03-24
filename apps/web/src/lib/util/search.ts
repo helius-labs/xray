@@ -4,15 +4,15 @@ import connect from "$lib/util/solana/connect";
 
 import validPublicKey from "$lib/util/solana/validate-pubkey";
 
-import { getDomainKey, NameRegistryState } from "@bonfida/spl-name-service";
+import { getDomainKeySync, NameRegistryState } from "@bonfida/spl-name-service";
 
 import { PublicKey } from "@solana/web3.js";
 
-import { TldParser } from "@onsol/tldparser";
+// import { TldParser } from "@onsol/tldparser";
 
 export default async (search: string) => {
     const connection = connect();
-    const ans = new TldParser(connection);
+    // const ans = new TldParser(connection);
 
     // If it's long, assume it's a tx.
     // They will present with an error on the tx page if it's not.
@@ -57,7 +57,7 @@ export default async (search: string) => {
         return { data };
     } else if (probablySolanaName) {
         try {
-            const { pubkey } = await getDomainKey(search?.toLowerCase());
+            const { pubkey } = await getDomainKeySync(search?.toLowerCase());
 
             const domain = await NameRegistryState.retrieve(connection, pubkey);
 
@@ -111,25 +111,26 @@ export default async (search: string) => {
         };
 
         return { data };
-    } else if (isDomain) {
-        const owner = await ans.getOwnerFromDomainTld(search);
-
-        if (!owner) {
-            return {
-                data: {
-                    url: `/`,
-                    valid: false,
-                },
-            };
-        }
-
-        return {
-            data: {
-                url: `/${owner}/wallet`,
-                valid: true,
-            },
-        };
     }
+    // else if (isDomain) {
+    //     const owner = await ans.getOwnerFromDomainTld(search);
+
+    //     if (!owner) {
+    //         return {
+    //             data: {
+    //                 url: `/`,
+    //                 valid: false,
+    //             },
+    //         };
+    //     }
+
+    //     return {
+    //         data: {
+    //             url: `/${owner}/wallet`,
+    //             valid: true,
+    //         },
+    //     };
+    // }
 
     return {
         data: {
