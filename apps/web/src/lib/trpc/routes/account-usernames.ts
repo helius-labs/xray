@@ -28,7 +28,7 @@ const getSolanaDomain = async (address = "", connection: Connection) => {
 };
 
 const getANSDomain = async (address = "", connection: Connection) => {
-    const ans = new TLDParser(connection);
+    const ans = new TldParser(connection);
     const domain = await ans.getMainDomain(address);
 
     if (domain?.domain) {
