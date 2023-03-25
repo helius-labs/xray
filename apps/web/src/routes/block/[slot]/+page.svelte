@@ -73,12 +73,6 @@
                     >
                         Transactions
                     </a>
-                    <a
-                        href="#"
-                        class="tab tab-bordered"
-                    >
-                        Stats
-                    </a>
                 </div>
             </div>
         </div>
