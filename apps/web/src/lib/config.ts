@@ -85,6 +85,10 @@ export const transactionActionsMetadata: Record<
         icon: "cancel",
         label: "Canceled NFT Lising",
     },
+    NFT_GLOBAL_BID: {
+        icon: "sale",
+        label: "NFT Global Bid",
+    },
     NFT_LISTING: {
         filterLabel: "NFT List",
         icon: "sale",

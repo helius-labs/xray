@@ -281,6 +281,37 @@ export const parseNftCancelBid: ProtonParser = (transaction) => {
     });
 };
 
+export const parseNftGlobalBid: ProtonParser = (transaction, address) => {
+    // @ts-ignore
+    const nftEvent = transaction.events.nft;
+
+    if (!nftEvent) {
+        return generateDefaultTransaction(transaction.type);
+    }
+
+    const accounts: ProtonAccount[] = [];
+    traverseAccountData(transaction.accountData, accounts);
+
+    return generateNftTransaction({
+        accounts,
+        actions: [
+            {
+                // @ts-ignore
+                actionType: "NFT_GLOBAL_BID",
+                amount: nftEvent.amount / LAMPORTS_PER_SOL,
+                from: nftEvent.buyer,
+                fromName: getSolanaName(nftEvent.buyer),
+                sent: SOL,
+                to: "",
+                toName: "",
+            },
+        ],
+        event: nftEvent,
+        primaryUser: nftEvent.buyer,
+        transaction,
+    });
+};
+
 export const parseNftMint: ProtonParser = (transaction, address) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
