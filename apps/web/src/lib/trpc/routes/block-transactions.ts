@@ -153,11 +153,8 @@ export const blockTransactions = t.procedure
 
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
-        if (filteredTransactions?.length === 0) {
-            return {
-                oldest: "",
-                result: [],
-            };
+        if (!filteredTransactions?.length) {
+            return [];
         }
 
         const response = await fetch(url, {
@@ -173,9 +170,7 @@ export const blockTransactions = t.procedure
         const result = json.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            oldest:
-                filteredTransactions?.at(filteredTransactions?.length - 1)
-                    ?.signature || "",
+            oldest: filteredTransactions?.slice(-1)?.[0]?.signature || "",
             result,
         };
     });
