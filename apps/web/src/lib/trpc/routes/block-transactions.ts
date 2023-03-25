@@ -86,33 +86,41 @@ export const blockTransactions = t.procedure
                     signature = tx.transaction.signatures[0];
                 }
 
-                let programIndexes = tx.transaction.message.compiledInstructions
-                    .map((ix) => ix.programIdIndex)
-                    .concat(
-                        tx.meta?.innerInstructions?.flatMap((ix) => {
-                            return ix.instructions.map(
-                                (ix) => ix.programIdIndex
-                            );
-                        }) || []
-                    );
+                const programIndexes =
+                    tx.transaction.message.compiledInstructions
+                        .map((ix) => ix.programIdIndex)
+                        .concat(
+                            tx.meta?.innerInstructions?.flatMap((ix) => {
+                                return ix.instructions.map(
+                                    (ix) => ix.programIdIndex
+                                );
+                            }) || []
+                        );
 
-                const indexMap = new Map<number, number>();
-                programIndexes.forEach((programIndex) => {
-                    const count = indexMap.get(programIndex) || 0;
-                    indexMap.set(programIndex, count + 1);
-                });
+                const invocations = programIndexes.reduce(
+                    (acc, programIndex) => {
+                        const programId = tx.transaction.message
+                            .getAccountKeys({
+                                accountKeysFromLookups:
+                                    tx.meta?.loadedAddresses,
+                            })
+                            .get(programIndex)!
+                            .toBase58();
 
-                const invocations = new Map<string, number>();
-                const accountKeys = tx.transaction.message.getAccountKeys({
-                    accountKeysFromLookups: tx.meta?.loadedAddresses,
-                });
-                for (const [i, count] of indexMap.entries()) {
-                    const programId = accountKeys.get(i)!.toBase58();
-                    invocations.set(programId, count);
-                    const programTransactionCount =
-                        invokedPrograms.get(programId) || 0;
-                    invokedPrograms.set(programId, programTransactionCount + 1);
-                }
+                        const programTransactionCount =
+                            invokedPrograms.get(programId) || 0;
+                        invokedPrograms.set(
+                            programId,
+                            programTransactionCount + 1
+                        );
+
+                        const count = acc.get(programId) || 0;
+                        acc.set(programId, count + 1);
+
+                        return acc;
+                    },
+                    new Map<string, number>()
+                );
 
                 return {
                     index,
