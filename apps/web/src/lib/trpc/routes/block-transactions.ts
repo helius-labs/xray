@@ -130,7 +130,7 @@ export const blockTransactions = t.procedure
                 };
             });
 
-        // Filters out vote transactions (so far) -> Returns a list of the transaction signatures
+        // Filters out vote transactions -> Returns a list of the transaction signatures
         let signatureList = transactions
             ?.filter(
                 ({ invocations }) =>
