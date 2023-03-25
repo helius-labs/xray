@@ -130,6 +130,7 @@ export const blockTransactions = t.procedure
                 };
             });
 
+        // Filters out vote transactions (so far) -> Returns a list of the transaction signatures
         let signatureList = transactions
             ?.filter(
                 ({ invocations }) =>
@@ -137,28 +138,24 @@ export const blockTransactions = t.procedure
             )
             .map(({ signature }) => signature);
 
-        if (signatureList && input.cursor) {
-            const lastTransactionIndex = signatureList.findIndex(
-                (signature) => signature === input.cursor
-            );
-
-            if (lastTransactionIndex >= 0) {
-                signatureList = signatureList.slice(lastTransactionIndex + 1);
-            }
-        }
-
-        if (signatureList) {
-            signatureList = signatureList.slice(0, limit);
-        }
-
-        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
-
         if (!signatureList?.length) {
             return {
                 oldest: "",
                 result: [],
             };
         }
+
+        if (input.cursor) {
+            const lastTransactionIndex = signatureList.indexOf(input.cursor);
+
+            if (lastTransactionIndex >= 0) {
+                signatureList = signatureList.slice(lastTransactionIndex + 1);
+            }
+        }
+
+        signatureList = signatureList.slice(0, limit);
+
+        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({
