@@ -130,36 +130,39 @@ export const blockTransactions = t.procedure
                 };
             });
 
-        let filteredTransactions: TransactionWithInvocations[] | undefined =
-            transactions?.filter(({ invocations }) => {
-                return !(invocations.has(voteFilter) && invocations.size === 1);
-            });
+        let signatureList = transactions
+            ?.filter(
+                ({ invocations }) =>
+                    !(invocations.has(voteFilter) && invocations.size === 1)
+            )
+            .map(({ signature }) => signature);
 
-        if (filteredTransactions && input.cursor) {
-            const lastTransactionIndex = filteredTransactions.findIndex(
-                (tx) => tx.signature === input.cursor
+        if (signatureList && input.cursor) {
+            const lastTransactionIndex = signatureList.findIndex(
+                (signature) => signature === input.cursor
             );
 
             if (lastTransactionIndex >= 0) {
-                filteredTransactions = filteredTransactions.slice(
-                    lastTransactionIndex + 1
-                );
+                signatureList = signatureList.slice(lastTransactionIndex + 1);
             }
         }
 
-        if (filteredTransactions) {
-            filteredTransactions = filteredTransactions.slice(0, limit);
+        if (signatureList) {
+            signatureList = signatureList.slice(0, limit);
         }
 
         const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
-        if (!filteredTransactions?.length) {
-            return [];
+        if (!signatureList?.length) {
+            return {
+                oldest: "",
+                result: [],
+            };
         }
 
         const response = await fetch(url, {
             body: JSON.stringify({
-                transactions: filteredTransactions?.map((tx) => tx.signature),
+                transactions: signatureList,
             }),
 
             method: "POST",
@@ -170,7 +173,7 @@ export const blockTransactions = t.procedure
         const result = json.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            oldest: filteredTransactions?.slice(-1)?.[0]?.signature || "",
+            oldest: signatureList?.slice(-1)?.[0] || "",
             result,
         };
     });
