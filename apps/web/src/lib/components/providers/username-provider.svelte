@@ -12,7 +12,12 @@
         refetchOnWindowFocus: false,
     });
 
+    $: usernameIsLoading = $usernameData.isLoading;
+
     $: usernames = $usernameData?.data || [];
 </script>
 
-<slot {usernames} />
+<slot
+    {usernames}
+    {usernameIsLoading}
+/>
