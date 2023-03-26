@@ -1,3 +1,20 @@
+<style>
+    .username-block:nth-child(3n + 2) {
+        background-color: #dbeafe;
+        color: #2563eb;
+    }
+
+    .username-block:nth-child(3n + 1) {
+        background-color: #fef08a;
+        color: #ca8a04;
+    }
+
+    .username-block:nth-child(3n + 3) {
+        background-color: #bbf7d0;
+        color: #16a34a;
+    }
+</style>
+
 <script lang="ts">
     import formatMoney from "../util/format-money";
     import shortenString from "../util/shorten-string";
@@ -44,19 +61,10 @@
     <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
         <div class="flex flex-wrap items-center justify-between bg-base-100">
             <div>
-                <!-- <h3
-                    class="tooltip tooltip-bottom tooltip-secondary relative m-0 text-lg font-bold md:text-2xl"
-                    data-tip="A nickname generated for this account"
-                >
-                    {result.substring(0, result.indexOf(" "))}
-                </h3> -->
                 <div class="relative flex items-center">
                     <h3 class="m-0 text-lg font-bold md:text-2xl">
                         <ShortenAddress address={account} />
                     </h3>
-                    <!-- <p class="mr-3 text-xs opacity-50">
-                        {shortenString(account)}
-                    </p> -->
                     <div class="my-2">
                         <CopyButton text={account} />
                         <CopyButton
@@ -83,7 +91,7 @@
                                 </div>
                             {:else}
                                 <div
-                                    class="inline-block rounded-full bg-blue-200 py-1 px-3 text-xs font-extrabold text-blue-600"
+                                    class="username-block inline-block rounded-full py-1 px-3 text-xs font-extrabold"
                                 >
                                     {username.username}
                                 </div>
