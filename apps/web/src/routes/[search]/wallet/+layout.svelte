@@ -108,7 +108,7 @@
 
     <div>
         <div
-            class="mx-3 mb-5 mt-3 flex items-center justify-between rounded-lg border "
+            class="mx-3 mb-5 mt-3 flex items-center justify-between rounded-lg border"
         >
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />

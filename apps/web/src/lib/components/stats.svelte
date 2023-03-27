@@ -57,7 +57,7 @@
             <span class="opacity-50 hover:opacity-100">
                 <a
                     data-sveltekit-reload
-                    href="/"
+                    href="/{$slot?.data}/block"
                     class="pointer-events-auto hover:link-success"
                     >{$slot?.data?.toLocaleString()}</a
                 >
