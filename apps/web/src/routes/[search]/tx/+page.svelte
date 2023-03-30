@@ -193,9 +193,9 @@
                                 The slot this transaction happened on.
                             </h3>
                         </div>
-                        <p class="text-xs md:text-sm">
+                        <a data-sveltekit-reload href="/{data?.raw?.slot}/block" class="text-xs pointer-events-auto hover:link-success md:text-sm">
                             {data?.raw?.slot?.toLocaleString()}
-                        </p>
+                        </a>
                     </div>
                 </div>
             </div>
