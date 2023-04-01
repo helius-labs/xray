@@ -28,13 +28,25 @@ export const traverseNativeTransfers = (
             const amount = tx.amount / LAMPORTS_PER_SOL;
 
             if (!address) {
-                const sent = SOL;
                 actions.push({
                     actionType: "TRANSFER",
                     amount,
                     from,
                     fromName,
-                    sent,
+                    sent: SOL,
+                    to,
+                    toName,
+                });
+            } else if (
+                tx.fromUserAccount !== address &&
+                tx.toUserAccount !== address
+            ) {
+                actions.push({
+                    actionType: "TRANSFER",
+                    amount,
+                    from,
+                    fromName,
+                    sent: SOL,
                     to,
                     toName,
                 });
@@ -47,24 +59,22 @@ export const traverseNativeTransfers = (
                 }
 
                 if (actionType === "SENT") {
-                    const sent = SOL;
                     actions.push({
                         actionType,
                         amount,
                         from,
                         fromName,
-                        sent,
+                        sent: SOL,
                         to,
                         toName,
                     });
                 } else if (actionType === "RECEIVED") {
-                    const received = SOL;
                     actions.push({
                         actionType,
                         amount,
                         from,
                         fromName,
-                        received,
+                        received: SOL,
                         to,
                         toName,
                     });

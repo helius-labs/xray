@@ -18,9 +18,7 @@
     const slot = client.currentSlot.createQuery();
 </script>
 
-<div
-    class="flex h-8 w-full items-center justify-center border border-x-0 border-t-0 border-transparent text-xs"
->
+<div class="flex h-8 w-full items-center justify-center text-xs">
     <div class="mr-4">
         {#if !$tps.isLoading}
             <div
@@ -59,7 +57,7 @@
             <span class="opacity-50 hover:opacity-100">
                 <a
                     data-sveltekit-reload
-                    href="/"
+                    href="/{$slot?.data}/block"
                     class="pointer-events-auto hover:link-success"
                     >{$slot?.data?.toLocaleString()}</a
                 >
