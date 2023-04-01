@@ -4,7 +4,6 @@ import { parseTransaction } from "@helius-labs/xray-proton";
 
 import { t } from "$lib/trpc/t";
 
-import { Result } from "postcss";
 import { z } from "zod";
 
 const { HELIUS_KEY } = process.env;
@@ -56,7 +55,7 @@ export const nativeTransferTransactions = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v0/addressess/${
+        const url = `https://api.helius.xyz/v0/addresses/${
             input.account
         }/transactions?api-key=${HELIUS_KEY}${
             input.cursor ? `&before=${input.cursor}` : ""
@@ -66,14 +65,24 @@ export const nativeTransferTransactions = t.procedure
 
         const json: EnrichedTransaction[] = await response.json();
 
-        const result = json
-            .filter((tx) => {
-                tx.accountData.some((data) => {
-                    data.account === input.account &&
-                        data.nativeBalanceChange > 2282880;
-                });
-            })
-            .map((tx) => parseTransaction(tx, input.account) || []);
+        const result =
+            json
+                .filter((tx) => {
+                    const accountData = tx.accountData.find(
+                        (data) => data.account === input.account
+                    );
+                    if (accountData) {
+                        const nativeBalance = Math.abs(
+                            accountData.nativeBalanceChange
+                        );
+                        return !(
+                            (nativeBalance >= 0 && nativeBalance <= 4120320)
+                            // nativeBalance <= 2282880
+                        );
+                    }
+                    return false;
+                })
+                .map((tx) => parseTransaction(tx, input.account)) || [];
 
         return {
             oldest: json[json.length - 1]?.signature || "",

@@ -119,6 +119,13 @@
                     class:tab-active={$page.url.pathname.endsWith("wallet")}
                     >Transactions</button
                 >
+                <button
+                    class="tab tab-bordered"
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet/transfers`)}
+                    class:tab-active={$page.url.pathname.endsWith("transfers")}
+                    >SOL Transfers</button
+                >
                 <!-- <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(
