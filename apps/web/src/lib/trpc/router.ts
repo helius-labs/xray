@@ -13,6 +13,7 @@ import { tps } from "$lib/trpc/routes/tps";
 import { transaction } from "$lib/trpc/routes/transaction";
 import { transactions } from "$lib/trpc/routes/transactions";
 import { blockTransactions } from "src/lib/trpc/routes/block-transactions";
+import { nativeTransferTransactions } from "./routes/native-transfer-transactions";
 
 export const t = initTRPC.context<Context>().create();
 
@@ -22,6 +23,7 @@ export const router = t.router({
     balances,
     blockTransactions,
     currentSlot,
+    nativeTransferTransactions,
     price,
     rawTransaction,
     token,
