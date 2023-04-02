@@ -1,85 +1,86 @@
-<script lang="ts">
-    import { page } from "$app/stores";
+<script>
+    import { onMount } from "svelte";
 
     import { trpcWithQuery } from "$lib/trpc/client";
+    import { tweened } from "svelte/motion";
 
+    import { page } from "$app/stores";
+    import { SOL } from "@helius-labs/xray";
+
+    import formatMoney from "$lib/util/format-money";
     import shortenString from "$lib/util/shorten-string";
 
-    import Namor from "$lib/components/providers/namor-provider.svelte";
-    import IconCard from "$lib/components/icon-card.svelte";
-    import Icon from "$lib/components/icon.svelte";
     import CopyButton from "$lib/components/copy-button.svelte";
+    import Namor from "$lib/components/providers/namor-provider.svelte";
 
-    import { tweened } from "svelte/motion";
+    export let account = "";
 
     const client = trpcWithQuery($page);
 
-    export let account: string;
-
-    const info = client.accountInfo.createQuery(account);
+    const accountInfo = client.accountInfo.createQuery(account);
+    const price = client.price.createQuery(SOL);
 
     const balance = tweened(0, {
         duration: 1000,
     });
 
-    $: if ($info?.data?.balance) {
-        balance.set($info.data.balance);
+    let animate = false;
+
+    onMount(() => {
+        animate = true;
+    });
+
+    $: if ($accountInfo?.data?.balance) {
+        balance.set($accountInfo.data.balance);
     }
+
+    $: worth = $balance * $price?.data;
 </script>
 
 <Namor
-    text={$page.params.search}
+    text={account}
     let:result
-    let:shortenedOriginal
 >
-    <div
-        class="flex flex-row-reverse items-center justify-between bg-base-100 md:flex-row"
-    >
-        <div>
-            <h3 class="m-0 text-3xl font-bold">{result}</h3>
-        </div>
-        <div>
-            <CopyButton
-                text={$page.params.search}
-                success="Copied Address"
-                classList="px-3"
-            />
-
-            <CopyButton
-                text={$page.params.search}
-                success="Copied Address"
-                classList="px-3"
-                icon="share"
-            />
-        </div>
+    <div class="content flex items-center px-3 md:hidden">
+        <h1 class="my-1 text-lg">
+            <span class="">{$balance.toFixed(6)}</span>
+            <span class="opacity-50">SOL</span>
+        </h1>
+        <span class="ml-3 text-xs opacity-50 md:block"
+            >{formatMoney(worth)} USD</span
+        >
     </div>
 
-    <div class="mb-3">
-        <div class="grid grid-cols-12 items-center">
-            <div class="col-span-8">
-                <!-- <div class="flex items-center">
-                    <p class="m-0 mr-1 text-xs opacity-50">
+    <div class="nav content sticky top-16 z-30 bg-base-100 px-3 pt-2">
+        <div class="flex flex-wrap items-center justify-between bg-base-100">
+            <div class="flex">
+                <h3 class="relative m-0 text-lg font-bold md:text-2xl">
+                    {result}
+                </h3>
+                <div class="relative ml-3 flex items-center">
+                    <!-- <p class="mr-3 text-xs opacity-50">
                         {shortenString($page.params.search)}
-                    </p>
-                    <div>
+                    </p> -->
+                    <div class="my-2">
+                        <CopyButton text={$page.params.search} />
                         <CopyButton
-                            text={$page.params.search}
-                            success="Copied Address"
-                            classList="py-0"
+                            text={$page.url.href}
+                            icon="link"
                         />
                     </div>
-                </div> -->
-                <h1 class="text-lg">
-                    {$balance.toFixed(6)}
+                </div>
+            </div>
+            <div class="relative text-right">
+                <h1 class="text-md hidden md:block">
+                    <span class="">{$balance.toFixed(6)}</span>
                     <span class="opacity-50">SOL</span>
                 </h1>
-            </div>
-            <div class="col-span-3 text-right">
-                <!-- <h1 class="text-sm font-semibold text-success">$100</h1> -->
-                <!-- <h1 class="text-lg">
-                    {$balance.toFixed(6)}
-                    <span class="opacity-50">SOL</span>
-                </h1> -->
+
+                {#if !$price?.isLoading}
+                    <span class="ml-1 hidden text-xs opacity-50 md:block"
+                        >{formatMoney(worth)} USD</span
+                    >
+                {/if}
             </div>
         </div>
     </div>
