@@ -62,7 +62,7 @@
     <main class="min-h-screen">
         <Nav />
 
-        <div class="max-w-screen relative mx-auto pt-5">
+        <div class="max-w-screen relative mx-auto">
             <div class="relative mx-auto w-full">
                 <slot />
             </div>
