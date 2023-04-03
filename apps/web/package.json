@@ -52,14 +52,12 @@
         "events": "^3.3.0",
         "highlight.js": "^11.7.0",
         "install": "^0.13.0",
+        "json-format-highlight": "^1.0.4",
         "json-viewer-js": "^1.0.8",
-        "process": "^0.11.10",
-        "starback": "^2.1.4",
         "svelte-highlight": "^7.1.2",
         "svelte-intersection-observer": "^0.10.0",
         "trpc-svelte-query-adapter": "^2.0.0",
         "trpc-sveltekit": "^3.3.1",
-        "util": "^0.12.5",
         "zod": "^3.20.6"
     }
 }

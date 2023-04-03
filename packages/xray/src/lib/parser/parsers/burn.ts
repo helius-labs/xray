@@ -38,7 +38,7 @@ export const parseBurn = (
         };
     }
 
-    const primaryUser = tokenTransfers[0].fromUserAccount || "";
+    const primaryUser = tokenTransfers[0]?.fromUserAccount || "";
     const actions: ProtonTransactionAction[] = [];
     const accounts: ProtonAccount[] = [];
 
