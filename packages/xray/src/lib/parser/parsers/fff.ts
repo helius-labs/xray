@@ -39,16 +39,16 @@ export const parseBorrowFox = (
     for (let i = 0; i < tokenTransfers.length; i++) {
         const tx = tokenTransfers[i] as TempTokenTransfer;
 
-        const from = tx.fromUserAccount || "";
+        const from = tx?.fromUserAccount || "";
 
-        const to = tx.toUserAccount || "";
+        const to = tx?.toUserAccount || "";
 
         const amount = tx?.tokenAmount;
 
         // This is the first transfer, which is the foxy transfer
         if (i === 0) {
             if (!address) {
-                const sent = tx.mint;
+                const sent = tx?.mint;
                 actions.push({
                     actionType: "TRANSFER",
                     amount,
@@ -63,7 +63,7 @@ export const parseBorrowFox = (
                         : "TRANSFER_RECEIVED";
 
                 if (actionType === "TRANSFER_SENT") {
-                    const sent = tx.mint;
+                    const sent = tx?.mint;
                     actions.push({
                         actionType,
                         amount,
@@ -72,7 +72,7 @@ export const parseBorrowFox = (
                         to,
                     });
                 } else if (actionType === "TRANSFER_RECEIVED") {
-                    const received = tx.mint;
+                    const received = tx?.mint;
                     actions.push({
                         actionType,
                         amount,
@@ -84,7 +84,7 @@ export const parseBorrowFox = (
             }
             // This is the second transfer, which is the foxy burn
         } else if (i === 1) {
-            const sent = tx.mint;
+            const sent = tx?.mint;
             actions.push({
                 actionType: "BURN",
                 amount,

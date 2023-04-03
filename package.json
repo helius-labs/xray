@@ -68,10 +68,5 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "packageManager": "npm@8.19.2",
-    "dependencies": {
-        "json-format-highlight": "^1.0.4",
-        "tweetnacl": "^1.0.3",
-        "yarn": "^1.22.19"
-    }
+    "packageManager": "npm@8.19.2"
 }

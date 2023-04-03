@@ -19,6 +19,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@onsol/tldparser": "^0.5.1"
+        "@onsol/tldparser": "^0.5.1",
+        "helius-sdk": "*"
     }
 }
