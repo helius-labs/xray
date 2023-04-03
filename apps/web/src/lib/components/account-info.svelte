@@ -8,7 +8,6 @@
     import { SOL } from "@helius-labs/xray";
 
     import formatMoney from "$lib/util/format-money";
-    import shortenString from "$lib/util/shorten-string";
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import Namor from "$lib/components/providers/namor-provider.svelte";
@@ -41,7 +40,7 @@
     text={account}
     let:result
 >
-    <div class="content flex items-center px-3 md:hidden">
+    <div class="content mt-2 flex items-center px-3 md:hidden">
         <h1 class="my-1 text-lg">
             <span class="">{$balance.toFixed(6)}</span>
             <span class="opacity-50">SOL</span>
@@ -51,16 +50,15 @@
         >
     </div>
 
-    <div class="nav content sticky top-16 z-30 bg-base-100 px-3 pt-2">
-        <div class="flex flex-wrap items-center justify-between bg-base-100">
-            <div class="flex">
+    <div class="nav sticky top-14 z-30 bg-base-100 px-3 md:pt-3">
+        <div
+            class="content flex flex-wrap items-center justify-between bg-base-100"
+        >
+            <div class="flex items-center">
                 <h3 class="relative m-0 text-lg font-bold md:text-2xl">
                     {result}
                 </h3>
                 <div class="relative ml-3 flex items-center">
-                    <!-- <p class="mr-3 text-xs opacity-50">
-                        {shortenString($page.params.search)}
-                    </p> -->
                     <div class="my-2">
                         <CopyButton text={$page.params.search} />
                         <CopyButton

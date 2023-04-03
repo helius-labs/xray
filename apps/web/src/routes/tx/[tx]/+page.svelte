@@ -52,7 +52,7 @@
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
-<div class="content mb-4 flex justify-between px-3">
+<div class="content mb-4 mt-4 flex justify-between px-3">
     <h1 class="text-xl font-bold">Transaction</h1>
     <div
         class="flex"
@@ -134,7 +134,7 @@
                                 This transaction has successfully processed.
                             </h3>
                         </div>
-                        <div class="badge badge-success mr-1">Success</div>
+                        <div class="badge-success badge mr-1">Success</div>
                     </div>
                 </div>
             </div>
@@ -257,7 +257,7 @@
                             />
                         </div>
                     {/if}
-                    <div class="mb-3">
+                    <div>
                         <JSON
                             data={rawData}
                             label="raw"

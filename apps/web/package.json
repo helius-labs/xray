@@ -50,6 +50,7 @@
         "@trpc/server": "^10.12.0",
         "buffer": "^6.0.3",
         "events": "^3.3.0",
+        "helius-sdk": "*",
         "highlight.js": "^11.7.0",
         "install": "^0.13.0",
         "json-format-highlight": "^1.0.4",
