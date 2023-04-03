@@ -29,6 +29,7 @@
         "@typescript-eslint/eslint-plugin": "^5.52.0",
         "@typescript-eslint/parser": "^5.52.0",
         "dotenv-cli": "^6.0.0",
+        "esbuild": "^0.17.15",
         "eslint": "^8.34.0",
         "eslint-config-custom": "*",
         "eslint-import-resolver-typescript": "^3.5.3",

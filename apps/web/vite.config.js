@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => ({
 
         IS_MOCKED: !Boolean(heliusKey),
         // ...nodeBandAid,
-        "process.env.NODE_DEBUG": "false",
+        "process.env.NODE_DEBUG": false,
     },
 
     optimizeDeps: {
