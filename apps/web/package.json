@@ -17,6 +17,7 @@
         "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'"
     },
     "devDependencies": {
+        "@playwright/test": "^1.32.1",
         "@rollup/plugin-inject": "^5.0.3",
         "@sveltejs/adapter-auto": "^2.0.0",
         "@sveltejs/adapter-vercel": "^2.0.2",
