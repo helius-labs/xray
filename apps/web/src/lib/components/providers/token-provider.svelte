@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { UITokenMetadata } from "$lib/types";
-    import { SOL } from "@helius-labs/xray-proton";
+    import { SOL } from "@helius-labs/xray";
 
     import { page } from "$app/stores";
 
@@ -34,18 +34,12 @@
         refetchOnWindowFocus: false,
     });
 
-    const price = client.price.createQuery(address, {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
-
     let element: HTMLDivElement;
 
     $: if (address === SOL) {
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
         metadata.address = SOL;
-        metadata.price = $price?.data || 0;
     } else if ($asset?.data?.compressed) {
         const data = $asset?.data;
         metadata.address = data?.address || "";
@@ -73,7 +67,6 @@
             data?.offChainMetadata?.metadata?.name ||
             data?.legacyMetadata?.name ||
             data?.onChainMetadata?.metadata?.data.name;
-        metadata.price = $price?.data || 0;
     }
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;
