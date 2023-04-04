@@ -60,7 +60,7 @@
                             size="md"
                         />
                     </div>
-                    {#if transaction.type === "COMPRESSED_NFT_MINT"}
+                    {#if transaction.type.includes("COMPRESSED")}
                         <div
                             class="center absolute left-8 -top-5 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
                             in:fade={{

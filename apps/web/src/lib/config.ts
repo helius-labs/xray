@@ -56,6 +56,10 @@ export const transactionActionsMetadata: Record<
         icon: "mint",
         label: "NFT Mint",
     },
+    COMPRESSED_NFT_TRANSFER: {
+        icon: "lightning",
+        label: "Transfer",
+    },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
         icon: "squad",
