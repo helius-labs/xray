@@ -13,8 +13,12 @@ export default defineConfig(({ mode }) => ({
 
     define: {
         APP_NAME: JSON.stringify(pkg.name),
+
         APP_VERSION: JSON.stringify(pkg.version),
+
         IS_MOCKED: !Boolean(heliusKey),
+        // ...nodeBandAid,
+        "process.env.NODE_DEBUG": false,
     },
 
     optimizeDeps: {
