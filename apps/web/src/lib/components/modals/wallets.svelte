@@ -8,7 +8,7 @@
 
 {#each addresses as address}
     <a
-        href="/{address}/wallet"
+        href="/account/{address}"
         data-sveltekit-reload
         class="btn-ghost btn w-full">{shortenString(address, 8)}</a
     >
