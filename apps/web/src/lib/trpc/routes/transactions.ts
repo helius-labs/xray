@@ -1,12 +1,10 @@
 import type { EnrichedTransaction } from "helius-sdk";
 
-import { parseTransaction } from "@helius-labs/xray-proton";
+import { parseTransaction } from "@helius-labs/xray";
 
 import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
-
-import { transactions as mock } from "@helius-labs/xray-test";
 
 const { HELIUS_KEY } = process.env;
 
