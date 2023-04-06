@@ -22,52 +22,54 @@
     const account = $page.params.account;
 </script>
 
-<AccountHeader
-    {account}
-    link={$page.url.href}
-/>
+<div class="relative mx-auto w-full max-w-2xl pb-32">
+    <AccountHeader
+        {account}
+        link={$page.url.href}
+    />
 
-<div>
-    <div
-        class="mx-3 mb-5 mt-3 flex items-center justify-between rounded-lg border"
-    >
-        <div class="tabs w-full pt-1 md:w-auto">
-            <div />
-            <button
-                class="tab tab-bordered"
-                on:click={() =>
-                    (window.location.href = `/account/${$page.params.account}`)}
-                class:tab-active={!$page.url.pathname.endsWith("/tokens")}
-                >Transactions</button
-            >
-            <!-- <button
+    <div>
+        <div
+            class="mx-3 mb-5 mt-3 flex items-center justify-between rounded-lg border"
+        >
+            <div class="tabs w-full pt-1 md:w-auto">
+                <div />
+                <button
+                    class="tab tab-bordered"
+                    on:click={() =>
+                        (window.location.href = `/account/${$page.params.account}`)}
+                    class:tab-active={!$page.url.pathname.endsWith("/tokens")}
+                    >Transactions</button
+                >
+                <!-- <button
                 class="tab tab-bordered"
                 class:tab-active={$page.url.pathname.endsWith(
                     "wallet/nfts"
-                )}              
-                on:click={() =>
-                    (window.location.href = `/${$page.params.search}/wallet/nfts`)}
-                >NFTs</button
-            > -->
-            <button
-                class="tab tab-bordered"
-                class:tab-active={$page.url.pathname.endsWith("/tokens")}
-                on:click={() =>
-                    (window.location.href = `/account/${$page.params.account}/tokens`)}
-                >Tokens</button
-            >
+                    )}              
+                    on:click={() =>
+                        (window.location.href = `/${$page.params.search}/wallet/nfts`)}
+                        >NFTs</button
+                        > -->
+                <button
+                    class="tab tab-bordered"
+                    class:tab-active={$page.url.pathname.endsWith("/tokens")}
+                    on:click={() =>
+                        (window.location.href = `/account/${$page.params.account}/tokens`)}
+                    >Tokens</button
+                >
+            </div>
+            {#if !$page.url.pathname.endsWith("/tokens")}
+                <button
+                    class="btn-ghost btn-sm btn"
+                    on:click={() => showModal("TRANSACTION_FILTER")}
+                >
+                    <Icon id="settings" />
+                </button>
+            {/if}
         </div>
-        {#if !$page.url.pathname.endsWith("/tokens")}
-            <button
-                class="btn-ghost btn-sm btn"
-                on:click={() => showModal("TRANSACTION_FILTER")}
-            >
-                <Icon id="settings" />
-            </button>
-        {/if}
     </div>
-</div>
 
-<div class="content px-3">
-    <slot />
+    <div class="content px-3">
+        <slot />
+    </div>
 </div>
