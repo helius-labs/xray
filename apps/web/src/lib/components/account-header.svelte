@@ -8,7 +8,6 @@
     import formatMoney from "$lib/util/format-money";
 
     import CopyButton from "$lib/components/copy-button.svelte";
-    import Namor from "$lib/components/providers/namor-provider.svelte";
     import ShortenAddress from "./shorten-address.svelte";
 
     const client = trpcWithQuery($page);
