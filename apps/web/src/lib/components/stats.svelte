@@ -1,7 +1,7 @@
 <script>
     import formatMoney from "$lib/util/format-money";
 
-    import { SOL } from "@helius-labs/xray-proton";
+    import { SOL } from "@helius-labs/xray";
 
     import { page } from "$app/stores";
 
@@ -57,7 +57,7 @@
             <span class="opacity-50 hover:opacity-100">
                 <a
                     data-sveltekit-reload
-                    href="/{$slot?.data}/block"
+                    href="/block/{$slot?.data}"
                     class="pointer-events-auto hover:link-success"
                     >{$slot?.data?.toLocaleString()}</a
                 >
