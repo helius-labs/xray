@@ -63,7 +63,7 @@
         <Nav />
 
         <div class="max-w-screen relative mx-auto">
-            <div class="relative mx-auto w-full">
+            <div class="relative mx-auto">
                 <slot />
             </div>
         </div>
