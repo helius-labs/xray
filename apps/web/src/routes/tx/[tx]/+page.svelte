@@ -193,7 +193,11 @@
                                 The slot this transaction happened on.
                             </h3>
                         </div>
-                        <a data-sveltekit-reload href="/{data?.raw?.slot}/block" class="text-xs pointer-events-auto hover:link-success md:text-sm">
+                        <a
+                            data-sveltekit-reload
+                            href="/block/{data?.raw?.slot}"
+                            class="pointer-events-auto text-xs hover:link-success md:text-sm"
+                        >
                             {data?.raw?.slot?.toLocaleString()}
                         </a>
                     </div>
