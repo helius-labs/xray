@@ -1,9 +1,11 @@
+import type { EnrichedTransaction } from "helius-sdk";
+
 import { t } from "$lib/trpc/t";
 import { z } from "zod";
 
-import { parseTransaction } from "@helius-labs/xray-proton/dist";
-import type { EnrichedTransaction } from "helius-sdk";
-import connect from "src/lib/util/solana/connect";
+import { parseTransaction } from "@helius-labs/xray/dist";
+
+import { connect } from "@helius-labs/xray";
 
 import {
     VOTE_PROGRAM_ID,
@@ -73,7 +75,7 @@ export const blockTransactions = t.procedure
         const limit = input.limit ?? 100;
         const invokedPrograms = new Map<string, number>();
 
-        const connection = connect();
+        const connection = connect("mainnet", HELIUS_KEY);
 
         const block = await connection.getBlock(input.slot, {
             maxSupportedTransactionVersion: 0,

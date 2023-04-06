@@ -2,9 +2,9 @@
     import type {
         ProtonActionType,
         ProtonTransaction,
-    } from "@helius-labs/xray-proton";
+    } from "@helius-labs/xray";
 
-    import { ProtonCustomActionLabelTypes } from "@helius-labs/xray-proton";
+    import { ProtonCustomActionLabelTypes } from "@helius-labs/xray";
 
     import { fade, fly } from "svelte/transition";
 
@@ -44,7 +44,7 @@
 
 <div>
     <a
-        href="/{transaction.signature}/tx"
+        href="/tx/{transaction.signature}"
         class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
     >
         <div
@@ -88,7 +88,7 @@
                             <div class="mr-2 rounded">
                                 <a
                                     data-sveltekit-reload
-                                    href="/{transaction.signature}/tx"
+                                    href="/tx/{transaction.signature}"
                                     class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
                                 >
                                     {transaction.signature
@@ -146,7 +146,7 @@
                                             class="col-span-2 p-1 md:col-span-1"
                                         >
                                             <div
-                                                class="aspect-square w-full rounded-full bg-secondary"
+                                                class="max-height-10 aspect-square w-full rounded-full bg-secondary"
                                             />
                                         </div>
                                         <div
@@ -180,7 +180,7 @@
                                             >
                                                 <a
                                                     data-sveltekit-reload
-                                                    href="/{metadata.address}/token"
+                                                    href="/token/{metadata.address}"
                                                     class="pointer-events-auto mx-2 w-full transition-transform hover:scale-125"
                                                 >
                                                     {#if metadata?.image}
@@ -239,7 +239,7 @@
                                                                 >
                                                                     <a
                                                                         data-sveltekit-reload
-                                                                        href="/{action.to}/wallet"
+                                                                        href="/account/{action.to}"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
                                                                         {shortenString(
@@ -259,7 +259,7 @@
                                                                     class="text-xs"
                                                                 >
                                                                     <a
-                                                                        href="/{action.from}/wallet"
+                                                                        href="/account/{action.from}"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
                                                                         {shortenString(
@@ -274,7 +274,7 @@
                                                                     >
                                                                         <a
                                                                             data-sveltekit-reload
-                                                                            href="/{action.from}/wallet"
+                                                                            href="/account/{action.from}"
                                                                             class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
                                                                             {shortenString(
@@ -298,7 +298,7 @@
                                                                     >
                                                                         <a
                                                                             data-sveltekit-reload
-                                                                            href="/{action.to}/wallet"
+                                                                            href="/account/{action.to}"
                                                                             class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
                                                                             {shortenString(

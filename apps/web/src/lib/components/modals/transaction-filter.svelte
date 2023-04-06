@@ -2,6 +2,7 @@
     import { hideModal } from "$lib/state/stores/modals";
     import { transactionActionsMetadata } from "$lib/types";
     import { filterStore } from "$lib/util/stores/filter";
+
     import Icon from "../icon.svelte";
 
     const handleClick = (key: string) => {
