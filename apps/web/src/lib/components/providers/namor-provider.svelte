@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { nameFromString, getSolanaName } from "@helius-labs/helius-namor";
+    import { getSolanaName } from "@helius-labs/xray";
 
     import shortenString from "$lib/util/shorten-string";
 
@@ -10,7 +10,7 @@
     let result: string = "";
 
     $: {
-        result = getSolanaName(text) || nameFromString(text);
+        result = getSolanaName(text) || shortenString(text);
         shortened = shortenString(result, 8);
         shortenedOriginal = shortenString(text, 6);
     }

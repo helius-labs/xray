@@ -4,8 +4,6 @@
     import { fly } from "svelte/transition";
 
     import Icon from "$lib/components/icon.svelte";
-
-    import DevBanner from "$lib/components/dev-banner.svelte";
     import Search from "$lib/components/search.svelte";
     import Stats from "$lib/components/stats.svelte";
 
@@ -16,7 +14,6 @@
 <nav
     class="sticky top-0 left-0 z-40 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
-    <DevBanner />
     <div class="col-span-4 flex items-center md:col-span-2">
         <div
             class="mx-2 flex items-center"
