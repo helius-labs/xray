@@ -41,15 +41,6 @@
                     class:tab-active={!$page.url.pathname.endsWith("/tokens")}
                     >Transactions</button
                 >
-                <!-- <button
-                class="tab tab-bordered"
-                class:tab-active={$page.url.pathname.endsWith(
-                    "wallet/nfts"
-                    )}              
-                    on:click={() =>
-                        (window.location.href = `/${$page.params.search}/wallet/nfts`)}
-                        >NFTs</button
-                        > -->
                 <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}

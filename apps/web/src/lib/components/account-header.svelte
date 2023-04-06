@@ -9,6 +9,7 @@
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import Namor from "$lib/components/providers/namor-provider.svelte";
+    import ShortenAddress from "./shorten-address.svelte";
 
     const client = trpcWithQuery($page);
 
@@ -35,38 +36,33 @@
     $: worth = $balance * $price?.data;
 </script>
 
-<Namor
-    text={account}
-    let:result
->
-    <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
-        <div class="flex flex-wrap items-center justify-between bg-base-100">
-            <div class="flex items-center">
-                <h3 class="relative m-0 text-lg font-bold md:text-2xl">
-                    {result}
-                </h3>
-                <div class="relative flex items-center">
-                    <div class="my-2">
-                        <CopyButton text={account} />
-                        <CopyButton
-                            text={link}
-                            icon="link"
-                        />
-                    </div>
+<div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
+    <div class="flex flex-wrap items-center justify-between bg-base-100">
+        <div class="flex items-center">
+            <h3 class="relative m-0 text-lg font-bold md:text-2xl">
+                <ShortenAddress address={account} />
+            </h3>
+            <div class="relative flex items-center">
+                <div class="my-2">
+                    <CopyButton text={account} />
+                    <CopyButton
+                        text={link}
+                        icon="link"
+                    />
                 </div>
             </div>
-            <div class="relative text-right">
-                <h1 class="text-md md:block">
-                    <span class="">{$balance.toFixed(6)}</span>
-                    <span class="opacity-50">SOL</span>
-                </h1>
+        </div>
+        <div class="relative text-right">
+            <h1 class="text-md md:block">
+                <span class="">{$balance.toFixed(6)}</span>
+                <span class="opacity-50">SOL</span>
+            </h1>
 
-                {#if !$price?.isLoading}
-                    <span class="ml-1 text-xs opacity-50 md:block"
-                        >{formatMoney(worth)} USD</span
-                    >
-                {/if}
-            </div>
+            {#if !$price?.isLoading}
+                <span class="ml-1 text-xs opacity-50 md:block"
+                    >{formatMoney(worth)} USD</span
+                >
+            {/if}
         </div>
     </div>
-</Namor>
+</div>
