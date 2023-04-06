@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { ProtonAccount } from "@helius-labs/xray-proton";
+    import type { ProtonAccount } from "@helius-labs/xray";
 
     import Namor from "./providers/namor-provider.svelte";
     import TokenProvider from "./providers/token-provider.svelte";
@@ -27,7 +27,7 @@
                         <div>
                             <div class="flex items-center">
                                 <a
-                                    href="/{data.account}/wallet"
+                                    href="/account/{data.account}"
                                     class="pointer-events-auto border-x-0 border-t-0 border-dotted hover:link-success"
                                 >
                                     <ShortenAddress address={data.account} />
@@ -85,7 +85,7 @@
                                 >
                                     <div class="col-span-">
                                         <a
-                                            href="/{metadata.address}/token"
+                                            href="/token/{metadata.address}"
                                             class="pointer-events-auto block transition-transform hover:scale-125"
                                         >
                                             <div
@@ -100,7 +100,7 @@
                                     >
                                         <div>
                                             <a
-                                                href="/{metadata.address}/token"
+                                                href="/token/{metadata.address}"
                                                 class="pointer-events-auto text-xs text-neutral hover:link-success"
                                             >
                                                 {metadata?.name || "Unknown"}
