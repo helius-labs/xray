@@ -267,6 +267,35 @@ export const parseNftCancelBid: ProtonParser = (transaction) => {
     });
 };
 
+export const parseNftGlobalBid: ProtonParser = (transaction, address) => {
+    // @ts-ignore
+    const nftEvent = transaction.events.nft;
+
+    if (!nftEvent) {
+        return generateDefaultTransaction(transaction.type);
+    }
+
+    const accounts: ProtonAccount[] = [];
+    traverseAccountData(transaction.accountData, accounts);
+
+    return generateNftTransaction({
+        accounts,
+        actions: [
+            {
+                // @ts-ignore
+                actionType: "NFT_GLOBAL_BID",
+                amount: nftEvent.amount / LAMPORTS_PER_SOL,
+                from: nftEvent.buyer,
+                sent: SOL,
+                to: "",
+            },
+        ],
+        event: nftEvent,
+        primaryUser: nftEvent.buyer,
+        transaction,
+    });
+};
+
 export const parseNftMint: ProtonParser = (transaction, address) => {
     // @ts-ignore
     const nftEvent = transaction.events.nft;
@@ -394,6 +423,66 @@ export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
             received: nftEvent[0].assetId,
             to: transaction.feePayer,
         });
+    }
+
+    return {
+        accounts,
+        actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
+    };
+};
+
+export const parseCompressedNftTransfer: ProtonParser = (
+    transaction,
+    address
+) => {
+    // @ts-ignore
+    const nftEvent = transaction.events.compressed;
+    const { signature, timestamp, accountData, type, source } = transaction;
+
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+    const primaryUser = transaction.feePayer;
+
+    if (!nftEvent) {
+        return generateDefaultTransaction(transaction.type);
+    }
+
+    const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
+
+    traverseAccountData(accountData, accounts);
+
+    if (!address) {
+        actions.push({
+            actionType: "TRANSFER",
+            amount: 1,
+            from: nftEvent[0].oldLeafOwner,
+            sent: nftEvent[0].assetId,
+            to: nftEvent[0].newLeafOwner,
+        });
+    } else {
+        if ((address = nftEvent[0].oldLeafOwner)) {
+            actions.push({
+                actionType: "TRANSFER_SENT",
+                amount: 1,
+                from: nftEvent[0].oldLeafOwner,
+                sent: nftEvent[0].assetId,
+                to: nftEvent[0].newLeafOwner,
+            });
+        } else if (address === nftEvent[0].newLeafOwner) {
+            actions.push({
+                actionType: "TRANSFER_RECEIVED",
+                amount: 1,
+                from: nftEvent[0].oldLeafOwner,
+                received: nftEvent[0].assetId,
+                to: nftEvent[0].newLeafOwner,
+            });
+        }
     }
 
     return {

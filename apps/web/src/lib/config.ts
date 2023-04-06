@@ -53,6 +53,10 @@ export const transactionActionsMetadata: Record<
         icon: "mint",
         label: "NFT Mint",
     },
+    COMPRESSED_NFT_TRANSFER: {
+        icon: "lightning",
+        label: "Transfer",
+    },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
         icon: "squad",
@@ -81,6 +85,10 @@ export const transactionActionsMetadata: Record<
     NFT_CANCEL_LISTING: {
         icon: "cancel",
         label: "Canceled NFT Lising",
+    },
+    NFT_GLOBAL_BID: {
+        icon: "sale",
+        label: "NFT Global Bid",
     },
     NFT_LISTING: {
         filterLabel: "NFT List",
