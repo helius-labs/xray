@@ -21,6 +21,7 @@ export enum ProtonSupportedType {
     TOKEN_MINT,
     EXECUTE_TRANSACTION,
     COMPRESSED_NFT_MINT,
+    COMPRESSED_NFT_TRANSFER,
 }
 
 export enum ProtonSupportedActionType {
@@ -52,6 +53,7 @@ export enum ProtonSupportedActionType {
     "XNFT_INSTALL",
     "XNFT_UNINSTALL",
     "COMPRESSED_NFT_MINT",
+    "COMPRESSED_NFT_TRANSFER",
 }
 
 export const ProtonCustomActionLabelTypes = {
@@ -117,6 +119,7 @@ export const protonParsers = {
     BURN: parser.parseBurn,
     BURN_NFT: parser.parseBurn,
     COMPRESSED_NFT_MINT: parser.parseCompressedNftMint,
+    COMPRESSED_NFT_TRANSFER: parser.parseCompressedNftTransfer,
     EXECUTE_TRANSACTION: parser.parseTransfer,
     LOAN_FOX: parser.parseLoanFox,
     NFT_BID: parser.parseNftBid,
