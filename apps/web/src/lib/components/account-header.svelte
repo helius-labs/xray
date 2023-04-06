@@ -1,14 +1,14 @@
 <script lang="ts">
-    import formatMoney from "../util/format-money";
-    import shortenString from "../util/shorten-string";
-    import CopyButton from "./copy-button.svelte";
-
     import { page } from "$app/stores";
-    import { SOL } from "@helius-labs/xray-proton/dist";
+    import { trpcWithQuery } from "$lib/trpc/client";
+    import { SOL } from "@helius-labs/xray";
     import { onMount } from "svelte";
     import { tweened } from "svelte/motion";
-    import { trpcWithQuery } from "../trpc/client";
-    import Namor from "./providers/namor-provider.svelte";
+
+    import formatMoney from "$lib/util/format-money";
+
+    import CopyButton from "$lib/components/copy-button.svelte";
+    import Namor from "$lib/components/providers/namor-provider.svelte";
 
     const client = trpcWithQuery($page);
 
@@ -24,13 +24,13 @@
 
     let animate = false;
 
-    $: if ($accountInfo?.data?.balance) {
-        balance.set($accountInfo.data.balance);
-    }
-
     onMount(() => {
         animate = true;
     });
+
+    $: if ($accountInfo?.data?.balance) {
+        balance.set($accountInfo.data.balance);
+    }
 
     $: worth = $balance * $price?.data;
 </script>
@@ -41,17 +41,11 @@
 >
     <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
         <div class="flex flex-wrap items-center justify-between bg-base-100">
-            <div>
-                <h3
-                    class="tooltip tooltip-bottom tooltip-secondary relative m-0 text-lg font-bold md:text-2xl"
-                    data-tip="A nickname generated for this account"
-                >
-                    {result.substring(0, result.indexOf(" "))}
+            <div class="flex items-center">
+                <h3 class="relative m-0 text-lg font-bold md:text-2xl">
+                    {result}
                 </h3>
                 <div class="relative flex items-center">
-                    <p class="mr-3 text-xs opacity-50">
-                        {shortenString(account)}
-                    </p>
                     <div class="my-2">
                         <CopyButton text={account} />
                         <CopyButton

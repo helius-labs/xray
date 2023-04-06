@@ -12,48 +12,22 @@
 </style>
 
 <script lang="ts">
-    import { onMount } from "svelte";
-
-    import { trpcWithQuery } from "$lib/trpc/client";
-
     import { page } from "$app/stores";
-
-    import { tweened } from "svelte/motion";
-
-    import { SOL } from "@helius-labs/xray";
 
     import Icon from "$lib/components/icon.svelte";
 
+    import AccountHeader from "$lib/components/account-header.svelte";
     import { showModal } from "$lib/state/stores/modals";
-    import AccountInfo from "src/lib/components/account-info.svelte";
 
     const account = $page.params.account;
-
-    const client = trpcWithQuery($page);
-
-    const accountInfo = client.accountInfo.createQuery(account);
-    const price = client.price.createQuery(SOL);
-
-    const balance = tweened(0, {
-        duration: 1000,
-    });
-
-    let animate = false;
-
-    onMount(() => {
-        animate = true;
-    });
-
-    $: if ($accountInfo?.data?.balance) {
-        balance.set($accountInfo.data.balance);
-    }
-
-    $: worth = $balance * $price?.data;
 </script>
 
-<AccountInfo {account} />
+<AccountHeader
+    {account}
+    link={$page.url.href}
+/>
 
-<div class="content">
+<div>
     <div
         class="mx-3 mb-5 mt-3 flex items-center justify-between rounded-lg border"
     >
@@ -70,7 +44,7 @@
                 class="tab tab-bordered"
                 class:tab-active={$page.url.pathname.endsWith(
                     "wallet/nfts"
-                )}
+                )}              
                 on:click={() =>
                     (window.location.href = `/${$page.params.search}/wallet/nfts`)}
                 >NFTs</button
