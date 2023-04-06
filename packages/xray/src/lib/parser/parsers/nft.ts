@@ -433,10 +433,8 @@ export const parseCompressedNftTransfer: ProtonParser = (
             actionType: "TRANSFER",
             amount: 1,
             from: nftEvent[0].oldLeafOwner,
-            fromName: nftEvent[0].oldLeafOwner,
             sent: nftEvent[0].assetId,
             to: nftEvent[0].newLeafOwner,
-            toName: getSolanaName(nftEvent[0].newLeafOwner),
         });
     } else {
         if ((address = nftEvent[0].oldLeafOwner)) {
@@ -444,20 +442,16 @@ export const parseCompressedNftTransfer: ProtonParser = (
                 actionType: "TRANSFER_SENT",
                 amount: 1,
                 from: nftEvent[0].oldLeafOwner,
-                fromName: nftEvent[0].oldLeafOwner,
                 sent: nftEvent[0].assetId,
                 to: nftEvent[0].newLeafOwner,
-                toName: getSolanaName(nftEvent[0].newLeafOwner),
             });
         } else if (address === nftEvent[0].newLeafOwner) {
             actions.push({
                 actionType: "TRANSFER_RECEIVED",
                 amount: 1,
                 from: nftEvent[0].oldLeafOwner,
-                fromName: nftEvent[0].oldLeafOwner,
                 received: nftEvent[0].assetId,
                 to: nftEvent[0].newLeafOwner,
-                toName: getSolanaName(nftEvent[0].newLeafOwner),
             });
         }
     }
