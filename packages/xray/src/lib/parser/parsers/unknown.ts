@@ -1,15 +1,9 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import type {
-    EnrichedTransaction,
-    Source,
-    TokenTransfer,
-    TransactionType,
-} from "helius-sdk";
+import type { EnrichedTransaction, TransactionType } from "helius-sdk";
 import {
     ProtonAccount,
     ProtonTransaction,
     ProtonTransactionAction,
-    SOL,
 } from "../types";
 import { traverseAccountData } from "../utils/account-data";
 
@@ -63,21 +57,8 @@ export const parseUnknown = (
     ) {
         let type = "XNFT_INSTALL" as TransactionType;
         if (instructions[0].accounts.length === 6) {
-            actions.push({
-                actionType: "XNFT_INSTALL",
-                amount: 0,
-                from: "",
-                to: "",
-            });
-
             type = "XNFT_INSTALL" as TransactionType;
         } else if (instructions[0].accounts.length === 3) {
-            actions.push({
-                actionType: "XNFT_UNINSTALL",
-                amount: 0,
-                from: "",
-                to: "",
-            });
             type = "XNFT_UNINSTALL" as TransactionType;
         }
         return {

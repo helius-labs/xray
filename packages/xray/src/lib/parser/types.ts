@@ -22,6 +22,9 @@ export enum ProtonSupportedType {
     EXECUTE_TRANSACTION,
     COMPRESSED_NFT_MINT,
     COMPRESSED_NFT_TRANSFER,
+    APPROVE_TRANSACTION,
+    STAKE_SOL,
+    SFT_MINT,
 }
 
 export enum ProtonSupportedActionType {
@@ -55,6 +58,9 @@ export enum ProtonSupportedActionType {
     "XNFT_UNINSTALL",
     "COMPRESSED_NFT_MINT",
     "COMPRESSED_NFT_TRANSFER",
+    "APPROVE_TRANSACTION",
+    "STAKE_SOL",
+    "SFT_MINT",
 }
 
 export const ProtonCustomActionLabelTypes = {
