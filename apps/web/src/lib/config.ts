@@ -113,6 +113,10 @@ export const transactionActionsMetadata: Record<
         icon: "sale",
         label: "Sold",
     },
+    OFFER_LOAN: {
+        icon: "handshake",
+        label: "Offer Loan",
+    },
     RECEIVED: {
         icon: "arrowDown",
         label: "Received",
