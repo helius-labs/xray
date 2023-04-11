@@ -21,6 +21,10 @@ export enum ProtonSupportedType {
     TOKEN_MINT,
     EXECUTE_TRANSACTION,
     COMPRESSED_NFT_MINT,
+    COMPRESSED_NFT_TRANSFER,
+    APPROVE_TRANSACTION,
+    STAKE_SOL,
+    SFT_MINT,
 }
 
 export enum ProtonSupportedActionType {
@@ -40,6 +44,7 @@ export enum ProtonSupportedActionType {
     "NFT_CANCEL_LISTING",
     "NFT_BID",
     "NFT_BID_CANCELLED",
+    "NFT_GLOBAL_BID",
     "NFT_MINT",
     "AIRDROP",
     "BURN",
@@ -52,6 +57,10 @@ export enum ProtonSupportedActionType {
     "XNFT_INSTALL",
     "XNFT_UNINSTALL",
     "COMPRESSED_NFT_MINT",
+    "COMPRESSED_NFT_TRANSFER",
+    "APPROVE_TRANSACTION",
+    "STAKE_SOL",
+    "SFT_MINT",
 }
 
 export const ProtonCustomActionLabelTypes = {
@@ -117,11 +126,13 @@ export const protonParsers = {
     BURN: parser.parseBurn,
     BURN_NFT: parser.parseBurn,
     COMPRESSED_NFT_MINT: parser.parseCompressedNftMint,
+    COMPRESSED_NFT_TRANSFER: parser.parseCompressedNftTransfer,
     EXECUTE_TRANSACTION: parser.parseTransfer,
     LOAN_FOX: parser.parseLoanFox,
     NFT_BID: parser.parseNftBid,
     NFT_BID_CANCELLED: parser.parseNftCancelBid,
     NFT_CANCEL_LISTING: parser.parseNftCancelList,
+    NFT_GLOBAL_BID: parser.parseNftGlobalBid,
     NFT_LISTING: parser.parseNftList,
     NFT_MINT: parser.parseNftMint,
     NFT_SALE: parser.parseNftSale,

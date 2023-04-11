@@ -35,6 +35,10 @@ export const transactionActionsMetadata: Record<
         icon: "gift",
         label: "Airdropped",
     },
+    APPROVE_TRANSACTION: {
+        icon: "check",
+        label: "Approved Transaction",
+    },
     BORROW_FOX: {
         icon: "openHand",
         label: "Borrow Fox",
@@ -52,6 +56,10 @@ export const transactionActionsMetadata: Record<
     COMPRESSED_NFT_MINT: {
         icon: "mint",
         label: "NFT Mint",
+    },
+    COMPRESSED_NFT_TRANSFER: {
+        icon: "lightning",
+        label: "Transfer",
     },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
@@ -82,6 +90,10 @@ export const transactionActionsMetadata: Record<
         icon: "cancel",
         label: "Canceled NFT Lising",
     },
+    NFT_GLOBAL_BID: {
+        icon: "sale",
+        label: "NFT Global Bid",
+    },
     NFT_LISTING: {
         filterLabel: "NFT List",
         icon: "sale",
@@ -108,6 +120,14 @@ export const transactionActionsMetadata: Record<
     SENT: {
         icon: "arrowUp",
         label: "Sent",
+    },
+    SFT_MINT: {
+        icon: "mint",
+        label: "SFT Mint",
+    },
+    STAKE_SOL: {
+        icon: "star",
+        label: "Staked SOL",
     },
     SWAP: {
         filterLabel: "Swap",
@@ -267,4 +287,6 @@ export const enum IconPaths {
     settings = `<path d="M12 9c.552 0 1 .449 1 1s-.448 1-1 1-1-.449-1-1 .448-1 1-1zm0-2c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm-9 4c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm18 0c-1.657 0-3 1.343-3 3s1.343 3 3 3 3-1.343 3-3-1.343-3-3-3zm-9-6c.343 0 .677.035 1 .101v-3.101c0-.552-.447-1-1-1s-1 .448-1 1v3.101c.323-.066.657-.101 1-.101zm9 4c.343 0 .677.035 1 .101v-7.101c0-.552-.447-1-1-1s-1 .448-1 1v7.101c.323-.066.657-.101 1-.101zm0 10c-.343 0-.677-.035-1-.101v3.101c0 .552.447 1 1 1s1-.448 1-1v-3.101c-.323.066-.657.101-1 .101zm-18-10c.343 0 .677.035 1 .101v-7.101c0-.552-.447-1-1-1s-1 .448-1 1v7.101c.323-.066.657-.101 1-.101zm9 6c-.343 0-.677-.035-1-.101v7.101c0 .552.447 1 1 1s1-.448 1-1v-7.101c-.323.066-.657.101-1 .101zm-9 4c-.343 0-.677-.035-1-.101v3.101c0 .552.447 1 1 1s1-.448 1-1v-3.101c-.323.066-.657.101-1 .101z"/>`,
 
     squad = `<path d="M17.997 18h-11.995l-.002-.623c0-1.259.1-1.986 1.588-2.33 1.684-.389 3.344-.736 2.545-2.209-2.366-4.363-.674-6.838 1.866-6.838 2.491 0 4.226 2.383 1.866 6.839-.775 1.464.826 1.812 2.545 2.209 1.49.344 1.589 1.072 1.589 2.333l-.002.619zm4.811-2.214c-1.29-.298-2.49-.559-1.909-1.657 1.769-3.342.469-5.129-1.4-5.129-1.265 0-2.248.817-2.248 2.324 0 3.903 2.268 1.77 2.246 6.676h4.501l.002-.463c0-.946-.074-1.493-1.192-1.751zm-22.806 2.214h4.501c-.021-4.906 2.246-2.772 2.246-6.676 0-1.507-.983-2.324-2.248-2.324-1.869 0-3.169 1.787-1.399 5.129.581 1.099-.619 1.359-1.909 1.657-1.119.258-1.193.805-1.193 1.751l.002.463z"/>`,
+
+    star = `<path d="M21.947 9.179a1.001 1.001 0 0 0-.868-.676l-5.701-.453-2.467-5.461a.998.998 0 0 0-1.822-.001L8.622 8.05l-5.701.453a1 1 0 0 0-.619 1.713l4.213 4.107-1.49 6.452a1 1 0 0 0 1.53 1.057L12 18.202l5.445 3.63a1.001 1.001 0 0 0 1.517-1.106l-1.829-6.4 4.536-4.082c.297-.268.406-.686.278-1.065z"/>`,
 }
