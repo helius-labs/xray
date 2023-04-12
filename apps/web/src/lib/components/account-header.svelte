@@ -16,17 +16,17 @@
 </style>
 
 <script lang="ts">
-    import formatMoney from "../util/format-money";
-    import shortenString from "../util/shorten-string";
-    import CopyButton from "./copy-button.svelte";
-
     import { page } from "$app/stores";
-    import Icon from "$lib/components/icon.svelte";
-    import { SOL } from "@helius-labs/xray-proton/dist";
+    import { trpcWithQuery } from "$lib/trpc/client";
+    import { SOL } from "@helius-labs/xray";
     import { onMount } from "svelte";
     import { tweened } from "svelte/motion";
-    import { trpcWithQuery } from "../trpc/client";
-    import Username from "./providers/username-provider.svelte";
+
+    import formatMoney from "$lib/util/format-money";
+
+    import CopyButton from "$lib/components/copy-button.svelte";
+    import Icon from "$lib/components/icon.svelte";
+    import Username from "$lib/components/providers/username-provider.svelte";
     import ShortenAddress from "./shorten-address.svelte";
 
     const client = trpcWithQuery($page);
@@ -43,80 +43,44 @@
 
     let animate = false;
 
-    $: if ($accountInfo?.data?.balance) {
-        balance.set($accountInfo.data.balance);
-    }
-
     onMount(() => {
         animate = true;
     });
 
+    $: if ($accountInfo?.data?.balance) {
+        balance.set($accountInfo.data.balance);
+    }
+
     $: worth = $balance * $price?.data;
 </script>
 
-<Username
-    address={account}
-    let:usernames
-    let:usernameIsLoading
->
-    <div
-        class="nav sticky top-16 z-30 flex items-center justify-between bg-base-100"
-    >
-        <div class="">
-            <div
-                class="nav sticky top-16 z-30 w-full overflow-hidden bg-base-100 px-3 pt-2"
-            >
-                <div
-                    class="flex flex-wrap items-center justify-between bg-base-100"
-                >
-                    <div>
-                        <div class="relative flex items-center">
-                            <h3 class="m-0 text-lg font-bold md:text-2xl">
-                                <ShortenAddress address={account} />
-                            </h3>
-                            <div class="my-2">
-                                <CopyButton text={account} />
-                                <CopyButton
-                                    text={link}
-                                    icon="link"
-                                />
-                            </div>
-                        </div>
-                    </div>
+<div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
+    <div class="flex flex-wrap items-center justify-between bg-base-100">
+        <div class="flex items-center">
+            <h3 class="relative m-0 text-lg font-bold md:text-2xl">
+                <ShortenAddress address={account} />
+            </h3>
+            <div class="relative flex items-center">
+                <div class="my-2">
+                    <CopyButton text={account} />
+                    <CopyButton
+                        text={link}
+                        icon="link"
+                    />
                 </div>
             </div>
-            <div class="flex flex-wrap gap-2 px-3">
-                {#if usernameIsLoading}
-                    {#each [1, 2, 3] as _}
-                        <div
-                            class="username-block inline-block h-6 w-[72px] animate-pulse rounded-full py-1 px-3 text-xs font-extrabold"
-                        />
-                    {/each}
-                {:else if usernames && usernames?.length > 0}
-                    {#each usernames as username}
-                        {#if username.type === "backpack"}
-                            <div
-                                class="inline-block rounded-full bg-red-200 py-1 px-3 text-xs font-extrabold text-red-600"
-                            >
-                                <div class="flex items-center gap-1">
-                                    <Icon
-                                        id="backpack"
-                                        size="sm"
-                                    />
+        </div>
+        <div class="relative text-right">
+            <h1 class="text-md md:block">
+                <span class="">{$balance.toFixed(6)}</span>
+                <span class="opacity-50">SOL</span>
+            </h1>
 
-                                    {username.username}
-                                </div>
-                            </div>
-                        {:else}
-                            <div
-                                class="username-block inline-block rounded-full py-1 px-3 text-xs font-extrabold"
-                            >
-                                {username.username}
-                            </div>
-                        {/if}
-                    {/each}
-                {/if}
-            </div>
+            {#if !$price?.isLoading}
+                <span class="ml-1 text-xs opacity-50 md:block"
+                    >{formatMoney(worth)} USD</span
+                >
+            {/if}
         </div>
         <div class="relative w-1/4 px-3 text-right">
             <h1 class="text-md md:block">
@@ -131,4 +95,4 @@
             {/if}
         </div>
     </div>
-</Username>
+</div>

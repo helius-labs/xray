@@ -6,7 +6,7 @@ import type {
     ProtonActionType,
     ProtonTransaction,
     ProtonTransactionAction,
-} from "@helius-labs/xray-proton";
+} from "@helius-labs/xray";
 
 import type { IconPaths, modals } from "$lib/config";
 
@@ -30,7 +30,8 @@ export interface UITransaction {
 }
 
 export interface UITokenMetadataAttribute {
-    trait_type: string;
+    trait_type?: string;
+    traitType?: string;
     value: string;
 }
 export interface UITokenMetadataCreators {
@@ -84,15 +85,3 @@ export interface Modal {
 }
 
 export type Modals = keyof typeof modals;
-
-export interface SearchResult {
-    url: string;
-    address: string;
-    isToken: boolean;
-    isAccount: boolean;
-    isTransaction: boolean;
-    isDomain: boolean;
-    valid: boolean;
-    search: string;
-    multi?: Array<string>;
-}

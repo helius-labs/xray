@@ -5,11 +5,26 @@
 </style>
 
 <script lang="ts">
-    import type { SearchResult } from "$lib/types";
+    import { type SearchResult, search, connect } from "@helius-labs/xray";
+
+    type SearchResultType =
+        | "token"
+        | "account"
+        | "transaction"
+        | "bonfida-domain"
+        | "ans-domain"
+        | "backpack-username"
+        | null;
+
+    interface SearchResult {
+        url: string;
+        address: string;
+        type: SearchResultType;
+        valid: boolean;
+        search: string;
+    }
 
     import { onMount, createEventDispatcher } from "svelte";
-
-    import { nameFromString } from "@helius-labs/helius-namor";
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
 
@@ -20,6 +35,8 @@
     import Icon from "$lib/components/icon.svelte";
 
     import { recentSearchesKey } from "$lib/config";
+
+    import shortenString from "../util/shorten-string";
 
     export let inputEl: HTMLInputElement | null = null;
     export let searchError = "";
@@ -100,22 +117,16 @@
         isSearching = true;
 
         try {
-            const response = await fetch(`/$/api/search/${inputValue}`);
+            const response = await fetch(`/api/search/${inputValue}`);
 
-            const { data } = await response.json();
+            const data = await response.json();
 
-            if (!data?.valid) {
-                return searchFailed();
+            if (!data.valid) {
+                searchFailed();
+                return;
             }
 
-            if (!data.multi) {
-                return selectSearch(data);
-            }
-
-            showModal("SELECT_MULTI_WALLET", {
-                addresses: data.multi,
-                onClick: () => selectSearch(data.multi),
-            });
+            selectSearch(data);
         } catch (error) {
             searchFailed();
         }
@@ -135,16 +146,13 @@
 
         addRecent({
             address: inputValue,
-            isAccount: true,
-            isDomain: false,
-            isToken: false,
-            isTransaction: false,
             search: inputValue,
-            url: `/${inputValue}/wallet`,
+            type: "account",
+            url: `/account/${inputValue}`,
             valid: true,
         });
 
-        window.location.href = `/${inputValue}/wallet`;
+        window.location.href = `/account/${inputValue}`;
 
         connected = true;
     }
@@ -154,7 +162,7 @@
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
-            class="input-bordered input h-10  w-full rounded-lg focus:input-primary"
+            class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
             placeholder="Search Solana"
             tabindex="0"
@@ -198,7 +206,7 @@
                                             <p
                                                 class="text-micro text-xs opacity-50"
                                             >
-                                                {nameFromString(
+                                                {shortenString(
                                                     recentSearch?.address
                                                 )}
                                             </p>

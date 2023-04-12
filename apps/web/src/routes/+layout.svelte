@@ -30,7 +30,6 @@
         wallets,
     } from "src/lib/state/stores/connect-wallet";
 
-    import DevBanner from "$lib/components/dev-banner.svelte";
     import Footer from "$lib/components/footer.svelte";
     import Modals from "$lib/components/modals.svelte";
     import Nav from "$lib/components/nav.svelte";
@@ -61,11 +60,12 @@
 
 <QueryClientProvider client={data.queryClient}>
     <main class="min-h-screen">
-        <DevBanner />
         <Nav />
 
-        <div class="relative mx-auto w-full">
-            <slot />
+        <div class="max-w-screen relative mx-auto">
+            <div class="relative mx-auto">
+                <slot />
+            </div>
         </div>
     </main>
 </QueryClientProvider>
