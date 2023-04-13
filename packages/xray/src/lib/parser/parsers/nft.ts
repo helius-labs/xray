@@ -399,30 +399,32 @@ export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
 
     traverseAccountData(accountData, accounts);
 
-    if (!address) {
-        actions.push({
-            actionType: "TRANSFER",
-            amount: 1,
-            from: "",
-            sent: nftEvent[0].assetId,
-            to: transaction.feePayer,
-        });
-    } else if (address === transaction.feePayer) {
-        actions.push({
-            actionType: "AIRDROP",
-            amount: 1,
-            from: "",
-            received: nftEvent[0].assetId,
-            to: transaction.feePayer,
-        });
-    } else {
-        actions.push({
-            actionType: "RECEIVED",
-            amount: 1,
-            from: "",
-            received: nftEvent[0].assetId,
-            to: transaction.feePayer,
-        });
+    for (let i = 0; i < nftEvent.length; i++) {
+        if (!address) {
+            actions.push({
+                actionType: "TRANSFER",
+                amount: 1,
+                from: "",
+                sent: nftEvent[i].assetId,
+                to: nftEvent[i].newLeafOwner,
+            });
+        } else if (address === nftEvent[i].newLeafOwner) {
+            actions.push({
+                actionType: "AIRDROP",
+                amount: 1,
+                from: "",
+                received: nftEvent[i].assetId,
+                to: nftEvent[i].newLeafOwner,
+            });
+        } else {
+            actions.push({
+                actionType: "RECEIVED",
+                amount: 1,
+                from: "",
+                received: nftEvent[i].assetId,
+                to: nftEvent[i].newLeafOwner,
+            });
+        }
     }
 
     return {
