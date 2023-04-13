@@ -25,6 +25,10 @@ export enum ProtonSupportedType {
     APPROVE_TRANSACTION,
     STAKE_SOL,
     SFT_MINT,
+    OFFER_LOAN,
+    RESCIND_LOAN,
+    TAKE_LOAN,
+    REPAY_LOAN,
 }
 
 export enum ProtonSupportedActionType {
@@ -61,6 +65,10 @@ export enum ProtonSupportedActionType {
     "APPROVE_TRANSACTION",
     "STAKE_SOL",
     "SFT_MINT",
+    "OFFER_LOAN",
+    "RESCIND_LOAN",
+    "TAKE_LOAN",
+    "REPAY_LOAN",
 }
 
 export const ProtonCustomActionLabelTypes = {
