@@ -406,15 +406,15 @@ export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
                 amount: 1,
                 from: "",
                 sent: nftEvent[i].assetId,
-                to: transaction.feePayer,
+                to: nftEvent[i].newLeafOwner,
             });
-        } else if (address === transaction.feePayer) {
+        } else if (address === nftEvent[i].newLeafOwner) {
             actions.push({
                 actionType: "AIRDROP",
                 amount: 1,
                 from: "",
                 received: nftEvent[i].assetId,
-                to: transaction.feePayer,
+                to: nftEvent[i].newLeafOwner,
             });
         } else {
             actions.push({
@@ -422,7 +422,7 @@ export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
                 amount: 1,
                 from: "",
                 received: nftEvent[i].assetId,
-                to: transaction.feePayer,
+                to: nftEvent[i].newLeafOwner,
             });
         }
     }
