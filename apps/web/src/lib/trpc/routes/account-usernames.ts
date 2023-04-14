@@ -44,18 +44,14 @@ const getSolanaDomain = async (usernames: Username[], address = "") => {
     }
 };
 
-const getANSDomain = async (address = "", connection: Connection) => {
-    // const RPC_URL =
-    //     "https://newest-intensive-choice.solana-mainnet.discover.quiknode.pro/b14717fce4a4f1e59e7287e5ac9bdf40fdada346/";
-    // connection = new Connection(RPC_URL);
-    // console.log(new PublicKey("7hPhaUpydpvm8wtiS3k4LPZKUmivQRs7YQmpE1hFshHx"));
-    // const owner = new PublicKey("7hPhaUpydpvm8wtiS3k4LPZKUmivQRs7YQmpE1hFshHx");
-    // const owner = new PublicKey(address);
+const getANSDomain = async (
+    usernames: Username[],
+    address = "",
+    connection: Connection
+) => {
     const ans = new TldParser(connection);
-    // const owner = await ans.getAllUserDomains(address);
-    // const owner = new PublicKey(address);
-    let domain;
-    // let domain = await ans.getMainDomain(address);
+    let domain: MainDomain;
+    console.log(address);
 
     try {
         domain = await ans.getMainDomain(address);
@@ -66,10 +62,11 @@ const getANSDomain = async (address = "", connection: Connection) => {
     }
 
     if (domain && domain?.domain && domain?.tld) {
-        return `${domain.domain}${domain.tld}`;
+        usernames.push({
+            type: "ans",
+            username: `${domain.domain}${domain.tld}`,
+        });
     }
-
-    // console.log("d", domain);
 
     return "";
 };
@@ -89,13 +86,7 @@ export const accountUsernames = t.procedure
         const usernames: Username[] = [];
         await getBackpackUsername(usernames, address);
         await getSolanaDomain(usernames, address);
-        const ansDomain = await getANSDomain(address, connection);
+        await getANSDomain(usernames, address, connection);
 
-        if (ansDomain) {
-            usernames.push({
-                type: "ans",
-                username: ansDomain,
-            });
-        }
         return usernames || [];
     });
