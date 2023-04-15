@@ -23,6 +23,7 @@
 
     import Collapse from "$lib/components/collapse.svelte";
     import JSON from "$lib/components/json.svelte";
+    import NftTransactions from "$lib/components/nft-transactions.svelte";
     import Transactions from "$lib/components/transactions.svelte";
 
     import PageLoader from "./_loader.svelte";
@@ -186,7 +187,11 @@
                 </div>
             {/if}
             <div class="mt-3 pl-2 md:pl-0">
-                <Transactions account={address} />
+                {#if metadata.attributes && metadata.attributes.length}
+                    <NftTransactions account={address} />
+                {:else}
+                    <Transactions account={address} />
+                {/if}
             </div>
             <div class="mt-3">
                 <JSON
