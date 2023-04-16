@@ -1,4 +1,4 @@
-import type { EnrichedTransaction } from "helius-sdk";
+import type { EnrichedTransaction, NFTEvent } from "helius-sdk";
 
 import { parseTransaction } from "@helius-labs/xray";
 
@@ -15,27 +15,40 @@ export const nftHistory = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v1/nft-events?api-key=${HELIUS_KEY}`;
+        const nftEventsUrl = `https://api.helius.xyz/v1/nft-events?api-key=${HELIUS_KEY}`;
+        const transactionsUrl = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
-        const response = await fetch(url, {
+        const response = await fetch(nftEventsUrl, {
             body: JSON.stringify({
                 options: {
                     sortOrder: "DESC",
                 },
                 query: {
                     accounts: [input.account],
-                    types: ["NFT_SALE"],
+                    types: ["NFT_SALE", "NFT_MINT"],
                 },
             }),
             method: "POST",
         });
 
-        const json = await response.json();
+        const data: any = await response.json();
 
-        const result = json.map((tx: any) => parseTransaction(tx)) || [];
+        const signatureList = data?.result.map((tx: any) => tx.signature) || [];
+
+        const transactions = await fetch(transactionsUrl, {
+            body: JSON.stringify({
+                transactions: signatureList,
+            }),
+
+            method: "POST",
+        });
+
+        const json: EnrichedTransaction[] = await transactions.json();
+
+        const result = json.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            oldest: json[json.length - 1]?.signature || "",
+            paginationToken: data.paginationToken,
             result,
         };
     });
