@@ -43,8 +43,6 @@
         }
     );
 
-    $: console.log($transactions.data?.result);
-
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
     // Issue: Ttransaction is SerializeObject<UndefinedToOptional<ProtonTransaction>>
     // Expected: ProtonTransaction[]
