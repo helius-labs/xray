@@ -29,6 +29,8 @@ export enum ProtonSupportedType {
     RESCIND_LOAN,
     TAKE_LOAN,
     REPAY_LOAN,
+    ADD_ITEM,
+    UPDATE_ITEM,
 }
 
 export enum ProtonSupportedActionType {
@@ -69,6 +71,8 @@ export enum ProtonSupportedActionType {
     "RESCIND_LOAN",
     "TAKE_LOAN",
     "REPAY_LOAN",
+    "ADD_ITEM",
+    "UPDATE_ITEM",
 }
 
 export const ProtonCustomActionLabelTypes = {
