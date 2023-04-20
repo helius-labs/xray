@@ -15,7 +15,6 @@ export const traverseNativeTransfers = (
             const from = tx.fromUserAccount || "";
 
             const to = tx.toUserAccount || "";
-            let toName;
 
             const amount = tx.amount / LAMPORTS_PER_SOL;
 
