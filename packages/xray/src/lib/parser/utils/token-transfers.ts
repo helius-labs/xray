@@ -8,8 +8,7 @@ interface TempTokenTransfer extends TokenTransfer {
 export const traverseTokenTransfers = (
     tokenTransfers: TokenTransfer[],
     actions: ProtonTransactionAction[],
-    address: string | undefined,
-    type?: ProtonActionType
+    address: string | undefined
 ) => {
     for (let i = 0; i < tokenTransfers.length; i++) {
         const tx = tokenTransfers[i] as TempTokenTransfer;
@@ -22,9 +21,8 @@ export const traverseTokenTransfers = (
 
         if (!address) {
             const sent = tx.mint;
-            type = type === undefined ? "TRANSFER" : type;
             actions.push({
-                actionType: type as ProtonActionType,
+                actionType: "TRANSFER",
                 amount,
                 from,
                 sent,
