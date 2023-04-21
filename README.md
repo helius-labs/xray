@@ -12,9 +12,9 @@ A human-readable Solana transaction explorer powered by Helius.
 
 ## Support
 
-- 📝 [Start Discussion](https://github.com/helius-labs/xray/discussions)
-- 💡 [Submit Feature Request](https://github.com/helius-labs/xray/issues/new?assignees=&labels=question&template=FEATURE-REQUEST.yml&title=%F0%9F%92%A1+%5BREQUEST%5D+-+%3Ctitle%3E)
-- 🐛 [Submit Bug Report](https://github.com/helius-labs/xray/issues/new?assignees=&labels=bug&template=BUG-REPORT.yml&title=%F0%9F%90%9B+%5BBUG%5D+-+%3Ctitle%3E)
+-   📝 [Start Discussion](https://github.com/helius-labs/xray/discussions)
+-   💡 [Submit Feature Request](https://github.com/helius-labs/xray/issues/new?assignees=&labels=question&template=FEATURE-REQUEST.yml&title=%F0%9F%92%A1+%5BREQUEST%5D+-+%3Ctitle%3E)
+-   🐛 [Submit Bug Report](https://github.com/helius-labs/xray/issues/new?assignees=&labels=bug&template=BUG-REPORT.yml&title=%F0%9F%90%9B+%5BBUG%5D+-+%3Ctitle%3E)
 
 ## 🤝 Contribute
 
@@ -40,7 +40,7 @@ Then when you're ready to create the PR, click "Ready for review".
 
 To save time, run tests locally, but they will also run on all PRs to `dev` and `main`. Tests will need to be passing for your changes to be merged.
 
-### Auto merge `dev` -> `main`**
+### Auto merge `dev` -> `main`\*\*
 
 Once changes are approved and merged into `dev`, they will be assumed as good and auto merged to `main`. From here they can be deployed by merging to either the `vercel/staging` or `vercel/prod` branches.
 
@@ -230,36 +230,6 @@ Used for parsing blockchain data and making it pretty for the UI.
 | 📁`./src/parsers`          | Contains all parser methods.                                                          |
 | 📄`./src/parsers/index.ts` | Exports parser files in `./src/parsers`.                                              |
 | 📁`./src/utils`            | Utility functions for parser functions                                                |
-
-## General Work Flow When Adding a New Transaction Type
-
-1. Identify a transaction type that is not currently supported.
-    - [Helius API Docs](https://docs.helius.xyz/reference/transaction-types) - View all transaction types supported by Helius.
-2. Get to know the transaction type. Here is the resource I personally like to use for it:
-    - [SwaggerHub](https://app.swaggerhub.com/apis-docs/Helius/HeliusAPI/1.1.0#/Transactions/getEnrichedTransactions) - Use `/v0/addresses/{address}/transactions ` for addresses with the specific transaction type or `/v0/transactions/` for a transaction (also supports multiple transactions). I like downloading the JSON file and looking through it constantly. More transactions + edge cases are better to battle test your parser function.
-3. Add a new file or edit an existing one in `./src/parsers`. (refer to other files for general structures of what a parser function should look like)
-4. Export the function in `./src/parsers/index.ts`, add the transaction type to the `ProtonSupportedType` object in `./src/types/index.ts`, and add the transaction type with the corresponding parser function to the `protonParsers` object in `./src/types/index.ts`.
-5. Work on the parser function while testing it since it is now compatible with the UI.
-
-## Currently Supported Transactions
-
-|                      |                            |
-| -------------------- | -------------------------- |
-| **Transaction Type** | **File in `/src/parsers`** |
-| TRANSFER             | `/transfer.ts`             |
-| SWAP                 | `/swap.ts`                 |
-| BURN                 | `/burn.ts`                 |
-| BURN_NFT             | `/burn.ts`                 |
-| TOKEN_MINT           | `/token.ts`                |
-| NFT_MINT             | `/nft.ts`                  |
-| NFT_SALE             | `/nft.ts`                  |
-| NFT_LISTING          | `/nft.ts`                  |
-| NFT_CANCEL_LISTING   | `/nft.ts`                  |
-| NFT_BID              | `/nft.ts`                  |
-| NFT_BID_CANCELLED    | `/nft.ts`                  |
-| BORROW_FOX           | `/fox.ts`                  |
-| LOAN_FOX             | `/fox.ts`                  |
-| UNKNOWN              | `/unknown.ts`              |
 
 # 📦 @helius-labs/xray-database [WIP]
 
