@@ -37,6 +37,7 @@ export enum ProtonSupportedType {
     REBORROW_SOL_FOR_NFT,
     CLAIM_NFT,
     UPDATE_OFFER,
+    FORECLOSE_LOAN,
 }
 
 export enum ProtonSupportedActionType {
@@ -85,6 +86,7 @@ export enum ProtonSupportedActionType {
     "REBORROW_SOL_FOR_NFT",
     "CLAIM_NFT",
     "UPDATE_OFFER",
+    "FORECLOSE_LOAN",
 }
 
 export const ProtonCustomActionLabelTypes = {
