@@ -9,6 +9,7 @@
 
     import IconCard from "$lib/components/icon-card.svelte";
     import Transaction from "$lib/components/transaction.svelte";
+    import Collapse from "./collapse.svelte";
 
     export let account: string;
     // export let user = "";
@@ -65,6 +66,49 @@
     //     : false;
 </script>
 
+<div class="my-3">
+    <Collapse
+        sectionTitle="Filter"
+        iconId="settings"
+    >
+        <div class="flex flex-wrap gap-2">
+            <div class="form-control flex flex-col">
+                <label class="label cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked
+                        class="checkbox"
+                    />
+                    <span class="label-text ml-2">NFT Mint</span>
+                </label>
+                <label class="label cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked
+                        class="checkbox"
+                    />
+                    <span class="label-text ml-2">NFT Sale</span>
+                </label>
+                <label class="label cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked
+                        class="checkbox"
+                    />
+                    <span class="label-text ml-2">NFT List</span>
+                </label>
+                <label class="label cursor-pointer">
+                    <input
+                        type="checkbox"
+                        checked
+                        class="checkbox"
+                    />
+                    <span class="label-text ml-2">NFT Bid</span>
+                </label>
+            </div>
+        </div>
+    </Collapse>
+</div>
 {#if $transactions.isLoading}
     {#each Array(3) as _}
         <div class="py-2">

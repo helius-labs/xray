@@ -25,7 +25,7 @@ export const nftHistory = t.procedure
                 },
                 query: {
                     accounts: [input.account],
-                    types: ["NFT_SALE", "NFT_MINT"],
+                    // types: ["NFT_SALE", "NFT_MINT"],
                 },
             }),
             method: "POST",
