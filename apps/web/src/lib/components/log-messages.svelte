@@ -4,7 +4,6 @@
     export let logs: string[];
 
     const parsedLogs = parseProgramLogs(logs);
-    console.log(parsedLogs);
 </script>
 
 {#each parsedLogs as instruction, idx}
@@ -14,7 +13,7 @@
         </span>
 
         <span>
-            {instruction.invokedProgram}
+            {`${instruction.invokedProgram} Instruction`}
         </span>
     </p>
     {#each instruction.logs as log}

@@ -1,3 +1,5 @@
+import { getProgramName } from "./program-name";
+
 export type LogMessage = {
     text: string;
     prefix: string;
@@ -49,13 +51,13 @@ export const parseProgramLogs = (logs: string[]) => {
 
             if (matches.length > 0) {
                 const programAddress = matches[0][1];
-                // const programName = getProgramName(programAddress, cluster);
+                const programName = getProgramName(programAddress);
 
                 if (depth === 0) {
                     parsedLogs.push({
                         computeUnits: 0,
                         failed: false,
-                        invokedProgram: programAddress,
+                        invokedProgram: programName,
                         logs: [],
                         truncated: false,
                     });
@@ -63,7 +65,7 @@ export const parseProgramLogs = (logs: string[]) => {
                     parsedLogs[parsedLogs.length - 1].logs.push({
                         prefix: prefixBuilder(depth),
                         style: "info-content",
-                        text: `Program invoked: ${programAddress}`,
+                        text: `Program invoked: ${programName}`,
                     });
                 }
 
