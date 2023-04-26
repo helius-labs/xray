@@ -1,16 +1,9 @@
-/*
- - Default Program Name : https://github.com/solana-labs/explorer/blob/master/src/utils/tx.ts
- - Anchor Program Name : https://github.com/solana-labs/explorer/blob/master/src/utils/anchor.tsx / https://github.com/solana-labs/explorer/blob/master/src/providers/anchor.tsx#L41
-*/
+// Default Program Name : https://github.com/solana-labs/explorer/blob/master/src/utils/tx.ts
 
-import { AnchorProvider, Program, type Idl } from "@project-serum/anchor";
-import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import {
     BPF_LOADER_DEPRECATED_PROGRAM_ID,
     BPF_LOADER_PROGRAM_ID,
-    Connection,
     Ed25519Program,
-    Keypair,
     SYSVAR_CLOCK_PUBKEY,
     SYSVAR_RENT_PUBKEY,
     SYSVAR_REWARDS_PUBKEY,
