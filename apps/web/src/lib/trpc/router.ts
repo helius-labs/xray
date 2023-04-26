@@ -3,6 +3,7 @@ import type { Context } from "$lib/trpc/context";
 import { initTRPC } from "@trpc/server";
 
 import { accountInfo } from "$lib/trpc/routes/account-info";
+import { anchorProgramName } from "$lib/trpc/routes/anchor-program";
 import { asset } from "$lib/trpc/routes/asset";
 import { balances } from "$lib/trpc/routes/balances";
 import { currentSlot } from "$lib/trpc/routes/current-slot";
@@ -18,6 +19,7 @@ export const t = initTRPC.context<Context>().create();
 
 export const router = t.router({
     accountInfo,
+    anchorProgramName,
     asset,
     balances,
     blockTransactions,
