@@ -1,13 +1,11 @@
-/*
- - https://github.com/solana-labs/explorer/blob/master/src/utils/program-logs.ts
-*/
+// https://github.com/solana-labs/explorer/blob/master/src/utils/program-logs.ts
 
 import { getProgramName } from "./program-name";
 
 export type LogMessage = {
     text: string;
     prefix: string;
-    style: "[#a5a3a3]" | "info-content" | "success" | "error" | "[#e8a034]";
+    style: "info-content" | "success" | "error" | "[#e8a034]" | "neutral";
 };
 
 export type InstructionLogs = {
@@ -32,7 +30,9 @@ export const parseProgramLogs = (logs: string[]) => {
             // Log should always be at index level 1 or higher
             prefix = "";
         } else {
-            prefix = new Array(indentLevel - 1).fill("\u00A0\u00A0").join("");
+            prefix = new Array(indentLevel - 1)
+                .fill("\u00A0\u00A0\u00A0\u00A0")
+                .join("");
         }
         return prefix + "> ";
     }
@@ -133,7 +133,7 @@ export const parseProgramLogs = (logs: string[]) => {
                 // native program logs don't start with "Program log:"
                 parsedLogs[parsedLogs.length - 1].logs.push({
                     prefix: prefixBuilder(depth),
-                    style: "[#a5a3a3]",
+                    style: "neutral",
                     text: log,
                 });
             }
