@@ -82,6 +82,10 @@ export const transactionActionsMetadata: Record<
         icon: "squad",
         label: "Multisig Transaction",
     },
+    FORECLOSE_LOAN: {
+        icon: "squareCheck",
+        label: "Foreclose Loan",
+    },
     FREEZE: {
         icon: "cold",
         label: "Frozen",
