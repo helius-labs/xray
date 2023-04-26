@@ -1,13 +1,18 @@
+/*
+ - https://github.com/solana-labs/explorer/blob/master/src/utils/program-logs.ts
+*/
+
 import { getProgramName } from "./program-name";
 
 export type LogMessage = {
     text: string;
     prefix: string;
-    style: "neutral" | "info-content" | "success" | "error";
+    style: "[#a5a3a3]" | "info-content" | "success" | "error" | "[#e8a034]";
 };
 
 export type InstructionLogs = {
     invokedProgram: string | null;
+    programAddress: string;
     logs: LogMessage[];
     computeUnits: number;
     truncated: boolean;
@@ -35,12 +40,12 @@ export const parseProgramLogs = (logs: string[]) => {
     logs.forEach((log) => {
         if (log.startsWith("Program log:")) {
             log = log.replace(/Program log: (.*)/g, (match, p1) => {
-                return `Program logged: "${p1}"`;
+                return `Logged "${p1}"`;
             });
 
             parsedLogs[parsedLogs.length - 1].logs.push({
                 prefix: prefixBuilder(depth),
-                style: "neutral",
+                style: "[#e8a034]",
                 text: log,
             });
         } else if (log.startsWith("Log truncated")) {
@@ -59,13 +64,14 @@ export const parseProgramLogs = (logs: string[]) => {
                         failed: false,
                         invokedProgram: programName,
                         logs: [],
+                        programAddress,
                         truncated: false,
                     });
                 } else {
                     parsedLogs[parsedLogs.length - 1].logs.push({
                         prefix: prefixBuilder(depth),
                         style: "info-content",
-                        text: `Program invoked: ${programName}`,
+                        text: `Invoked ${programName}`,
                     });
                 }
 
@@ -74,14 +80,14 @@ export const parseProgramLogs = (logs: string[]) => {
                 parsedLogs[parsedLogs.length - 1].logs.push({
                     prefix: prefixBuilder(depth),
                     style: "success",
-                    text: `Program returned success`,
+                    text: `Returned success`,
                 });
                 depth--;
             } else if (log.includes("failed")) {
                 const instructionLog = parsedLogs[parsedLogs.length - 1];
                 instructionLog.failed = true;
 
-                let currText = `Program returned error: "${log.slice(
+                let currText = `Returned error "${log.slice(
                     log.indexOf(": ") + 2
                 )}"`;
                 // failed to verify log of previous program so reset depth and print full log
@@ -103,6 +109,7 @@ export const parseProgramLogs = (logs: string[]) => {
                         failed: false,
                         invokedProgram: null,
                         logs: [],
+                        programAddress: "",
                         truncated: false,
                     });
                     depth++;
@@ -119,14 +126,14 @@ export const parseProgramLogs = (logs: string[]) => {
                                 Number.parseInt(p1);
                         }
 
-                        return `Program consumed: ${p1} ${p2}`;
+                        return `Consumed ${p1} ${p2}`;
                     }
                 );
 
                 // native program logs don't start with "Program log:"
                 parsedLogs[parsedLogs.length - 1].logs.push({
                     prefix: prefixBuilder(depth),
-                    style: "neutral",
+                    style: "[#a5a3a3]",
                     text: log,
                 });
             }

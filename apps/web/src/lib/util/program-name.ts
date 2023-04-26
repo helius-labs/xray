@@ -1,7 +1,16 @@
+/*
+ - Default Program Name : https://github.com/solana-labs/explorer/blob/master/src/utils/tx.ts
+ - Anchor Program Name : https://github.com/solana-labs/explorer/blob/master/src/utils/anchor.tsx / https://github.com/solana-labs/explorer/blob/master/src/providers/anchor.tsx#L41
+*/
+
+import { AnchorProvider, Program, type Idl } from "@project-serum/anchor";
+import NodeWallet from "@project-serum/anchor/dist/cjs/nodewallet";
 import {
     BPF_LOADER_DEPRECATED_PROGRAM_ID,
     BPF_LOADER_PROGRAM_ID,
+    Connection,
     Ed25519Program,
+    Keypair,
     SYSVAR_CLOCK_PUBKEY,
     SYSVAR_RENT_PUBKEY,
     SYSVAR_REWARDS_PUBKEY,
@@ -366,7 +375,7 @@ export const SYSVAR_IDS = {
     SysvarS1otHistory11111111111111111111111111: "Sysvar: Slot History",
 };
 
-export function getProgramName(address: string): string {
+export function getDefaultProgramName(address: string): string {
     const label = programLabel(address);
     if (label) return label;
     return `Unknown Program (${address})`;
@@ -379,4 +388,10 @@ export function programLabel(address: string): string | undefined {
     }
 
     return LOADER_IDS[address];
+}
+
+export function getProgramName(address: string) {
+    const defaultProgramName = getDefaultProgramName(address);
+
+    return defaultProgramName;
 }
