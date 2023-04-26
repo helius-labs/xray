@@ -169,6 +169,10 @@ export const transactionActionsMetadata: Record<
         icon: "star",
         label: "Staked SOL",
     },
+    STAKE_TOKEN: {
+        icon: "star",
+        label: "Staked Token",
+    },
     SWAP: {
         filterLabel: "Swap",
         icon: "swap",
@@ -212,6 +216,9 @@ export const transactionActionsMetadata: Record<
     UPDATE_OFFER: {
         icon: "cycle",
         label: "Update Offer",
+    UNSTAKE_TOKEN: {
+        icon: "cancel",
+        label: "Unstake Token",
     },
     XNFT_INSTALL: {
         icon: "download",

@@ -37,6 +37,8 @@ export enum ProtonSupportedType {
     REBORROW_SOL_FOR_NFT,
     CLAIM_NFT,
     UPDATE_OFFER,
+    STAKE_TOKEN,
+    UNSTAKE_TOKEN,
 }
 
 export enum ProtonSupportedActionType {
@@ -85,6 +87,8 @@ export enum ProtonSupportedActionType {
     "REBORROW_SOL_FOR_NFT",
     "CLAIM_NFT",
     "UPDATE_OFFER",
+    "STAKE_TOKEN",
+    "UNSTAKE_TOKEN",
 }
 
 export const ProtonCustomActionLabelTypes = {
