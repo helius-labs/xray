@@ -220,6 +220,7 @@ export const transactionActionsMetadata: Record<
     UPDATE_OFFER: {
         icon: "cycle",
         label: "Update Offer",
+    },
     UNSTAKE_TOKEN: {
         icon: "cancel",
         label: "Unstake Token",
