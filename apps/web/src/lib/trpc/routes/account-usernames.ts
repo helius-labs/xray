@@ -2,9 +2,12 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-// import { getAllDomains, reverseLookup } from "@bonfida/spl-name-service";
 import { connect } from "@helius-labs/xray";
-import { TldParser } from "@onsol/tldparser";
+import {
+    ANS_PROGRAM_ID,
+    TLD_HOUSE_PROGRAM_ID,
+    TldParser,
+} from "@onsol/tldparser";
 import type { MainDomain } from "@onsol/tldparser/dist/types/state/main-domain";
 import { Connection, PublicKey } from "@solana/web3.js";
 
@@ -44,31 +47,101 @@ const getSolanaDomain = async (usernames: Username[], address = "") => {
     }
 };
 
+const getAllTldHouses = async (connection: Connection) => {
+    const filters: any = [
+        {
+            memcmp: {
+                bytes: [247, 144, 135, 1, 238, 173, 19, 249],
+                offset: 0,
+            },
+        },
+    ];
+    const allTldHouses = await connection.getProgramAccounts(
+        TLD_HOUSE_PROGRAM_ID,
+        {
+            filters,
+        }
+    );
+    const allTldHousesPubkeys = allTldHouses.map((data) => {
+        return {
+            pubkey: data.pubkey,
+            tld: data.account.data
+                .subarray(108, 116)
+                .toString()
+                .replace(/\x00/g, ""),
+        };
+    });
+    return allTldHousesPubkeys;
+};
+
+async function findAllReverseAccountsForTld(
+    connection: Connection,
+    nameClassAccount: PublicKey
+): Promise<PublicKey[]> {
+    const filters: any = [
+        {
+            memcmp: {
+                bytes: nameClassAccount.toBase58(),
+                offset: 72,
+            },
+        },
+    ];
+
+    const accounts = await connection.getProgramAccounts(ANS_PROGRAM_ID, {
+        filters: filters,
+    });
+    return accounts.map((a: any) =>
+        a.account.data
+            .subarray(200, a.account.data.length)
+            .toString()
+            .replace(/\x00/g, "")
+    );
+}
+
 const getANSDomain = async (
     usernames: Username[],
     address = "",
     connection: Connection
 ) => {
-    const ans = new TldParser(connection);
-    let domain: MainDomain;
-    console.log(address);
+    const allTldHousesPubkeys = await getAllTldHouses(connection);
+    let reverseLookUps = {};
 
-    try {
-        domain = await ans.getMainDomain(address);
-        console.log("ji", domain);
-    } catch (error) {
-        console.log("a", error);
-        return "";
+    // Use a for loop instead of forEach with an async callback function
+    for (const { pubkey, tld } of allTldHousesPubkeys) {
+        const reverseLookups = await findAllReverseAccountsForTld(
+            connection,
+            pubkey
+        );
+
+        // Make sure the tld key exists in reverseLookUps before pushing to its array
+        if (!reverseLookUps[tld]) {
+            reverseLookUps[tld] = [];
+        }
+
+        reverseLookUps[tld].push(reverseLookups);
     }
 
-    if (domain && domain?.domain && domain?.tld) {
-        usernames.push({
-            type: "ans",
-            username: `${domain.domain}${domain.tld}`,
-        });
-    }
+    console.log(reverseLookUps);
+    // const ans = new TldParser(connection);
+    // let domain: MainDomain;
+    // console.log(address);
 
-    return "";
+    // try {
+    //     domain = await ans.getMainDomain(address);
+    //     console.log("ji", domain);
+    // } catch (error) {
+    //     console.log("a", error);
+    //     return "";
+    // }
+
+    // if (domain && domain?.domain && domain?.tld) {
+    //     usernames.push({
+    //         type: "ans",
+    //         username: `${domain.domain}${domain.tld}`,
+    //     });
+    // }
+
+    // return "";
 };
 
 export const accountUsernames = t.procedure
