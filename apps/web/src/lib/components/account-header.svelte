@@ -60,7 +60,7 @@
     let:usernameIsLoading
 >
     <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
-        <div class="flex flex-wrap items-center justify-between bg-base-100">
+        <div class="flex items-center justify-between bg-base-100">
             <div class="flex flex-col">
                 <div class="flex items-center">
                     <h3 class="relative m-0 text-lg font-bold md:text-2xl">
@@ -89,13 +89,18 @@
                                 <div
                                     class="inline-block rounded-full bg-red-200 py-1 px-3 text-xs font-extrabold text-red-600"
                                 >
-                                    <div class="flex items-center gap-1">
+                                    <div
+                                        class="flex items-center justify-center gap-1"
+                                    >
                                         <Icon
                                             id="backpack"
                                             size="sm"
                                         />
-
+                                        <!-- <span
+                                            class="flex items-center justify-center"
+                                        > -->
                                         {username.username}
+                                        <!-- </span> -->
                                     </div>
                                 </div>
                             {:else}
@@ -109,7 +114,7 @@
                     {/if}
                 </div>
             </div>
-            <div class="relative text-right">
+            <div class="relative w-1/4 text-right">
                 <h1 class="text-md md:block">
                     <span class="">{$balance.toFixed(6)}</span>
                     <span class="opacity-50">SOL</span>
