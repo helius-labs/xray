@@ -2,16 +2,10 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-// import { getAllDomains, reverseLookup } from "@bonfida/spl-name-service";
-import { connect } from "@helius-labs/xray";
-import { TldParser } from "@onsol/tldparser";
-import type { MainDomain } from "@onsol/tldparser/dist/types/state/main-domain";
-import { Connection, PublicKey } from "@solana/web3.js";
-
 const { HELIUS_KEY } = process.env;
 
 interface Username {
-    type: "bonfida" | "backpack" | "ans";
+    type: "bonfida" | "backpack";
     username: string;
 }
 
@@ -44,33 +38,6 @@ const getSolanaDomain = async (usernames: Username[], address = "") => {
     }
 };
 
-const getANSDomain = async (
-    usernames: Username[],
-    address = "",
-    connection: Connection
-) => {
-    const ans = new TldParser(connection);
-    let domain: MainDomain;
-    console.log(address);
-
-    try {
-        domain = await ans.getMainDomain(address);
-        console.log("ji", domain);
-    } catch (error) {
-        console.log("a", error);
-        return "";
-    }
-
-    if (domain && domain?.domain && domain?.tld) {
-        usernames.push({
-            type: "ans",
-            username: `${domain.domain}${domain.tld}`,
-        });
-    }
-
-    return "";
-};
-
 export const accountUsernames = t.procedure
     .input(z.string())
     .output(
@@ -82,11 +49,9 @@ export const accountUsernames = t.procedure
         )
     )
     .query(async ({ input: address }) => {
-        const connection = connect("mainnet", HELIUS_KEY);
         const usernames: Username[] = [];
         await getBackpackUsername(usernames, address);
         await getSolanaDomain(usernames, address);
-        await getANSDomain(usernames, address, connection);
 
         return usernames || [];
     });
