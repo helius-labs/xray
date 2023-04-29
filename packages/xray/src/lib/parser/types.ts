@@ -51,6 +51,8 @@ export enum ProtonSupportedType {
     CREATE_ORDER,
     UPDATE_ORDER,
     FILL_ORDER,
+    UPGRADE_FOX_REQUEST,
+    MIGRATE_TO_PNFT,
 }
 
 export enum ProtonSupportedActionType {
@@ -113,6 +115,8 @@ export enum ProtonSupportedActionType {
     "CREATE_ORDER",
     "UPDATE_ORDER",
     "FILL_ORDER",
+    "UPGRADE_FOX_REQUEST",
+    "MIGRATE_TO_PNFT",
 }
 
 export const ProtonCustomActionLabelTypes = {

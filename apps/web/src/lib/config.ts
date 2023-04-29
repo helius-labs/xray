@@ -134,6 +134,10 @@ export const transactionActionsMetadata: Record<
         icon: "handshake",
         label: "Loan Fox",
     },
+    MIGRATE_TO_PNFT: {
+        icon: "arrowRight",
+        label: "Migrate to pNFT",
+    },
     NFT_BID: {
         icon: "sale",
         label: "NFT Bid",
@@ -176,10 +180,6 @@ export const transactionActionsMetadata: Record<
     OFFER_LOAN: {
         icon: "openHand",
         label: "Offer Loan",
-    },
-    UPDATE_ORDER: {
-        icon: "arrowUp",
-        label: "Update Order",
     },
     REBORROW_SOL_FOR_NFT: {
         icon: "customer",
@@ -268,6 +268,14 @@ export const transactionActionsMetadata: Record<
     UPDATE_OFFER: {
         icon: "cycle",
         label: "Update Offer",
+    },
+    UPDATE_ORDER: {
+        icon: "arrowUp",
+        label: "Update Order",
+    },
+    UPGRADE_FOX_REQUEST: {
+        icon: "arrowUp",
+        label: "Upgrade Fox",
     },
     XNFT_INSTALL: {
         icon: "download",
