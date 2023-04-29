@@ -12,20 +12,70 @@ export const nftHistory = t.procedure
     .input(
         z.object({
             account: z.string(),
+            cursor: z.string().optional(),
+            sortOrder: z.string(),
+            types: z.array(z.string()),
+        })
+    )
+    .output(
+        z.object({
+            oldest: z.string(),
+            result: z.array(
+                z.object({
+                    accounts: z.array(
+                        z.object({
+                            account: z.string(),
+                            changes: z.array(
+                                z.object({
+                                    amount: z.number(),
+                                    mint: z.string(),
+                                })
+                            ),
+                        })
+                    ),
+                    actions: z.array(
+                        z.object({
+                            actionType: z.string(),
+                            amount: z.number(),
+                            from: z.string(),
+                            fromName: z.string().optional(),
+                            received: z.string().optional(),
+                            sent: z.string().optional(),
+                            to: z.string(),
+                            toName: z.string().optional(),
+                        })
+                    ),
+                    fee: z.number(),
+                    primaryUser: z.string(),
+                    raw: z.any(),
+                    signature: z.string(),
+                    source: z.string(),
+                    timestamp: z.number(),
+                    type: z.string(),
+                })
+            ),
         })
     )
     .query(async ({ input }) => {
         const nftEventsUrl = `https://api.helius.xyz/v1/nft-events?api-key=${HELIUS_KEY}`;
         const transactionsUrl = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
 
+        if (input.cursor === "") {
+            return {
+                oldest: "",
+                result: [],
+            };
+        }
+
         const response = await fetch(nftEventsUrl, {
             body: JSON.stringify({
                 options: {
-                    sortOrder: "DESC",
+                    paginationToken: input.cursor,
+                    sortOrder: input.sortOrder,
                 },
                 query: {
                     accounts: [input.account],
-                    // types: ["NFT_SALE", "NFT_MINT"],
+                    types: input.types,
                 },
             }),
             method: "POST",
@@ -33,7 +83,8 @@ export const nftHistory = t.procedure
 
         const data: any = await response.json();
 
-        const signatureList = data?.result.map((tx: any) => tx.signature) || [];
+        const signatureList: string[] =
+            data?.result.map((tx: any) => tx.signature) || [];
 
         const transactions = await fetch(transactionsUrl, {
             body: JSON.stringify({
@@ -43,12 +94,16 @@ export const nftHistory = t.procedure
             method: "POST",
         });
 
-        const json: EnrichedTransaction[] = await transactions.json();
+        let json: EnrichedTransaction[] = await transactions.json();
+
+        if (input.sortOrder === "ASC") {
+            json = json.reverse();
+        }
 
         const result = json.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            paginationToken: data.paginationToken,
+            oldest: data.paginationToken || "",
             result,
         };
     });
