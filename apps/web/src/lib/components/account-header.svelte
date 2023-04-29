@@ -1,4 +1,8 @@
 <style>
+    .username-block {
+        opacity: 90%;
+    }
+
     .username-block:nth-child(3n + 2) {
         background-color: #dbeafe;
         color: #2563eb;
@@ -59,9 +63,9 @@
     let:usernames
     let:usernameIsLoading
 >
-    <div class="nav sticky top-16 z-30 bg-base-100 px-3 pt-2">
-        <div class="flex items-center justify-between bg-base-100">
-            <div class="flex flex-col">
+    <div class="nav sticky top-16 z-30 gap-2 bg-base-100 px-3 pt-2">
+        <div class="flex flex-col bg-base-100">
+            <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <h3 class="relative m-0 text-lg font-bold md:text-2xl">
                         <ShortenAddress address={account} />
@@ -76,56 +80,58 @@
                         </div>
                     </div>
                 </div>
-                <div class="flex flex-wrap gap-2">
-                    {#if usernameIsLoading}
-                        {#each [1, 2, 3] as _}
-                            <div
-                                class="username-block inline-block h-6 w-[72px] animate-pulse rounded-full py-1 px-3 text-xs font-extrabold"
-                            />
-                        {/each}
-                    {:else if usernames && usernames?.length > 0}
-                        {#each usernames as username}
-                            {#if username.type === "backpack"}
-                                <div
-                                    class="inline-block rounded-full bg-red-200 py-1 px-3 text-xs font-extrabold text-red-600"
-                                >
-                                    <div
-                                        class="flex items-center justify-center gap-1"
-                                    >
-                                        <Icon
-                                            id="backpack"
-                                            size="sm"
-                                        />
-                                        <!-- <span
-                                            class="flex items-center justify-center"
-                                        > -->
-                                        {username.username}
-                                        <!-- </span> -->
-                                    </div>
-                                </div>
-                            {:else}
-                                <div
-                                    class="username-block inline-block rounded-full py-1 px-3 text-xs font-extrabold"
-                                >
-                                    {username.username}
-                                </div>
-                            {/if}
-                        {/each}
+                <div class="relative text-right">
+                    <h1 class="text-md md:block">
+                        <span class="">{$balance.toFixed(6)}</span>
+                        <span class="opacity-50">SOL</span>
+                    </h1>
+
+                    {#if !$price?.isLoading}
+                        <span class="ml-1 text-xs opacity-50 md:block"
+                            >{formatMoney(worth)} USD</span
+                        >
                     {/if}
                 </div>
             </div>
-            <div class="relative w-1/4 text-right">
-                <h1 class="text-md md:block">
-                    <span class="">{$balance.toFixed(6)}</span>
-                    <span class="opacity-50">SOL</span>
-                </h1>
-
-                {#if !$price?.isLoading}
-                    <span class="ml-1 text-xs opacity-50 md:block"
-                        >{formatMoney(worth)} USD</span
-                    >
-                {/if}
-            </div>
+            {#if usernameIsLoading}
+                <div class="flex flex-wrap gap-2 pt-2">
+                    {#each [1, 2, 3] as _}
+                        <div
+                            class="username-block inline-block h-6 w-[72px] animate-pulse rounded-full py-1 px-3 text-xs font-extrabold"
+                        />
+                    {/each}
+                </div>
+            {:else if usernames && usernames?.length > 0}
+                <div class="flex flex-wrap gap-2 pt-2">
+                    {#each usernames as username}
+                        {#if username.type === "backpack"}
+                            <div
+                                class="inline-block rounded-full bg-red-200/90 py-1 px-3 text-xs font-extrabold text-red-600/90"
+                            >
+                                <div
+                                    class="flex items-center justify-center gap-1"
+                                >
+                                    <Icon
+                                        id="backpack"
+                                        size="sm"
+                                    />
+                                    <!-- <span
+                                            class="flex items-center justify-center"
+                                        > -->
+                                    {username.username}
+                                    <!-- </span> -->
+                                </div>
+                            </div>
+                        {:else}
+                            <div
+                                class="username-block inline-block rounded-full py-1 px-3 text-xs font-extrabold"
+                            >
+                                {username.username}
+                            </div>
+                        {/if}
+                    {/each}
+                </div>
+            {/if}
         </div>
     </div>
 </Username>
