@@ -42,6 +42,15 @@ export enum ProtonSupportedType {
     FORECLOSE_LOAN,
     STAKE_TOKEN,
     UNSTAKE_TOKEN,
+    BUY_ITEM,
+    CLOSE_ITEM,
+    CLOSE_ORDER,
+    DELIST_ITEM,
+    LIST_ITEM,
+    CANCEL_ORDER,
+    CREATE_ORDER,
+    UPDATE_ORDER,
+    FILL_ORDER,
 }
 
 export enum ProtonSupportedActionType {
@@ -95,6 +104,15 @@ export enum ProtonSupportedActionType {
     "FORECLOSE_LOAN",
     "STAKE_TOKEN",
     "UNSTAKE_TOKEN",
+    "BUY_ITEM",
+    "CLOSE_ITEM",
+    "CLOSE_ORDER",
+    "DELIST_ITEM",
+    "LIST_ITEM",
+    "CANCEL_ORDER",
+    "CREATE_ORDER",
+    "UPDATE_ORDER",
+    "FILL_ORDER",
 }
 
 export const ProtonCustomActionLabelTypes = {

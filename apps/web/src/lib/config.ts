@@ -61,6 +61,10 @@ export const transactionActionsMetadata: Record<
         icon: "flame",
         label: "Burned NFT",
     },
+    BUY_ITEM: {
+        icon: "sale",
+        label: "Buy Item",
+    },
     CANCEL_LOAN_REQUEST: {
         icon: "close",
         label: "Cancel Loan Request",
@@ -69,9 +73,21 @@ export const transactionActionsMetadata: Record<
         icon: "close",
         label: "Cancel Offer",
     },
+    CANCEL_ORDER: {
+        icon: "close",
+        label: "Cancel Order",
+    },
     CLAIM_NFT: {
         icon: "squareCheck",
         label: "Claim NFT",
+    },
+    CLOSE_ITEM: {
+        icon: "close",
+        label: "Close Item",
+    },
+    CLOSE_ORDER: {
+        icon: "close",
+        label: "Close Item",
     },
     COMPRESSED_NFT_MINT: {
         icon: "mint",
@@ -81,10 +97,22 @@ export const transactionActionsMetadata: Record<
         icon: "lightning",
         label: "Transfer",
     },
+    CREATE_ORDER: {
+        icon: "plus",
+        label: "Create Order",
+    },
+    DELIST_ITEM: {
+        icon: "close",
+        label: "Delist Item",
+    },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
         icon: "squad",
         label: "Multisig Transaction",
+    },
+    FILL_ORDER: {
+        icon: "squareCheck",
+        label: "Fill Order",
     },
     FORECLOSE_LOAN: {
         icon: "squareCheck",
@@ -97,6 +125,10 @@ export const transactionActionsMetadata: Record<
     LEND_FOR_NFT: {
         icon: "handshake",
         label: "Lend",
+    },
+    LIST_ITEM: {
+        icon: "list",
+        label: "List Item",
     },
     LOAN_FOX: {
         icon: "handshake",
@@ -144,6 +176,10 @@ export const transactionActionsMetadata: Record<
     OFFER_LOAN: {
         icon: "openHand",
         label: "Offer Loan",
+    },
+    UPDATE_ORDER: {
+        icon: "arrowUp",
+        label: "Update Order",
     },
     REBORROW_SOL_FOR_NFT: {
         icon: "customer",
@@ -221,13 +257,17 @@ export const transactionActionsMetadata: Record<
         icon: "box",
         label: "Generic Transaction",
     },
-    UPDATE_OFFER: {
-        icon: "cycle",
-        label: "Update Offer",
-    },
     UNSTAKE_TOKEN: {
         icon: "cancel",
         label: "Unstake Token",
+    },
+    UPDATE_ITEM: {
+        icon: "arrowUp",
+        label: "Update Item",
+    },
+    UPDATE_OFFER: {
+        icon: "cycle",
+        label: "Update Offer",
     },
     XNFT_INSTALL: {
         icon: "download",
@@ -367,4 +407,6 @@ export const enum IconPaths {
     newspaper = `<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path><path d="M18 14h-8"></path><path d="M15 18h-5"></path><path d="M10 6h8v4h-8V6Z"></path>`,
 
     squareCheck = `<path d="m20 20h-15.25c-.414 0-.75.336-.75.75s.336.75.75.75h15.75c.53 0 1-.47 1-1v-15.75c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm-1-17c0-.478-.379-1-1-1h-15c-.62 0-1 .519-1 1v15c0 .621.52 1 1 1h15c.478 0 1-.379 1-1zm-12.751 8.306c-.165-.147-.249-.351-.249-.556 0-.411.333-.746.748-.746.178 0 .355.062.499.19l2.371 2.011 4.453-4.962c.149-.161.35-.243.554-.243.417 0 .748.336.748.746 0 .179-.065.359-.196.503l-4.953 5.508c-.148.161-.35.243-.553.243-.177 0-.356-.063-.498-.19z" fill-rule="nonzero"/>`,
+
+    list = `<path d="m3.3 15.4c.717 0 1.3.583 1.3 1.3s-.583 1.3-1.3 1.3-1.3-.583-1.3-1.3.583-1.3 1.3-1.3zm2.7 1.85c0-.414.336-.75.75-.75h14.5c.414 0 .75.336.75.75s-.336.75-.75.75h-14.5c-.414 0-.75-.336-.75-.75zm-2.7-6.55c.717 0 1.3.583 1.3 1.3s-.583 1.3-1.3 1.3-1.3-.583-1.3-1.3.583-1.3 1.3-1.3zm2.7 1.3c0-.414.336-.75.75-.75h14.5c.414 0 .75.336.75.75s-.336.75-.75.75h-14.5c-.414 0-.75-.336-.75-.75zm-2.7-6c.717 0 1.3.583 1.3 1.3s-.583 1.3-1.3 1.3-1.3-.583-1.3-1.3.583-1.3 1.3-1.3zm2.7.75c0-.414.336-.75.75-.75h14.5c.414 0 .75.336.75.75s-.336.75-.75.75h-14.5c-.414 0-.75-.336-.75-.75z" fill-rule="nonzero"/>`,
 }
