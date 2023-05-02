@@ -22,18 +22,15 @@ export const parseSwap = (
     transaction: EnrichedTransaction,
     address: string | undefined
 ): ProtonTransaction => {
-    const {
-        type,
-        source,
-        signature,
-        timestamp,
-        tokenTransfers,
-        nativeTransfers,
-        accountData,
-    } = transaction;
+    // @ts-ignore
+    const swapEvent = transactions.events.nft;
+    const { type, source, signature, timestamp, accountData } = transaction;
     const fee = transaction.fee / LAMPORTS_PER_SOL;
 
-    if (tokenTransfers === null || nativeTransfers === null) {
+    if (
+        transaction.tokenTransfers === null ||
+        transaction.nativeTransfers === null
+    ) {
         return {
             accounts: [],
             actions: [],
@@ -46,16 +43,28 @@ export const parseSwap = (
         };
     }
 
-    const primaryUser = tokenTransfers[0].fromUserAccount || "";
+    const primaryUser = transaction.tokenTransfers[0].fromUserAccount || "";
     const actions: ProtonTransactionAction[] = [];
     const accounts: ProtonAccount[] = [];
 
-    if (source === "HADESWAP") {
-        traverseTokenTransfers(tokenTransfers, actions, address);
-        traverseNativeTransfers(nativeTransfers, actions, address);
-    } else {
-        traverseTokenTransfers(tokenTransfers, actions, address);
+    for (let i = 0; i < swapEvent.innerSwaps.length; i++) {
+        for (let j = 0; j < swapEvent.innerSwaps[i].length; j++) {
+            actions.push({
+                actionType: "TRANSFER",
+                amount: swapEvent.innerSwaps[i][j].tokenAmount,
+                from: swapEvent.innerSwaps[i][j].fromUserAccount,
+                sent: swapEvent.innerSwaps[i][j].mint,
+                to: swapEvent.innerSwaps[i][j].toUserAccount,
+            });
+        }
     }
+
+    // if (source === "HADESWAP") {
+    //     traverseTokenTransfers(tokenTransfers, actions, address);
+    //     traverseNativeTransfers(nativeTransfers, actions, address);
+    // } else {
+    //     traverseTokenTransfers(tokenTransfers, actions, address);
+    // }
     traverseAccountData(accountData, accounts);
 
     return {
