@@ -468,7 +468,7 @@ export const parseCompressedNftTransfer: ProtonParser = (
             to: nftEvent[0].newLeafOwner,
         });
     } else {
-        if ((address = nftEvent[0].oldLeafOwner)) {
+        if (address === nftEvent[0].oldLeafOwner) {
             actions.push({
                 actionType: "TRANSFER_SENT",
                 amount: 1,
