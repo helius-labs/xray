@@ -217,19 +217,21 @@ WIP
 -   [TanstackQuery](https://tanstack.com/query/latest)
 -   [SvelteKit tRPC SvelteQuery Adapter](https://github.com/vishalbalaji/trpc-svelte-query-adapter)
 
-# 📦 @helius-labs/proton
+# 📦 @helius-labs/xray
 
-Used for parsing blockchain data and making it pretty for the UI.
+A package that includes our parser, which helps make blockchain data pretty for the UI, and search function.
 
 ## Important Files & Folders
 
-|                            |                                                                                       |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| 📄`./index.ts`             | UI calls the function in this file to parse transactions                              |
-| 📄`./src/types/index.ts`   | Contains the types, interfaces, and enums needed to understand to work on the parser. |
-| 📁`./src/parsers`          | Contains all parser methods.                                                          |
-| 📄`./src/parsers/index.ts` | Exports parser files in `./src/parsers`.                                              |
-| 📁`./src/utils`            | Utility functions for parser functions                                                |
+|                                         |                                                                                                                                                                      |
+| --------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 📄`./src/lib/parser/index.ts`           | UI calls the function in this file to parse transactions                                                                                                             |
+| 📄`./src/lib/parser/types.ts`           | Contains the types, interfaces, and enums needed to understand to work on the parser.                                                                                |
+| 📁`./src/lib/parser/parsers`            | Contains all parser methods.                                                                                                                                         |
+| 📄`./src/lib/parser/parsers/index.ts`   | Exports parser files in `./src/parsers`.                                                                                                                             |
+| 📄`./src/lib/parser/parsers/unknown.ts` | If there is no dedicated parser file for a Helius transaction type, they are parsed in this file. Changing the label on the UI is in `./apps/web/src/lib/config.ts`. |
+| 📁`./src/lib/parser/utils`              | Utility functions for the parser functions                                                                                                                           |
+| 📄`./src/lib/search.ts`                 | The function that resolves search inputs to a URL parameter.                                                                                                         |
 
 # 📦 @helius-labs/xray-database [WIP]
 
