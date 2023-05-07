@@ -10,9 +10,7 @@ import {
 } from "../types";
 
 import { traverseAccountData } from "../utils/account-data";
-import { traverseNativeTransfers } from "../utils/native-transfers";
-import { rentTransferCheck } from "../utils/rent-transfer-check";
-import { traverseTokenTransfers } from "../utils/token-transfers";
+import { transferType } from "../utils/action-type";
 
 interface TempTokenTransfer extends TokenTransfer {
     tokenAmount: number;
@@ -23,14 +21,12 @@ export const parseSwap = (
     address: string | undefined
 ): ProtonTransaction => {
     // @ts-ignore
-    const swapEvent = transactions.events.nft;
-    const { type, source, signature, timestamp, accountData } = transaction;
+    const swapEvent = transaction.events.swap;
+    const { type, source, signature, timestamp, accountData, tokenTransfers } =
+        transaction;
     const fee = transaction.fee / LAMPORTS_PER_SOL;
 
-    if (
-        transaction.tokenTransfers === null ||
-        transaction.nativeTransfers === null
-    ) {
+    if (swapEvent === null || transaction.tokenTransfers === null) {
         return {
             accounts: [],
             actions: [],
@@ -44,18 +40,55 @@ export const parseSwap = (
     }
 
     const primaryUser = transaction.tokenTransfers[0].fromUserAccount || "";
+
     const actions: ProtonTransactionAction[] = [];
     const accounts: ProtonAccount[] = [];
 
     for (let i = 0; i < swapEvent.innerSwaps.length; i++) {
-        for (let j = 0; j < swapEvent.innerSwaps[i].length; j++) {
-            actions.push({
-                actionType: "TRANSFER",
-                amount: swapEvent.innerSwaps[i][j].tokenAmount,
-                from: swapEvent.innerSwaps[i][j].fromUserAccount,
-                sent: swapEvent.innerSwaps[i][j].mint,
-                to: swapEvent.innerSwaps[i][j].toUserAccount,
-            });
+        const innerSwap = swapEvent.innerSwaps;
+        for (let j = 0; j < innerSwap.length; j++) {
+            const swap = innerSwap[j];
+            const { tokenInputs, tokenOutputs, tokenFees, nativeFees } = swap;
+            for (let k = 0; k < tokenInputs.length; k++) {
+                const tokenInput = tokenInputs[k];
+                actions.push({
+                    actionType: transferType(tokenInput, address),
+                    amount: tokenInput.tokenAmount,
+                    from: tokenInput.fromUserAccount || "",
+                    sent: tokenInput.mint,
+                    to: tokenInput.toUserAccount || "",
+                });
+            }
+            for (let k = 0; k < tokenOutputs.length; k++) {
+                const tokenOutput = tokenOutputs[k];
+                actions.push({
+                    actionType: transferType(tokenOutput, address),
+                    amount: tokenOutput.tokenAmount,
+                    from: tokenOutput.fromUserAccount || "",
+                    sent: tokenOutput.mint,
+                    to: tokenOutput.toUserAccount || "",
+                });
+            }
+            for (let k = 0; k < tokenFees.length; k++) {
+                const tokenFee = tokenFees[k];
+                actions.push({
+                    actionType: transferType(tokenFee, address),
+                    amount: tokenFee.tokenAmount,
+                    from: tokenFee.fromUserAccount || "",
+                    sent: tokenFee.mint,
+                    to: tokenFee.toUserAccount || "",
+                });
+            }
+            for (let k = 0; k < nativeFees.length; k++) {
+                const nativeFee = nativeFees[k];
+                actions.push({
+                    actionType: transferType(nativeFee, address),
+                    amount: nativeFee.amount,
+                    from: nativeFee.fromUserAccount || "",
+                    sent: SOL,
+                    to: nativeFee.toUserAccount || "",
+                });
+            }
         }
     }
 
