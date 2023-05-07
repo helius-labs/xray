@@ -92,12 +92,6 @@ export const parseSwap = (
         }
     }
 
-    // if (source === "HADESWAP") {
-    //     traverseTokenTransfers(tokenTransfers, actions, address);
-    //     traverseNativeTransfers(nativeTransfers, actions, address);
-    // } else {
-    //     traverseTokenTransfers(tokenTransfers, actions, address);
-    // }
     traverseAccountData(accountData, accounts);
 
     return {

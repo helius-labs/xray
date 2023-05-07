@@ -49,8 +49,6 @@ export enum ProtonSupportedActionType {
     "TRANSFER_SENT",
     "TRANSFER_RECEIVED",
     "SWAP",
-    "SWAP_SENT",
-    "SWAP_RECEIVED",
     "UNKNOWN",
     "NFT_SALE",
     "NFT_BUY",
