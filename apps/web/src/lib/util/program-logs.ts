@@ -5,7 +5,7 @@ import { getProgramName } from "./program-name";
 export type LogMessage = {
     text: string;
     prefix: string;
-    style: "info-content" | "success" | "error" | "[#e8a034]" | "neutral";
+    style: "sky" | "success" | "error" | "tangerine" | "neutral";
 };
 
 export type InstructionLogs = {
@@ -45,7 +45,7 @@ export const parseProgramLogs = (logs: string[]) => {
 
             parsedLogs[parsedLogs.length - 1].logs.push({
                 prefix: prefixBuilder(depth),
-                style: "[#e8a034]",
+                style: "tangerine",
                 text: log,
             });
         } else if (log.startsWith("Log truncated")) {
@@ -70,7 +70,7 @@ export const parseProgramLogs = (logs: string[]) => {
                 } else {
                     parsedLogs[parsedLogs.length - 1].logs.push({
                         prefix: prefixBuilder(depth),
-                        style: "info-content",
+                        style: "sky",
                         text: `Invoked ${programName}`,
                     });
                 }

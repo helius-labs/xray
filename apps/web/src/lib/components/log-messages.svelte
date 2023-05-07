@@ -1,3 +1,13 @@
+<style>
+    .text-sky {
+        @apply text-info-content;
+    }
+
+    .text-tangerine {
+        @apply text-[#e8a034];
+    }
+</style>
+
 <script lang="ts">
     import { parseProgramLogs } from "$lib/util/program-logs";
 
@@ -35,9 +45,9 @@
             </p>
         {/if}
         {#each instruction.logs as log}
-            <p class="px-3 pb-1 text-sm">
+            <p class={`px-3 pb-1 text-sm text-${log.style}`}>
                 <span class={`mr-1 text-${log.style}`}>{log.prefix}</span><span
-                    class={`text-${log.style}`}>{log.text}</span
+                    class={``}>{log.text}</span
                 >
             </p>
         {/each}
