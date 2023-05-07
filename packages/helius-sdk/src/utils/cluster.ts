@@ -11,7 +11,7 @@ export function heliusClusterApiUrl(
     case "devnet":
       return `https://rpc-devnet.helius.xyz/?api-key=${apiKey}`;
     case "mainnet-beta":
-      return `https://rpc.helius.xyz/?api-key=${apiKey}`;
+      return `https://icarus.helius.xyz/?api-key=${apiKey}`;
     default:
       return "";
   }
