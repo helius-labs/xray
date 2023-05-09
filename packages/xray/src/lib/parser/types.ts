@@ -29,6 +29,17 @@ export enum ProtonSupportedType {
     RESCIND_LOAN,
     TAKE_LOAN,
     REPAY_LOAN,
+    CANCEL_OFFER,
+    LEND_FOR_NFT,
+    REQUEST_LOAN,
+    CANCEL_LOAN_REQUEST,
+    BORROW_SOL_FOR_NFT,
+    REBORROW_SOL_FOR_NFT,
+    CLAIM_NFT,
+    UPDATE_OFFER,
+    FORECLOSE_LOAN,
+    STAKE_TOKEN,
+    UNSTAKE_TOKEN,
 }
 
 export enum ProtonSupportedActionType {
@@ -69,6 +80,17 @@ export enum ProtonSupportedActionType {
     "RESCIND_LOAN",
     "TAKE_LOAN",
     "REPAY_LOAN",
+    "CANCEL_OFFER",
+    "LEND_FOR_NFT",
+    "REQUEST_LOAN",
+    "CANCEL_LOAN_REQUEST",
+    "BORROW_SOL_FOR_NFT",
+    "REBORROW_SOL_FOR_NFT",
+    "CLAIM_NFT",
+    "UPDATE_OFFER",
+    "FORECLOSE_LOAN",
+    "STAKE_TOKEN",
+    "UNSTAKE_TOKEN",
 }
 
 export const ProtonCustomActionLabelTypes = {

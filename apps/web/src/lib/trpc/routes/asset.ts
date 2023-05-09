@@ -6,7 +6,7 @@ const { HELIUS_KEY } = process.env;
 
 // TODO: add output validation once this merges with the token endpoint
 export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
-    const url = `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`;
+    const url = `https://mainnet-beta.solanarpc.network/?api-key=${HELIUS_KEY}`;
 
     const response = await fetch(url, {
         body: JSON.stringify({
