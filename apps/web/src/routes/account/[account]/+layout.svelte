@@ -37,8 +37,9 @@
                 <a
                     href={`/account/${$page.params.account}`}
                     class="tab tab-bordered"
-                    class:tab-active={!$page.url.pathname.endsWith("/tokens")}
-                    >Transactions</a
+                    class:tab-active={$page.url.pathname.endsWith(
+                        `${$page.params.account}`
+                    )}>Transactions</a
                 >
                 <a
                     href={`/account/${$page.params.account}/tokens`}
