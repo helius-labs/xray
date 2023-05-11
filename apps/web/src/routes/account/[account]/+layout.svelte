@@ -48,16 +48,6 @@
                         (window.location.href = `/account/${$page.params.account}/tokens`)}
                     >Tokens</button
                 >
-                <button
-                    class="tab tab-bordered"
-                    on:click={() =>
-                        (window.location.href = `/account/concurrent-merkle-tree`)}
-                    class:tab-active={$page.url.pathname.endsWith(
-                        "concurrent-merkle-tree"
-                    )}
-                >
-                    Concurrent Merkle Tree</button
-                >
             </div>
             {#if !$page.url.pathname.endsWith("/tokens")}
                 <button
