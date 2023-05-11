@@ -34,29 +34,24 @@
         >
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />
-                <button
+                <a
+                    href={`/account/${$page.params.account}`}
                     class="tab tab-bordered"
-                    on:click={() =>
-                        (window.location.href = `/account/${$page.params.account}`)}
                     class:tab-active={!$page.url.pathname.endsWith("/tokens")}
-                    >Transactions</button
+                    >Transactions</a
                 >
-                <button
+                <a
+                    href={`/account/${$page.params.account}/tokens`}
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
-                    on:click={() =>
-                        (window.location.href = `/account/${$page.params.account}/tokens`)}
-                    >Tokens</button
+                    >Tokens</a
                 >
-                <button
+                <a
+                    href={`/account/${$page.params.account}/concurrent-merkle-tree`}
                     class="tab tab-bordered"
-                    on:click={() =>
-                        (window.location.href = `/account/concurrent-merkle-tree`)}
                     class:tab-active={$page.url.pathname.endsWith(
                         "concurrent-merkle-tree"
-                    )}
-                >
-                    Concurrent Merkle Tree</button
+                    )}>Concurrent Merkle Tree</a
                 >
             </div>
             {#if !$page.url.pathname.endsWith("/tokens")}
