@@ -18,6 +18,12 @@
 
     import AccountHeader from "$lib/components/account-header.svelte";
     import { showModal } from "$lib/state/stores/modals";
+    import { trpcWithQuery } from "$lib/trpc/client";
+    import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
+
+    const client = trpcWithQuery($page);
+
+    const accountInfo = client.accountInfo.createQuery($page.params.account);
 
     const account = $page.params.account;
 </script>
@@ -47,13 +53,15 @@
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
                     >Tokens</a
                 >
-                <a
-                    href={`/account/${$page.params.account}/concurrent-merkle-tree`}
-                    class="tab tab-bordered"
-                    class:tab-active={$page.url.pathname.endsWith(
-                        "concurrent-merkle-tree"
-                    )}>Concurrent Merkle Tree</a
-                >
+                {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
+                    <a
+                        href={`/account/${$page.params.account}/concurrent-merkle-tree`}
+                        class="tab tab-bordered"
+                        class:tab-active={$page.url.pathname.endsWith(
+                            "concurrent-merkle-tree"
+                        )}>Concurrent Merkle Tree</a
+                    >
+                {/if}
             </div>
             {#if !$page.url.pathname.endsWith("/tokens")}
                 <button
