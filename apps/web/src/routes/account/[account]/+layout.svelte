@@ -23,9 +23,8 @@
 
     const client = trpcWithQuery($page);
 
-    const accountInfo = client.accountInfo.createQuery($page.params.account);
-
     const account = $page.params.account;
+    const accountInfo = client.accountInfo.createQuery(account);
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
@@ -41,21 +40,21 @@
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />
                 <a
-                    href={`/account/${$page.params.account}`}
+                    href={`/account/${account}`}
                     class="tab tab-bordered"
-                    class:tab-active={$page.url.pathname.endsWith(
-                        `${$page.params.account}`
-                    )}>Transactions</a
+                    class:tab-active={$page.url.pathname.endsWith(`${account}`)}
+                    >Transactions</a
                 >
                 <a
-                    href={`/account/${$page.params.account}/tokens`}
+                    href={`/account/${account}/tokens`}
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
                     >Tokens</a
                 >
                 {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
                     <a
-                        href={`/account/${$page.params.account}/concurrent-merkle-tree`}
+                        data-sveltekit-reload
+                        href={`/account/${account}/concurrent-merkle-tree`}
                         class="tab tab-bordered"
                         class:tab-active={$page.url.pathname.endsWith(
                             "concurrent-merkle-tree"
