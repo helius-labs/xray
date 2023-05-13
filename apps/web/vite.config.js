@@ -1,5 +1,6 @@
 import { sveltekit } from "@sveltejs/kit/vite";
 
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 import { defineConfig } from "vite";
 
 import pkg from "./package.json";
@@ -17,6 +18,8 @@ export default defineConfig(({ mode }) => ({
         APP_VERSION: JSON.stringify(pkg.version),
 
         IS_MOCKED: !Boolean(heliusKey),
+
+        global: {},
         // ...nodeBandAid,
         "process.env.NODE_DEBUG": false,
     },

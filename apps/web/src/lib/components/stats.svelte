@@ -1,69 +1,96 @@
-<script>
+<script lang="ts">
     import formatMoney from "$lib/util/format-money";
 
-    import { SOL } from "@helius-labs/xray";
-
-    import { page } from "$app/stores";
-
-    import { trpcWithQuery } from "$lib/trpc/client";
-
     import { fade } from "svelte/transition";
+    import { tweened } from "svelte/motion";
 
-    const client = trpcWithQuery($page);
+    import solana from "$lib/solana";
 
-    const tps = client.tps.createQuery();
+    import Icon from "$lib/components/icon.svelte";
 
-    const price = client.price.createQuery(SOL);
+    const slot = solana.currentSlot();
+    const price = solana.price();
+    const tps = solana.tps();
 
-    const slot = client.currentSlot.createQuery();
+    const priceTweened = tweened(0, {
+        duration: 2000,
+    });
+
+    const slotTweened = tweened(0, {
+        duration: 2000,
+    });
+
+    const tpsTweened = tweened(0, {
+        duration: 2000,
+    });
+
+    $: $slotTweened = $slot?.data?.pages[0] || (0 as number);
+    $: $priceTweened = $price?.data?.pages[0] || (0 as number);
+    $: $tpsTweened = $tps?.data?.pages[0] || (0 as number);
 </script>
 
-<div class="flex h-8 w-full items-center justify-center text-xs">
-    <div class="mr-4">
-        {#if !$tps.isLoading}
-            <div
-                in:fade={{
-                    duration: 500,
-                }}
-            >
-                <span class="font-bold">TPS </span>
-                <span class="opacity-50">{$tps?.data?.toFixed(0)}</span>
+<div class="stats w-full rounded-lg bg-opacity-40 shadow">
+    <a
+        class="stat"
+        href="https://birdeye.so/token/So11111111111111111111111111111111111111112?chain=solana"
+        target="_blank"
+        rel="noreferrer"
+        in:fade={{ duration: 1000 }}
+    >
+        <div class="stat-title">SOL/USD</div>
+        <div
+            class="stat-value text-xl text-primary hover:text-orange-500 md:text-4xl"
+        >
+            {formatMoney($priceTweened)}
+        </div>
+    </a>
+
+    <a
+        class="stat"
+        target="_blank"
+        rel="noreferrer"
+        href="https://explorer.solana.com/"
+        in:fade={{ delay: 500, duration: 1000 }}
+    >
+        <div class="stat-title">TPS</div>
+        <div class="stat-value text-xl hover:text-orange-500 md:text-4xl">
+            {$tpsTweened?.toFixed(0)}
+        </div>
+    </a>
+
+    <a
+        class="stat "
+        href="/block/{$slot?.data?.pages[0]}"
+        in:fade={{ delay: 1000, duration: 1000 }}
+    >
+        <div class="stat-title">Current Slot</div>
+        <div class="stat-value text-xl hover:text-orange-500 md:text-4xl">
+            {Number($slotTweened.toFixed()).toLocaleString()}
+        </div>
+    </a>
+</div>
+
+<div class="stats mt-3 flex w-full rounded-lg bg-opacity-40 px-6 py-3 shadow">
+    <div class="flex w-full items-center justify-between">
+        <div
+            class="flex items-center"
+            in:fade={{ duration: 1000 }}
+        >
+            <Icon
+                id="network"
+                fill="success"
+            />
+            <div>
+                <p class="ml-3">Connected</p>
             </div>
-        {:else}
-            <div class="pulse my-2 h-2 w-16 rounded-lg bg-secondary" />
-        {/if}
-    </div>
-    <div class="mr-4">
-        {#if !$tps.isLoading}
-            <div
-                in:fade={{
-                    duration: 500,
-                }}
-            />
-            <span class="font-bold">SOL/USD </span>
-            <span class="opacity-50">{formatMoney($price?.data)}</span>
-        {:else}
-            <div class="pulse my-2 h-2 w-20 rounded-lg bg-secondary" />
-        {/if}
-    </div>
-    <div>
-        {#if !$tps.isLoading}
-            <div
-                in:fade={{
-                    duration: 500,
-                }}
-            />
-            <span class="font-bold">Current Slot </span>
-            <span class="opacity-50 hover:opacity-100">
-                <a
-                    data-sveltekit-reload
-                    href="/block/{$slot?.data}"
-                    class="pointer-events-auto hover:link-success"
-                    >{$slot?.data?.toLocaleString()}</a
-                >
-            </span>
-        {:else}
-            <div class="pulse my-2 h-2 w-32 rounded-lg bg-secondary" />
-        {/if}
+        </div>
+        <div in:fade={{ delay: 1000, duration: 1000 }}>
+            <a
+                class="link ml-3 border-dotted text-xs opacity-50"
+                href="https://www.helius.xyz/"
+                target="_blank"
+                rel="noreferrer">rpc.helius.xyz</a
+            >
+        </div>
     </div>
 </div>

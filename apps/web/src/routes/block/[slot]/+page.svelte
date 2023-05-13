@@ -7,6 +7,7 @@
 
     import { fly } from "svelte/transition";
 
+    import Nav from "$lib/components/nav.svelte";
     import IconCard from "src/lib/components/icon-card.svelte";
     import Transaction from "src/lib/components/transaction.svelte";
 
@@ -46,6 +47,8 @@
         ? transactionPages[transactionPages.length - 1].result?.length
         : false;
 </script>
+
+<Nav />
 
 <div class="max-w-screen content pt-5">
     <div class="relative mx-auto w-full max-w-2xl pb-32">

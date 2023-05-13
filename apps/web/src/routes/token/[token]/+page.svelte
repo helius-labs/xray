@@ -24,6 +24,7 @@
     import Collapse from "$lib/components/collapse.svelte";
     import JSON from "$lib/components/json.svelte";
     import Transactions from "$lib/components/transactions.svelte";
+    import Nav from "$lib/components/nav.svelte";
 
     import PageLoader from "./_loader.svelte";
 
@@ -32,6 +33,8 @@
 
     const address = $page.params.token;
 </script>
+
+<Nav />
 
 <TokenProvider
     {address}

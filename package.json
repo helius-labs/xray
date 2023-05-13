@@ -26,6 +26,7 @@
         "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\""
     },
     "devDependencies": {
+        "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
         "@typescript-eslint/eslint-plugin": "^5.52.0",
         "@typescript-eslint/parser": "^5.52.0",
         "dotenv-cli": "^6.0.0",

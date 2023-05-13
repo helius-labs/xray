@@ -59,9 +59,7 @@
 <ConnectionProvider {network} />
 
 <QueryClientProvider client={data.queryClient}>
-    <main class="min-h-screen">
-        <Nav />
-
+    <main>
         <div class="max-w-screen relative mx-auto">
             <div class="relative mx-auto">
                 <slot />
@@ -70,4 +68,4 @@
     </main>
 </QueryClientProvider>
 
-<Footer />
+<!-- <Footer /> -->

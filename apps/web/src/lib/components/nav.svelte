@@ -8,30 +8,36 @@
     import Stats from "$lib/components/stats.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
+
+    export let liteMode = false;
 </script>
 
-<Stats />
+<!-- <Stats /> -->
 <nav
-    class="sticky top-0 left-0 z-40 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
+    class="sticky top-0 left-0 z-40 grid h-full grid-cols-6 items-center justify-between p-1 px-0"
+    class:bg-black={!liteMode}
+    class:border={!liteMode}
 >
     <div class="col-span-4 flex items-center md:col-span-2">
-        <div
-            class="mx-2 flex items-center"
-            in:fly={{
-                duration: 750,
-                x: -50,
-            }}
-        >
-            <a
-                class="btn-ghost btn px-2"
-                href="/"
-                rel="noreferrer"
+        {#if !liteMode}
+            <div
+                class="mx-2 flex items-center"
+                in:fly={{
+                    duration: 750,
+                    x: -50,
+                }}
             >
-                <span class="text-3xl">XRAY</span>
-            </a>
-        </div>
+                <a
+                    class="btn-ghost btn px-2"
+                    href="/"
+                    rel="noreferrer"
+                >
+                    <span class="text-3xl">XRAY</span>
+                </a>
+            </div>
 
-        <div class="ml-2" />
+            <div class="ml-2" />
+        {/if}
     </div>
 
     <div class="col-span-2 hidden items-center justify-end md:block">

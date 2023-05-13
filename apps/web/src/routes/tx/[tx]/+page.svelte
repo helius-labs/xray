@@ -18,6 +18,7 @@
     import JSON from "$lib/components/json.svelte";
     import Transaction from "$lib/components/transaction.svelte";
     import Collapse from "src/lib/components/collapse.svelte";
+    import Nav from "$lib/components/nav.svelte";
 
     let animate = false;
 
@@ -51,6 +52,8 @@
 
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
+
+<Nav />
 
 <div class="content mb-4 mt-4 flex justify-between px-3">
     <h1 class="text-xl font-bold">Transaction</h1>

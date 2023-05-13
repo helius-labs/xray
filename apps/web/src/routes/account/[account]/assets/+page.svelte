@@ -3,15 +3,28 @@
 
     import { page } from "$app/stores";
 
-    import TokenProvider from "$lib/components/providers/token-provider.svelte";
+    // import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     const account = $page.params.search;
 
     const client = trpcWithQuery($page);
 
-    const balances = client.balances.createQuery(account);
+    // const balances = client.balances.createQuery(account);
+
+    const assets = client.assetsByOwner.createQuery({
+        limit: 50,
+        owner: account,
+        page: 0,
+        sortBy: {
+            sortBy: "created",
+            sortDirection: "asc",
+        },
+    });
+
+    $: console.log($assets);
 </script>
 
+<!-- 
 <div class="content grid grid-cols-4 gap-3">
     {#if $balances.data}
         {#each $balances.data.tokens as token}
@@ -43,4 +56,4 @@
             <div class="grid aspect-square animate-pulse rounded-lg" />
         {/each}
     {/if}
-</div>
+</div> -->

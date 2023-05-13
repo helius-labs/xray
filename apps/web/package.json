@@ -40,6 +40,7 @@
         "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
         "@helius-labs/xray": "*",
         "@lottiefiles/svelte-lottie-player": "^0.3.0",
+        "@metaplex-foundation/js": "^0.19.3",
         "@onsol/tldparser": "^0.5.1",
         "@solana/spl-token-registry": "^0.2.7",
         "@solana/wallet-adapter-wallets": "^0.19.11",

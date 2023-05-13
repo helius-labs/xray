@@ -4,32 +4,29 @@
 </script>
 
 <footer
-    class="footer mt-20 grid w-full grid-cols-2 items-center border bg-black p-3"
+    class="footer flex w-full items-center justify-center bg-black p-3 text-xs opacity-60"
 >
-    <div class="col-span-1 flex items-center">
+    <a
+        href="https://discord.com/invite/Wkn3uuSby7"
+        class="link"
+    >
+        Support
+    </a>
+    <span>|</span>
+    <a
+        href="https://github.com/helius-labs/xray"
+        class="link"
+    >
+        GitHub
+    </a>
+    <span>|</span>
+    <a
+        href="https://www.helius.xyz/"
+        class="link"
+    >
+        Powered by Helius
+    </a>
+    <!-- <div class="col-span-1 flex items-center">
         <PoweredByHelius />
-    </div>
-
-    <div class="col-span-1 flex w-full justify-end">
-        <div class="mr-12">
-            <a
-                href="https://discord.gg/Wkn3uuSby7"
-                class="btn-ghost btn"
-            >
-                <Icon
-                    id="discord"
-                    size="md"
-                />
-            </a>
-            <a
-                href="https://twitter.com/heliuslabs"
-                class="btn-ghost btn"
-            >
-                <Icon
-                    id="twitter"
-                    size="md"
-                />
-            </a>
-        </div>
-    </div>
+    </div> -->
 </footer>

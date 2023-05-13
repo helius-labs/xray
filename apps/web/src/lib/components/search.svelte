@@ -1,9 +1,8 @@
-<style>
+<!-- <style>
     .input {
         background: rgba(0, 0, 0, 0.95);
     }
-</style>
-
+</style> -->
 <script lang="ts">
     import { type SearchResult, search, connect } from "@helius-labs/xray";
 
@@ -37,6 +36,7 @@
     import { recentSearchesKey } from "$lib/config";
 
     import shortenString from "../util/shorten-string";
+    import IconCard from "./icon-card.svelte";
 
     export let inputEl: HTMLInputElement | null = null;
     export let searchError = "";
@@ -135,6 +135,12 @@
     onMount(() => {
         recent = getRecentSearches();
 
+        const [firstRecent] = recent;
+
+        if (firstRecent) {
+            inputValue = firstRecent.search;
+        }
+
         isBackpack =
             window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
     });
@@ -158,12 +164,15 @@
     }
 </script>
 
-<div class="relative z-30 my-2 w-full">
+<div class="relative z-30 mt-1 w-full">
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
-            class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
+            class="input h-10 w-full rounded-lg  bg-opacity-50 focus:input-primary"
             class:h-14={size === "lg"}
+            class:border-orange-600={size === "lg"}
+            class:border-white={size !== "lg"}
+            class:border-opacity-50={size !== "lg"}
             placeholder="Search Solana"
             tabindex="0"
             type="text"
@@ -240,16 +249,16 @@
 
 {#if size === "lg"}
     <div
-        class="relative z-10 grid grid-flow-dense grid-cols-1 py-2 md:grid-cols-4"
+        class="relative z-10 grid grid-flow-dense grid-cols-1 py-3 md:grid-cols-4"
     >
         <button
-            class="bg-faint btn-outline btn col-span-1 mb-4 md:ml-2"
+            class="btn col-span-1 mb-4 border-0 bg-black bg-opacity-60 hover:bg-white hover:text-black md:ml-2"
             on:click|preventDefault={newSearch}
         >
             <span class="text-sm">Go</span>
         </button>
         <button
-            class="bg-faint btn-outline btn col-span-3 mb-4 md:order-first"
+            class="btn col-span-3 mb-4 border-0 bg-black bg-opacity-60 hover:bg-white hover:text-black md:order-first"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>

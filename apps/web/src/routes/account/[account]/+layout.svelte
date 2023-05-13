@@ -13,6 +13,7 @@
 
 <script lang="ts">
     import { page } from "$app/stores";
+    import Nav from "$lib/components/nav.svelte";
 
     import Icon from "$lib/components/icon.svelte";
 
@@ -20,7 +21,13 @@
     import { showModal } from "$lib/state/stores/modals";
 
     const account = $page.params.account;
+
+    $: isTransactions =
+        !$page.url.pathname.endsWith("/tokens") &&
+        !$page.url.pathname.endsWith("/assets");
 </script>
+
+<Nav />
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
     <AccountHeader
@@ -38,8 +45,7 @@
                     class="tab tab-bordered"
                     on:click={() =>
                         (window.location.href = `/account/${$page.params.account}`)}
-                    class:tab-active={!$page.url.pathname.endsWith("/tokens")}
-                    >Transactions</button
+                    class:tab-active={isTransactions}>Transactions</button
                 >
                 <button
                     class="tab tab-bordered"
@@ -48,8 +54,15 @@
                         (window.location.href = `/account/${$page.params.account}/tokens`)}
                     >Tokens</button
                 >
+                <button
+                    class="tab tab-bordered"
+                    class:tab-active={$page.url.pathname.endsWith("/assets")}
+                    on:click={() =>
+                        (window.location.href = `/account/${$page.params.account}/assets`)}
+                    >Assets</button
+                >
             </div>
-            {#if !$page.url.pathname.endsWith("/tokens")}
+            {#if isTransactions}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => showModal("TRANSACTION_FILTER")}
