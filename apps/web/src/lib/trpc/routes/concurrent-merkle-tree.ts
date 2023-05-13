@@ -16,5 +16,23 @@ export const concurrentMerkleTree = t.procedure
             pubkey
         );
 
-        return cmt;
+        const authority = cmt.getAuthority();
+        const root = cmt.getCurrentRoot();
+        const seq = cmt.getCurrentSeq().toString();
+        const canopyDepth = cmt.getCanopyDepth();
+        const maxBufferSize = cmt.getMaxBufferSize();
+        const treeHeight = cmt.getMaxDepth();
+        const creationSlot = cmt.getCreationSlot().toNumber();
+        const rightMostIndex = cmt.tree.rightMostPath.index;
+
+        return {
+            authority,
+            canopyDepth,
+            creationSlot,
+            maxBufferSize,
+            rightMostIndex,
+            root,
+            seq,
+            treeHeight,
+        };
     });

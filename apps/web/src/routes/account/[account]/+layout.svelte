@@ -53,7 +53,6 @@
                 >
                 {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
                     <a
-                        data-sveltekit-reload
                         href={`/account/${account}/concurrent-merkle-tree`}
                         class="tab tab-bordered"
                         class:tab-active={$page.url.pathname.endsWith(
