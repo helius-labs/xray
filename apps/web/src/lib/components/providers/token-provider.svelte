@@ -23,6 +23,7 @@
         address: "",
         attributes: [],
         collectionKey: "",
+        sellerFeeBasisPoints: 0,
         creators: [],
         description: "",
         image: "",
@@ -55,6 +56,8 @@
 
         metadata.address = data?.account;
         metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
+        metadata.sellerFeeBasisPoints =
+            data?.onChainMetadata?.metadata?.data?.sellerFeeBasisPoints || 0;
         metadata.creators = data?.onChainMetadata?.metadata?.data?.creators;
         metadata.description = data?.offChainMetadata?.metadata?.description;
         metadata.collectionKey =
