@@ -178,7 +178,8 @@
                         iconId="percentage"
                     >
                         <p>
-                            {metadata.name ?? "The"} creator(s) currently expect to take {basisPointsToPercentage(
+                            {metadata.name ?? "The"} creator(s) currently expect
+                            to take {basisPointsToPercentage(
                                 metadata.sellerFeeBasisPoints
                             )} of every secondary sale on this piece.
                         </p>
@@ -187,11 +188,14 @@
             {/if}
 
             {#if metadata.creators && metadata.creators.length > 0}
-                <div class="mt-3" in:fly={{
-                    delay: 300,
-                    easing: cubicOut,
-                    y: 50,
-                }}>
+                <div
+                    class="mt-3"
+                    in:fly={{
+                        delay: 300,
+                        easing: cubicOut,
+                        y: 50,
+                    }}
+                >
                     <Collapse
                         sectionTitle="Creators"
                         sectionAditionalInfo={metadata.creators.length}
