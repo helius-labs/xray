@@ -46,6 +46,7 @@ export interface UITokenMetadata {
     collectionKey: string;
     description?: string;
     attributes?: UITokenMetadataAttribute[];
+    sellerFeeBasisPoints?: number;
     creators?: UITokenMetadataCreators[];
     price?: number;
 }
@@ -85,3 +86,5 @@ export interface Modal {
 }
 
 export type Modals = keyof typeof modals;
+
+export type NullableProp<T> = T | null | undefined;
