@@ -178,7 +178,7 @@
                         iconId="percentage"
                     >
                         <p>
-                            {metadata.name ?? "The"} creator's currently expect to take {basisPointsToPercentage(
+                            {metadata.name ?? "The"} creator(s) currently expect to take {basisPointsToPercentage(
                                 metadata.sellerFeeBasisPoints
                             )} of every secondary sale on this piece.
                         </p>
