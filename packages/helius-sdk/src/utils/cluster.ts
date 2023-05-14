@@ -1,8 +1,6 @@
 import { Cluster } from "@solana/web3.js";
 
-/**
- * Retrieves the Helius RPC API URL for the specified cluster
- */
+/** Retrieves the Helius RPC API URL for the specified cluster */
 export function heliusClusterApiUrl(
     apiKey: string,
     cluster: Cluster = "devnet"
