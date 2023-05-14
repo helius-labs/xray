@@ -18,6 +18,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import shortenString from "$lib/util/shorten-string";
+    import basisPointsToPercentage from "$lib/util/percentage";
     import { cubicOut } from "svelte/easing";
     import { fade, fly } from "svelte/transition";
 
@@ -159,10 +160,45 @@
                     </Collapse>
                 </div>
             {/if}
+
+            {#if metadata.sellerFeeBasisPoints}
+                <div
+                    class="mt-3"
+                    in:fly={{
+                        delay: 300,
+                        easing: cubicOut,
+                        y: 50,
+                    }}
+                >
+                    <Collapse
+                        sectionTitle="Creator Royalties"
+                        sectionAditionalInfo={basisPointsToPercentage(
+                            metadata.sellerFeeBasisPoints
+                        )}
+                        iconId="percentage"
+                    >
+                        <p>
+                            {metadata.name ?? "The"} creator(s) currently expect
+                            to take {basisPointsToPercentage(
+                                metadata.sellerFeeBasisPoints
+                            )} of every secondary sale on this piece.
+                        </p>
+                    </Collapse>
+                </div>
+            {/if}
+
             {#if metadata.creators && metadata.creators.length > 0}
-                <div class="mt-3">
+                <div
+                    class="mt-3"
+                    in:fly={{
+                        delay: 300,
+                        easing: cubicOut,
+                        y: 50,
+                    }}
+                >
                     <Collapse
                         sectionTitle="Creators"
+                        sectionAditionalInfo={metadata.creators.length}
                         iconId="creator"
                     >
                         <div class="flex flex-wrap gap-2">
@@ -171,11 +207,22 @@
                                     class="card p-0"
                                     href="/account/{creator.address}"
                                 >
-                                    <h4
-                                        class="text-sm font-medium text-gray-500"
+                                    <header
+                                        class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
                                     >
-                                        CREATOR {idx + 1}
-                                    </h4>
+                                        <h4>
+                                            CREATOR {idx + 1}
+                                        </h4>
+                                        <abbr
+                                            title={`Creator ${
+                                                idx + 1
+                                            } royalties percentage`}
+                                        >
+                                            <h4>
+                                                {creator.share}%
+                                            </h4>
+                                        </abbr>
+                                    </header>
                                     <p class="text-sm">
                                         {shortenString(creator.address)}
                                     </p>
