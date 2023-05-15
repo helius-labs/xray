@@ -1,4 +1,4 @@
-![https://xray.helius.xyz/](/doc/gh-xray-cover.jpg)
+![https://xray.helius.xyz/](/doc/xray-cover-gh.jpg)
 
 ## Relevant Links
 
