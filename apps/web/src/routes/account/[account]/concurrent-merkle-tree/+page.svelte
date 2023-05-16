@@ -1,72 +1,301 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import Icon from "$lib/components/icon.svelte";
     import { trpcWithQuery } from "$lib/trpc/client";
+    import shortenString from "$lib/util/shorten-string";
     import { PublicKey } from "@solana/web3.js";
 
     const client = trpcWithQuery($page);
     const account = $page.params.account;
 
     const cmt = client.concurrentMerkleTree.createQuery(account);
+
+    $: currentRoot = new PublicKey($cmt.data?.root.data || []);
 </script>
 
 {#if $cmt.data}
-    <div>
-        <div>
-            <p>Authority</p>
-            <div>{$cmt.data?.authority}</div>
-        </div>
-        <div>
-            <p>Creation Slot</p>
-            <a
-                data-sveltekid-reload
-                href="/block/{$cmt.data?.creationSlot}"
-                class="pointer-events-auto hover:link-success"
-                >{$cmt.data?.creationSlot}</a
+    <div class="mb-3">
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
             >
-        </div>
-        <div>
-            <p>Max Depth</p>
-            <div>{$cmt.data.treeHeight}</div>
-        </div>
-        <div>
-            <p>Max Buffer Size</p>
-            <div>{$cmt.data.maxBufferSize}</div>
-        </div>
-        <div>
-            <p>Canopy Depth</p>
-            <div>{$cmt.data.canopyDepth}</div>
-        </div>
-        <div>
-            <p>Current Sequence Number</p>
-            <div>{$cmt.data.seq.toLocaleString()}</div>
-        </div>
-        <div>
-            <p>Current Root</p>
-            <div>{new PublicKey($cmt.data.root.data)}</div>
-        </div>
-        <div class="flex flex-col border p-2">
-            <div>Leaves</div>
-            <div class="flex justify-around">
                 <div>
-                    <p>Current</p>
-                    <div>{($cmt.data.rightMostIndex - 1).toLocaleString()}</div>
+                    <h4 class="text-lg font-semibold md:text-sm">Authority</h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The account authroized to modify the tree's state.
+                    </h3>
                 </div>
-                <div>
-                    <p>Max Possible</p>
-                    <div>
-                        {Math.pow(2, $cmt.data.treeHeight).toLocaleString()}
+                <a
+                    data-sveltekit-reload
+                    href="/account/{$cmt.data?.authority}"
+                    class="pointer-events-auto text-xs hover:link-success md:text-sm"
+                >
+                    {shortenString($cmt.data?.authority)}
+                </a>
+            </div>
+        </div>
+        <div>
+            <div
+                class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+            >
+                <div class="col-span-2 p-1 md:col-span-1">
+                    <div
+                        class="center ml-1 h-10 w-10 rounded-full bg-secondary"
+                    >
+                        <Icon
+                            id="box"
+                            size="sm"
+                        />
                     </div>
                 </div>
-                <div>
-                    <p>Remaining</p>
+                <div
+                    class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+                >
                     <div>
-                        {(
-                            Math.pow(2, $cmt.data.treeHeight) -
-                            $cmt.data.rightMostIndex +
-                            1
-                        ).toLocaleString()}
+                        <h4 class="text-lg font-semibold md:text-sm">
+                            Creation Slot
+                        </h4>
+                        <h3 class="mr-2 text-xs opacity-50">
+                            The slot this tree was created on.
+                        </h3>
                     </div>
+                    <a
+                        href="/block/{$cmt.data?.creationSlot}"
+                        class="pointer-events-auto text-xs hover:link-success md:text-sm"
+                    >
+                        {$cmt.data?.creationSlot.toLocaleString()}
+                    </a>
                 </div>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">Max Depth</h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The maximum number of levels the tree can have.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">{$cmt.data.treeHeight}</p>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Max Buffer Size
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The maximum number of leaves that can be processed at
+                        once.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">{$cmt.data.maxBufferSize}</p>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Canopy Depth
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The depth at which a separate smaller tree is created
+                        for faster updates.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">{$cmt.data.canopyDepth}</p>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Current Sequence Number
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The number used to differentiate updates to the tree.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">
+                    {parseInt($cmt.data.seq).toLocaleString()}
+                </p>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Current Root
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The current root hash of the tree.
+                    </h3>
+                </div>
+                <a
+                    data-sveltekit-reload
+                    href="/account/{currentRoot}"
+                    class="pointer-events-auto text-xs hover:link-success md:text-sm"
+                >
+                    {shortenString(String(currentRoot))}
+                </a>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Current Number of Leaves
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The current number of leaves in the tree.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">
+                    {($cmt.data.rightMostIndex - 1).toLocaleString()}
+                </p>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Remaining Leaves
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The number of leaves that can still be added to the
+                        tree.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">
+                    {(
+                        Math.pow(2, $cmt.data.treeHeight) -
+                        $cmt.data.rightMostIndex +
+                        1
+                    ).toLocaleString()}
+                </p>
+            </div>
+        </div>
+        <div
+            class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
+        >
+            <div class="col-span-2 p-1 md:col-span-1">
+                <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="network"
+                        size="sm"
+                    />
+                </div>
+            </div>
+            <div
+                class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
+            >
+                <div>
+                    <h4 class="text-lg font-semibold md:text-sm">
+                        Max Possible Leaves
+                    </h4>
+                    <h3 class="mr-2 text-xs opacity-50">
+                        The maximum number of leaves that the tree can
+                        accommodate.
+                    </h3>
+                </div>
+                <p class="text-xs md:text-sm">
+                    {Math.pow(2, $cmt.data.treeHeight).toLocaleString()}
+                </p>
             </div>
         </div>
     </div>
