@@ -15,8 +15,6 @@
 
     const balances = client.balances.createQuery(account);
 
-    $: console.log($balances.data);
-
     const sol = client.price.createQuery(SOL);
 
     $: sorted = $balances?.data?.tokens
