@@ -21,7 +21,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="key"
                         size="sm"
                     />
                 </div>
@@ -84,7 +84,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="tree"
                         size="sm"
                     />
                 </div>
@@ -107,7 +107,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="cloudTransfer"
                         size="sm"
                     />
                 </div>
@@ -133,7 +133,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="trees"
                         size="sm"
                     />
                 </div>
@@ -159,7 +159,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="cycle"
                         size="sm"
                     />
                 </div>
@@ -186,7 +186,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="codeFork"
                         size="sm"
                     />
                 </div>
@@ -217,7 +217,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="leaf"
                         size="sm"
                     />
                 </div>
@@ -244,7 +244,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="hourglass"
                         size="sm"
                     />
                 </div>
@@ -276,7 +276,7 @@
             <div class="col-span-2 p-1 md:col-span-1">
                 <div class="center ml-1 h-10 w-10 rounded-full bg-secondary">
                     <Icon
-                        id="network"
+                        id="plus"
                         size="sm"
                     />
                 </div>
