@@ -34,7 +34,12 @@ input::placeholder {
 }
 
 .card {
-    @apply rounded-lg border border-secondary bg-black p-3;
+    @apply rounded-lg border border-secondary bg-black p-3 transition-all duration-150;
+}
+
+a.card:hover,
+button.card:hover {
+    @apply border-[#fff]/50 bg-[#fff]/5;
 }
 
 .center {
@@ -47,6 +52,10 @@ input::placeholder {
 
 .icon-fill-success {
     @apply fill-green-500;
+}
+
+.icon-stroke-success {
+    @apply stroke-green-500;
 }
 
 .icon-fill-black {
