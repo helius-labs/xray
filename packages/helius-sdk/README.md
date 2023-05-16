@@ -48,7 +48,7 @@ import {
     // enums
     Address,
     TransactionType,
-    
+
     // lib
     Helius,
 } from "helius-sdk";
@@ -56,9 +56,9 @@ import {
 const helius = new Helius("<your-api-key-here>");
 
 helius.createWebhook({
-  accountAddresses: [Address.MAGIC_EDEN_V2],
-  transactionTypes: [TransactionType.NFT_LISTING],
-  webhookURL: "my-webhook-handler.com/handle",
+    accountAddresses: [Address.MAGIC_EDEN_V2],
+    transactionTypes: [TransactionType.NFT_LISTING],
+    webhookURL: "my-webhook-handler.com/handle",
 });
 ```
 
@@ -66,22 +66,21 @@ If you'd like to work with the native Solana transaction format instead of Heliu
 
 ```ts
 import {
-  // enums
-  TransactionType,
-  WebhookType,
-  Address,
-
-  Helius
+    // enums
+    TransactionType,
+    WebhookType,
+    Address,
+    Helius,
 } from "helius-sdk";
 
 const helius = new Helius("<your-api-key-here>");
 
 helius.createWebhook({
-  accountAddresses: [Address.MAGIC_EDEN_V2],
-  authHeader: "some auth header",
-  webhookURL: "my-webhook-handler.com/handle",
-  webhookType: WebhookType.RAW,
-  transactionTypes: [TransactionType.ANY],
+    accountAddresses: [Address.MAGIC_EDEN_V2],
+    authHeader: "some auth header",
+    webhookURL: "my-webhook-handler.com/handle",
+    webhookType: WebhookType.RAW,
+    transactionTypes: [TransactionType.ANY],
 });
 ```
 
@@ -97,8 +96,8 @@ import { Helius, Address } from "helius-sdk";
 const helius = new Helius("<your-api-key-here>");
 
 helius.editWebhook(
-  "your-webhook-id-here",
-  { accountAddresses: [Address.SQUADS] } // This will ONLY update accountAddresses, not the other fields on the webhook object
+    "your-webhook-id-here",
+    { accountAddresses: [Address.SQUADS] } // This will ONLY update accountAddresses, not the other fields on the webhook object
 );
 ```
 
@@ -113,8 +112,8 @@ import { Helius, Address } from "helius-sdk";
 const helius = new Helius("<your-api-key-here>");
 
 helius.appendAddressesToWebhook("your-webhook-id-here", [
-  Address.SQUADS,
-  Address.JUPITER_V3,
+    Address.SQUADS,
+    Address.JUPITER_V3,
 ]);
 ```
 
@@ -152,19 +151,18 @@ helius.deleteWebhook("<webhook-id-here>"); // returns a boolean
 
 ```ts
 import {
-  // collections dict
-  Collections,
-
-  Helius,
+    // collections dict
+    Collections,
+    Helius,
 } from "helius-sdk";
 
 const helius = new Helius("<your-api-key-here>");
 
 helius.createCollectionWebhook({
-  collectionQuery: Collections.ABC,
-  transactionTypes: [Types.TransactionType.ANY],
-  webhookType: Types.WebhookType.DISCORD,
-  webhookURL: "https://discord.com/api/webhooks/your-discord-token-here",
+    collectionQuery: Collections.ABC,
+    transactionTypes: [Types.TransactionType.ANY],
+    webhookType: Types.WebhookType.DISCORD,
+    webhookURL: "https://discord.com/api/webhooks/your-discord-token-here",
 });
 ```
 
@@ -191,11 +189,12 @@ const mints = helius.getMintlist({
 });
 ```
 
-
 ## RPC Abstractions
+
 We provide a variety of helper methods to help make Solana RPCs easier to work with.
 
 ### Solana Chain TPS
+
 ```ts
 import { Helius } from "helius-sdk";
 
@@ -205,10 +204,14 @@ const tps = await helius.rpc.getCurrentTPS();
 ```
 
 ### Solana Airdrop
+
 ```ts
 import { Helius } from "helius-sdk";
 
 const helius = new Helius("<your-api-key-here>");
 
-const response = await helius.rpc.airdrop(new PublicKey("<wallet address>"), 1000000000); // 1 sol
+const response = await helius.rpc.airdrop(
+    new PublicKey("<wallet address>"),
+    1000000000
+); // 1 sol
 ```
