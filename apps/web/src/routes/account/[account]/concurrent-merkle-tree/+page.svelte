@@ -1,5 +1,6 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    import CopyButton from "$lib/components/copy-button.svelte";
     import Icon from "$lib/components/icon.svelte";
     import { trpcWithQuery } from "$lib/trpc/client";
     import shortenString from "$lib/util/shorten-string";
@@ -35,13 +36,16 @@
                         The account authroized to modify the tree's state.
                     </h3>
                 </div>
-                <a
-                    data-sveltekit-reload
-                    href="/account/{$cmt.data?.authority}"
-                    class="pointer-events-auto text-xs hover:link-success md:text-sm"
-                >
-                    {shortenString($cmt.data?.authority)}
-                </a>
+                <div class="flex items-center">
+                    <CopyButton text={$cmt.data?.authority} />
+                    <a
+                        data-sveltekit-reload
+                        href="/account/{$cmt.data?.authority}"
+                        class="pointer-events-auto text-xs hover:link-success md:text-sm"
+                    >
+                        {shortenString($cmt.data?.authority)}
+                    </a>
+                </div>
             </div>
         </div>
         <div>
@@ -63,7 +67,7 @@
                 >
                     <div>
                         <h4 class="text-lg font-semibold md:text-sm">
-                            Creation Slot
+                            Slot Created
                         </h4>
                         <h3 class="mr-2 text-xs opacity-50">
                             The slot this tree was created on.
@@ -146,8 +150,8 @@
                         Canopy Depth
                     </h4>
                     <h3 class="mr-2 text-xs opacity-50">
-                        The depth at which a separate smaller tree is created
-                        for faster updates.
+                        The subset of the tree that is stored within the tree
+                        account.
                     </h3>
                 </div>
                 <p class="text-xs md:text-sm">{$cmt.data.canopyDepth}</p>
@@ -202,13 +206,12 @@
                         The current root hash of the tree.
                     </h3>
                 </div>
-                <a
-                    data-sveltekit-reload
-                    href="/account/{currentRoot}"
-                    class="pointer-events-auto text-xs hover:link-success md:text-sm"
-                >
-                    {shortenString(String(currentRoot))}
-                </a>
+                <div class="flex items-center">
+                    <CopyButton text={String(currentRoot)} />
+                    <p class="text-xs md:text-sm">
+                        {shortenString(String(currentRoot))}
+                    </p>
+                </div>
             </div>
         </div>
         <div
