@@ -69,6 +69,10 @@ export const transactionActionsMetadata: Record<
         icon: "squareCheck",
         label: "Claim NFT",
     },
+    COMPRESSED_NFT_BURN: {
+        icon: "flame",
+        label: "Burned NFT",
+    },
     COMPRESSED_NFT_MINT: {
         icon: "mint",
         label: "NFT Mint",
@@ -217,13 +221,13 @@ export const transactionActionsMetadata: Record<
         icon: "box",
         label: "Generic Transaction",
     },
-    UPDATE_OFFER: {
-        icon: "cycle",
-        label: "Update Offer",
-    },
     UNSTAKE_TOKEN: {
         icon: "cancel",
         label: "Unstake Token",
+    },
+    UPDATE_OFFER: {
+        icon: "cycle",
+        label: "Update Offer",
     },
     XNFT_INSTALL: {
         icon: "download",
