@@ -23,11 +23,13 @@
         address: "",
         attributes: [],
         collectionKey: "",
-        sellerFeeBasisPoints: 0,
         creators: [],
+        delegate: "",
         description: "",
         image: "",
         name: "",
+        owner: "",
+        sellerFeeBasisPoints: 0,
     };
 
     const asset = client.asset.createQuery(address, {
@@ -50,6 +52,8 @@
         metadata.collectionKey = data?.collectionKey || "";
         metadata.image = data?.image || "";
         metadata.name = data?.name || "";
+        metadata.owner = data?.owner || "";
+        metadata.delegate = data?.delegate || "";
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};

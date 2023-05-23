@@ -27,11 +27,13 @@ export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
         attributes: [],
         collectionKey: "",
         compressed: false,
-        sellerFeeBasisPoints: 0,
         creators: [],
+        delegate: "",
         description: "",
         image: "",
         name: "",
+        owner: "",
+        sellerFeeBasisPoints: 0,
     };
 
     if (data?.result?.compression?.compressed === true) {
@@ -43,11 +45,15 @@ export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
             attributes: returnAssetData?.attributes || [],
             collectionKey: data?.result?.grouping[0]?.group_value || "",
             compressed: true,
-            sellerFeeBasisPoints: data?.result?.sellerFeeBasisPoints || 0,
             creators: data?.result?.creators || [],
+            delegate: data?.result?.ownership?.delegated
+                ? data?.result?.ownership?.delegate
+                : "",
             description: returnAssetData?.description || "",
             image: returnAssetData?.image || "",
             name: returnAssetData?.name || "",
+            owner: data?.result?.ownership?.owner || "",
+            sellerFeeBasisPoints: data?.result?.sellerFeeBasisPoints || 0,
         };
     }
     return metadata;
