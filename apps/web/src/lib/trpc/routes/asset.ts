@@ -30,6 +30,7 @@ export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
         creators: [],
         delegate: "",
         description: "",
+        frozen: false,
         image: "",
         name: "",
         owner: "",
@@ -50,6 +51,7 @@ export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
                 ? data?.result?.ownership?.delegate
                 : "",
             description: returnAssetData?.description || "",
+            frozen: data?.result?.ownership?.frozen,
             image: returnAssetData?.image || "",
             name: returnAssetData?.name || "",
             owner: data?.result?.ownership?.owner || "",

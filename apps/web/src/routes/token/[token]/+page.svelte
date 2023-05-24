@@ -17,8 +17,8 @@
 
 <script lang="ts">
     import { page } from "$app/stores";
-    import shortenString from "$lib/util/shorten-string";
     import basisPointsToPercentage from "$lib/util/percentage";
+    import shortenString from "$lib/util/shorten-string";
     import { cubicOut } from "svelte/easing";
     import { fade, fly } from "svelte/transition";
 
@@ -183,6 +183,68 @@
                                 metadata.sellerFeeBasisPoints
                             )} of every secondary sale on this piece.
                         </p>
+                    </Collapse>
+                </div>
+            {/if}
+
+            {#if metadata.owner}
+                <div
+                    class="mt-3"
+                    in:fly={{ delay: 300, easing: cubicOut, y: 50 }}
+                >
+                    <Collapse
+                        sectionTitle="Ownership"
+                        iconId="creator"
+                    >
+                        <div class="flex flex-wrap gap-2">
+                            <a
+                                class="card p-0"
+                                href="/account/{metadata.owner}"
+                            >
+                                <header
+                                    class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
+                                >
+                                    <h4>OWNER</h4>
+                                </header>
+                                <p class="text-sm">
+                                    {shortenString(metadata.owner)}
+                                </p>
+                            </a>
+                            <div class="card p-0">
+                                <h4
+                                    class="text-sm font-medium uppercase text-gray-500"
+                                >
+                                    Frozen
+                                </h4>
+                                <p class="text-sm">
+                                    {metadata.frozen ? "true" : "false"}
+                                </p>
+                            </div>
+                            {#if metadata.delegate}
+                                <a
+                                    class="card p-0"
+                                    href="/account/{metadata.owner}"
+                                >
+                                    <header
+                                        class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
+                                    >
+                                        <h4>DELEGATE</h4>
+                                    </header>
+                                    <p class="text-sm">
+                                        {shortenString(metadata.delegate)}
+                                    </p>
+                                </a>
+                            {:else}
+                                <div class="card p-0">
+                                    <h4
+                                        class="text-sm font-medium uppercase text-gray-500"
+                                    >
+                                        Delegate
+                                    </h4>
+                                    <p class="text-sm">false</p>
+                                </div>
+                            {/if}
+                        </div>
                     </Collapse>
                 </div>
             {/if}

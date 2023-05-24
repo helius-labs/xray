@@ -49,8 +49,10 @@ export interface UITokenMetadata {
     sellerFeeBasisPoints?: number;
     creators?: UITokenMetadataCreators[];
     price?: number;
-    owner?: string;
+    owner: string;
     delegate?: string;
+    frozen?: boolean;
+    compressed?: boolean;
 }
 
 export type Icon = keyof typeof IconPaths;
