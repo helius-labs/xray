@@ -54,6 +54,14 @@
         metadata.name = data?.name || "";
         metadata.owner = data?.owner || "";
         metadata.delegate = data?.delegate || "";
+        metadata.frozen = data?.frozen || false;
+        metadata.compressed = data?.compressed || false;
+        metadata.dataHash = data?.dataHash || "";
+        metadata.creatorHash = data?.creatorHash || "";
+        metadata.assetHash = data?.assetHash || "";
+        metadata.tree = data?.tree || "";
+        metadata.seq = data?.seq || 0;
+        metadata.leafId = data?.leafId || 0;
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};

@@ -186,7 +186,6 @@
                     </Collapse>
                 </div>
             {/if}
-
             {#if metadata.owner}
                 <div
                     class="mt-3"
@@ -202,9 +201,9 @@
                                 href="/account/{metadata.owner}"
                             >
                                 <header
-                                    class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
+                                    class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
                                 >
-                                    <h4>OWNER</h4>
+                                    <h4>Owner</h4>
                                 </header>
                                 <p class="text-sm">
                                     {shortenString(metadata.owner)}
@@ -226,9 +225,9 @@
                                     href="/account/{metadata.owner}"
                                 >
                                     <header
-                                        class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
+                                        class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
                                     >
-                                        <h4>DELEGATE</h4>
+                                        <h4>Delegate</h4>
                                     </header>
                                     <p class="text-sm">
                                         {shortenString(metadata.delegate)}
@@ -248,7 +247,6 @@
                     </Collapse>
                 </div>
             {/if}
-
             {#if metadata.creators && metadata.creators.length > 0}
                 <div
                     class="mt-3"
@@ -290,6 +288,97 @@
                                     </p>
                                 </a>
                             {/each}
+                        </div>
+                    </Collapse>
+                </div>
+            {/if}
+            {#if metadata.compressed}
+                <div
+                    class="mt-3"
+                    in:fly={{
+                        delay: 300,
+                        easing: cubicOut,
+                        y: 50,
+                    }}
+                >
+                    <Collapse
+                        sectionTitle="Compression"
+                        iconId="creator"
+                    >
+                        <div class="flex flex-wrap gap-2">
+                            <a
+                                class="card p-0"
+                                href="/account/{metadata.tree}"
+                            >
+                                <header
+                                    class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                >
+                                    <h4>Tree ID</h4>
+                                </header>
+                                <p class="text-sm">
+                                    {shortenString(metadata.tree)}
+                                </p>
+                            </a>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="card p-0">
+                                    <h4
+                                        class="text-sm font-medium uppercase text-gray-500"
+                                    >
+                                        Sequence
+                                    </h4>
+                                    <p class="text-sm">
+                                        {metadata.seq?.toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="card p-0">
+                                    <h4
+                                        class="text-sm font-medium uppercase text-gray-500"
+                                    >
+                                        Leaf ID
+                                    </h4>
+                                    <p class="text-sm">
+                                        {metadata.leafId?.toLocaleString()}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="card p-0">
+                                    <h4
+                                        class="text-sm font-medium uppercase text-gray-500"
+                                    >
+                                        Data Hash
+                                    </h4>
+                                    <p class="text-sm">
+                                        {metadata.dataHash}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="card p-0">
+                                    <h4
+                                        class="text-sm font-medium uppercase text-gray-500"
+                                    >
+                                        Asset Hash
+                                    </h4>
+                                    <p class="text-sm">
+                                        {metadata.assetHash}
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <div class="card p-0">
+                                    <h4
+                                        class="text-sm font-medium uppercase text-gray-500"
+                                    >
+                                        Creator Hash
+                                    </h4>
+                                    <p class="text-sm">
+                                        {metadata.creatorHash}
+                                    </p>
+                                </div>
+                            </div>
                         </div>
                     </Collapse>
                 </div>

@@ -53,6 +53,12 @@ export interface UITokenMetadata {
     delegate?: string;
     frozen?: boolean;
     compressed?: boolean;
+    dataHash?: string;
+    creatorHash?: string;
+    assetHash?: string;
+    tree?: string;
+    seq?: number;
+    leafId?: number;
 }
 
 export type Icon = keyof typeof IconPaths;
