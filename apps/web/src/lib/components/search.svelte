@@ -37,6 +37,8 @@
 
     import shortenString from "../util/shorten-string";
     import IconCard from "./icon-card.svelte";
+    import { goto } from "$app/navigation";
+    import Search from "$lib/components/search.svelte";
 
     export let inputEl: HTMLInputElement | null = null;
     export let searchError = "";
@@ -104,8 +106,7 @@
         recent = [];
     };
 
-    const loadSearch = ({ url }: SearchResult) =>
-        (window.location.href = url || "/");
+    const loadSearch = ({ url }: SearchResult) => goto(url || "/");
 
     const selectSearch = (data: SearchResult) => {
         addRecent(data);
@@ -206,7 +207,6 @@
                             >
                                 <a
                                     class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
-                                    data-sveltekit-reload
                                     href={recentSearch.url}
                                 >
                                     <div class="flex">

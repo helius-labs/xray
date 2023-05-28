@@ -14,27 +14,17 @@
     export let user = "";
     export let filter = "";
 
+    import solanaQuery from "$lib/solana";
+
     let cachedAddress = "";
 
     const client = trpcWithQuery($page);
-
-    const createTransactionQuery = (input: {
-        account: string;
-        filter: string;
-        user: string;
-        cursor?: string;
-    }) =>
-        client.transactions.createInfiniteQuery(input, {
-            getNextPageParam: (lastPage) => lastPage.oldest,
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-        });
 
     const loadMore = () => {
         $transactions.fetchNextPage();
     };
 
-    $: transactions = createTransactionQuery({
+    $: transactions = solanaQuery.transactions(client, {
         account,
         filter,
         user,
@@ -50,7 +40,7 @@
     $: if (cachedAddress !== account) {
         cachedAddress = account;
 
-        transactions = createTransactionQuery({
+        transactions = solanaQuery.transactions(client, {
             account,
             filter,
             user,
@@ -65,9 +55,38 @@
 </script>
 
 {#if $transactions.isLoading}
-    {#each Array(3) as _}
-        <div class="py-2">
-            <IconCard />
+    {#each Array(3) as _, idx}
+        <div
+            class="relative mb-3 flex w-full rounded-lg bg-black bg-opacity-60 p-4"
+            in:fly={{
+                delay: idx * 50,
+                duration: 500,
+                y: -40,
+            }}
+        >
+            <div class="center relative pr-3">
+                <div
+                    class="h-10 w-10 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                />
+            </div>
+
+            <div class="flex-1">
+                <div class="flex w-full items-center justify-between">
+                    <div class="w-3/4">
+                        <div
+                            class="my-2 h-3 w-1/4 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                        />
+                        <div
+                            class="h-2 w-2/4 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                        />
+                    </div>
+                    <div class="flex w-1/4 justify-end">
+                        <div
+                            class="my-2 h-3 w-10 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     {/each}
 {:else if transactionPages.length === 1 && !lastPageHasTransactions}
@@ -82,8 +101,8 @@
                         class="mb-8"
                         in:fly={{
                             delay: idx * 100,
-                            duration: 500,
-                            y: 30,
+                            duration: 750,
+                            y: -50,
                         }}
                     >
                         <Transaction {transaction} />
@@ -98,7 +117,7 @@
     {/each}
 {/if}
 
-{#if $transactions.hasNextPage && lastPageHasTransactions}
+{#if $transactions.hasNextPage && lastPageHasTransactions && !transactions.isLoading}
     <div class="flex justify-center">
         <button
             class="btn-outline btn"

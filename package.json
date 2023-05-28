@@ -70,5 +70,8 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "packageManager": "npm@8.19.2"
+    "packageManager": "npm@8.19.2",
+    "dependencies": {
+        "lucide-svelte": "^0.221.0"
+    }
 }

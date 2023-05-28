@@ -4,7 +4,7 @@
 </script>
 
 <footer
-    class="footer flex w-full items-center justify-center bg-black p-3 text-xs opacity-60"
+    class="footer flex w-full items-center justify-center p-3 text-xs opacity-60"
 >
     <a
         href="https://discord.com/invite/Wkn3uuSby7"

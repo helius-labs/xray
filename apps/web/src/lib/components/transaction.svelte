@@ -45,16 +45,16 @@
 <div>
     <a
         href="/tx/{transaction.signature}"
-        class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
+        class="gradient relative block w-full rounded-lg bg-black bg-opacity-70 pb-1 text-left shadow-lg transition ease-in-out hover:border-white hover:bg-opacity-90"
     >
         <div
             class="pointer-events-none relative grid grid-cols-12 gap-3 rounded-lg"
         >
             <div class="relative">
                 <div
-                    class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
+                    class="center absolute -left-5 top-3 z-10 mb-4 rounded-full bg-black bg-opacity-90 p-2 shadow"
                 >
-                    <div class="opacity-50">
+                    <div class="opacity-70">
                         <Icon
                             id={metadata.icon}
                             size="md"
@@ -62,7 +62,7 @@
                     </div>
                     {#if transaction.type.includes("COMPRESSED")}
                         <div
-                            class="center absolute left-8 -top-5 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
+                            class="center absolute left-8 -top-5 z-10 rounded bg-black bg-opacity-90 p-[1px] text-[10px]  text-[#FFD700] shadow"
                             in:fade={{
                                 delay: 500,
                                 duration: 500,
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                     </div>
-                    <h3 class="ml-2 mt-1 text-xs opacity-50">
+                    <h3 class="ml-2 mt-1 text-xs opacity-70">
                         {formatDate(transaction.timestamp)}
                     </h3>
                 </div>
@@ -130,7 +130,7 @@
                             in:fly={{
                                 delay: idx * 50,
                                 duration: 500,
-                                y: 20,
+                                y: -40,
                             }}
                         >
                             <TokenProvider
@@ -191,7 +191,7 @@
                                                         />
                                                     {:else}
                                                         <div
-                                                            class="flex aspect-square w-8 items-center justify-center rounded-lg bg-secondary opacity-50"
+                                                            class="flex aspect-square w-8 items-center justify-center rounded-lg bg-secondary opacity-70"
                                                         >
                                                             <Icon
                                                                 id="image"
@@ -299,7 +299,7 @@
                                                                         <a
                                                                             data-sveltekit-reload
                                                                             href="/account/{action.to}"
-                                                                            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                                                                            class="link pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
                                                                             {shortenString(
                                                                                 action.to

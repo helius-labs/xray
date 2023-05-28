@@ -36,6 +36,22 @@ const getTps = async () => {
 };
 
 export default {
+    assets: (
+        client: any,
+        input: {
+            account: string;
+            pageNumber?: number;
+        }
+    ) =>
+        client.assetsByOwner.createQuery({
+            account: input.account,
+            limit: 50,
+            page: input.pageNumber || 1,
+            sortBy: {
+                sortBy: "created",
+                sortDirection: "asc",
+            },
+        }),
     blockTransactions: (slot: number) =>
         createQuery({
             queryFn: () => getBlockTransactions(slot),
@@ -51,12 +67,40 @@ export default {
         createInfiniteQuery({
             queryFn: getPrice,
             queryKey: ["price-sol-usd"],
-            refetchInterval: 5000,
+            refetchInterval: 3000,
         }),
+    tokens: (
+        client: any,
+        input: {
+            account: string;
+        }
+    ) => client.balances.createQuery(input.account),
     tps: () =>
         createInfiniteQuery({
             queryFn: getTps,
             queryKey: ["sol-tps"],
-            refetchInterval: 2000,
+            refetchInterval: 10000,
         }),
+    transactions: (
+        client: any,
+        input: {
+            account: string;
+            filter: string;
+            user: string;
+            cursor?: string;
+        }
+    ) =>
+        client.transactions.createInfiniteQuery(
+            {
+                account: input.account,
+                filter: input.filter,
+                user: input.account,
+            },
+            {
+                getNextPageParam: (lastPage: { oldest: string }) =>
+                    lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            }
+        ),
 };

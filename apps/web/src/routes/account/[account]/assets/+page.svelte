@@ -3,57 +3,47 @@
 
     import { page } from "$app/stores";
 
-    // import TokenProvider from "$lib/components/providers/token-provider.svelte";
-
-    const account = $page.params.search;
+    import solanaQuery from "$lib/solana";
 
     const client = trpcWithQuery($page);
 
-    // const balances = client.balances.createQuery(account);
+    const { account } = $page.params;
 
-    const assets = client.assetsByOwner.createQuery({
-        limit: 50,
-        owner: account,
-        page: 0,
-        sortBy: {
-            sortBy: "created",
-            sortDirection: "asc",
-        },
+    const assets = solanaQuery.assets(client, {
+        account,
     });
 
-    $: console.log($assets);
+    $: console.log({ account });
+
+    // import TokenProvider from "$lib/components/providers/token-provider.svelte";
+
+    // const account = $page.params.search;
+
+    // const client = trpcWithQuery($page);
+
+    // const balances = client.balances.createQuery(account);
+
+    // const assets = client.assetsByOwner.createQuery({
+    //     limit: 50,
+    //     owner: account,
+    //     page: 0,
+    //     sortBy: {
+    //         sortBy: "created",
+    //         sortDirection: "asc",
+    //     },
+    // });
+
+    $: console.log("assets", $assets);
 </script>
 
-<!-- 
 <div class="content grid grid-cols-4 gap-3">
-    {#if $balances.data}
-        {#each $balances.data.tokens as token}
-            {#if token.decimals === 0}
-                <div class="aspect-square w-full">
-                    <TokenProvider
-                        address={token.mint}
-                        let:metadata
-                        let:tokenIsLoading
-                    >
-                        {#if !tokenIsLoading && metadata?.image}
-                            <button
-                                on:click={() =>
-                                    (window.location.href = `/token/${token.mint}`)}
-                                class=" block aspect-square h-full w-full overflow-hidden rounded-lg border bg-cover bg-center hover:border-primary"
-                                style="basckground-image: url({metadata?.image})"
-                            />
-                        {:else}
-                            <div
-                                class="pulse aspect-square rounded-lg bg-secondary"
-                            />
-                        {/if}
-                    </TokenProvider>
-                </div>
-            {/if}
+    {#if $assets?.data}
+        {#each $assets.data as asset}
+            {asset?.content?.metadata?.name}
         {/each}
     {:else}
         {#each Array(8) as _}
             <div class="grid aspect-square animate-pulse rounded-lg" />
         {/each}
     {/if}
-</div> -->
+</div>

@@ -13,13 +13,13 @@ const config = {
 
                     info: "#2563eb",
 
-                    neutral: "#616161",
+                    neutral: "#a1a1a1",
 
                     primary: "#c7c7c7",
 
                     "primary-content": "#f5f5f4",
 
-                    secondary: "#1d1d1d",
+                    secondary: "#414141",
 
                     success: "#34d399",
 

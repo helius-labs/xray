@@ -8,28 +8,37 @@ const { HELIUS_KEY } = process.env;
 export const assetsByOwner = t.procedure
     .input(
         z.object({
+            account: z.string(),
             after: z.string().optional(),
             before: z.string().optional(),
             limit: z.number(),
-            owner: z.string(),
             page: z.number(),
-            sortBy: z.object({
-                sortBy: z.string(),
-                sortDirection: z.string(),
-            }),
+            sortBy: z
+                .object({
+                    sortBy: z.string(),
+                    sortDirection: z.string(),
+                })
+                .optional(),
         })
     )
     .query(async ({ input }) => {
         const url = `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`;
 
-        const { owner, limit, page, sortBy, before, after } = input;
+        const {
+            account: ownerAddress,
+            limit,
+            page,
+            sortBy,
+            before,
+            after,
+        } = input;
 
         const assets = await fetch(url, {
             body: JSON.stringify({
                 id: "assets",
                 jsonrpc: "2.0",
                 method: "getAssetsByOwner",
-                params: [owner, sortBy, limit, page, before, after],
+                params: { after, before, limit, ownerAddress, page, sortBy },
             }),
 
             headers: {
@@ -39,7 +48,7 @@ export const assetsByOwner = t.procedure
             method: "POST",
         }).then((res) => res.json());
 
-        console.log({ assets });
+        console.log("back assets", assets);
 
-        return assets;
+        return assets?.result?.items || [];
     });

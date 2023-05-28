@@ -1,4 +1,4 @@
-<div class="card grid grid-cols-12 gap-3">
+<div class="grid grid-cols-12 gap-3 bg-black bg-opacity-90">
     <div class="center relative col-span-2 md:col-span-1">
         <slot name="icon">
             <div class="h-10 w-10 animate-pulse rounded-full bg-secondary" />

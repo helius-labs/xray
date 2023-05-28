@@ -1,38 +1,38 @@
 <script>
-    import TokenProvider from "$lib/components/providers/token-provider.svelte";
-    import { page } from "$app/stores";
     import { trpcWithQuery } from "$lib/trpc/client";
+
+    import { page } from "$app/stores";
+
+    import TokenProvider from "$lib/components/providers/token-provider.svelte";
+
     import { SOL } from "@helius-labs/xray/dist";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
     import formatMoney from "src/lib/util/format-money";
 
-    import solanaQuery from "$lib/solana";
+    const account = $page.params.account;
 
     const client = trpcWithQuery($page);
 
-    const { account } = $page.params;
+    const balances = client.balances.createQuery(account);
 
-    const tokens = solanaQuery.tokens(client, {
-        account,
-    });
+    const sol = client.price.createQuery(SOL);
 
-    $: sorted = $tokens?.data?.tokens
+    $: sorted = $balances?.data?.tokens
         // @ts-ignore
         ?.filter(({ decimals, amount }) => decimals && amount)
         // @ts-ignore
         .sort(({ amount: a, decimals: ad }, { amount: b, decimals: bd }) =>
             a / 10 ** ad < b / 10 ** bd ? 1 : -1
         );
-
-    $: console.log("tokens", $tokens);
 </script>
 
 <div>
-    <!-- <a
-        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg px-3 py-2"
+    <a
+        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
         href="/token/{SOL}"
     >
         <div class="col-span-2 p-1 md:col-span-1">
+            <!-- background so that if it doesn't load you dont' get ugly no image icons -->
             <div
                 style="background-image: url(/media/tokens/solana.png)"
                 class="aspect-square w-full rounded-lg bg-cover"
@@ -45,10 +45,10 @@
                 <h4 class="font-semibold md:text-sm">SOL</h4>
             </div>
             <div>
-                {#if $tokens?.data?.nativeBalance}
+                {#if $balances.data?.nativeBalance}
                     <h4 class="font-semibold md:text-sm">
                         {(
-                            $tokens?.data?.nativeBalance / LAMPORTS_PER_SOL
+                            $balances.data?.nativeBalance / LAMPORTS_PER_SOL
                         ).toLocaleString()}
                     </h4>
                 {/if}
@@ -56,14 +56,14 @@
                 <h4 class="text-xs opacity-50">
                     {#if $sol.data}
                         {formatMoney(
-                            (Number($sol.data) * $tokens?.data?.nativeBalance) /
+                            ($sol.data * $balances.data?.nativeBalance) /
                                 LAMPORTS_PER_SOL
                         )}
                     {/if}
                 </h4>
             </div>
         </div>
-    </a> -->
+    </a>
 
     {#if sorted}
         {#each sorted as token (token.mint)}
@@ -73,7 +73,7 @@
                     let:metadata
                 >
                     <a
-                        class="relative mb-4 grid grid-cols-12 items-center gap-3 rounded-lg bg-black bg-opacity-60 px-3 py-2 hover:bg-opacity-80"
+                        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
                         href="/token/{token.mint}"
                     >
                         <div class="col-span-2 p-1 md:col-span-1">
