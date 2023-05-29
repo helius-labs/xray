@@ -52,6 +52,7 @@ export interface UITokenMetadata {
     owner: string;
     delegate?: string;
     frozen?: boolean;
+    mutable?: boolean;
     compressed?: boolean;
     dataHash?: string;
     creatorHash?: string;

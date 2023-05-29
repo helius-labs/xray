@@ -193,7 +193,7 @@
                 >
                     <Collapse
                         sectionTitle="Ownership"
-                        iconId="creator"
+                        iconId="key"
                     >
                         <div class="flex flex-wrap gap-2">
                             <a
@@ -209,6 +209,16 @@
                                     {shortenString(metadata.owner)}
                                 </p>
                             </a>
+                            <div class="card p-0">
+                                <h4
+                                    class="text-sm font-medium uppercase text-gray-500"
+                                >
+                                    Mutable
+                                </h4>
+                                <p class="text-sm">
+                                    {metadata.mutable ? "true" : "false"}
+                                </p>
+                            </div>
                             <div class="card p-0">
                                 <h4
                                     class="text-sm font-medium uppercase text-gray-500"
@@ -303,12 +313,12 @@
                 >
                     <Collapse
                         sectionTitle="Compression"
-                        iconId="creator"
+                        iconId="tree"
                     >
                         <div class="flex flex-wrap gap-2">
                             <a
                                 class="card p-0"
-                                href="/account/{metadata.tree}"
+                                href="/account/{metadata.tree}/concurrent-merkle-tree"
                             >
                                 <header
                                     class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"

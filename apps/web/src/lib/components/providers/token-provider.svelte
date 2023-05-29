@@ -55,6 +55,7 @@
         metadata.owner = data?.owner || "";
         metadata.delegate = data?.delegate || "";
         metadata.frozen = data?.frozen || false;
+        metadata.mutable = data?.mutable || false;
         metadata.compressed = data?.compressed || false;
         metadata.dataHash = data?.dataHash || "";
         metadata.creatorHash = data?.creatorHash || "";
