@@ -92,6 +92,38 @@ export type FetchModel<T> = {
     data: T;
     isLoading?: boolean;
     hasFetched?: boolean;
+    nextCursor?: string;
+};
+
+export type TransactionsInput = {
+    account: string;
+    filter?: string;
+    cursor?: string;
+    user?: string;
+};
+
+export type AssetsInput = {
+    limit: number;
+    ownerAddress: string;
+    page: number;
+    sortBy: {
+        sortBy: string;
+        sortDirection: "asc";
+    };
+};
+
+export type Asset = {
+    type: "das" | "token";
+    id: string;
+    name: string;
+    symbol: string;
+    description: string;
+    image: string;
+    image_preview: string;
+    attributes: {
+        traitType: string;
+        value: string;
+    }[];
 };
 
 export type Modals = keyof typeof modals;

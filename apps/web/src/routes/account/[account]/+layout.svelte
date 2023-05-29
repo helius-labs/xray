@@ -12,55 +12,44 @@
 </style>
 
 <script lang="ts">
+    export const prerender = false;
+
+    import { onMount } from "svelte";
+
     import { page } from "$app/stores";
-    import { trpcWithQuery } from "$lib/trpc/client";
     import { fade } from "svelte/transition";
 
     import { User } from "lucide-svelte";
 
     import AccountHeader from "$lib/components/account-header.svelte";
-    import { filterStore } from "src/lib/util/stores/filter";
 
-    import solanaQuery from "$lib/solana";
+    import {
+        updateAssetsByOwner,
+        assetsByOwner,
+        assets,
+    } from "$lib/state/assets";
+    import {
+        updateTransactionsByOwner,
+        transactionsByOwner,
+        transactions,
+    } from "$lib/state/transactions";
 
-    const client = trpcWithQuery($page);
-
-    const { account } = $page.params;
-
-    $: transactions = solanaQuery.transactions(client, {
-        account,
-        filter: $filterStore,
-        user: account,
+    onMount(() => {
+        updateAssetsByOwner(account);
+        updateTransactionsByOwner(account);
     });
 
-    $: tokens = solanaQuery.tokens(client, {
-        account,
-    });
+    $: ({ account } = $page.params);
 
-    $: assets = solanaQuery.assets(client, {
-        account,
-    });
-
-    $: $transactions && $tokens && $assets;
-
-    $: transactionsFirstPage = $transactions.data?.pages[0] || [];
+    // eslint-disable-next-line no-console
+    $: console.log("assets", $assetsByOwner, $assets);
+    // eslint-disable-next-line no-console
+    $: console.log("transactions", $transactionsByOwner, $transactions);
 
     $: isTransactions = $page.url.pathname.endsWith("/transactions");
     $: isTokens = $page.url.pathname.endsWith("/tokens");
     $: isAssets = $page.url.pathname.endsWith("/assets");
 
-    // $: console.log(
-    //     transactionsFirstPage,
-    //     "tokens",
-    //     $tokens,
-    //     $tokens?.data,
-    //     "txns",
-    //     $transactions?.data?.pages[0],
-    //     "assets",
-    //     $assets?.data
-    // );
-
-    // TODO this better
     $: isUserHome =
         !$page.url.pathname.endsWith("/tokens") &&
         !$page.url.pathname.endsWith("/assets") &&
@@ -82,7 +71,7 @@
             <a
                 in:fade={{ delay: 0, duration: 1000 }}
                 class="tab"
-                href="/account/{$page.params.account}/"
+                href="/account/{account}/"
                 class:tab-bordered={isUserHome}
                 class:font-bold={isUserHome}
                 class:tab-active={isUserHome}><User size={16} /></a
@@ -90,7 +79,7 @@
             <a
                 in:fade={{ delay: 0, duration: 1000 }}
                 class="tab"
-                href="/account/{$page.params.account}/transactions"
+                href="/account/{account}/transactions"
                 class:font-bold={isTransactions}
                 class:tab-bordered={isTransactions}
                 class:tab-active={isTransactions}>Transactions</a
@@ -98,7 +87,7 @@
             <a
                 in:fade={{ delay: 500, duration: 1000 }}
                 class="tab"
-                href="/account/{$page.params.account}/tokens"
+                href="/account/{account}/tokens"
                 class:font-bold={isTokens}
                 class:tab-bordered={isTokens}
                 class:tab-active={isTokens}>Tokens</a
@@ -106,7 +95,7 @@
             <a
                 in:fade={{ delay: 1000, duration: 1000 }}
                 class="tab"
-                href="/account/{$page.params.account}/assets"
+                href="/account/{account}/assets"
                 class:font-bold={isAssets}
                 class:tab-bordered={isAssets}
                 class:tab-active={isAssets}>Assets</a

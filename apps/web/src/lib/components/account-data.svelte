@@ -1,8 +1,8 @@
 <script lang="ts">
     import type { ProtonAccount } from "@helius-labs/xray";
 
-    import Namor from "./providers/namor-provider.svelte";
-    import TokenProvider from "./providers/token-provider.svelte";
+    import Namor from "$lib/components/providers/namor-provider.svelte";
+    import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     import { fade } from "svelte/transition";
 
@@ -43,7 +43,7 @@
             {#each data.changes as change}
                 {#if change.amount}
                     <TokenProvider
-                        address={change.mint}
+                        id={change.mint}
                         let:metadata
                         let:tokenIsLoading
                     >

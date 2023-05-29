@@ -1,60 +1,44 @@
 <script lang="ts">
-    import { page } from "$app/stores";
-
-    import type { TransactionPage } from "$lib/types";
-
-    import { trpcWithQuery } from "$lib/trpc/client";
-
     import { fly } from "svelte/transition";
 
-    import IconCard from "$lib/components/icon-card.svelte";
     import Transaction from "$lib/components/transaction.svelte";
 
     export let account: string;
-    export let user = "";
-    export let filter = "";
 
-    import solanaQuery from "$lib/solana";
+    import {
+        transactions,
+        transactionsByOwner,
+        fetchNextTransactionPage,
+    } from "$lib/state/transactions";
 
-    let cachedAddress = "";
-
-    const client = trpcWithQuery($page);
-
-    const loadMore = () => {
-        $transactions.fetchNextPage();
-    };
-
-    $: transactions = solanaQuery.transactions(client, {
-        account,
-        filter,
-        user,
-    });
-
-    // TODO: Janky casting because the query resykt comes back super nested and not the right type.
-    // Issue: Ttransaction is SerializeObject<UndefinedToOptional<ProtonTransaction>>
-    // Expected: ProtonTransaction[]
-    $: transactionPages =
-        $transactions.data?.pages || ([] as TransactionPage[]);
-
-    // Hard reset the query when the account changes
-    $: if (cachedAddress !== account) {
-        cachedAddress = account;
-
-        transactions = solanaQuery.transactions(client, {
-            account,
-            filter,
-            user,
-        });
-    }
-
-    $: lastPage = transactionPages[transactionPages.length - 1];
-
-    $: lastPageHasTransactions = lastPage
-        ? transactionPages[transactionPages.length - 1].result?.length
-        : false;
+    $: ownerTransactions = $transactionsByOwner.get(account);
 </script>
 
-{#if $transactions.isLoading}
+{#each ownerTransactions?.data || [] as signature, idx (signature)}
+    {@const transaction = $transactions.get(signature)}
+
+    {#if transaction}
+        <!-- Only animate the first few intro transactions -->
+        {#if idx < 8}
+            <div
+                class="mb-8"
+                in:fly={{
+                    delay: idx * 100,
+                    duration: 750,
+                    y: -50,
+                }}
+            >
+                <Transaction {transaction} />
+            </div>
+        {:else}
+            <div class="mb-10">
+                <Transaction {transaction} />
+            </div>
+        {/if}
+    {/if}
+{/each}
+
+{#if ownerTransactions?.isLoading}
     {#each Array(3) as _, idx}
         <div
             class="relative mb-3 flex w-full rounded-lg bg-black bg-opacity-60 p-4"
@@ -89,41 +73,18 @@
             </div>
         </div>
     {/each}
-{:else if transactionPages.length === 1 && !lastPageHasTransactions}
+{:else if !ownerTransactions?.data.length}
     <p class="opacity-50">No transactions</p>
-{:else}
-    {#each transactionPages as transactionsList}
-        {#each transactionsList.result as transaction, idx (transaction)}
-            {#if transaction?.signature}
-                <!-- Only animate the first few intro transactions -->
-                {#if idx < 8}
-                    <div
-                        class="mb-8"
-                        in:fly={{
-                            delay: idx * 100,
-                            duration: 750,
-                            y: -50,
-                        }}
-                    >
-                        <Transaction {transaction} />
-                    </div>
-                {:else}
-                    <div class="mb-10">
-                        <Transaction {transaction} />
-                    </div>
-                {/if}
-            {/if}
-        {/each}
-    {/each}
 {/if}
 
-{#if $transactions.hasNextPage && lastPageHasTransactions && !transactions.isLoading}
+{#if ownerTransactions?.nextCursor}
     <div class="flex justify-center">
         <button
             class="btn-outline btn"
-            class:loading={$transactions.isFetching}
-            class:disabled={$transactions.isFetching}
-            on:click={loadMore}>Load More</button
+            class:loading={ownerTransactions.isLoading}
+            on:click={() =>
+                !ownerTransactions?.isLoading &&
+                fetchNextTransactionPage(account)}>Load More</button
         >
     </div>
 {/if}

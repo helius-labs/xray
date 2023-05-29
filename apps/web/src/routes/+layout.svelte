@@ -1,19 +1,9 @@
-<style>
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 4rem;
-    }
-</style>
-
 <script lang="ts">
     import "../app.postcss";
-
     import { onMount } from "svelte";
 
-    import { page } from "$app/stores";
-
     import { fly } from "svelte/transition";
+
     import type { LayoutData } from "./$types";
 
     import { QueryClientProvider } from "@tanstack/svelte-query";
@@ -36,11 +26,6 @@
     } from "$lib/state/stores/connect-wallet";
 
     import { updateTokensMap, tokens } from "$lib/state/tokens";
-    import {
-        updateAssetsByOwner,
-        assetsByOwner,
-        assets,
-    } from "$lib/state/assets";
 
     import Footer from "$lib/components/footer.svelte";
     import Modals from "$lib/components/modals.svelte";
@@ -52,17 +37,10 @@
 
     let animate = false;
 
-    const { account } = $page.params;
-
-    onMount(() => {
-        animate = true;
-
-        updateTokensMap();
-        updateAssetsByOwner(account);
-    });
-
+    // eslint-disable-next-line no-console
     $: console.log("tokens", $tokens);
-    $: console.log("assets by owner", $assetsByOwner, $assets);
+
+    onMount(() => (animate = true));
 </script>
 
 <Modals />

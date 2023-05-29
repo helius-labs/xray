@@ -1,19 +1,26 @@
 <script lang="ts">
-    export let id: string;
+    export let address: string = "";
+    export let id: string = "";
 
-    import { page } from "$app/stores";
-    import { trpcWithQuery } from "$lib/trpc/client";
-    import { onMount } from "svelte";
+    import type { Asset } from "$lib/types";
 
-    const client = trpcWithQuery($page);
+    export let metadata: Asset;
 
-    const getToken = (id: string) => client.token(id);
-    const getAsset = (id: string) => client.asset(id);
+    // import { page } from "$app/stores";
+    // import { trpcWithQuery } from "$lib/trpc/client";
+    // import { onMount } from "svelte";
 
-    onMount(async () => {
-        const token = await getAsset(id);
-        const asset = await getToken(id);
+    // const client = trpcWithQuery($page);
 
-        console.log({ asset, token });
-    });
+    // const getToken = (id: string) => client.token(id);
+    // const getAsset = (id: string) => client.asset(id);
+
+    // onMount(async () => {
+    //     const token = await getAsset(id);
+    //     const asset = await getToken(id);
+
+    //     console.log({ asset, token });
+    // });
 </script>
+
+{id}-{address}

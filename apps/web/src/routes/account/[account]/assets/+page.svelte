@@ -35,14 +35,21 @@
 
     // $: console.log("assets", $assets);
 
-    import { onMount } from "svelte";
+    import { assetsByOwner, assets } from "$lib/state/assets";
 
-    import { getAssetByOwner } from "$lib/state/assets";
+    $: ownedAssets = $assetsByOwner?.get($page.params.account);
 
-    onMount(async () => {
-        const assets = await getAssetByOwner(account);
-    });
+    $: dasAssets =
+        ownedAssets?.data.filter(
+            (id) => $assets.get(id)?.data.type === "das"
+        ) || [];
 </script>
+
+{#each dasAssets as asset}
+    <div>
+        {JSON.stringify(asset)}
+    </div>
+{/each}
 
 <!-- <div class="content grid grid-cols-4 gap-3">
     {#if $assets?.data}

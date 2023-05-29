@@ -217,13 +217,13 @@ export const transactionActionsMetadata: Record<
         icon: "box",
         label: "Generic Transaction",
     },
-    UPDATE_OFFER: {
-        icon: "cycle",
-        label: "Update Offer",
-    },
     UNSTAKE_TOKEN: {
         icon: "cancel",
         label: "Unstake Token",
+    },
+    UPDATE_OFFER: {
+        icon: "cycle",
+        label: "Update Offer",
     },
     XNFT_INSTALL: {
         icon: "download",

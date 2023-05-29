@@ -1,30 +1,29 @@
 <script>
+    import { get } from "svelte/store";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
     import { page } from "$app/stores";
-    import { trpcWithQuery } from "$lib/trpc/client";
     import { SOL } from "@helius-labs/xray/dist";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
     import formatMoney from "src/lib/util/format-money";
 
-    import solanaQuery from "$lib/solana";
+    import { assetsByOwner, assets, assetBalances } from "$lib/state/assets";
 
-    const client = trpcWithQuery($page);
+    $: console.log("ASSSSRRTts", $assetsByOwner, $assets);
 
-    const { account } = $page.params;
+    $: ownedAssets = $assetsByOwner?.get($page.params.account);
 
-    const tokens = solanaQuery.tokens(client, {
-        account,
-    });
+    $: tokens =
+        ownedAssets?.data.filter(
+            (token) => $assets.get(token)?.data.type === "token"
+        ) || [];
 
-    $: sorted = $tokens?.data?.tokens
+    $: sorted = tokens
         // @ts-ignore
-        ?.filter(({ decimals, amount }) => decimals && amount)
-        // @ts-ignore
-        .sort(({ amount: a, decimals: ad }, { amount: b, decimals: bd }) =>
-            a / 10 ** ad < b / 10 ** bd ? 1 : -1
+        .sort((a, b) =>
+            Number($assetBalances.get(b)) > Number($assetBalances.get(a))
+                ? 1
+                : -1
         );
-
-    $: console.log("tokens", $tokens);
 </script>
 
 <div>
@@ -65,9 +64,41 @@
         </div>
     </a> -->
 
-    {#if sorted}
-        {#each sorted as token (token.mint)}
-            {#if token.decimals > 0 && token.mint !== SOL}
+    {#if ownedAssets?.isLoading}
+        {#each Array(3) as _}
+            <div
+                class="mb-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
+            >
+                <div class="col-span-2 p-1 md:col-span-1">
+                    <div
+                        class="aspect-square w-full rounded-full bg-secondary"
+                    />
+                </div>
+                <div
+                    class="col-span-10 flex items-center justify-between md:col-span-11"
+                >
+                    <div>
+                        <div
+                            class="mb-2 h-3 w-32 animate-pulse rounded-full bg-secondary"
+                        />
+                        <div
+                            class="h-2 w-20 animate-pulse rounded-full bg-secondary"
+                        />
+                    </div>
+                    <div
+                        class="h-2 w-5 animate-pulse rounded-full bg-secondary"
+                    />
+                </div>
+            </div>
+        {/each}
+    {:else}
+        {#each sorted as token (token)}
+            <div>
+                {$assetBalances.get(token)}
+                {JSON.stringify(token)}
+            </div>
+
+            <!-- {#if token.decimals > 0 && token.mint !== SOL}
                 <TokenProvider
                     address={token.mint}
                     let:metadata
@@ -77,7 +108,6 @@
                         href="/token/{token.mint}"
                     >
                         <div class="col-span-2 p-1 md:col-span-1">
-                            <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                             <div
                                 style="background-image: url('https://cdn.helius.services/cdn-cgi/image/fit=scale-down,width=200,quality=100/{metadata.image}')"
                                 class="aspect-square w-full rounded-lg bg-cover"
@@ -110,34 +140,7 @@
                         </div>
                     </a>
                 </TokenProvider>
-            {/if}
-        {/each}
-    {:else}
-        {#each Array(3) as _}
-            <div
-                class="mb-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
-            >
-                <div class="col-span-2 p-1 md:col-span-1">
-                    <div
-                        class="aspect-square w-full rounded-full bg-secondary"
-                    />
-                </div>
-                <div
-                    class="col-span-10 flex items-center justify-between md:col-span-11"
-                >
-                    <div>
-                        <div
-                            class="mb-2 h-3 w-32 animate-pulse rounded-full bg-secondary"
-                        />
-                        <div
-                            class="h-2 w-20 animate-pulse rounded-full bg-secondary"
-                        />
-                    </div>
-                    <div
-                        class="h-2 w-5 animate-pulse rounded-full bg-secondary"
-                    />
-                </div>
-            </div>
+            {/if} -->
         {/each}
     {/if}
 </div>

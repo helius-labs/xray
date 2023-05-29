@@ -1,17 +1,3 @@
-<style>
-    .intro {
-        min-height: 65vh;
-    }
-
-    .main {
-        grid-template-rows: repeat(20, 1fr);
-    }
-
-    .intro {
-        grid-row: span 19;
-    }
-</style>
-
 <script>
     import { onMount } from "svelte";
     import { fly } from "svelte/transition";

@@ -1,30 +1,94 @@
 <script lang="ts">
-    import { trpcWithQuery } from "$lib/trpc/client";
+    import { fly } from "svelte/transition";
 
-    import Transactions from "$lib/components/transactions.svelte";
-    import { filterStore } from "src/lib/util/stores/filter";
+    import Transaction from "$lib/components/transaction.svelte";
 
     import { page } from "$app/stores";
 
     const { account } = $page.params;
 
-    import solanaQuery from "$lib/solana";
+    import {
+        transactions,
+        transactionsByOwner,
+        fetchNextTransactionPage,
+    } from "$lib/state/transactions";
 
-    const client = trpcWithQuery($page);
-
-    $: transactions = solanaQuery.transactions(client, {
-        account,
-        filter: $filterStore,
-        user: account,
-    });
-
-    $: console.log("transactions", $transactions);
+    $: ownerTransactions = $transactionsByOwner?.get($page.params.account);
 </script>
 
 <div class="pl-2 md:pl-0">
-    <Transactions
-        {account}
-        filter={$filterStore}
-        user={account}
-    />
+    {#each ownerTransactions?.data || [] as signature, idx (signature)}
+        {@const transaction = $transactions.get(signature)}
+
+        {#if transaction}
+            <!-- Only animate the first few intro transactions -->
+            {#if idx < 12}
+                <div
+                    class="mb-5"
+                    in:fly={{
+                        delay: idx * 100,
+                        duration: 750,
+                        y: -50,
+                    }}
+                >
+                    <Transaction {transaction} />
+                </div>
+            {:else}
+                <div class="mb-5">
+                    <Transaction {transaction} />
+                </div>
+            {/if}
+        {/if}
+    {/each}
+
+    {#if ownerTransactions?.isLoading}
+        {#each Array(3) as _, idx}
+            <div
+                class="relative mb-3 flex w-full rounded-lg bg-black bg-opacity-60 p-4"
+                in:fly={{
+                    delay: idx * 50,
+                    duration: 500,
+                    y: -40,
+                }}
+            >
+                <div class="center relative pr-3">
+                    <div
+                        class="h-10 w-10 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                    />
+                </div>
+
+                <div class="flex-1">
+                    <div class="flex w-full items-center justify-between">
+                        <div class="w-3/4">
+                            <div
+                                class="my-2 h-3 w-1/4 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                            />
+                            <div
+                                class="h-2 w-2/4 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                            />
+                        </div>
+                        <div class="flex w-1/4 justify-end">
+                            <div
+                                class="my-2 h-3 w-10 animate-pulse rounded-full bg-gray-300 bg-opacity-10"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {/each}
+    {:else if !ownerTransactions?.data.length}
+        <p class="opacity-50">No transactions</p>
+    {/if}
+
+    {#if ownerTransactions?.nextCursor}
+        <div class="flex justify-center">
+            <button
+                class="btn-outline btn"
+                class:loading={ownerTransactions.isLoading}
+                on:click={() =>
+                    !ownerTransactions?.isLoading &&
+                    fetchNextTransactionPage(account)}>Load More</button
+            >
+        </div>
+    {/if}
 </div>
