@@ -1,6 +1,7 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import CopyButton from "$lib/components/copy-button.svelte";
+    import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
     import { trpcWithQuery } from "$lib/trpc/client";
     import shortenString from "$lib/util/shorten-string";
@@ -303,5 +304,9 @@
         </div>
     </div>
 {:else}
-    <div />
+    {#each Array(3) as _}
+        <div class="py-2">
+            <IconCard />
+        </div>
+    {/each}
 {/if}
