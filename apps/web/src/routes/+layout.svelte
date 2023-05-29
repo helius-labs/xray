@@ -11,6 +11,8 @@
 
     import { onMount } from "svelte";
 
+    import { page } from "$app/stores";
+
     import { fly } from "svelte/transition";
     import type { LayoutData } from "./$types";
 
@@ -31,7 +33,14 @@
         isConnectingWallet,
         showConnectWallet,
         wallets,
-    } from "src/lib/state/stores/connect-wallet";
+    } from "$lib/state/stores/connect-wallet";
+
+    import { updateTokensMap, tokens } from "$lib/state/tokens";
+    import {
+        updateAssetsByOwner,
+        assetsByOwner,
+        assets,
+    } from "$lib/state/assets";
 
     import Footer from "$lib/components/footer.svelte";
     import Modals from "$lib/components/modals.svelte";
@@ -43,9 +52,17 @@
 
     let animate = false;
 
+    const { account } = $page.params;
+
     onMount(() => {
         animate = true;
+
+        updateTokensMap();
+        updateAssetsByOwner(account);
     });
+
+    $: console.log("tokens", $tokens);
+    $: console.log("assets by owner", $assetsByOwner, $assets);
 </script>
 
 <Modals />

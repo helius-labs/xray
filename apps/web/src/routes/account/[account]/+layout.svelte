@@ -49,16 +49,16 @@
     $: isTokens = $page.url.pathname.endsWith("/tokens");
     $: isAssets = $page.url.pathname.endsWith("/assets");
 
-    $: console.log(
-        transactionsFirstPage,
-        "tokens",
-        $tokens,
-        $tokens?.data,
-        "txns",
-        $transactions?.data?.pages[0],
-        "assets",
-        $assets?.data
-    );
+    // $: console.log(
+    //     transactionsFirstPage,
+    //     "tokens",
+    //     $tokens,
+    //     $tokens?.data,
+    //     "txns",
+    //     $transactions?.data?.pages[0],
+    //     "assets",
+    //     $assets?.data
+    // );
 
     // TODO this better
     $: isUserHome =

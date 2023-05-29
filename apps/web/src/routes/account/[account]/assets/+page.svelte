@@ -1,23 +1,23 @@
 <script lang="ts">
-    import { trpcWithQuery } from "$lib/trpc/client";
+    // import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
 
-    import solanaQuery from "$lib/solana";
+    // import solanaQuery from "$lib/solana";
 
-    const client = trpcWithQuery($page);
+    // const client = trpcWithQuery($page);
 
-    const { account } = $page.params;
+    // const { account } = $page.params;
 
-    const assets = solanaQuery.assets(client, {
-        account,
-    });
+    // const assets = solanaQuery.assets(client, {
+    //     account,
+    // });
 
-    $: console.log({ account });
+    // $: console.log({ account });
 
     // import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
-    // const account = $page.params.search;
+    const { account } = $page.params;
 
     // const client = trpcWithQuery($page);
 
@@ -33,10 +33,18 @@
     //     },
     // });
 
-    $: console.log("assets", $assets);
+    // $: console.log("assets", $assets);
+
+    import { onMount } from "svelte";
+
+    import { getAssetByOwner } from "$lib/state/assets";
+
+    onMount(async () => {
+        const assets = await getAssetByOwner(account);
+    });
 </script>
 
-<div class="content grid grid-cols-4 gap-3">
+<!-- <div class="content grid grid-cols-4 gap-3">
     {#if $assets?.data}
         {#each $assets.data as asset}
             {asset?.content?.metadata?.name}
@@ -46,4 +54,4 @@
             <div class="grid aspect-square animate-pulse rounded-lg" />
         {/each}
     {/if}
-</div>
+</div> -->

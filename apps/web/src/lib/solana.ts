@@ -4,6 +4,8 @@ import { createQuery, createInfiniteQuery } from "@tanstack/svelte-query";
 
 import connectionStore from "$lib/util/stores/connection";
 
+import { writable } from "svelte/store";
+
 const getBlockTransactions = async (slot: number) => {
     const connection = get(connectionStore);
 

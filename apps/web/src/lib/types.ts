@@ -84,4 +84,14 @@ export interface Modal {
     props?: Record<string, any>;
 }
 
+// simple dict with string keys
+export type Dict<T> = Map<string, T>;
+
+export type FetchModel<T> = {
+    error?: any;
+    data: T;
+    isLoading?: boolean;
+    hasFetched?: boolean;
+};
+
 export type Modals = keyof typeof modals;

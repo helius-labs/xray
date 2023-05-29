@@ -72,6 +72,7 @@
     },
     "packageManager": "npm@8.19.2",
     "dependencies": {
+        "@solana/spl-token-registry": "^0.2.4574",
         "lucide-svelte": "^0.221.0"
     }
 }

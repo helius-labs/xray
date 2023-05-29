@@ -48,7 +48,5 @@ export const assetsByOwner = t.procedure
             method: "POST",
         }).then((res) => res.json());
 
-        console.log("back assets", assets);
-
         return assets?.result?.items || [];
     });

@@ -79,7 +79,7 @@
                         <div class="col-span-2 p-1 md:col-span-1">
                             <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                             <div
-                                style="background-image: url('{metadata.image}')"
+                                style="background-image: url('https://cdn.helius.services/cdn-cgi/image/fit=scale-down,width=200,quality=100/{metadata.image}')"
                                 class="aspect-square w-full rounded-lg bg-cover"
                             />
                         </div>
