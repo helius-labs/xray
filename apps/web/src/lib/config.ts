@@ -27,6 +27,28 @@ export const modals: Record<string, Modal> = {
     },
 };
 
+import {
+    ArrowLeftRight,
+    ArrowDown,
+    Gift,
+    Check,
+    HelpingHand,
+    User,
+    Flame,
+    XIcon,
+    Candy,
+    CircleDollarSign,
+    RefreshCcw,
+    Boxes,
+    ArrowRight,
+    Coins,
+    Download,
+    Trash,
+    Star,
+    ArrowUp,
+    Snowflake,
+} from "lucide-svelte";
+
 export const transactionActionsMetadata: Record<
     ProtonActionType,
     TransactionActionMetadata
@@ -34,48 +56,59 @@ export const transactionActionsMetadata: Record<
     AIRDROP: {
         icon: "gift",
         label: "Airdropped",
+        lucideIcon: Gift,
     },
     APPROVE_TRANSACTION: {
         icon: "check",
         label: "Approved Transaction",
+        lucideIcon: Check,
     },
     BORROW_FOX: {
         icon: "openHand",
         label: "Borrow Fox",
+        lucideIcon: HelpingHand,
     },
     BORROW_SOL_FOR_NFT: {
         icon: "customer",
         label: "Borrow SOL",
+        lucideIcon: User,
     },
     BURN: {
         filterLabel: "Burn",
         icon: "flame",
         label: "Burned",
+        lucideIcon: Flame,
     },
     BURN_NFT: {
         filterLabel: "NFT Burn",
         icon: "flame",
         label: "Burned NFT",
+        lucideIcon: Flame,
     },
     CANCEL_LOAN_REQUEST: {
         icon: "close",
         label: "Cancel Loan Request",
+        lucideIcon: XIcon,
     },
     CANCEL_OFFER: {
         icon: "close",
         label: "Cancel Offer",
+        lucideIcon: XIcon,
     },
     CLAIM_NFT: {
         icon: "squareCheck",
         label: "Claim NFT",
+        lucideIcon: Check,
     },
     COMPRESSED_NFT_MINT: {
         icon: "mint",
         label: "NFT Mint",
+        lucideIcon: Candy,
     },
     COMPRESSED_NFT_TRANSFER: {
         icon: "lightning",
         label: "Transfer",
+        lucideIcon: ArrowLeftRight,
     },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
@@ -85,38 +118,47 @@ export const transactionActionsMetadata: Record<
     FORECLOSE_LOAN: {
         icon: "squareCheck",
         label: "Foreclose Loan",
+        lucideIcon: Check,
     },
     FREEZE: {
         icon: "cold",
         label: "Frozen",
+        lucideIcon: Snowflake,
     },
     LEND_FOR_NFT: {
         icon: "handshake",
         label: "Lend",
+        lucideIcon: HelpingHand,
     },
     LOAN_FOX: {
         icon: "handshake",
         label: "Loan Fox",
+        lucideIcon: HelpingHand,
     },
     NFT_BID: {
         icon: "sale",
         label: "NFT Bid",
+        lucideIcon: CircleDollarSign,
     },
     NFT_BID_CANCELLED: {
         icon: "cancel",
         label: "Canceled NFT Bid",
+        lucideIcon: XIcon,
     },
     NFT_BUY: {
         icon: "sale",
         label: "Bought",
+        lucideIcon: CircleDollarSign,
     },
     NFT_CANCEL_LISTING: {
         icon: "cancel",
         label: "Canceled NFT Lising",
+        lucideIcon: XIcon,
     },
     NFT_GLOBAL_BID: {
         icon: "sale",
         label: "NFT Global Bid",
+        lucideIcon: CircleDollarSign,
     },
     NFT_LISTING: {
         filterLabel: "NFT List",
@@ -127,111 +169,137 @@ export const transactionActionsMetadata: Record<
         filterLabel: "NFT Mint",
         icon: "mint",
         label: "NFT Mint",
+        lucideIcon: Candy,
     },
     NFT_SALE: {
         filterLabel: "NFT Sale",
         icon: "sale",
         label: "NFT Sale",
+        lucideIcon: CircleDollarSign,
     },
     NFT_SELL: {
         icon: "sale",
         label: "Sold",
+        lucideIcon: CircleDollarSign,
     },
     OFFER_LOAN: {
         icon: "openHand",
         label: "Offer Loan",
+        lucideIcon: HelpingHand,
     },
     REBORROW_SOL_FOR_NFT: {
         icon: "customer",
         label: "Reborrow SOL",
+        lucideIcon: User,
     },
     RECEIVED: {
         icon: "arrowDown",
         label: "Received",
+        lucideIcon: ArrowDown,
     },
     REPAY_LOAN: {
         icon: "sale",
         label: "Repay Loan",
+        lucideIcon: CircleDollarSign,
     },
     REQUEST_LOAN: {
         icon: "questionBubble",
         label: "Request Loan",
+        lucideIcon: HelpingHand,
     },
     RESCIND_LOAN: {
         icon: "close",
         label: "Rescind Loan",
+        lucideIcon: XIcon,
     },
     SENT: {
         icon: "arrowUp",
         label: "Sent",
+        lucidIcon: ArrowUp,
     },
     SFT_MINT: {
         icon: "mint",
         label: "SFT Mint",
+        lucideIcon: Candy,
     },
     STAKE_SOL: {
         icon: "star",
         label: "Staked SOL",
+        lucideIcon: Star,
     },
     STAKE_TOKEN: {
         icon: "star",
         label: "Staked Token",
+        lucideIcon: Star,
     },
     SWAP: {
         filterLabel: "Swap",
         icon: "swap",
         label: "Swap",
+        lucideIcon: ArrowLeftRight,
     },
     SWAP_RECEIVED: {
         icon: "swap",
         label: "Swap",
+        lucideIcon: ArrowLeftRight,
     },
     SWAP_SENT: {
         icon: "swap",
         label: "Swap",
+        lucideIcon: ArrowLeftRight,
     },
     TAKE_LOAN: {
         icon: "handshake",
         label: "Take Loan",
+        lucideIcon: CircleDollarSign,
     },
     TOKEN_MINT: {
         filterLabel: "Token Mint",
         icon: "coins",
         label: "Token Mint",
+        lucideIcon: Coins,
     },
     TRANSFER: {
         filterLabel: "Transfer",
         icon: "lightning",
         label: "Transfer",
+        lucideIcon: ArrowRight,
     },
     TRANSFER_RECEIVED: {
         icon: "arrowDown",
         label: "Received",
+        lucideIcon: ArrowDown,
     },
     TRANSFER_SENT: {
         icon: "arrowUp",
         label: "Sent",
+        lucideIcon: ArrowRight,
     },
     UNKNOWN: {
         filterLabel: "Generic Transaction",
         icon: "box",
         label: "Generic Transaction",
+        lucideIcon: Boxes,
     },
     UNSTAKE_TOKEN: {
         icon: "cancel",
         label: "Unstake Token",
+        lucideIcon: XIcon,
     },
     UPDATE_OFFER: {
         icon: "cycle",
         label: "Update Offer",
+        lucideIcon: RefreshCcw,
     },
     XNFT_INSTALL: {
         icon: "download",
         label: "xNFT Install",
+        lucidIcon: Download,
     },
     XNFT_UNINSTALL: {
         icon: "trash",
         label: "xNFT Uninstall",
+        lucidIcon: Trash,
     },
 };
 

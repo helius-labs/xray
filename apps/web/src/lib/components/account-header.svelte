@@ -60,19 +60,19 @@
                 </div>
             </div>
         </div>
-        <div class="w-32 text-right">
+        <div class="text-right">
             {#if $price?.isLoading}
                 <div
                     class="mt-1 ml-1 animate-pulse rounded-xl bg-gray-300 bg-opacity-10 p-2 text-xs md:block"
                 />
             {:else}
-                <h1
-                    class="text-lg md:block"
+                <div
+                    class="flex text-lg md:block"
                     in:fade={{ duration: 1000 }}
                 >
                     <span class="">{$balance.toFixed(6)}</span>
                     <span class="opacity-50">SOL</span>
-                </h1>
+                </div>
             {/if}
 
             {#if $price?.isLoading}

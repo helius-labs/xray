@@ -80,9 +80,6 @@ const updateTransactionsByOwner = async (ownerAddress: string, cursor = "") => {
             user: ownerAddress,
         });
 
-        // eslint-disable-next-line no-console
-        console.log({ transactionsByOwnerResponse });
-
         transactionsByOwnerResponse.result.map((transaction) => {
             // add details to the main asset map
             addTransaction(transaction);

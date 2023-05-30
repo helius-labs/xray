@@ -19,7 +19,7 @@ const config = {
 
                     "primary-content": "#f5f5f4",
 
-                    secondary: "#414141",
+                    secondary: "#060606",
 
                     success: "#34d399",
 

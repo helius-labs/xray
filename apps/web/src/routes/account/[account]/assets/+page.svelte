@@ -45,11 +45,13 @@
         ) || [];
 </script>
 
-{#each dasAssets as asset}
-    <div>
-        {JSON.stringify(asset)}
-    </div>
-{/each}
+<div>
+    {#each dasAssets as asset}
+        <div>
+            {JSON.stringify(asset)}
+        </div>
+    {/each}
+</div>
 
 <!-- <div class="content grid grid-cols-4 gap-3">
     {#if $assets?.data}

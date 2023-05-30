@@ -63,10 +63,10 @@
     />
 
     <div
-        class="mb-2 mt-3 flex w-full items-center justify-between rounded-lg bg-black bg-opacity-60"
+        class="mb-5 mt-3 flex w-full items-center justify-between rounded-lg bg-black bg-opacity-60"
     >
         <div
-            class="tabs- tabs w-full overflow-hidden  rounded-lg pt-1 md:w-auto"
+            class="tabs- tabs w-full  overflow-hidden rounded-lg pt-1 md:w-auto"
         >
             <a
                 in:fade={{ delay: 0, duration: 1000 }}
@@ -122,7 +122,7 @@
     </div>
 </div>
 <div>
-    <div class="content pl-3">
+    <div class="content relative">
         <slot />
     </div>
 </div>

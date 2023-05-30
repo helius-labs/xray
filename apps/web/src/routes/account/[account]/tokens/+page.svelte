@@ -8,8 +8,6 @@
 
     import { assetsByOwner, assets, assetBalances } from "$lib/state/assets";
 
-    $: console.log("ASSSSRRTts", $assetsByOwner, $assets);
-
     $: ownedAssets = $assetsByOwner?.get($page.params.account);
 
     $: tokens =
@@ -26,7 +24,7 @@
         );
 </script>
 
-<div>
+<div class="">
     <!-- <a
         class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg px-3 py-2"
         href="/token/{SOL}"

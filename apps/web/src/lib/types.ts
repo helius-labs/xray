@@ -56,6 +56,7 @@ export interface TransactionActionMetadata {
     icon: Icon;
     label: string;
     filterLabel?: string;
+    lucideIcon: any;
 }
 
 export interface TransactionPage {
@@ -95,6 +96,13 @@ export type FetchModel<T> = {
     nextCursor?: string;
 };
 
+export const defaultFetchModel = {
+    data: undefined,
+    hasFetched: undefined,
+    isLoading: false,
+    nextCursor: undefined,
+};
+
 export type TransactionsInput = {
     account: string;
     filter?: string;
@@ -113,17 +121,44 @@ export type AssetsInput = {
 };
 
 export type Asset = {
-    type: "das" | "token";
+    type: "das" | "token" | "";
     id: string;
     name: string;
     symbol: string;
     description: string;
-    image: string;
-    image_preview: string;
+    imagePreview: string;
+    frozen: boolean;
+    creators: {
+        address: string;
+        share: number;
+        verified: boolean;
+    }[];
+    uri: string;
+    media: {
+        images: string[];
+        videos: string[];
+        htmlFiles: string[];
+    };
+    externalUrl: string;
     attributes: {
         traitType: string;
         value: string;
     }[];
 };
 
+export const defaultAsset = {
+    attributes: [],
+    description: "",
+    externalUrl: "",
+    id: "",
+    imagePreview: "",
+    media: {
+        htmlFiles: [],
+        images: [],
+        videos: [],
+    },
+    name: "",
+    symbol: "",
+    type: "",
+};
 export type Modals = keyof typeof modals;
