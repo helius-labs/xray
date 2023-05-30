@@ -112,30 +112,57 @@
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
-                    <div class="col-span-2 p-1 md:col-span-1">
+                    {#if rawData?.transaction?.meta?.err}
+                        <div class="col-span-2 p-1 md:col-span-1">
+                            <div
+                                class="center ml-1 h-10 w-10 rounded-full bg-error"
+                            >
+                                <Icon
+                                    id="close"
+                                    fill="black"
+                                    size="sm"
+                                />
+                            </div>
+                        </div>
                         <div
-                            class="center ml-1 h-10 w-10 rounded-full bg-success"
+                            class="col-span-10 flex items-center justify-between md:col-span-11"
                         >
-                            <Icon
-                                id="check"
-                                fill="black"
-                                size="sm"
-                            />
+                            <div>
+                                <h4 class="text-lg font-semibold md:text-sm">
+                                    Status
+                                </h4>
+                                <h3 class="mr-2 text-xs opacity-50">
+                                    This transaction has failed.
+                                </h3>
+                            </div>
+                            <div class="badge-error badge mr-1">Error</div>
                         </div>
-                    </div>
-                    <div
-                        class="col-span-10 flex items-center justify-between md:col-span-11"
-                    >
-                        <div>
-                            <h4 class="text-lg font-semibold md:text-sm">
-                                Status
-                            </h4>
-                            <h3 class="mr-2 text-xs opacity-50">
-                                This transaction has successfully processed.
-                            </h3>
+                    {:else}
+                        <div class="col-span-2 p-1 md:col-span-1">
+                            <div
+                                class="center ml-1 h-10 w-10 rounded-full bg-success"
+                            >
+                                <Icon
+                                    id="check"
+                                    fill="black"
+                                    size="sm"
+                                />
+                            </div>
                         </div>
-                        <div class="badge-success badge mr-1">Success</div>
-                    </div>
+                        <div
+                            class="col-span-10 flex items-center justify-between md:col-span-11"
+                        >
+                            <div>
+                                <h4 class="text-lg font-semibold md:text-sm">
+                                    Status
+                                </h4>
+                                <h3 class="mr-2 text-xs opacity-50">
+                                    This transaction has successfully processed.
+                                </h3>
+                            </div>
+                            <div class="badge-success badge mr-1">Success</div>
+                        </div>
+                    {/if}
                 </div>
             </div>
             <div class="mb-3 px-3">
