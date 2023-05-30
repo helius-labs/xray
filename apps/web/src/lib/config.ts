@@ -29,6 +29,7 @@ export const modals: Record<string, Modal> = {
 
 import {
     ArrowLeftRight,
+    ArrowUpDown,
     ArrowDown,
     Gift,
     Check,
@@ -114,6 +115,7 @@ export const transactionActionsMetadata: Record<
         filterLabel: "Multisig Transaction",
         icon: "squad",
         label: "Multisig Transaction",
+        lucideIcon: Check,
     },
     FORECLOSE_LOAN: {
         icon: "squareCheck",
@@ -164,6 +166,7 @@ export const transactionActionsMetadata: Record<
         filterLabel: "NFT List",
         icon: "sale",
         label: "Listed NFT",
+        lucideIcon: CircleDollarSign,
     },
     NFT_MINT: {
         filterLabel: "NFT Mint",
@@ -215,7 +218,7 @@ export const transactionActionsMetadata: Record<
     SENT: {
         icon: "arrowUp",
         label: "Sent",
-        lucidIcon: ArrowUp,
+        lucideIcon: ArrowUp,
     },
     SFT_MINT: {
         icon: "mint",
@@ -236,7 +239,7 @@ export const transactionActionsMetadata: Record<
         filterLabel: "Swap",
         icon: "swap",
         label: "Swap",
-        lucideIcon: ArrowLeftRight,
+        lucideIcon: RefreshCcw,
     },
     SWAP_RECEIVED: {
         icon: "swap",
@@ -263,7 +266,7 @@ export const transactionActionsMetadata: Record<
         filterLabel: "Transfer",
         icon: "lightning",
         label: "Transfer",
-        lucideIcon: ArrowRight,
+        lucideIcon: ArrowUpDown,
     },
     TRANSFER_RECEIVED: {
         icon: "arrowDown",
@@ -294,12 +297,12 @@ export const transactionActionsMetadata: Record<
     XNFT_INSTALL: {
         icon: "download",
         label: "xNFT Install",
-        lucidIcon: Download,
+        lucideIcon: Download,
     },
     XNFT_UNINSTALL: {
         icon: "trash",
         label: "xNFT Uninstall",
-        lucidIcon: Trash,
+        lucideIcon: Trash,
     },
 };
 

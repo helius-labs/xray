@@ -33,7 +33,7 @@
             class:loading={ownerTransactions.isLoading}
             on:click={() =>
                 !ownerTransactions?.isLoading &&
-                fetchNextTransactionPage(account)}>Load More</button
+                fetchNextTransactionPage(accounts[0])}>Load More</button
         >
     </div>
 {/if}

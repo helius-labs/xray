@@ -23,6 +23,8 @@
 
     import AccountHeader from "$lib/components/account-header.svelte";
 
+    import { account } from "$lib/state/accounts";
+
     import {
         updateAssetsByOwner,
         assetsByOwner,
@@ -35,11 +37,9 @@
     } from "$lib/state/transactions";
 
     onMount(() => {
-        updateAssetsByOwner(account);
-        updateTransactionsByOwner(account);
+        updateAssetsByOwner($account);
+        updateTransactionsByOwner($account);
     });
-
-    $: ({ account } = $page.params);
 
     // eslint-disable-next-line no-console
     $: console.log("assets", $assetsByOwner, $assets);
@@ -58,7 +58,7 @@
 
 <div class="relative mx-auto w-full max-w-2xl pb-3">
     <AccountHeader
-        {account}
+        account={$account}
         link={$page.url.href}
     />
 
@@ -71,7 +71,7 @@
             <a
                 in:fade={{ delay: 0, duration: 1000 }}
                 class="tab"
-                href="/account/{account}/"
+                href="/account/{$account}/"
                 class:tab-bordered={isUserHome}
                 class:font-bold={isUserHome}
                 class:tab-active={isUserHome}><User size={16} /></a
@@ -79,7 +79,7 @@
             <a
                 in:fade={{ delay: 0, duration: 1000 }}
                 class="tab"
-                href="/account/{account}/transactions"
+                href="/account/{$account}/transactions"
                 class:font-bold={isTransactions}
                 class:tab-bordered={isTransactions}
                 class:tab-active={isTransactions}>Transactions</a
@@ -87,7 +87,7 @@
             <a
                 in:fade={{ delay: 500, duration: 1000 }}
                 class="tab"
-                href="/account/{account}/tokens"
+                href="/account/{$account}/tokens"
                 class:font-bold={isTokens}
                 class:tab-bordered={isTokens}
                 class:tab-active={isTokens}>Tokens</a
@@ -95,7 +95,7 @@
             <a
                 in:fade={{ delay: 1000, duration: 1000 }}
                 class="tab"
-                href="/account/{account}/assets"
+                href="/account/{$account}/assets"
                 class:font-bold={isAssets}
                 class:tab-bordered={isAssets}
                 class:tab-active={isAssets}>Assets</a

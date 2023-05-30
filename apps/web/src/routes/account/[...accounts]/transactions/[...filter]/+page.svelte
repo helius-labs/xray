@@ -1,46 +1,43 @@
 <script lang="ts">
-    import { page } from "$app/stores";
-
     import Transaction from "$lib/components/transaction.svelte";
     import TransactionsLoader from "$lib/components/loaders/transactions.svelte";
     import AnimEach from "$lib/components/anim-each.svelte";
 
+    import { account } from "$lib/state/accounts";
+
     import {
         transactions,
-        transactionsByOwner,
         fetchNextTransactionPage,
+        ownedTransactions,
     } from "$lib/state/transactions";
-
-    $: ({ account } = $page.params);
-    $: ownerTransactions = $transactionsByOwner?.get(account);
-    $: signatures = ownerTransactions?.data || [];
 </script>
 
 <AnimEach
-    each={signatures}
+    each={$ownedTransactions?.data || []}
     let:item
     let:index
 >
     <Transaction
         transaction={$transactions.get(item)}
+        userAccount={$account}
         {index}
     />
 </AnimEach>
 
-{#if ownerTransactions?.isLoading}
+{#if $ownedTransactions?.isLoading}
     <TransactionsLoader />
-{:else if !ownerTransactions?.data.length}
+{:else if !$ownedTransactions?.data.length}
     <p class="opacity-50">No transactions</p>
 {/if}
 
-{#if ownerTransactions?.nextCursor}
+{#if $ownedTransactions?.nextCursor}
     <div class="flex justify-center pb-10">
         <button
             class="btn-outline btn"
-            class:loading={ownerTransactions.isLoading}
+            class:loading={$ownedTransactions.isLoading}
             on:click={() =>
-                !ownerTransactions?.isLoading &&
-                fetchNextTransactionPage(account)}>Load More</button
+                !$ownedTransactions?.isLoading &&
+                fetchNextTransactionPage($account)}>Load More</button
         >
     </div>
 {/if}

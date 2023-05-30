@@ -1,4 +1,4 @@
-import { writable, get } from "svelte/store";
+import { writable, derived, get } from "svelte/store";
 import { fetchJson } from "$lib/util/fetch";
 
 import {
@@ -13,6 +13,7 @@ import { SOL } from "@helius-labs/xray/dist";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import { tokens, updateTokensMap } from "$lib/state/tokens";
+import { account } from "$lib/state/accounts";
 
 const HELIUS_IMAGE_CDN = "https://cdn.helius.services/cdn-cgi/image";
 const PREVIEW_CDN = `${HELIUS_IMAGE_CDN}/width=300`;
@@ -23,6 +24,10 @@ type AssetByGroup = Dict<FetchModel<string[]>>;
 
 const solanaIcon =
     "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png";
+
+const enrichAsset = async (id: string) => {
+    console.log({ id });
+};
 
 const assets = writable<Dict<FetchModel<Asset>>>(
     new Map([
@@ -46,9 +51,9 @@ const assets = writable<Dict<FetchModel<Asset>>>(
     ])
 );
 
-const assetsByOwner = writable<AssetByOwner>();
+const assetsByOwner = writable<AssetByOwner>(new Map());
 
-const assetsByGroup = writable<AssetByGroup>();
+const assetsByGroup = writable<AssetByGroup>(new Map());
 
 const assetBalances = writable<Dict<number>>();
 
@@ -109,17 +114,21 @@ const addAsset = (asset: { id: string }, type: "das" | "token" | "") => {
         } else if (type === "token") {
             const token = get(tokens)?.data?.get(asset.id);
 
-            console.log(value.id);
-
-            value.imagePreview = `${PREVIEW_CDN}/${token?.logoURI}`;
-            value.media = {
-                images: [token?.logoURI],
-            };
-            value.name = token?.name;
-            value.symbol = token?.symbol;
+            if (token) {
+                value.imagePreview = `${PREVIEW_CDN}/${token?.logoURI}`;
+                value.media = {
+                    images: [token?.logoURI],
+                };
+                value.name = token?.name;
+                value.symbol = token?.symbol;
+            }
         }
 
         map.set(asset.id, { ...existing, data: value });
+
+        if (!value.imagePreview) {
+            enrichAsset(asset.id);
+        }
 
         return map;
     });
@@ -198,10 +207,16 @@ const updateAssetsByOwner = async (ownerAddress: string, page = 1) => {
 
             asset.id = asset?.id || asset?.mint;
 
-            const type = asset.mint ? "token" : "das";
+            let type = "";
+
+            if (asset.mint && asset?.decimals > 0) {
+                type = "token";
+            } else if (asset.id) {
+                type = "das";
+            }
 
             // Skip if no id or amount
-            if (!asset.id || asset.amount === 0) {
+            if (!asset.id || !asset.amount) {
                 return;
             }
 
@@ -218,10 +233,28 @@ const updateAssetsByOwner = async (ownerAddress: string, page = 1) => {
         });
 };
 
+const ownedTokens = derived(
+    [assetsByOwner, account],
+    ([$assetsByOwner, $account]) =>
+        $assetsByOwner.get($account) ||
+        [].filter((id) => get(assets).get(id)?.data.type === "token"),
+    []
+);
+
+const ownedDas = derived(
+    [assetsByOwner, account],
+    ([$assetsByOwner, $account]) =>
+        $assetsByOwner.get($account) ||
+        [].filter((id) => get(assets).get(id)?.data.type === "das"),
+    []
+);
+
 export {
     updateAssetsByOwner,
     assets,
     assetsByOwner,
     assetsByGroup,
     assetBalances,
+    ownedTokens,
+    ownedDas,
 };

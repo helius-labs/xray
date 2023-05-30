@@ -1,23 +1,20 @@
 <script>
-    import { get } from "svelte/store";
-    import TokenProvider from "$lib/components/providers/token-provider.svelte";
-    import { page } from "$app/stores";
-    import { SOL } from "@helius-labs/xray/dist";
-    import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-    import formatMoney from "src/lib/util/format-money";
+    import {
+        assetsByOwner,
+        assetBalances,
+        ownedTokens,
+        assets,
+    } from "$lib/state/assets";
 
-    import { assetsByOwner, assets, assetBalances } from "$lib/state/assets";
+    import { account } from "$lib/state/accounts";
 
-    $: ownedAssets = $assetsByOwner?.get($page.params.account);
+    import { Image } from "lucide-svelte";
 
-    $: tokens =
-        ownedAssets?.data.filter(
-            (token) => $assets.get(token)?.data.type === "token"
-        ) || [];
+    $: isLoading = $assetsByOwner.get($account)?.isLoading;
 
-    $: sorted = tokens
-        // @ts-ignore
-        .sort((a, b) =>
+    $: sorted =
+        $ownedTokens ||
+        [].sort((a, b) =>
             Number($assetBalances.get(b)) > Number($assetBalances.get(a))
                 ? 1
                 : -1
@@ -62,7 +59,7 @@
         </div>
     </a> -->
 
-    {#if ownedAssets?.isLoading}
+    {#if isLoading}
         {#each Array(3) as _}
             <div
                 class="mb-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
@@ -90,10 +87,32 @@
             </div>
         {/each}
     {:else}
-        {#each sorted as token (token)}
-            <div>
-                {$assetBalances.get(token)}
-                {JSON.stringify(token)}
+        {#each $ownedTokens?.data || [] as token (token)}
+            {@const details = $assets.get(token)}
+
+            <div class="dark-card mb-3 flex items-center justify-between !p-2">
+                <div class="flex items-center">
+                    {#if details?.data.imagePreview}
+                        <img
+                            src={details?.data.imagePreview}
+                            class="flex aspect-square h-8 items-center justify-center rounded-full"
+                            alt=""
+                        />
+                    {:else}
+                        <div
+                            class="flex aspect-square h-8 items-center justify-center rounded-full opacity-50"
+                        >
+                            <Image />
+                        </div>
+                    {/if}
+                    <p class="ml-2 font-bold">
+                        {details?.data.name}
+                    </p>
+                </div>
+
+                <p>
+                    {$assetBalances.get(token)}
+                </p>
             </div>
 
             <!-- {#if token.decimals > 0 && token.mint !== SOL}

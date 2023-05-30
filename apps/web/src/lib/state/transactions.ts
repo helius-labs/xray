@@ -1,9 +1,11 @@
-import { writable, get } from "svelte/store";
+import { writable, derived, get } from "svelte/store";
 import { fetchJson } from "$lib/util/fetch";
 
 import type { FetchModel, Dict } from "$lib/types";
 
 import type { ProtonTransaction } from "@helius-labs/xray";
+
+import { account } from "$lib/state/accounts";
 
 type Transactions = Dict<ProtonTransaction>;
 
@@ -11,7 +13,7 @@ type TransactionsByOwner = Dict<FetchModel<string[]>>;
 
 const transactions = writable<Transactions>();
 
-const transactionsByOwner = writable<TransactionsByOwner>();
+const transactionsByOwner = writable<TransactionsByOwner>(new Map());
 
 const addTransaction = (transaction: ProtonTransaction) => {
     transactions.update((value = new Map()) => {
@@ -118,9 +120,16 @@ const fetchNextTransactionPage = async (ownerAddress: string) => {
     await updateTransactionsByOwner(ownerAddress, ownerEntry.nextCursor);
 };
 
+const ownedTransactions = derived(
+    [transactionsByOwner, account],
+    ([$transationsByOwner, $account]) =>
+        $transationsByOwner.get($account) || { data: [] }
+);
+
 export {
     updateTransactionsByOwner,
     transactions,
     transactionsByOwner,
     fetchNextTransactionPage,
+    ownedTransactions,
 };
