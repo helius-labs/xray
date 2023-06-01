@@ -69,5 +69,8 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "packageManager": "npm@8.19.2"
+    "packageManager": "npm@8.19.2",
+    "dependencies": {
+        "@solana/spl-account-compression": "^0.1.8"
+    }
 }
