@@ -23,11 +23,13 @@
         address: "",
         attributes: [],
         collectionKey: "",
-        sellerFeeBasisPoints: 0,
         creators: [],
+        delegate: "",
         description: "",
         image: "",
         name: "",
+        owner: "",
+        sellerFeeBasisPoints: 0,
     };
 
     const asset = client.asset.createQuery(address, {
@@ -50,6 +52,17 @@
         metadata.collectionKey = data?.collectionKey || "";
         metadata.image = data?.image || "";
         metadata.name = data?.name || "";
+        metadata.owner = data?.owner || "";
+        metadata.delegate = data?.delegate || "";
+        metadata.frozen = data?.frozen || false;
+        metadata.mutable = data?.mutable || false;
+        metadata.compressed = data?.compressed || false;
+        metadata.dataHash = data?.dataHash || "";
+        metadata.creatorHash = data?.creatorHash || "";
+        metadata.assetHash = data?.assetHash || "";
+        metadata.tree = data?.tree || "";
+        metadata.seq = data?.seq || 0;
+        metadata.leafId = data?.leafId || 0;
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};
