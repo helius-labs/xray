@@ -3,6 +3,7 @@ import type { Context } from "$lib/trpc/context";
 import { initTRPC } from "@trpc/server";
 
 import { accountInfo } from "$lib/trpc/routes/account-info";
+import { accountUsernames } from "$lib/trpc/routes/account-usernames";
 import { asset } from "$lib/trpc/routes/asset";
 import { balances } from "$lib/trpc/routes/balances";
 import { concurrentMerkleTree } from "$lib/trpc/routes/concurrent-merkle-tree";
@@ -19,6 +20,7 @@ export const t = initTRPC.context<Context>().create();
 
 export const router = t.router({
     accountInfo,
+    accountUsernames,
     asset,
     balances,
     blockTransactions,
