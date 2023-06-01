@@ -498,3 +498,43 @@ export const parseCompressedNftTransfer: ProtonParser = (
         type,
     };
 };
+
+export const parseCompressedNftBurn: ProtonParser = (transaction, address) => {
+    // @ts-ignore
+    const nftEvent = transaction.events.compressed;
+    const { signature, timestamp, accountData, type, source } = transaction;
+
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+    const primaryUser = transaction.feePayer;
+
+    if (!nftEvent) {
+        return generateDefaultTransaction(transaction.type);
+    }
+
+    const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
+
+    traverseAccountData(accountData, accounts);
+
+    for (let i = 0; i < nftEvent.length; i++) {
+        const nftEventAction = nftEvent[i];
+        actions.push({
+            actionType: "BURN_NFT",
+            amount: 1,
+            from: nftEventAction.oldLeafOwner,
+            sent: nftEventAction.assetId,
+            to: "",
+        });
+    }
+
+    return {
+        accounts,
+        actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
+    };
+};

@@ -53,6 +53,7 @@ export enum ProtonSupportedType {
     FILL_ORDER,
     UPGRADE_FOX_REQUEST,
     MIGRATE_TO_PNFT,
+    COMPRESSED_NFT_BURN,
 }
 
 export enum ProtonSupportedActionType {
@@ -117,12 +118,14 @@ export enum ProtonSupportedActionType {
     "FILL_ORDER",
     "UPGRADE_FOX_REQUEST",
     "MIGRATE_TO_PNFT",
+    "COMPRESSED_NFT_BURN",
 }
 
 export const ProtonCustomActionLabelTypes = {
     AIRDROP: "Airdropped",
     BURN: "Burned",
     BURN_NFT: "Burned NFT",
+    COMPRESSED_NFT_BURN: "Burned NFT",
     FREEZE: "Frozen",
     XNFT_INSTALL: "xNFT Install",
     XNFT_UNINSTALL: "xNFT Uninstall",
@@ -181,6 +184,7 @@ export const protonParsers = {
     BORROW_FOX: parser.parseBorrowFox,
     BURN: parser.parseBurn,
     BURN_NFT: parser.parseBurn,
+    COMPRESSED_NFT_BURN: parser.parseCompressedNftBurn,
     COMPRESSED_NFT_MINT: parser.parseCompressedNftMint,
     COMPRESSED_NFT_TRANSFER: parser.parseCompressedNftTransfer,
     EXECUTE_TRANSACTION: parser.parseTransfer,

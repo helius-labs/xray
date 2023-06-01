@@ -1,11 +1,11 @@
 <script lang="ts">
     import Icon from "$lib/components/icon.svelte";
-    import type { Icon as IconType } from "$lib/types";
+    import type { Icon as IconType, NullableProp } from "$lib/types";
 
     export let iconId = "" as IconType;
-    export let sectionTitle = "";
+    export let sectionTitle: string = "";
+    export let sectionAditionalInfo: NullableProp<string | number> = null;
     export let hideIcon = false;
-
     export let showDetails = false;
 </script>
 
@@ -21,11 +21,17 @@
                     id={iconId}
                     size="md"
                     fill="success"
+                    stroke="success"
                 />
             </div>
         {/if}
-        <div class="ml-2">
+        <div class="ml-2 flex items-center gap-2">
             <p class="text-primary">{sectionTitle}</p>
+            {#if sectionAditionalInfo}
+                <span class="rounded-sm border bg-white/10 px-[0.4rem] text-sm"
+                    >{sectionAditionalInfo}</span
+                >
+            {/if}
         </div>
     </div>
     <div class="collapse-content">
