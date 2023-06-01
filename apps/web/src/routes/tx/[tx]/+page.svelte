@@ -16,6 +16,7 @@
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
     import JSON from "$lib/components/json.svelte";
+    import LogMessages from "$lib/components/log-messages.svelte";
     import Transaction from "$lib/components/transaction.svelte";
     import Collapse from "src/lib/components/collapse.svelte";
 
@@ -306,13 +307,7 @@
                         )}
                         hideIcon={true}
                     >
-                        {#each rawData?.transaction?.meta?.logMessages || [] as message}
-                            <p class="px-3 text-xs">
-                                <span class="mr-1 text-success">></span><span
-                                    class="text-neutral">{message}</span
-                                >
-                            </p>
-                        {/each}
+                        <LogMessages logs={rawData?.transaction?.meta?.logMessages || []} />
                     </Collapse>
                 </div>
             {/if}
