@@ -5,6 +5,7 @@ import { initTRPC } from "@trpc/server";
 import { accountInfo } from "$lib/trpc/routes/account-info";
 import { asset } from "$lib/trpc/routes/asset";
 import { balances } from "$lib/trpc/routes/balances";
+import { concurrentMerkleTree } from "$lib/trpc/routes/concurrent-merkle-tree";
 import { currentSlot } from "$lib/trpc/routes/current-slot";
 import { price } from "$lib/trpc/routes/price";
 import { rawTransaction } from "$lib/trpc/routes/raw-transaction";
@@ -21,6 +22,7 @@ export const router = t.router({
     asset,
     balances,
     blockTransactions,
+    concurrentMerkleTree,
     currentSlot,
     price,
     rawTransaction,
