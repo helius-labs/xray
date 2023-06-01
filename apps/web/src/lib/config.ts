@@ -284,6 +284,10 @@ export const transactionActionsMetadata: Record<
         icon: "cycle",
         label: "Update Offer",
     },
+    UNSTAKE_TOKEN: {
+        icon: "cancel",
+        label: "Unstake Token",
+    },
     XNFT_INSTALL: {
         icon: "download",
         label: "xNFT Install",
