@@ -69,6 +69,10 @@ export const transactionActionsMetadata: Record<
         icon: "squareCheck",
         label: "Claim NFT",
     },
+    COMPRESSED_NFT_BURN: {
+        icon: "flame",
+        label: "Burned NFT",
+    },
     COMPRESSED_NFT_MINT: {
         icon: "mint",
         label: "NFT Mint",
