@@ -1,26 +1,22 @@
 <script lang="ts">
-    import { ownedDas, assets } from "$lib/state/assets";
+    import { ownedAssets } from "$lib/state/assets";
+
+    import AssetProvider from "$lib/components/providers/asset-provider.svelte";
+
+    $: console.log($ownedAssets, "ownedAssets");
 </script>
 
 <div class="grid grid-cols-3">
-    {#each $ownedDas?.data || [] as asset}
-        <div class="rounded-lg">
+    {#each $ownedAssets.das as id}
+        <AssetProvider
+            {id}
+            let:asset
+        >
             <img
-                src={$assets.get(asset)?.data.imagePreview}
+                src={asset.data.imagePreview}
+                class="aspect-square w-10 rounded-lg"
                 alt=""
             />
-        </div>
+        </AssetProvider>
     {/each}
 </div>
-
-<!-- <div class="content grid grid-cols-4 gap-3">
-    {#if $assets?.data}
-        {#each $assets.data as asset}
-            {asset?.content?.metadata?.name}
-        {/each}
-    {:else}
-        {#each Array(8) as _}
-            <div class="grid aspect-square animate-pulse rounded-lg" />
-        {/each}
-    {/if}
-</div> -->

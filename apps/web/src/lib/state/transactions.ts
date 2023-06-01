@@ -1,21 +1,17 @@
 import { writable, derived, get } from "svelte/store";
 import { fetchJson } from "$lib/util/fetch";
 
-import type { FetchModel, Dict } from "$lib/types";
+import type { Transactions, TransactionsByOwner } from "$lib/types";
 
 import type { ProtonTransaction } from "@helius-labs/xray";
 
 import { account } from "$lib/state/accounts";
 
-type Transactions = Dict<ProtonTransaction>;
+export const transactions = writable<Transactions>();
 
-type TransactionsByOwner = Dict<FetchModel<string[]>>;
+export const transactionsByOwner = writable<TransactionsByOwner>(new Map());
 
-const transactions = writable<Transactions>();
-
-const transactionsByOwner = writable<TransactionsByOwner>(new Map());
-
-const addTransaction = (transaction: ProtonTransaction) => {
+export const addTransaction = (transaction: ProtonTransaction) => {
     transactions.update((value = new Map()) => {
         value.set(transaction.signature, transaction);
 
@@ -23,18 +19,12 @@ const addTransaction = (transaction: ProtonTransaction) => {
     });
 };
 
-const addTransactionByOwner = (
+export const addTransactionByOwner = (
     ownerAddress: string,
     transaction: ProtonTransaction
 ) => {
     transactionsByOwner.update((map = new Map()) => {
         let result = map.get(ownerAddress) || { data: [] };
-
-        if (!result) {
-            result = {
-                data: [],
-            };
-        }
 
         if (!result.data.includes(transaction.signature)) {
             result.data.push(transaction.signature);
@@ -65,7 +55,10 @@ const setFetchState = (
     );
 };
 
-const updateTransactionsByOwner = async (ownerAddress: string, cursor = "") => {
+export const updateTransactionsByOwner = async (
+    ownerAddress: string,
+    cursor = ""
+) => {
     try {
         setFetchState(ownerAddress, {
             error: "",
@@ -82,7 +75,7 @@ const updateTransactionsByOwner = async (ownerAddress: string, cursor = "") => {
             user: ownerAddress,
         });
 
-        transactionsByOwnerResponse.result.map((transaction) => {
+        transactionsByOwnerResponse?.result?.map((transaction) => {
             // add details to the main asset map
             addTransaction(transaction);
 
@@ -101,15 +94,17 @@ const updateTransactionsByOwner = async (ownerAddress: string, cursor = "") => {
                     : "",
         });
     } catch (error: any) {
+        console.log(error);
+
         setFetchState(ownerAddress, {
-            error: error.message,
+            error: error?.message,
             isLoading: false,
             nextCursor: "",
         });
     }
 };
 
-const fetchNextTransactionPage = async (ownerAddress: string) => {
+export const fetchNextTransactionPage = async (ownerAddress: string) => {
     const ownerEntry = get(transactionsByOwner).get(ownerAddress);
 
     // If there is no next cursor, we have reached the end
@@ -120,16 +115,8 @@ const fetchNextTransactionPage = async (ownerAddress: string) => {
     await updateTransactionsByOwner(ownerAddress, ownerEntry.nextCursor);
 };
 
-const ownedTransactions = derived(
+export const ownedTransactions = derived(
     [transactionsByOwner, account],
     ([$transationsByOwner, $account]) =>
         $transationsByOwner.get($account) || { data: [] }
 );
-
-export {
-    updateTransactionsByOwner,
-    transactions,
-    transactionsByOwner,
-    fetchNextTransactionPage,
-    ownedTransactions,
-};

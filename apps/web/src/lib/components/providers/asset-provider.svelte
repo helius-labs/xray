@@ -1,13 +1,29 @@
 <script lang="ts">
-    import { type Asset, defaultAsset } from "$lib/types";
+    import { type Asset } from "$lib/types";
+    import { ASSET } from "$lib/constants";
+    import IntersectionObserver from "svelte-intersection-observer";
 
-    import { assets } from "$lib/state/assets";
+    import { assets, enrichAsset } from "$lib/state/assets";
 
     export let id: string = "";
 
-    $: asset = $assets.get(id) || { data: defaultAsset };
+    let intersecting = false;
 
-    $: console.log({ asset });
+    let element: HTMLDivElement;
+
+    $: asset = $assets.get(id) || { data: ASSET() };
+
+    $: if (!asset.enriched && intersecting && !asset.isLoading) {
+        enrichAsset(id);
+    }
 </script>
 
-<slot {asset} />
+<IntersectionObserver
+    once={true}
+    {element}
+    bind:intersecting
+>
+    <div bind:this={element} />
+
+    <slot {asset} />
+</IntersectionObserver>

@@ -1,7 +1,7 @@
 import { derived, writable } from "svelte/store";
 import { page } from "$app/stores";
 
-const accounts = derived(page, ($page) => $page.params.accounts.split("/"));
+const accounts = derived(page, ($page) => $page?.params?.accounts?.split("/"));
 
 const selectedAccountIndex = writable(0);
 

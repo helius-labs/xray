@@ -1,5 +1,6 @@
 <script lang="ts">
     import "../app.postcss";
+
     import { onMount } from "svelte";
 
     import { fly } from "svelte/transition";
@@ -37,10 +38,11 @@
 
     let animate = false;
 
-    // eslint-disable-next-line no-console
-    $: console.log("tokens", $tokens);
+    onMount(() => {
+        animate = true;
 
-    onMount(() => (animate = true));
+        updateTokensMap();
+    });
 </script>
 
 <Modals />

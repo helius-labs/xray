@@ -2,7 +2,7 @@
     import {
         assetsByOwner,
         assetBalances,
-        ownedTokens,
+        ownedAssets,
         assets,
     } from "$lib/state/assets";
 
@@ -12,13 +12,9 @@
 
     $: isLoading = $assetsByOwner.get($account)?.isLoading;
 
-    $: sorted =
-        $ownedTokens ||
-        [].sort((a, b) =>
-            Number($assetBalances.get(b)) > Number($assetBalances.get(a))
-                ? 1
-                : -1
-        );
+    // $: sorted = $ownedAssets.token.sort((a, b) =>
+    //     Number($assetBalances.get(b)) > Number($assetBalances.get(a)) ? 1 : -1
+    // );
 </script>
 
 <div class="">
@@ -87,7 +83,7 @@
             </div>
         {/each}
     {:else}
-        {#each $ownedTokens?.data || [] as token (token)}
+        {#each $ownedAssets.token as token (token)}
             {@const details = $assets.get(token)}
 
             <div class="dark-card mb-3 flex items-center justify-between !p-2">

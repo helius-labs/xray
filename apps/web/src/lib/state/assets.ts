@@ -1,140 +1,180 @@
+import type {
+    Assets,
+    AssetsByOwner,
+    AssetsByGroup,
+    Dict,
+    Asset,
+    AssetMedia,
+    DasFile,
+    DasAttribute,
+    AssetType,
+    OwnedAssets,
+} from "$lib/types";
+
+import {
+    ASSET,
+    ASSETS,
+    FETCH_MODEL,
+    PREVIEW_CDN,
+    OWNED_ASSETS,
+    SOL,
+} from "$lib/constants";
+
 import { writable, derived, get } from "svelte/store";
 import { fetchJson } from "$lib/util/fetch";
 
-import {
-    type FetchModel,
-    type Dict,
-    type Asset,
-    defaultAsset,
-    defaultFetchModel,
-} from "$lib/types";
-
-import { SOL } from "@helius-labs/xray/dist";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 import { tokens, updateTokensMap } from "$lib/state/tokens";
 import { account } from "$lib/state/accounts";
+import { addBalanceForOwner } from "$lib/state/balances";
 
-const HELIUS_IMAGE_CDN = "https://cdn.helius.services/cdn-cgi/image";
-const PREVIEW_CDN = `${HELIUS_IMAGE_CDN}/width=300`;
+// Main map of all assets the app comes across
+export const assets = writable<Assets>(ASSETS());
 
-type AssetByOwner = Dict<FetchModel<string[]>>;
+// Map of account adddresses to owned assets
+export const assetsByOwner = writable<AssetsByOwner>(new Map());
 
-type AssetByGroup = Dict<FetchModel<string[]>>;
+// Map of ids grouped by DAS group ID (which is the ID of a token in assets map)
+export const assetsByGroup = writable<AssetsByGroup>(new Map());
 
-const solanaIcon =
-    "https://raw.githubusercontent.com/solana-labs/token-list/main/assets/mainnet/So11111111111111111111111111111111111111112/logo.png";
+// Fill in more details for a specific asset.
+export const enrichAsset = async (id: string) => {
+    console.log("ENRICHING!!!!!");
 
-const enrichAsset = async (id: string) => {
-    console.log({ id });
+    const asset = await fetchJson<Asset>(`/api/asset/${id}`);
+
+    if (asset) {
+        addAsset(asset);
+    }
+
+    console.log("ASSET", asset);
 };
 
-const assets = writable<Dict<FetchModel<Asset>>>(
-    new Map([
-        [
-            SOL,
-            {
-                ...defaultFetchModel,
-                data: {
-                    ...defaultAsset,
-                    id: SOL,
-                    imagePreview: solanaIcon,
-                    media: {
-                        images: [solanaIcon],
-                    },
-                    name: "SOL",
-                    symbol: "SOL",
-                    type: "token",
-                },
+// Attempt to determine the type of a raw asset based on existence of certain properties.
+const extractAssetType = (asset: any): AssetType => {
+    if (asset.mint && asset?.decimals > 0) {
+        return "token";
+    } else if (asset.id) {
+        return "das";
+    }
+
+    return "unknown";
+};
+
+// If we have determined asset is a DAS, use this to pull out key value.
+export const extractDetailsFromDAS = (asset: any) => {
+    const result: Asset = {
+        ...ASSET(),
+        creators: asset?.content?.creators,
+        description: asset?.content?.metadata?.description || "",
+        externalUrl: asset.content?.links?.external_url || "",
+        frozen: asset?.ownership?.frozen,
+        name: asset?.content?.metadata?.name || "",
+        symbol: asset?.content?.metadata?.symbol || "",
+        type: "das",
+        uri: asset?.content?.json_uri,
+        id: asset.id,
+    };
+
+    // Extract media files
+    result.media = (asset?.content?.files as DasFile[]).reduce<AssetMedia>(
+        (acc, file) => {
+            if (file?.mime?.startsWith("image/")) acc.images.push(file.uri);
+            if (file?.mime?.startsWith("video/")) acc.videos.push(file.uri);
+            if (file?.mime?.startsWith("text/html"))
+                acc.htmlFiles.push(file.uri);
+
+            return acc;
+        },
+        {
+            htmlFiles: [],
+            images: [],
+            other: [],
+            videos: [],
+        }
+    );
+
+    // Generate preview from first image scalled down to 300px
+    result.imagePreview = result?.media?.images[0]
+        ? `${PREVIEW_CDN}/${result?.media?.images[0]}`
+        : "";
+
+    // Standardize attribute property names
+    result.attributes = (
+        asset?.content?.metadata?.attributes as DasAttribute[]
+    )?.map(({ trait_type, traitType, value }) => ({
+        traitType: trait_type || traitType,
+        value,
+    }));
+
+    return result;
+};
+
+// If we have determined asset is a SPL token, use this to pull out key value.
+const extractDetailsFromTokenInfo = (asset: any): Asset => {
+    const details = get(tokens)?.data?.get(asset.mint);
+
+    const result: Asset = {
+        ...ASSET(),
+        id: asset.mint,
+        name: details?.name || "",
+        symbol: details?.symbol || "",
+        type: "token",
+    };
+
+    if (details?.logoURI) {
+        result.imagePreview = `${PREVIEW_CDN}/${details?.logoURI}`;
+        result.media.images = [details?.logoURI];
+    }
+
+    return result;
+};
+
+// Extract details and Asset type from raw asset data.
+const extractAssetDetails = (asset: any) => {
+    // The future result to add
+    let result: Asset = ASSET();
+
+    // Extract type from raw asset details
+    const type = extractAssetType(asset);
+
+    // Extract details from result and get a Asset shape
+    if (type === "token") {
+        result = extractDetailsFromTokenInfo(asset);
+    } else if (type === "das") {
+        result = extractDetailsFromDAS(asset);
+    }
+
+    return result;
+};
+
+// Adds asset details to the main assets map
+export const addAsset = (asset: Asset) => {
+    assets.update(($map = new Map()) => {
+        const existing = $map.get(asset.id);
+
+        $map.set(asset.id, {
+            ...FETCH_MODEL(),
+            ...existing,
+            data: {
+                ...existing?.data,
+                ...asset,
             },
-        ],
-    ])
-);
 
-const assetsByOwner = writable<AssetByOwner>(new Map());
+            // If the asset doesn't have an image file,
+            // Assume it's not enriched
+            enriched: Boolean(asset.imagePreview),
+        });
 
-const assetsByGroup = writable<AssetByGroup>(new Map());
+        // console.log($map, asset.id);
 
-const assetBalances = writable<Dict<number>>();
-
-const addAsset = (asset: { id: string }, type: "das" | "token" | "") => {
-    assets.update((map = new Map()) => {
-        const existing = map.get(asset.id) || { data: {} };
-
-        const value: Asset = {
-            ...defaultAsset,
-            ...existing.data,
-            id: asset.id,
-            type,
-        };
-
-        if (type === "das") {
-            value.name = asset?.content?.metadata?.name;
-            value.description = asset?.content?.metadata?.description;
-            value.symbol = asset?.content?.metadata?.symbol;
-            value.externalUrl = asset.content?.links?.external_url;
-            value.uri = asset?.content?.json_uri;
-            value.creators = asset?.content?.creators;
-            value.frozen = asset?.ownership?.frozen;
-
-            value.media = asset?.content?.files.reduce(
-                (acc, file) => {
-                    if (file?.mime?.startsWith("image/")) {
-                        return {
-                            ...acc,
-                            images: [...acc.images, file.uri],
-                        };
-                    } else if (file?.mime?.startsWith("video/")) {
-                        return {
-                            ...acc,
-                            videos: [...acc.videos, file.uri],
-                        };
-                    } else if (file?.mime?.startsWith("text/html")) {
-                        return {
-                            ...acc,
-                            htmlFiles: [...acc.htmlFiles, file.uri],
-                        };
-                    }
-
-                    return acc;
-                },
-                {
-                    htmlFiles: [],
-                    images: [],
-                    videos: [],
-                }
-            );
-
-            // Generate preview from first image scalled down to 300px
-            value.imagePreview = `${PREVIEW_CDN}/${value?.media?.images[0]}`;
-
-            value.attributes = asset?.content?.metadata?.attributes?.map(
-                ({ trait_type, value }) => ({ traightType: trait_type, value })
-            );
-        } else if (type === "token") {
-            const token = get(tokens)?.data?.get(asset.id);
-
-            if (token) {
-                value.imagePreview = `${PREVIEW_CDN}/${token?.logoURI}`;
-                value.media = {
-                    images: [token?.logoURI],
-                };
-                value.name = token?.name;
-                value.symbol = token?.symbol;
-            }
-        }
-
-        map.set(asset.id, { ...existing, data: value });
-
-        if (!value.imagePreview) {
-            enrichAsset(asset.id);
-        }
-
-        return map;
+        return $map;
     });
 };
 
-const addAssetByOwner = (ownerAddress: string, asset: { id: string }) => {
+// Adds asset details to assetsByOwners map if it doesn't already exist
+export const addAssetByOwner = (ownerAddress: string, id: string) => {
     assetsByOwner.update((map = new Map()) => {
         let result = map.get(ownerAddress);
 
@@ -144,8 +184,8 @@ const addAssetByOwner = (ownerAddress: string, asset: { id: string }) => {
             };
         }
 
-        if (!result.data.includes(asset.id)) {
-            result.data.push(asset.id);
+        if (!result.data.includes(id)) {
+            result.data.push(id);
         }
 
         map.set(ownerAddress, result);
@@ -154,107 +194,90 @@ const addAssetByOwner = (ownerAddress: string, asset: { id: string }) => {
     });
 };
 
-const addBalance = (id: string, amount: number) => {
-    const balances = get(assetBalances) || new Map();
+export const updateAssetsByOwner = async (ownerAddress: string, page = 1) => {
+    try {
+        if (!get(tokens)) {
+            await updateTokensMap();
+        }
 
-    balances.set(id, amount);
+        const [byOwnerResult, tokensByOwnerResult] = await Promise.all([
+            // Get DAS assets
+            fetchJson<{ id: string }[]>("/api/assets-by-owner", {
+                limit: 50,
+                ownerAddress,
+                page,
+                sortBy: {
+                    sortBy: "created",
+                    sortDirection: "asc",
+                },
+            }),
 
-    assetBalances.set(balances);
-};
+            // Get tokens
+            fetchJson<{
+                nativeBalance: number;
+                tokens: {
+                    amount: number;
+                    decimals: number;
+                    mint: string;
+                    tokenAccount: string;
+                }[];
+            }>("/api/balances", {
+                account: ownerAddress,
+            }),
+        ]);
 
-const updateAssetsByOwner = async (ownerAddress: string, page = 1) => {
-    if (!get(tokens)) {
-        await updateTokensMap();
-    }
-
-    const [byOwnerResult, tokensByOwnerResult] = await Promise.all([
-        // Get DAS assets
-        fetchJson<{ id: string }[]>("/api/assets-by-owner", {
-            limit: 50,
+        // Register solana and add native balance
+        addBalanceForOwner(
+            SOL,
             ownerAddress,
-            page,
-            sortBy: {
-                sortBy: "created",
-                sortDirection: "asc",
-            },
-        }),
+            tokensByOwnerResult.nativeBalance / LAMPORTS_PER_SOL
+        );
 
-        // Get tokens
-        fetchJson<{
-            nativeBalance: number;
-            tokens: {
-                amount: number;
-                decimals: number;
-                mint: string;
-                tokenAccount: string;
-            }[];
-        }>("/api/balances", {
-            account: ownerAddress,
-        }),
-    ]);
+        // Add assets to the main asset map and the assetsByOwner map
+        Array.prototype
+            .concat(byOwnerResult, tokensByOwnerResult.tokens)
+            .map((raw) => {
+                // The future result to add
+                let asset: Asset = extractAssetDetails(raw);
 
-    // Register solana and add native balance
-    addBalance(SOL, tokensByOwnerResult.nativeBalance / LAMPORTS_PER_SOL);
-    addAssetByOwner(ownerAddress, { id: SOL });
+                // Add token balance if exists
+                if (asset.type === "token" && raw?.amount) {
+                    addBalanceForOwner(
+                        asset.id,
+                        ownerAddress,
+                        (raw.amount / 10) * raw.decimals
+                    );
+                }
 
-    // Add assets to the main asset map and the assetsByOwner map
-    Array.prototype
-        .concat(byOwnerResult, tokensByOwnerResult.tokens)
-        .map((asset) => {
-            if (!asset) {
-                return;
-            }
+                addAsset(asset);
 
-            asset.id = asset?.id || asset?.mint;
-
-            let type = "";
-
-            if (asset.mint && asset?.decimals > 0) {
-                type = "token";
-            } else if (asset.id) {
-                type = "das";
-            }
-
-            // Skip if no id or amount
-            if (!asset.id || !asset.amount) {
-                return;
-            }
-
-            // If token, then might have an amount
-            if (asset.amount && type === "token") {
-                addBalance(asset.id, (asset.amount / 10) * asset.decimals);
-            }
-
-            // Register token in main asset map
-            addAsset(asset, type);
-
-            // Register in assetsByOwner map under ownerAddress
-            addAssetByOwner(ownerAddress, asset);
-        });
+                // Register in assetsByOwner map under ownerAddress
+                addAssetByOwner(ownerAddress, asset.id);
+            });
+    } catch (error) {
+        console.log(error);
+    }
 };
 
-const ownedTokens = derived(
-    [assetsByOwner, account],
-    ([$assetsByOwner, $account]) =>
-        $assetsByOwner.get($account) ||
-        [].filter((id) => get(assets).get(id)?.data.type === "token"),
-    []
-);
+export const ownedAssets = derived(
+    [assetsByOwner, account, assets],
+    ([$assetsByOwner, $account, $assets]) => {
+        const result = $assetsByOwner.get($account) || { data: [] };
 
-const ownedDas = derived(
-    [assetsByOwner, account],
-    ([$assetsByOwner, $account]) =>
-        $assetsByOwner.get($account) ||
-        [].filter((id) => get(assets).get(id)?.data.type === "das"),
-    []
-);
+        if (!result) return OWNED_ASSETS();
 
-export {
-    updateAssetsByOwner,
-    assets,
-    assetsByOwner,
-    assetsByGroup,
-    assetBalances,
-    ownedTokens,
-    ownedDas,
-};
+        return result.data.reduce<OwnedAssets>((acc, id) => {
+            const asset = $assets.get(id)?.data;
+
+            if (asset?.type === "token") {
+                acc.token.push(id);
+            } else if (asset?.type === "das") {
+                acc.das.push(id);
+            } else {
+                acc.unknown.push(id);
+            }
+
+            return acc;
+        }, OWNED_ASSETS());
+    }
+);

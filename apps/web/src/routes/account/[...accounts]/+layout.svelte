@@ -1,22 +1,8 @@
-<style>
-    .nav::before {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 100%;
-        width: 100vw;
-        transform: translate(-50%, 0);
-        background-color: black;
-    }
-</style>
-
 <script lang="ts">
-    export const prerender = false;
-
     import { onMount } from "svelte";
 
     import { page } from "$app/stores";
+
     import { fade } from "svelte/transition";
 
     import { User } from "lucide-svelte";
@@ -25,24 +11,19 @@
 
     import { account } from "$lib/state/accounts";
 
-    import {
-        updateAssetsByOwner,
-        assetsByOwner,
-        assets,
-    } from "$lib/state/assets";
+    import { updateAssetsByOwner } from "$lib/state/assets";
+
     import {
         updateTransactionsByOwner,
         transactionsByOwner,
         transactions,
     } from "$lib/state/transactions";
 
-    onMount(() => {
+    onMount(async () => {
         updateAssetsByOwner($account);
         updateTransactionsByOwner($account);
     });
 
-    // eslint-disable-next-line no-console
-    $: console.log("assets", $assetsByOwner, $assets);
     // eslint-disable-next-line no-console
     $: console.log("transactions", $transactionsByOwner, $transactions);
 

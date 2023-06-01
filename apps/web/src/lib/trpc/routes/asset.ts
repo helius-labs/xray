@@ -8,7 +8,7 @@ const { HELIUS_KEY } = process.env;
 export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
     const url = `https://mainnet-beta.solanarpc.network/?api-key=${HELIUS_KEY}`;
 
-    const response = await fetch(url, {
+    const data = await fetch(url, {
         body: JSON.stringify({
             id: "asset",
             jsonrpc: "2.0",
@@ -19,9 +19,8 @@ export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
             "Content-Type": "application/json",
         },
         method: "POST",
-    });
+    }).then((res) => res.json());
 
-    const data = await response.json();
     let metadata = {
         address: "",
         attributes: [],

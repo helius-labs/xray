@@ -6,3 +6,4 @@ tsconfig.cjs.json
 tsconfig.esm.json
 tsconfig.json
 package-lock.json
+test.js

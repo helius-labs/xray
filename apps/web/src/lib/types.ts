@@ -8,7 +8,7 @@ import type {
     ProtonTransactionAction,
 } from "@helius-labs/xray";
 
-import type { IconPaths, modals } from "$lib/config";
+import type { IconPaths } from "$lib/config";
 
 export * from "$lib/config";
 
@@ -94,13 +94,9 @@ export type FetchModel<T> = {
     isLoading?: boolean;
     hasFetched?: boolean;
     nextCursor?: string;
-};
 
-export const defaultFetchModel = {
-    data: undefined,
-    hasFetched: undefined,
-    isLoading: false,
-    nextCursor: undefined,
+    // Sometimes we fetch a primitive format then enrich it later
+    enriched?: boolean;
 };
 
 export type TransactionsInput = {
@@ -120,45 +116,68 @@ export type AssetsInput = {
     };
 };
 
+export type AssetMedia = {
+    images: string[];
+    videos: string[];
+    htmlFiles: string[];
+    other: string[];
+};
+
+export type AssetCreator = {
+    address: string;
+    share: number;
+    verified: boolean;
+};
+
+export type AssetAttribute = {
+    traitType: string;
+    value: string;
+};
+
+export type AssetType = "das" | "token" | "unknown";
+
 export type Asset = {
-    type: "das" | "token" | "";
+    type: AssetType;
     id: string;
     name: string;
     symbol: string;
     description: string;
     imagePreview: string;
     frozen: boolean;
-    creators: {
-        address: string;
-        share: number;
-        verified: boolean;
-    }[];
+    creators: AssetCreator[];
     uri: string;
-    media: {
-        images: string[];
-        videos: string[];
-        htmlFiles: string[];
-    };
+    media: AssetMedia;
     externalUrl: string;
-    attributes: {
-        traitType: string;
-        value: string;
-    }[];
+    attributes: AssetAttribute[];
 };
 
-export const defaultAsset = {
-    attributes: [],
-    description: "",
-    externalUrl: "",
-    id: "",
-    imagePreview: "",
-    media: {
-        htmlFiles: [],
-        images: [],
-        videos: [],
-    },
-    name: "",
-    symbol: "",
-    type: "",
+export type DasFile = {
+    uri: string;
+    mime: string;
 };
-export type Modals = keyof typeof modals;
+
+export type DasAttribute = {
+    traitType: string;
+    trait_type: string;
+    value: string;
+};
+
+export type TokenBalance = {
+    mint: string;
+    amount: number;
+    decimals: number;
+};
+
+export type OwnedAssets = Record<AssetType, string[]>;
+
+export type Transactions = Dict<ProtonTransaction>;
+
+export type TransactionsByOwner = Dict<FetchModel<string[]>>;
+
+export type AssetsByOwner = Dict<FetchModel<string[]>>;
+
+export type AssetsByGroup = Dict<FetchModel<string[]>>;
+
+export type Assets = Dict<FetchModel<Asset>>;
+
+export type BalancesByOwner = Dict<FetchModel<Dict<number>>>;

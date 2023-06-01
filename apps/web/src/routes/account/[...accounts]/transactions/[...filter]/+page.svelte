@@ -10,10 +10,12 @@
         fetchNextTransactionPage,
         ownedTransactions,
     } from "$lib/state/transactions";
+
+    $: console.log($ownedTransactions);
 </script>
 
 <AnimEach
-    each={$ownedTransactions?.data || []}
+    each={$ownedTransactions?.data}
     let:item
     let:index
 >

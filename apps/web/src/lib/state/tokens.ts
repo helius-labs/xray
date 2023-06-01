@@ -1,8 +1,7 @@
 import { writable } from "svelte/store";
 import { fetchJson } from "$lib/util/fetch";
-import type { TokenInfo, TokenList } from "@solana/spl-token-registry";
 
-import { ENV } from "@solana/spl-token-registry";
+import type { TokenInfo } from "@solana/spl-token-registry";
 
 import type { FetchModel, Dict } from "$lib/types";
 
@@ -16,23 +15,12 @@ const updateTokensMap = async () => {
         });
 
         // Get whole list
-        const tokenResponse = await fetchJson<TokenList>("/api/token-list");
-
-        // Filter + contruct map
-        const data = tokenResponse.tokens.reduce<Dict<TokenInfo>>(
-            (map, token) => {
-                // Not Mainnet
-                if (token.chainId !== ENV.MainnetBeta) return map;
-
-                map.set(token.address, token);
-
-                return map;
-            },
-            new Map()
+        const tokenResponse = await fetchJson<Dict<TokenInfo>>(
+            "/tokenlist.json"
         );
 
         tokens.set({
-            data,
+            data: new Map(tokenResponse),
             hasFetched: true,
             isLoading: false,
         });

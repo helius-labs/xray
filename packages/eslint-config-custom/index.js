@@ -37,7 +37,7 @@ module.exports = {
         "simple-import-sort",
     ],
     rules: {
-        indent: ["error", 4],
+        indent: ["error", 4, { SwitchCase: 1, TernaryExpression: 1 }],
 
         "no-console": "error",
 
@@ -50,6 +50,13 @@ module.exports = {
         "no-var": "error",
 
         "prettier/prettier": "error",
+
+        "prettier/prettier": [
+            "error",
+            {
+                endOfLine: "auto",
+            },
+        ],
 
         "promise/always-return": "error",
 
@@ -74,16 +81,9 @@ module.exports = {
         "promise/param-names": "error",
 
         "promise/valid-params": "warn",
-
         "sort-keys-fix/sort-keys-fix": "warn",
         "this/no-this": "error",
         "write-good-comments/write-good-comments": "warn",
-        "prettier/prettier": [
-            "error",
-            {
-                endOfLine: "auto",
-            },
-        ],
     },
     settings: {
         "svelte3/typescript": () => require("typescript"), // pass the TypeScript package to the Svelte plugin
