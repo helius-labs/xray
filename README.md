@@ -1,6 +1,6 @@
-# XRAY
+![https://xray.helius.xyz/](/doc/xray-cover-gh.jpg)
 
-A human-readable Solana transaction explorer powered by Helius.
+## Relevant Links
 
 🔗 **Link**: https://xray.helius.xyz/
 
