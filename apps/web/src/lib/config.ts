@@ -31,6 +31,10 @@ export const transactionActionsMetadata: Record<
     ProtonActionType,
     TransactionActionMetadata
 > = {
+    ADD_ITEM: {
+        icon: "plus",
+        label: "Add Item",
+    },
     AIRDROP: {
         icon: "gift",
         label: "Airdropped",
@@ -57,6 +61,10 @@ export const transactionActionsMetadata: Record<
         icon: "flame",
         label: "Burned NFT",
     },
+    BUY_ITEM: {
+        icon: "sale",
+        label: "Buy Item",
+    },
     CANCEL_LOAN_REQUEST: {
         icon: "close",
         label: "Cancel Loan Request",
@@ -65,10 +73,21 @@ export const transactionActionsMetadata: Record<
         icon: "close",
         label: "Cancel Offer",
     },
+    CANCEL_ORDER: {
+        icon: "close",
+        label: "Cancel Order",
+    },
     CLAIM_NFT: {
         icon: "squareCheck",
         label: "Claim NFT",
     },
+    CLOSE_ITEM: {
+        icon: "close",
+        label: "Close Item",
+    },
+    CLOSE_ORDER: {
+        icon: "close",
+        label: "Close Item",
     COMPRESSED_NFT_BURN: {
         icon: "flame",
         label: "Burned NFT",
@@ -81,10 +100,22 @@ export const transactionActionsMetadata: Record<
         icon: "lightning",
         label: "Transfer",
     },
+    CREATE_ORDER: {
+        icon: "plus",
+        label: "Create Order",
+    },
+    DELIST_ITEM: {
+        icon: "close",
+        label: "Delist Item",
+    },
     EXECUTE_TRANSACTION: {
         filterLabel: "Multisig Transaction",
         icon: "squad",
         label: "Multisig Transaction",
+    },
+    FILL_ORDER: {
+        icon: "squareCheck",
+        label: "Fill Order",
     },
     FORECLOSE_LOAN: {
         icon: "squareCheck",
@@ -98,9 +129,17 @@ export const transactionActionsMetadata: Record<
         icon: "handshake",
         label: "Lend",
     },
+    LIST_ITEM: {
+        icon: "list",
+        label: "List Item",
+    },
     LOAN_FOX: {
         icon: "handshake",
         label: "Loan Fox",
+    },
+    MIGRATE_TO_PNFT: {
+        icon: "arrowRight",
+        label: "Migrate to pNFT",
     },
     NFT_BID: {
         icon: "sale",
@@ -224,6 +263,22 @@ export const transactionActionsMetadata: Record<
     UNSTAKE_TOKEN: {
         icon: "cancel",
         label: "Unstake Token",
+    },
+    UPDATE_ITEM: {
+        icon: "arrowUp",
+        label: "Update Item",
+    },
+    UPDATE_OFFER: {
+        icon: "cycle",
+        label: "Update Offer",
+    },
+    UPDATE_ORDER: {
+        icon: "arrowUp",
+        label: "Update Order",
+    },
+    UPGRADE_FOX_REQUEST: {
+        icon: "arrowUp",
+        label: "Upgrade Fox",
     },
     UPDATE_OFFER: {
         icon: "cycle",
@@ -367,6 +422,8 @@ export const enum IconPaths {
     newspaper = `<path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"></path><path d="M18 14h-8"></path><path d="M15 18h-5"></path><path d="M10 6h8v4h-8V6Z"></path>`,
 
     squareCheck = `<path d="m20 20h-15.25c-.414 0-.75.336-.75.75s.336.75.75.75h15.75c.53 0 1-.47 1-1v-15.75c0-.414-.336-.75-.75-.75s-.75.336-.75.75zm-1-17c0-.478-.379-1-1-1h-15c-.62 0-1 .519-1 1v15c0 .621.52 1 1 1h15c.478 0 1-.379 1-1zm-12.751 8.306c-.165-.147-.249-.351-.249-.556 0-.411.333-.746.748-.746.178 0 .355.062.499.19l2.371 2.011 4.453-4.962c.149-.161.35-.243.554-.243.417 0 .748.336.748.746 0 .179-.065.359-.196.503l-4.953 5.508c-.148.161-.35.243-.553.243-.177 0-.356-.063-.498-.19z" fill-rule="nonzero"/>`,
+
+    list = `<path d="m3.3 15.4c.717 0 1.3.583 1.3 1.3s-.583 1.3-1.3 1.3-1.3-.583-1.3-1.3.583-1.3 1.3-1.3zm2.7 1.85c0-.414.336-.75.75-.75h14.5c.414 0 .75.336.75.75s-.336.75-.75.75h-14.5c-.414 0-.75-.336-.75-.75zm-2.7-6.55c.717 0 1.3.583 1.3 1.3s-.583 1.3-1.3 1.3-1.3-.583-1.3-1.3.583-1.3 1.3-1.3zm2.7 1.3c0-.414.336-.75.75-.75h14.5c.414 0 .75.336.75.75s-.336.75-.75.75h-14.5c-.414 0-.75-.336-.75-.75zm-2.7-6c.717 0 1.3.583 1.3 1.3s-.583 1.3-1.3 1.3-1.3-.583-1.3-1.3.583-1.3 1.3-1.3zm2.7.75c0-.414.336-.75.75-.75h14.5c.414 0 .75.336.75.75s-.336.75-.75.75h-14.5c-.414 0-.75-.336-.75-.75z" fill-rule="nonzero"/>`,
 
     key = `<path d="M16 2c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6zm0-2c-4.418 0-8 3.582-8 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm-5.405 16.4l-1.472 1.6h-3.123v2h-2v2h-2v-2.179l5.903-5.976c-.404-.559-.754-1.158-1.038-1.795l-6.865 6.95v5h6v-2h2v-2h2l2.451-2.663c-.655-.249-1.276-.562-1.856-.937zm7.405-11.4c.551 0 1 .449 1 1s-.449 1-1 1-1-.449-1-1 .449-1 1-1zm0-1c-1.104 0-2 .896-2 2s.896 2 2 2 2-.896 2-2-.896-2-2-2z"/>`,
 
