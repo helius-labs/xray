@@ -9,7 +9,7 @@ export function heliusClusterApiUrl(
         case "devnet":
             return `https://rpc-devnet.helius.xyz/?api-key=${apiKey}`;
         case "mainnet-beta":
-            return `https://mainnet-beta.solanarpc.network/?api-key=${apiKey}`;
+            return `https://rpc.helius.xyz/?api-key=${apiKey}`;
         default:
             return "";
     }
