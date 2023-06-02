@@ -31,11 +31,16 @@
             name: string;
         };
     } = {
+        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
+            description: "Solana's 1 true moonshot. TW: @SolarMoonSol",
+            image: "https://gateway.ipfscdn.io/ipfs/bafkreifwdwgcv6fnh5icz3wkefokatsemsojck4hftsnuf4xcfjcvagsva/",
+            name: "SolarMoon (MOON)",
+        },
         CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo: {
             description:
                 "BonkEarn is the first of many experiments on the Token2022 standard, Bernzy sends his regards",
             image: "https://i.imgur.com/nd9AVZ4.jpeg",
-            name: "BonkEarn",
+            name: "BonkEarn (BERN)",
         },
     };
 
