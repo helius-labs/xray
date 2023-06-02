@@ -19,6 +19,31 @@
         refetchOnWindowFocus: false,
     });
 
+    const accountInfo = client.accountInfo.createQuery(address, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
+
+    const token2022Metadata: {
+        [key: string]: {
+            description: string;
+            image: string;
+            name: string;
+        };
+    } = {
+        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
+            description: "Solana's 1 true moonshot. TW: @SolarMoonSol",
+            image: "https://gateway.ipfscdn.io/ipfs/bafkreifwdwgcv6fnh5icz3wkefokatsemsojck4hftsnuf4xcfjcvagsva/",
+            name: "SolarMoon (MOON)",
+        },
+        CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo: {
+            description:
+                "BonkEarn is the first of many experiments on the Token2022 standard, Bernzy sends his regards",
+            image: "https://i.imgur.com/nd9AVZ4.jpeg",
+            name: "BonkEarn (BERN)",
+        },
+    };
+
     const metadata: UITokenMetadata = {
         address: "",
         attributes: [],
@@ -63,6 +88,16 @@
         metadata.tree = data?.tree || "";
         metadata.seq = data?.seq || 0;
         metadata.leafId = data?.leafId || 0;
+    }
+    // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
+    // @ts-ignore
+    else if ($accountInfo?.data?.value?.data?.program === "spl-token-2022") {
+        // const data = $accountInfo?.data?.value;
+        const data = token2022Metadata[address];
+        metadata.name = data.name || "";
+        metadata.description = data.description || "";
+        metadata.image = data.image || "";
+        metadata.address = address || "";
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};
