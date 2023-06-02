@@ -71,6 +71,7 @@
         metadata.image = data?.image || "";
         metadata.name = data?.name || "";
     }
+    // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
     // @ts-ignore
     else if ($accountInfo?.data?.value?.data?.program === "spl-token-2022") {
         // const data = $accountInfo?.data?.value;
