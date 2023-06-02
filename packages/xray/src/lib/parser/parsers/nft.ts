@@ -400,29 +400,30 @@ export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
     traverseAccountData(accountData, accounts);
 
     for (let i = 0; i < nftEvent.length; i++) {
+        const nftEventAction = nftEvent[i];
         if (!address) {
             actions.push({
                 actionType: "TRANSFER",
                 amount: 1,
                 from: "",
-                sent: nftEvent[i].assetId,
-                to: nftEvent[i].newLeafOwner,
+                sent: nftEventAction.assetId,
+                to: nftEventAction.newLeafOwner,
             });
-        } else if (address === nftEvent[i].newLeafOwner) {
+        } else if (address === nftEventAction.newLeafOwner) {
             actions.push({
                 actionType: "AIRDROP",
                 amount: 1,
                 from: "",
-                received: nftEvent[i].assetId,
-                to: nftEvent[i].newLeafOwner,
+                received: nftEventAction.assetId,
+                to: nftEventAction.newLeafOwner,
             });
         } else {
             actions.push({
                 actionType: "RECEIVED",
                 amount: 1,
                 from: "",
-                received: nftEvent[i].assetId,
-                to: nftEvent[i].newLeafOwner,
+                received: nftEventAction.assetId,
+                to: nftEventAction.newLeafOwner,
             });
         }
     }
@@ -459,32 +460,75 @@ export const parseCompressedNftTransfer: ProtonParser = (
 
     traverseAccountData(accountData, accounts);
 
-    if (!address) {
-        actions.push({
-            actionType: "TRANSFER",
-            amount: 1,
-            from: nftEvent[0].oldLeafOwner,
-            sent: nftEvent[0].assetId,
-            to: nftEvent[0].newLeafOwner,
-        });
-    } else {
-        if ((address = nftEvent[0].oldLeafOwner)) {
+    for (let i = 0; i < nftEvent.length; i++) {
+        const nftEventAction = nftEvent[i];
+        if (!address) {
             actions.push({
-                actionType: "TRANSFER_SENT",
+                actionType: "TRANSFER",
                 amount: 1,
-                from: nftEvent[0].oldLeafOwner,
-                sent: nftEvent[0].assetId,
-                to: nftEvent[0].newLeafOwner,
+                from: nftEventAction.oldLeafOwner,
+                sent: nftEventAction.assetId,
+                to: nftEventAction.newLeafOwner,
             });
-        } else if (address === nftEvent[0].newLeafOwner) {
-            actions.push({
-                actionType: "TRANSFER_RECEIVED",
-                amount: 1,
-                from: nftEvent[0].oldLeafOwner,
-                received: nftEvent[0].assetId,
-                to: nftEvent[0].newLeafOwner,
-            });
+        } else {
+            if (address === nftEventAction.oldLeafOwner) {
+                actions.push({
+                    actionType: "TRANSFER_SENT",
+                    amount: 1,
+                    from: nftEventAction.oldLeafOwner,
+                    sent: nftEventAction.assetId,
+                    to: nftEventAction.newLeafOwner,
+                });
+            } else if (address === nftEventAction.newLeafOwner) {
+                actions.push({
+                    actionType: "TRANSFER_RECEIVED",
+                    amount: 1,
+                    from: nftEventAction.oldLeafOwner,
+                    received: nftEventAction.assetId,
+                    to: nftEventAction.newLeafOwner,
+                });
+            }
         }
+    }
+
+    return {
+        accounts,
+        actions,
+        fee,
+        primaryUser,
+        signature,
+        source,
+        timestamp,
+        type,
+    };
+};
+
+export const parseCompressedNftBurn: ProtonParser = (transaction, address) => {
+    // @ts-ignore
+    const nftEvent = transaction.events.compressed;
+    const { signature, timestamp, accountData, type, source } = transaction;
+
+    const fee = transaction.fee / LAMPORTS_PER_SOL;
+    const primaryUser = transaction.feePayer;
+
+    if (!nftEvent) {
+        return generateDefaultTransaction(transaction.type);
+    }
+
+    const actions: ProtonTransactionAction[] = [];
+    const accounts: ProtonAccount[] = [];
+
+    traverseAccountData(accountData, accounts);
+
+    for (let i = 0; i < nftEvent.length; i++) {
+        const nftEventAction = nftEvent[i];
+        actions.push({
+            actionType: "BURN_NFT",
+            amount: 1,
+            from: nftEventAction.oldLeafOwner,
+            sent: nftEventAction.assetId,
+            to: "",
+        });
     }
 
     return {

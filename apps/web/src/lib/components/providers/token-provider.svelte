@@ -44,9 +44,11 @@
         attributes: [],
         collectionKey: "",
         creators: [],
+        delegate: "",
         description: "",
         image: "",
         name: "",
+        owner: "",
         sellerFeeBasisPoints: 0,
     };
 
@@ -70,6 +72,17 @@
         metadata.collectionKey = data?.collectionKey || "";
         metadata.image = data?.image || "";
         metadata.name = data?.name || "";
+        metadata.owner = data?.owner || "";
+        metadata.delegate = data?.delegate || "";
+        metadata.frozen = data?.frozen || false;
+        metadata.mutable = data?.mutable || false;
+        metadata.compressed = data?.compressed || false;
+        metadata.dataHash = data?.dataHash || "";
+        metadata.creatorHash = data?.creatorHash || "";
+        metadata.assetHash = data?.assetHash || "";
+        metadata.tree = data?.tree || "";
+        metadata.seq = data?.seq || 0;
+        metadata.leafId = data?.leafId || 0;
     }
     // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
     // @ts-ignore
