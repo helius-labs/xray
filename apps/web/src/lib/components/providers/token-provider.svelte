@@ -19,15 +19,35 @@
         refetchOnWindowFocus: false,
     });
 
+    const accountInfo = client.accountInfo.createQuery(address, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
+
+    const token2022Metadata: {
+        [key: string]: {
+            description: string;
+            image: string;
+            name: string;
+        };
+    } = {
+        CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo: {
+            description:
+                "BonkEarn is the first of many experiments on the Token2022 standard, Bernzy sends his regards",
+            image: "https://i.imgur.com/nd9AVZ4.jpeg",
+            name: "BonkEarn",
+        },
+    };
+
     const metadata: UITokenMetadata = {
         address: "",
         attributes: [],
         collectionKey: "",
-        sellerFeeBasisPoints: 0,
         creators: [],
         description: "",
         image: "",
         name: "",
+        sellerFeeBasisPoints: 0,
     };
 
     const asset = client.asset.createQuery(address, {
@@ -50,6 +70,15 @@
         metadata.collectionKey = data?.collectionKey || "";
         metadata.image = data?.image || "";
         metadata.name = data?.name || "";
+    }
+    // @ts-ignore
+    else if ($accountInfo?.data?.value?.data?.program === "spl-token-2022") {
+        // const data = $accountInfo?.data?.value;
+        const data = token2022Metadata[address];
+        metadata.name = data.name || "";
+        metadata.description = data.description || "";
+        metadata.image = data.image || "";
+        metadata.address = address || "";
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};

@@ -69,27 +69,34 @@
 
     {#if $token2022.data}
         {#each $token2022.data as token}
-            <a
-                class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
-                href="/token/{token.mint}"
+            <TokenProvider
+                address={token.mint}
+                let:metadata
             >
-                <div class="col-span-2 p-1 md:col-span-1">
-                    <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-                    <div class="aspect-square w-full rounded-lg bg-cover" />
-                </div>
-                <div
-                    class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                <a
+                    class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                    href="/token/{token.mint}"
                 >
-                    <div>
-                        <h4 class="font-semibold md:text-sm">
-                            {token.mint || ""}
-                        </h4>
+                    <div class="col-span-2 p-1 md:col-span-1">
+                        <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                        <div
+                            style="background-image: url('{metadata.image}')"
+                            class="aspect-square w-full rounded-lg bg-cover"
+                        />
                     </div>
-                    <div>
-                        <h4 class="font-semibold md:text-sm">
-                            {token.amount.toLocaleString()}
-                        </h4>
-                        <!-- <h4 class="text-xs opacity-50">
+                    <div
+                        class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="font-semibold md:text-sm">
+                                {metadata.name || ""}
+                            </h4>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold md:text-sm">
+                                {token.amount.toLocaleString()}
+                            </h4>
+                            <!-- <h4 class="text-xs opacity-50">
                             {#if metadata.price}
                                 {formatMoney(
                                     (metadata.price * token.amount) /
@@ -97,9 +104,10 @@
                                 )}
                             {/if}
                         </h4> -->
+                        </div>
                     </div>
-                </div>
-            </a>
+                </a>
+            </TokenProvider>
         {/each}
     {/if}
     {#if sorted}
