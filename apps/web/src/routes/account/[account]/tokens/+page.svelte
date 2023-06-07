@@ -15,6 +15,8 @@
 
     const balances = client.balances.createQuery(account);
 
+    const token2022 = client.token2022.createQuery(account);
+
     const sol = client.price.createQuery(SOL);
 
     $: sorted = $balances?.data?.tokens
@@ -65,6 +67,49 @@
         </div>
     </a>
 
+    {#if $token2022.data}
+        {#each $token2022.data as token}
+            <TokenProvider
+                address={token.mint}
+                let:metadata
+            >
+                <a
+                    class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                    href="/token/{token.mint}"
+                >
+                    <div class="col-span-2 p-1 md:col-span-1">
+                        <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                        <div
+                            style="background-image: url('{metadata.image}')"
+                            class="aspect-square w-full rounded-lg bg-cover"
+                        />
+                    </div>
+                    <div
+                        class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="font-semibold md:text-sm">
+                                {metadata.name || ""}
+                            </h4>
+                        </div>
+                        <div>
+                            <h4 class="font-semibold md:text-sm">
+                                {token.amount.toLocaleString()}
+                            </h4>
+                            <!-- <h4 class="text-xs opacity-50">
+                            {#if metadata.price}
+                                {formatMoney(
+                                    (metadata.price * token.amount) /
+                                        10 ** token.decimals
+                                )}
+                            {/if}
+                        </h4> -->
+                        </div>
+                    </div>
+                </a>
+            </TokenProvider>
+        {/each}
+    {/if}
     {#if sorted}
         {#each sorted as token (token.mint)}
             {#if token.decimals > 0 && token.mint !== SOL}

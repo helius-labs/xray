@@ -141,7 +141,7 @@ export interface NFTEvent {
     buyer: string;
     timestamp: number;
     amount: number;
-    fee:number;
+    fee: number;
     signature: string;
     source: Source;
     type: TransactionType;
