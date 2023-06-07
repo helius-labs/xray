@@ -50,16 +50,9 @@ export const search = async (
         const account = await connection.getParsedAccountInfo(pubkey);
 
         // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
-        /*
-         * spl-token      -> spl token
-         * spl-token-2022 -> token 2022
-         * null           -> compressed nft
-         */
         const isToken =
             // @ts-ignore
             account?.value?.data?.program === "spl-token" ||
-            // @ts-ignore
-            account?.value?.data?.program === "spl-token-2022" ||
             account?.value === null;
 
         const addressType = isToken ? "token" : "account";

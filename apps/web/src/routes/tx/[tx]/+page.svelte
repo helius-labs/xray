@@ -16,7 +16,6 @@
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
     import JSON from "$lib/components/json.svelte";
-    import LogMessages from "$lib/components/log-messages.svelte";
     import Transaction from "$lib/components/transaction.svelte";
     import Collapse from "src/lib/components/collapse.svelte";
 
@@ -113,57 +112,30 @@
                 <div
                     class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 py-3"
                 >
-                    {#if rawData?.transaction?.meta?.err}
-                        <div class="col-span-2 p-1 md:col-span-1">
-                            <div
-                                class="center ml-1 h-10 w-10 rounded-full bg-error"
-                            >
-                                <Icon
-                                    id="close"
-                                    fill="black"
-                                    size="sm"
-                                />
-                            </div>
-                        </div>
+                    <div class="col-span-2 p-1 md:col-span-1">
                         <div
-                            class="col-span-10 flex items-center justify-between md:col-span-11"
+                            class="center ml-1 h-10 w-10 rounded-full bg-success"
                         >
-                            <div>
-                                <h4 class="text-lg font-semibold md:text-sm">
-                                    Status
-                                </h4>
-                                <h3 class="mr-2 text-xs opacity-50">
-                                    This transaction has failed.
-                                </h3>
-                            </div>
-                            <div class="badge-error badge mr-1">Error</div>
+                            <Icon
+                                id="check"
+                                fill="black"
+                                size="sm"
+                            />
                         </div>
-                    {:else}
-                        <div class="col-span-2 p-1 md:col-span-1">
-                            <div
-                                class="center ml-1 h-10 w-10 rounded-full bg-success"
-                            >
-                                <Icon
-                                    id="check"
-                                    fill="black"
-                                    size="sm"
-                                />
-                            </div>
+                    </div>
+                    <div
+                        class="col-span-10 flex items-center justify-between md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="text-lg font-semibold md:text-sm">
+                                Status
+                            </h4>
+                            <h3 class="mr-2 text-xs opacity-50">
+                                This transaction has successfully processed.
+                            </h3>
                         </div>
-                        <div
-                            class="col-span-10 flex items-center justify-between md:col-span-11"
-                        >
-                            <div>
-                                <h4 class="text-lg font-semibold md:text-sm">
-                                    Status
-                                </h4>
-                                <h3 class="mr-2 text-xs opacity-50">
-                                    This transaction has successfully processed.
-                                </h3>
-                            </div>
-                            <div class="badge-success badge mr-1">Success</div>
-                        </div>
-                    {/if}
+                        <div class="badge-success badge mr-1">Success</div>
+                    </div>
                 </div>
             </div>
             <div class="mb-3 px-3">
@@ -307,7 +279,13 @@
                         )}
                         hideIcon={true}
                     >
-                        <LogMessages logs={rawData?.transaction?.meta?.logMessages || []} />
+                        {#each rawData?.transaction?.meta?.logMessages || [] as message}
+                            <p class="px-3 text-xs">
+                                <span class="mr-1 text-success">></span><span
+                                    class="text-neutral">{message}</span
+                                >
+                            </p>
+                        {/each}
                     </Collapse>
                 </div>
             {/if}

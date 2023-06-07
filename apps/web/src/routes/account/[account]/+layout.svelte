@@ -18,13 +18,8 @@
 
     import AccountHeader from "$lib/components/account-header.svelte";
     import { showModal } from "$lib/state/stores/modals";
-    import { trpcWithQuery } from "$lib/trpc/client";
-    import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
-
-    const client = trpcWithQuery($page);
 
     const account = $page.params.account;
-    const accountInfo = client.accountInfo.createQuery(account);
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
@@ -39,27 +34,20 @@
         >
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />
-                <a
-                    href={`/account/${account}`}
+                <button
                     class="tab tab-bordered"
-                    class:tab-active={$page.url.pathname.endsWith(`${account}`)}
-                    >Transactions</a
+                    on:click={() =>
+                        (window.location.href = `/account/${$page.params.account}`)}
+                    class:tab-active={!$page.url.pathname.endsWith("/tokens")}
+                    >Transactions</button
                 >
-                <a
-                    href={`/account/${account}/tokens`}
+                <button
                     class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
-                    >Tokens</a
+                    on:click={() =>
+                        (window.location.href = `/account/${$page.params.account}/tokens`)}
+                    >Tokens</button
                 >
-                {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
-                    <a
-                        href={`/account/${account}/concurrent-merkle-tree`}
-                        class="tab tab-bordered"
-                        class:tab-active={$page.url.pathname.endsWith(
-                            "concurrent-merkle-tree"
-                        )}>Concurrent Merkle Tree</a
-                    >
-                {/if}
             </div>
             {#if !$page.url.pathname.endsWith("/tokens")}
                 <button

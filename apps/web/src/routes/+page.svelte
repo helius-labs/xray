@@ -174,3 +174,133 @@
         </div>
     </section>
 </IntersectionObserver>
+
+<IntersectionObserver
+    once={true}
+    rootMargin="10%"
+    element={heliusElement}
+    let:intersecting
+>
+    <section
+        bind:this={heliusElement}
+        class="mx-auto max-w-5xl py-10 px-3"
+    >
+        {#if intersecting}
+            <div
+                in:fly={{
+                    duration: 750,
+                    y: 100,
+                }}
+                class="mx-auto max-w-5xl"
+            >
+                <div class="overflow-hidden pb-32">
+                    <div class="mt-10 scale-150 md:mt-0">
+                        {#if browser}
+                            <LottiePlayer
+                                src="/media/animation.json"
+                                autoplay={true}
+                                loop={true}
+                                controls={false}
+                                renderer="svg"
+                                background="transparent"
+                                height="300%"
+                                width="300%"
+                            />
+                        {/if}
+                    </div>
+                </div>
+
+                <div>
+                    <h1 class="scale-100 text-6xl font-bold text-current">
+                        Powered by
+
+                        <span
+                            class="bg-gradient-to-br from-orange-700 to-yellow-400 bg-clip-text text-transparent"
+                        >
+                            Helius
+                        </span>
+                    </h1>
+                    <div class="mt-5 grid grid-cols-12 gap-4">
+                        <div class="col-span-2 flex items-center md:col-span-1">
+                            <div
+                                class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
+                            >
+                                <Icon
+                                    id="check"
+                                    fill="black"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-span-10 md:col-span-11">
+                            <p class="opacity-50">
+                                We provide the most powerful Solana RPC hardware
+                                around. We offer the fastest speeds at the
+                                lowest prices possible. We also provide private
+                                RPCs for serious users.
+                            </p>
+                        </div>
+                        <div class="col-span-2 flex items-center md:col-span-1">
+                            <div
+                                class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
+                            >
+                                <Icon
+                                    id="check"
+                                    fill="black"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-span-10 md:col-span-11">
+                            <p class="opacity-50">
+                                Quickly build bots, analytics, marketplaces,
+                                portfolio or wallet trackers using the most
+                                complete Solana NFT API.
+                            </p>
+                        </div>
+                        <div class="col-span-2 flex items-center md:col-span-1">
+                            <div
+                                class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
+                            >
+                                <Icon
+                                    id="check"
+                                    fill="black"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-span-10 md:col-span-11">
+                            <p class="opacity-50">
+                                We allow you to query historical data by
+                                multiple dimensions including transaction types
+                                (DAO votes, NFT Mints, DeFi Swaps, etc) or
+                                underlying protocols (Jupiter, Magic Eden, etc).
+                            </p>
+                        </div>
+                        <div class="col-span-2 flex items-center md:col-span-1">
+                            <div
+                                class="flex h-6 w-6 items-center justify-center rounded-full bg-white"
+                            >
+                                <Icon
+                                    id="check"
+                                    fill="black"
+                                />
+                            </div>
+                        </div>
+                        <div class="col-span-10 md:col-span-11">
+                            <p class="opacity-50">
+                                Stream on-chain events on up to 100k addresses
+                                for free.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a
+                href="https://helius.xyz"
+                class="btn-primary btn mt-8 text-black"
+                target="_blank"
+                rel="noreferrer"
+            >
+                <span>Get Started</span>
+            </a>
+        {/if}
+    </section>
+</IntersectionObserver>
