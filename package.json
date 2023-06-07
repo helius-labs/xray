@@ -23,15 +23,7 @@
         "test": "turbo lint",
         "lint": "turbo lint",
         "lint:fix": "eslint . --fix",
-        "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\"",
-        "prepare": "husky install"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "npm run lint",
-            "npm run format",
-            "git add"
-        ]
+        "format": "prettier --write \"**/*.{ts,tsx,md,svelte}\""
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.52.0",
@@ -59,8 +51,6 @@
         "eslint-plugin-svelte3": "^4.0.0",
         "eslint-plugin-this": "^0.2.3",
         "eslint-plugin-write-good-comments": "^0.1.4",
-        "husky": "^8.0.3",
-        "lint-staged": "^13.2.2",
         "nodemon": "^2.0.20",
         "prettier": "^2.8.4",
         "prettier-plugin-css-order": "^1.3.0",
@@ -79,8 +69,5 @@
     "engines": {
         "node": ">=18.0.0"
     },
-    "packageManager": "npm@8.19.2",
-    "dependencies": {
-        "@solana/spl-account-compression": "^0.1.8"
-    }
+    "packageManager": "npm@8.19.2"
 }

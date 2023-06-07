@@ -46,20 +46,8 @@ export interface UITokenMetadata {
     collectionKey: string;
     description?: string;
     attributes?: UITokenMetadataAttribute[];
-    sellerFeeBasisPoints?: number;
     creators?: UITokenMetadataCreators[];
     price?: number;
-    owner: string;
-    delegate?: string;
-    frozen?: boolean;
-    mutable?: boolean;
-    compressed?: boolean;
-    dataHash?: string;
-    creatorHash?: string;
-    assetHash?: string;
-    tree?: string;
-    seq?: number;
-    leafId?: number;
 }
 
 export type Icon = keyof typeof IconPaths;
@@ -97,5 +85,3 @@ export interface Modal {
 }
 
 export type Modals = keyof typeof modals;
-
-export type NullableProp<T> = T | null | undefined;
