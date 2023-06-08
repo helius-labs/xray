@@ -2,7 +2,7 @@ import { Connection } from "@solana/web3.js";
 
 const networks = {
     devnet: `https://rpc-devnet.helius.xyz/`,
-    mainnet: `https://mainnet-beta.solanarpc.network/`,
+    mainnet: `https://rpc.helius.xyz/`,
     solanaMainnet: "https://api.mainnet-beta.solana.com",
 };
 
