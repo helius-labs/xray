@@ -1,4 +1,6 @@
 import { t } from "$lib/trpc/t";
+import type { EnrichedTransaction } from "@helius-labs/helius-sdk/dist";
+import { parseTransaction } from "@helius-labs/xray";
 
 import { z } from "zod";
 
@@ -11,7 +13,7 @@ type SignaturesResponse = {
     items: string[][];
 };
 
-export const signature = t.procedure
+export const cnftTransactions = t.procedure
     .input(z.string())
     .query(async ({ input }) => {
         const url = `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`;
@@ -34,5 +36,21 @@ export const signature = t.procedure
 
         const signatures = response.items.map((signature) => {
             return signature[0];
+        });
+
+        const transactionUrl = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
+
+        const transactions: EnrichedTransaction[] = await fetch(
+            transactionUrl,
+            {
+                body: JSON.stringify({
+                    transactions: signatures,
+                }),
+                method: "POST",
+            }
+        ).then((res) => res.json());
+
+        return transactions.map((tx) => {
+            return parseTransaction(tx);
         });
     });
