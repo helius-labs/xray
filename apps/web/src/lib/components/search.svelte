@@ -252,13 +252,13 @@
         class="relative z-10 grid grid-flow-dense grid-cols-1 py-3 md:grid-cols-4"
     >
         <button
-            class="btn col-span-1 mb-4 border-0 bg-black bg-opacity-60 hover:bg-white hover:text-black md:ml-2"
+            class="btn col-span-1 mb-4 border-0 bg-black bg-opacity-60 text-white hover:bg-white hover:text-black md:ml-2"
             on:click|preventDefault={newSearch}
         >
             <span class="text-sm">Go</span>
         </button>
         <button
-            class="btn col-span-3 mb-4 border-0 bg-black bg-opacity-60 hover:bg-white hover:text-black md:order-first"
+            class="btn col-span-3 mb-4 border-0 bg-black bg-opacity-60 text-white hover:bg-white hover:text-black md:order-first"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>

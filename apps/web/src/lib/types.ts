@@ -97,6 +97,7 @@ export type FetchModel<T> = {
 
     // Sometimes we fetch a primitive format then enrich it later
     enriched?: boolean;
+    isEnriching?: boolean;
 };
 
 export type TransactionsInput = {

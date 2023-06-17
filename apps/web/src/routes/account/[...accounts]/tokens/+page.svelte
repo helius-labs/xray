@@ -1,11 +1,7 @@
 <script>
-    import {
-        assetsByOwner,
-        assetBalances,
-        ownedAssets,
-        assets,
-    } from "$lib/state/assets";
+    import { assetsByOwner, ownedAssets, assets } from "$lib/state/assets";
 
+    import { assetBalances } from "$lib/state/balances";
     import { account } from "$lib/state/accounts";
 
     import { Image } from "lucide-svelte";

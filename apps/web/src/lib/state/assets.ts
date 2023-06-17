@@ -40,15 +40,25 @@ export const assetsByGroup = writable<AssetsByGroup>(new Map());
 
 // Fill in more details for a specific asset.
 export const enrichAsset = async (id: string) => {
-    console.log("ENRICHING!!!!!");
+    const $assets = get(assets);
 
-    const asset = await fetchJson<Asset>(`/api/asset/${id}`);
+    const asset = $assets.get(id) || ASSET();
 
-    if (asset) {
-        addAsset(asset);
-    }
+    asset.isEnriching = true;
 
-    console.log("ASSET", asset);
+    // update with isEnriching state
+    assets.update(($a) => {
+        $a.set(id, asset);
+
+        return $a;
+    });
+
+    // Fetch details and give them to addAsset
+    const assetMetadata = await fetchJson<Asset>(`/api/asset/${id}`);
+
+    addAsset({
+        ...assetMetadata,
+    });
 };
 
 // Attempt to determine the type of a raw asset based on existence of certain properties.
@@ -96,9 +106,13 @@ export const extractDetailsFromDAS = (asset: any) => {
     );
 
     // Generate preview from first image scalled down to 300px
-    result.imagePreview = result?.media?.images[0]
-        ? `${PREVIEW_CDN}/${result?.media?.images[0]}`
-        : "";
+    const [firstImage] = result?.media?.images;
+
+    // result.imagePreview =
+    //     firstImage && !firstImage.endsWith("gif")
+    //         ? `${PREVIEW_CDN}/${result?.media?.images[0]}`
+    //         : firstImage;
+    result.imagePreview = firstImage;
 
     // Standardize attribute property names
     result.attributes = (

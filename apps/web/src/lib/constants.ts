@@ -57,6 +57,7 @@ export const ASSET = () =>
         symbol: "",
         type: "unknown",
         uri: "",
+        isEnriching: false,
     } as Asset);
 
 export const FETCH_MODEL = () =>

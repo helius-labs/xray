@@ -8,13 +8,15 @@
     export let id: string = "";
 
     let intersecting = false;
+    let enriched = false;
 
     let element: HTMLDivElement;
 
     $: asset = $assets.get(id) || { data: ASSET() };
 
-    $: if (!asset.enriched && intersecting && !asset.isLoading) {
+    $: if (!asset.enriched && intersecting && !asset.isLoading && !enriched) {
         enrichAsset(id);
+        enriched = true;
     }
 </script>
 
@@ -23,7 +25,7 @@
     {element}
     bind:intersecting
 >
-    <div bind:this={element} />
-
-    <slot {asset} />
+    <div bind:this={element}>
+        <slot {asset} />
+    </div>
 </IntersectionObserver>

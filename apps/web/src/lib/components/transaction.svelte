@@ -46,11 +46,11 @@
 </script>
 
 {#if transaction}
-    <div
+    <!-- <div
         class="dark-card min-h-8 relative mb-10 border !p-0 !pt-3 hover:cursor-pointer hover:border-gray-400"
         class:mt-[3.25rem]={compressed}
-    >
-        <a
+    > -->
+    <!-- <a
             href={`/account/${userAccount}/transactions/compressed`}
             class="btn-sm btn absolute -top-4 -left-1 border-transparent bg-black text-xs text-gray-300 hover:bg-black"
             class:pt-1={compressed}
@@ -72,15 +72,15 @@
                     {transactionType}
                 </div>
             {/if}
-        </a>
+        </a> -->
 
-        <div
+    <!-- <div
             class="absolute -top-3  -right-1 rounded border-transparent bg-secondary p-1 text-[10px] text-gray-300"
         >
             {formarDate(transaction.timestamp)}
-        </div>
+        </div> -->
 
-        <div class="ml-2 mt-3 flex text-xs">
+    <!-- <div class="ml-2 mt-3 flex text-xs">
             <span class="opacity-50">
                 <FileCog size={14} />
             </span>
@@ -106,33 +106,34 @@
                     {shortenString(transaction.signature, 4)}
                 </span>
             </span>
+        </div> -->
+
+    {#if transaction.actions.length < 1}
+        <div class="p-2">
+            <i class="text-xs opacity-40">Click for more details</i>
         </div>
+    {/if}
 
-        {#if transaction.actions.length < 1}
-            <div class="p-2">
-                <i class="text-xs opacity-40">Click for more details</i>
-            </div>
-        {/if}
+    {#each transaction.actions as action}
+        {@const id = action.sent || action.received}
 
-        {#each transaction.actions as action}
-            {@const id = action.sent || action.received}
+        {@const isReceived = received(action.actionType)}
+        {@const isSent = sent(action.actionType)}
 
-            {@const isReceived = received(action.actionType)}
-            {@const isSent = sent(action.actionType)}
-
-            <AssetProvider
-                {id}
-                let:asset
-            >
-                <div class="flex items-center justify-between pr-3">
+        <AssetProvider
+            {id}
+            let:asset
+        >
+            {JSON.stringify(asset)}
+            <!-- <div class="flex items-center justify-between pr-3">
                     <div class="relative flex items-center py-3 pl-6">
                         <div
                             class="absolute left-0 top-1/2 h-[1px] w-5 -translate-y-1/2 bg-white opacity-20"
                         />
 
-                        <a href="/token/{asset.data.id}">
+                        <a href="/token/{asset.data?.id}">
                             <img
-                                src={asset.data.imagePreview}
+                                src={asset.data?.imagePreview}
                                 class="aspect-square w-8 rounded bg-secondary bg-cover bg-center hover:scale-125"
                                 alt=""
                             />
@@ -248,8 +249,8 @@
 
                         {amount(action.amount)}
                     </p>
-                </div>
-            </AssetProvider>
-        {/each}
-    </div>
+                </div> -->
+        </AssetProvider>
+    {/each}
+    <!-- </div> -->
 {/if}
