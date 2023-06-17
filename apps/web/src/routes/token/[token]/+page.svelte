@@ -22,6 +22,7 @@
     import { cubicOut } from "svelte/easing";
     import { fade, fly } from "svelte/transition";
 
+    import CompressedNftTransactions from "$lib/components/cnft-transactions.svelte";
     import Collapse from "$lib/components/collapse.svelte";
     import JSON from "$lib/components/json.svelte";
     import Transactions from "$lib/components/transactions.svelte";
@@ -393,9 +394,15 @@
                     </Collapse>
                 </div>
             {/if}
-            <div class="mt-3 pl-2 md:pl-0">
-                <Transactions account={address} />
-            </div>
+            {#if metadata.compressed}
+                <div class="pl-2- mt-3 md:pl-0">
+                    <CompressedNftTransactions account={address} />
+                </div>
+            {:else}
+                <div class="mt-3 pl-2 md:pl-0">
+                    <Transactions account={address} />
+                </div>
+            {/if}
             <div class="mt-3">
                 <JSON
                     data={metadata}

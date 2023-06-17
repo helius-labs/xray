@@ -7,14 +7,23 @@ import { z } from "zod";
 const { HELIUS_KEY } = process.env;
 
 type SignaturesResponse = {
-    total: number;
-    limit: number;
-    page: number;
-    items: string[][];
+    jsonrpc: string;
+    result: {
+        total: number;
+        limit: number;
+        page: number;
+        items: string[][];
+    };
+    id: string;
 };
 
 export const cnftTransactions = t.procedure
-    .input(z.string())
+    .input(
+        z.object({
+            account: z.string(),
+            cursor: z.number().optional().default(1),
+        })
+    )
     .query(async ({ input }) => {
         const url = `https://rpc.helius.xyz/?api-key=${HELIUS_KEY}`;
 
@@ -24,8 +33,9 @@ export const cnftTransactions = t.procedure
                 jsonrpc: "2.0",
                 method: "getSignaturesForAsset",
                 params: {
-                    id: input,
-                    page: 1,
+                    id: input.account,
+                    limit: 20,
+                    page: input.cursor,
                 },
             }),
             headers: {
@@ -34,7 +44,7 @@ export const cnftTransactions = t.procedure
             method: "POST",
         }).then((res) => res.json());
 
-        const signatures = response.items.map((signature) => {
+        const signatures = response.result.items.map((signature) => {
             return signature[0];
         });
 
@@ -50,7 +60,10 @@ export const cnftTransactions = t.procedure
             }
         ).then((res) => res.json());
 
-        return transactions.map((tx) => {
-            return parseTransaction(tx);
-        });
+        const result = transactions.map((tx) => parseTransaction(tx)) || [];
+
+        return {
+            page: input.cursor + 1,
+            result,
+        };
     });
