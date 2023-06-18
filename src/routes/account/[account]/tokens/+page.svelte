@@ -7,7 +7,7 @@
 
     import { SOL } from "$lib/xray";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-    import formatMoney from "src/lib/util/format-money";
+    import formatMoney from "$lib/util/format-money";
 
     const account = $page.params.account;
 

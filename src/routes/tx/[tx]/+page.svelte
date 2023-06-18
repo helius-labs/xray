@@ -18,7 +18,7 @@
     import JSON from "$lib/components/json.svelte";
     import LogMessages from "$lib/components/log-messages.svelte";
     import Transaction from "$lib/components/transaction.svelte";
-    import Collapse from "src/lib/components/collapse.svelte";
+    import Collapse from "$lib/components/collapse.svelte";
 
     let animate = false;
 

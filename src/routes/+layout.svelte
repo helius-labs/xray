@@ -20,7 +20,7 @@
         isConnectingWallet,
         showConnectWallet,
         wallets,
-    } from "src/lib/state/stores/connect-wallet";
+    } from "$lib/state/stores/connect-wallet";
 
     import Footer from "$lib/components/footer.svelte";
     import Modals from "$lib/components/modals.svelte";

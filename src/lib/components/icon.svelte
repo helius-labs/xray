@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
-    import { type Icon, IconPaths } from "src/lib/types";
+    import { type Icon, IconPaths } from "$lib/types";
 
     export let id: Icon;
     export let path: string = "";

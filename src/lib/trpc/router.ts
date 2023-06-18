@@ -15,7 +15,7 @@ import { token2022 } from "$lib/trpc/routes/token2022";
 import { tps } from "$lib/trpc/routes/tps";
 import { transaction } from "$lib/trpc/routes/transaction";
 import { transactions } from "$lib/trpc/routes/transactions";
-import { blockTransactions } from "src/lib/trpc/routes/block-transactions";
+import { blockTransactions } from "$lib/trpc/routes/block-transactions";
 
 export const t = initTRPC.context<Context>().create();
 

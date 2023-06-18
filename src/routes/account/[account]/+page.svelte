@@ -8,7 +8,7 @@
     import { tweened } from "svelte/motion";
 
     import Transactions from "$lib/components/transactions.svelte";
-    import { filterStore } from "src/lib/util/stores/filter";
+    import { filterStore } from "$lib/util/stores/filter";
 
     const { account } = $page.params;
 
