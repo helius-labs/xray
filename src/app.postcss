@@ -1,0 +1,178 @@
+/* Base config */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+    min-height: 100vh;
+    letter-spacing: 0.05rem;
+    margin: 0;
+
+    font-size: 14px;
+}
+
+@media (min-width: 640px) {
+    body,
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    font-family: "Roboto", sans-serif;
+    background-size: cover;
+    background-position: center;
+}
+
+input::placeholder {
+    @apply text-white opacity-50;
+}
+
+.border {
+    @apply border-secondary;
+}
+
+.card {
+    @apply rounded-lg border border-secondary bg-black p-3 transition-all duration-150;
+}
+
+a.card:hover,
+button.card:hover {
+    @apply border-[#fff]/50 bg-[#fff]/5;
+}
+
+.center {
+    @apply flex items-center justify-center;
+}
+
+.icon {
+    @apply h-4 w-4 fill-current;
+}
+
+.icon-fill-success {
+    @apply fill-green-500;
+}
+
+.icon-stroke-success {
+    @apply stroke-green-500;
+}
+
+.icon-fill-black {
+    @apply fill-black;
+}
+
+.icon-fill-warning {
+    @apply fill-warning;
+}
+
+.icon-xs {
+    width: 0.65rem;
+    height: 0.65rem;
+}
+
+.icon-md {
+    @apply h-5 w-5;
+}
+
+.icon-lg {
+    @apply h-8 w-8;
+}
+
+.bg-faint {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+.spot-glow {
+    position: relative;
+    width: 100vw;
+    padding-bottom: 65%;
+    background: radial-gradient(
+        circle at center,
+        #ff5e002e 1%,
+        #f8116b %,
+        transparent 55%
+    );
+}
+
+section {
+    @apply pb-8;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Space Grotesk", sans-serif;
+}
+
+.btn-outline-gradient:before {
+    position: absolute;
+    background: black;
+    content: "";
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 4px);
+    height: calc(100% - 4px);
+    transform: translate(-50%, -50%);
+    border-radius: var(--border-radius);
+    z-index: 0;
+    transition: background 0.3s ease-in-out;
+}
+
+.btn-outline-gradient {
+    background: linear-gradient(
+        to bottom right,
+        #ec5a16 10%,
+        #cd51e9 50%,
+        #40d2ff,
+        #0a50dc
+    );
+    color: #fff;
+    position: relative;
+}
+
+.bg-transfer {
+    background: linear-gradient(rgb(0 0 0), rgb(255 94 0 / 95%) 150%);
+}
+
+/* New components */
+.btn-gradient {
+    color: rgb(255, 255, 255);
+    background: -webkit-linear-gradient(
+        left,
+        rgb(255, 85, 0),
+        rgb(255, 145, 0)
+    );
+}
+
+.btn-outline,
+.input-bordered {
+    @apply border border-secondary;
+}
+
+.blob {
+    /* --color: rgba(255, 94, 0, 0.949);
+    background: var(--color); */
+    /* background: radial-gradient(circle, rgb(212, 0, 255) 10%, rgb(255, 102, 0) 35%,   rgb(0, 0, 0) 100%); */
+    border-radius: 100%;
+    height: 30rem;
+    width: 30rem;
+    filter: blur(20rem);
+}
+
+.fancy-focus:focus {
+    background: linear-gradient(
+        to bottom right,
+        #ec5a16 10%,
+        #cd51e9 50%,
+        #40d2ff,
+        #0a50dc
+    );
+}
+
+.content {
+    @apply mx-auto max-w-2xl;
+}
