@@ -1,5 +1,5 @@
 {
-    "buildCommand": "cd ../../ && npx turbo build",
-    "installCommand": "npm install --prefix=../../",
+    "buildCommand": "npm run build",
+    "installCommand": "npm install",
     "outputDirectory": ".svelte-kit"
 }
