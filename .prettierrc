@@ -15,6 +15,6 @@
     "singleQuote": false,
     "svelteSortOrder": "options-styles-scripts-markup",
     "tabWidth": 4,
-    "tailwindConfig": "./apps/web/tailwind.config.cjs",
+    "tailwindConfig": "./tailwind.config.cjs",
     "trailingComma": "es5"
 }
