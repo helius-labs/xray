@@ -14,6 +14,7 @@
     import Icon from "$lib/components/icon.svelte";
     import IntersectionObserver from "svelte-intersection-observer";
     import shortenString from "../util/shorten-string";
+    import AccountDomain from "./account-domain.svelte";
     import TokenProvider from "./providers/token-provider.svelte";
 
     let element: HTMLDivElement;
@@ -239,9 +240,9 @@
                                                                         href="/account/{action.to}"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
-                                                                        {shortenString(
-                                                                            action.to
-                                                                        )}
+                                                                        <AccountDomain
+                                                                            address={action.to}
+                                                                        />
                                                                     </a>
                                                                 </h3>
                                                             {:else if action?.actionType?.includes("RECEIVED") && action.from}
@@ -259,9 +260,9 @@
                                                                         href="/account/{action.from}"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
-                                                                        {shortenString(
-                                                                            action.from
-                                                                        )}
+                                                                        <AccountDomain
+                                                                            address={action.from}
+                                                                        />
                                                                     </a>
                                                                 </h3>
                                                             {:else}
@@ -274,9 +275,9 @@
                                                                             href="/account/{action.from}"
                                                                             class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
-                                                                            {shortenString(
-                                                                                action.from
-                                                                            )}
+                                                                            <AccountDomain
+                                                                                address={action.from}
+                                                                            />
                                                                         </a>
                                                                     </h3>
                                                                 {/if}
@@ -298,9 +299,9 @@
                                                                             href="/account/{action.to}"
                                                                             class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
-                                                                            {shortenString(
-                                                                                action.to
-                                                                            )}
+                                                                            <AccountDomain
+                                                                                address={action.to}
+                                                                            />
                                                                         </a>
                                                                     </h3>
                                                                 {/if}
