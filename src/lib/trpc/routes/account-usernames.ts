@@ -9,24 +9,10 @@ interface Username {
     username: string;
 }
 
-const getBackpackUsername = async (usernames: Username[], address = "") => {
-    const response = await fetch(
-        `https://xnft-api-server.xnfts.dev/v1/users/fromPubkey?publicKey=${address}&blockchain=solana`
-    );
-    const data = await response.json();
-
-    if (data?.user?.username) {
-        usernames.push({
-            type: "backpack",
-            username: data.user.username,
-        });
-    }
-};
-
 const getSolanaDomain = async (usernames: Username[], address = "") => {
-    const url = `https://api.helius.xyz/v0/addresses/${address}/names?api-key=${HELIUS_KEY}`;
-    const response = await fetch(url);
-    const data = await response.json();
+    const data = await fetch(
+        `https://api.helius.xyz/v0/addresses/${address}/names?api-key=${HELIUS_KEY}`
+    ).then((response) => response.json());
 
     if (data?.domainNames) {
         for (const domain of data.domainNames) {
@@ -35,6 +21,19 @@ const getSolanaDomain = async (usernames: Username[], address = "") => {
                 username: `${domain}.sol`,
             });
         }
+    }
+};
+
+const getBackpackUsername = async (usernames: Username[], address = "") => {
+    const data = await fetch(
+        `https://xnft-api-server.xnfts.dev/v1/users/fromPubkey?publicKey=${address}&blockchain=solana`
+    ).then((response) => response.json());
+
+    if (data?.user?.username) {
+        usernames.push({
+            type: "backpack",
+            username: data.user.username,
+        });
     }
 };
 
@@ -50,8 +49,10 @@ export const accountUsernames = t.procedure
     )
     .query(async ({ input: address }) => {
         const usernames: Username[] = [];
-        await getBackpackUsername(usernames, address);
-        await getSolanaDomain(usernames, address);
+        await Promise.all([
+            getSolanaDomain(usernames, address),
+            getBackpackUsername(usernames, address),
+        ]);
 
         return usernames || [];
     });
