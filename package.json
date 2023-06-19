@@ -13,15 +13,7 @@
         "// Lint": "-------------------------------------------------------------",
         "test": "npm run lint",
         "lint": "eslint .",
-        "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'",
-        "prepare": "husky install"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "npm run lint",
-            "npm run format",
-            "git add"
-        ]
+        "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'"
     },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
@@ -58,8 +50,6 @@
         "eslint-plugin-svelte3": "^4.0.0",
         "eslint-plugin-this": "^0.2.3",
         "eslint-plugin-write-good-comments": "^0.2.0",
-        "husky": "^8.0.3",
-        "lint-staged": "^13.2.2",
         "postcss": "^8.4.14",
         "postcss-load-config": "^4.0.1",
         "prettier": "^2.8.8",
