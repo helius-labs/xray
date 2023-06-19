@@ -1,0 +1,31 @@
+{
+	"/": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/account/[account]": [
+		"src/routes/+layout.ts",
+		"src/routes/+layout.ts"
+	],
+	"/account/[account]/concurrent-merkle-tree": [
+		"src/routes/+layout.ts"
+	],
+	"/account/[account]/nfts": [
+		"src/routes/+layout.ts"
+	],
+	"/account/[account]/tokens": [
+		"src/routes/+layout.ts"
+	],
+	"/api/search/[query]": [
+		"src/routes/api/search/[query]/+server.ts"
+	],
+	"/block/[slot]": [
+		"src/routes/+layout.ts"
+	],
+	"/token/[token]": [
+		"src/routes/+layout.ts"
+	],
+	"/tx/[tx]": [
+		"src/routes/+layout.ts"
+	]
+}

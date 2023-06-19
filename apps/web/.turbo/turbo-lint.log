@@ -1,0 +1,22 @@
+npm WARN ignoring workspace config at C:\Users\Ashley Kim\coding\solana\xray\apps\web/.npmrc 
+
+> @helius-labs/xray-web@0.0.1 lint
+> eslint .
+
+
+[35m🌼 daisyUI components 2.50.0[0m [0m https://daisyui.com
+  [32m✔︎ Including:[0m [0m base, components, 1 themes, utilities
+  [32m❤︎ Support daisyUI: [0m https://opencollective.com/daisyui [0m
+  
+
+C:\Users\Ashley Kim\coding\solana\xray\apps\web\src\routes\+layout.svelte
+  2:5  warning  Unused CSS selector ".grid"  css-unused-selector
+
+C:\Users\Ashley Kim\coding\solana\xray\apps\web\src\routes\account\[account]\+layout.svelte
+  2:5  warning  Unused CSS selector ".nav::before"  css-unused-selector
+
+C:\Users\Ashley Kim\coding\solana\xray\apps\web\src\routes\block\[slot]\+page.svelte
+  71:25  warning  A11y: '#' is not a valid href attribute  a11y-invalid-attribute
+
+✖ 3 problems (0 errors, 3 warnings)
+

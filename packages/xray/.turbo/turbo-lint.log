@@ -1,0 +1,9 @@
+
+> @helius-labs/xray@1.0.0 lint
+> eslint --ext .ts src
+
+
+[35m🌼 daisyUI components 2.50.0[0m [0m https://daisyui.com
+  [32m✔︎ Including:[0m [0m base, components, 1 themes, utilities
+  [32m❤︎ Support daisyUI: [0m https://opencollective.com/daisyui [0m
+  
