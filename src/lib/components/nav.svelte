@@ -5,12 +5,12 @@
 
     import Icon from "$lib/components/icon.svelte";
     import Search from "$lib/components/search.svelte";
-    import Stats from "$lib/components/stats.svelte";
+    // import Stats from "$lib/components/stats.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
 </script>
 
-<Stats />
+<!-- <Stats /> -->
 <nav
     class="sticky left-0 top-0 z-40 grid h-full grid-cols-6 items-center justify-between border bg-black p-1 px-0"
 >
