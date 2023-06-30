@@ -2,11 +2,13 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
+
+import { connect } from "$lib/xray";
 
 // TODO: add output validation once this merges with the token endpoint
 export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
-    const url = `https://mainnet-beta.solanarpc.network/?api-key=${HELIUS_KEY}`;
+    const url = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
 
     const response = await fetch(url, {
         body: JSON.stringify({

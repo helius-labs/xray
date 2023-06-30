@@ -6,7 +6,7 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
 
 export const transactions = t.procedure
     .input(
@@ -59,7 +59,7 @@ export const transactions = t.procedure
     .query(async ({ input }) => {
         const url = `https://api.helius.xyz/v0/addresses/${
             input.account
-        }/transactions?api-key=${HELIUS_KEY}${
+        }/transactions?api-key=${HELIUS_API_KEY}${
             input.filter ? `&type=${input.filter}` : ""
         }${input.cursor ? `&before=${input.cursor}` : ""}`;
 
