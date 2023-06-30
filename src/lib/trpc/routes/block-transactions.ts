@@ -13,7 +13,7 @@ import {
     type TransactionSignature,
 } from "@solana/web3.js";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
 
 type TransactionWithInvocations = {
     index: number;
@@ -75,7 +75,7 @@ export const blockTransactions = t.procedure
         const limit = input.limit ?? 100;
         const invokedPrograms = new Map<string, number>();
 
-        const connection = connect("mainnet", HELIUS_KEY);
+        const connection = connect("mainnet", HELIUS_API_KEY);
 
         const block = await connection.getBlock(input.slot, {
             maxSupportedTransactionVersion: 0,
@@ -157,7 +157,7 @@ export const blockTransactions = t.procedure
 
         signatureList = signatureList.slice(0, limit);
 
-        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_KEY}`;
+        const url = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_API_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({

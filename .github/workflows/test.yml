@@ -2,7 +2,7 @@
 name: Run tests & sync
 
 env:
-    HELIUS_KEY: "chewed-glass"
+    HELIUS_API_KEY: "chewed-glass"
 
 on:
     pull_request:
