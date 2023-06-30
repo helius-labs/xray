@@ -6,12 +6,12 @@ import { connect } from "$lib/xray";
 
 import { LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
 
 export const accountInfo = t.procedure
     .input(z.string())
     .query(async ({ input: address }) => {
-        const connection = connect("mainnet", HELIUS_KEY);
+        const connection = connect("mainnet", HELIUS_API_KEY);
 
         const pubKey = new PublicKey(address);
 

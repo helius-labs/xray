@@ -2,7 +2,7 @@ import { t } from "$lib/trpc/t";
 import { PublicKey } from "@solana/web3.js";
 import { z } from "zod";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
 
 export const token2022 = t.procedure
     .input(z.string())
@@ -12,7 +12,7 @@ export const token2022 = t.procedure
         );
 
         const walletPublicKey = new PublicKey(input);
-        const url = `https://icarus.helius.xyz/?api-key=${HELIUS_KEY}`;
+        const url = `https://icarus.helius.xyz/?api-key=${HELIUS_API_KEY}`;
 
         const response = await fetch(url, {
             body: JSON.stringify({
