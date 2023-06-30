@@ -2,7 +2,7 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
 
 interface Username {
     type: "bonfida" | "backpack";
@@ -24,7 +24,7 @@ const getBackpackUsername = async (usernames: Username[], address = "") => {
 };
 
 const getSolanaDomain = async (usernames: Username[], address = "") => {
-    const url = `https://api.helius.xyz/v0/addresses/${address}/names?api-key=${HELIUS_KEY}`;
+    const url = `https://api.helius.xyz/v0/addresses/${address}/names?api-key=${HELIUS_API_KEY}`;
     const response = await fetch(url);
     const data = await response.json();
 

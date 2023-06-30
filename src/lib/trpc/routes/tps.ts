@@ -2,10 +2,10 @@ import { Helius } from "helius-sdk";
 
 import { t } from "$lib/trpc/t";
 
-const { HELIUS_KEY } = process.env;
+const { HELIUS_API_KEY } = process.env;
 
 export const tps = t.procedure.query(async () => {
-    const helius = new Helius(HELIUS_KEY || "");
+    const helius = new Helius(HELIUS_API_KEY || "");
 
     const tps = await helius.rpc.getCurrentTPS();
 
