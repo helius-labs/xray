@@ -12,6 +12,7 @@ export const concurrentMerkleTree = t.procedure
     .input(z.string())
     .query(async ({ input: address }) => {
         const connection = connect("mainnet", HELIUS_API_KEY);
+
         const pubkey = new PublicKey(address);
         const cmt = await ConcurrentMerkleTreeAccount.fromAccountAddress(
             connection,
