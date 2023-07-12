@@ -1,13 +1,17 @@
 import { writable, get } from "svelte/store";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-import { addBalance } from "$lib/state/balances";
+import type { Balance, Asset, AssetsState, BalancesState } from "$lib/next/types";
 
-import type { Balance, Asset, AssetsState } from "$lib/components/next/types";
+import { ASSET, SOL } from "$lib/next/constants";
 
-import { ASSET, SOL } from "$lib/components/next/constants";
+import { assetFromDas } from "$lib/next/state/util/asset-from-das";
 
-import { assetFromDas } from "$lib/state/util/asset-from-das";
+import {
+    updateItem,
+    setLoading,
+    setError,
+} from "$lib/next/state/util/update";
 
 const ASSET_PAGE_SIZE = 1000;
 
@@ -23,31 +27,8 @@ export const assets = writable<AssetsState>({
     loading: false,
 });
 
-const setLoading = (fetchable, loading: boolean) =>
-    fetchable.update((state) => ({ ...state, loading }));
-
-const setError = (fetchable, error: string) =>
-    fetchable.update((state) => ({ ...state, error }));
-
-const updateItem = (fetchable, data: Asset | Balance) =>
-    fetchable.update((state) => {
-        const existing = state?.data?.get(data.id) || {};
-
-        state.data.set(data.id, {
-            ...existing,
-            ...data,
-        });
-
-        return state;
-    });
-
 const fetchTokenDetails = (id: string) =>
-    fetch("/api/token", {
-        body: JSON.stringify({
-            tokens: [id],
-        }),
-        method: "POST",
-    }).then((res) => res.json());
+    fetch("/api/token/" + id).then((res) => res.json());
 
 const fetchAssets = (address: string, page?: number) =>
     fetch("/api/assets", {
@@ -70,14 +51,16 @@ const fetchBalances = (address: string) =>
 export const enrichAsset = async (id: string) => {
     const _assets = get(assets);
 
-    if (_assets.data.has(id) && _assets.data.get(id)?.enriched) {
+    if (_assets.data.has(id) && _assets.data.get(id)?.enriched || !id) {
         return;
     }
 
     const details = await fetchTokenDetails(id);
 
-    // eslint-disable-next-line no-console
-    console.log({ details });
+    updateItem(assets, {
+        ...details,
+        enriched: true,
+    });
 };
 
 // Fetches all assets associated with the Digital Asset Standard (DAS)
@@ -120,11 +103,12 @@ export const loadAssets = async (address: string) => {
         // eslint-disable-next-line no-console
         console.log(error);
 
-        setError(String(error));
+        setError(assets, String(error));
     } finally {
         setLoading(assets, false);
     }
 };
+
 
 // Fetches all token balances for an address.
 // This includes NFTs and tokens but no details. Enrichment required.
@@ -132,26 +116,23 @@ export const loadBalances = async (address: string) => {
     setLoading(balances, true);
 
     try {
-        const balances = await fetchBalances(address);
-
-        // Add SOL to balances
-        updateItem(balances, {
-            amount: balances?.nativeBalance / LAMPORTS_PER_SOL,
-            id: SOL,
-            type: "token",
-        });
+        const balancesResponse = await fetchBalances(address);
 
         // Loop over other balances and add to assets
-        balances?.tokens?.forEach((tokenBalance) => {
+        balancesResponse?.forEach((tokenBalance) => {
             const { amount, decimals, mint } = tokenBalance;
 
             updateItem(balances, {
                 amount: amount / LAMPORTS_PER_SOL,
                 id: mint,
-                type: decimals > 0 ? "assets" : "token",
+                type: decimals > 0 ? "asset" : "token",
+                exchangeRate : {
+                    USD: 0
+                }
             });
         });
     } catch (error) {
+        console.log(error);
         setError(balances, String(error));
     } finally {
         setLoading(balances, false);

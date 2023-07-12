@@ -1,7 +1,7 @@
 <script>
-    import AssetsSummary from "$lib/components/next/assets-summary.svelte";
-    import TokensSummary from "$lib/components/next/tokens-summary.svelte";
-    import TransactionsSummary from "$lib/components/next/transactions-summary.svelte";
+    import AssetsSummary from "$lib/next/components/assets-summary.svelte";
+    import TokensSummary from "$lib/next/components/tokens-summary.svelte";
+    import TransactionsSummary from "$lib/next/components/transactions-summary.svelte";
 </script>
 
 <div class="grid grid-cols-12 gap-3">

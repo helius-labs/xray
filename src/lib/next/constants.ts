@@ -1,3 +1,5 @@
+import type { Asset, Balance } from "$lib/next/types";
+
 export const ASSET = (asset?: Asset) => ({
     animationUrl: "",
     assetHash: "",
@@ -37,7 +39,11 @@ export const BALANCE = (balance?: Balance) => ({
         USD: null,
     },
     mint: "",
-    ...asset,
+    ...balance,
 });
 
 export const SOL = "So11111111111111111111111111111111111111112";
+export const USDC = "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
+
+export const HELIUS_API_ENDPOINT = (endpoint:string, apiKey:string) => "https://api.helius.xyz/" + endpoint + "/?api-key=" + apiKey;
+export const HELIUS_RPC_ENDPOINT = (apiKey:string) => "https://mainnet.helius-rpc.com/?api-key=" + apiKey;

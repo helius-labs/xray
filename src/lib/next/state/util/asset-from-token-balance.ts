@@ -1,4 +1,4 @@
-import { ASSET, BALANCE } from "$lib/components/next/constants";
+import { ASSET, BALANCE } from "$lib/next/constants";
 
 export const assetFromBalance = (tokenBalance) => {
     const asset: Asset = ASSET();

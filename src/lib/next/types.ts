@@ -1,3 +1,5 @@
+import type { EnrichedTransaction, Source, TransactionType } from "helius-sdk";
+
 export type Fetchable<T> = {
     data: T;
     error?: string;
@@ -28,7 +30,7 @@ export type Creator = {
 
 export type Authorities = {
     address: string;
-    scopes: string[];
+    scopes?: string[];
 };
 
 export type Grouping = {
@@ -75,12 +77,42 @@ export type Asset = {
     seq: number;
     leafId: number;
     collectionKey: string;
-    jsonUri: string;
+    uri: string;
     ownershipModel: string;
     interface: string;
     type: "token" | "asset" | null;
 };
 
+export type Account = {
+    account: string;
+    changes: {
+        mint: string;
+        amount: number;
+    }[];
+};
+
+export type TransactionAction = {
+    actionType: string;
+    from: string;
+    to: string;
+    sent?: string;
+    received?: string;
+    amount: number;
+};
+
+export type Transaction = {
+    id: string;
+    type: string;
+    fee: number;
+    timestamp: number;
+    source: Source;
+    actions: TransactionAction[];
+    accounts: Account[];
+    raw?: EnrichedTransaction;
+};
+
 export type AssetsState = Fetchable<Map<string, Asset>>;
 
 export type BalancesState = Fetchable<Map<string, Balance>>;
+
+export type TransactionsState = Fetchable<Map<string, Balance>>;

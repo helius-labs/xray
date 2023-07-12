@@ -1,4 +1,10 @@
-const { HELIUS_API_KEY = "" } = process.env;
+const { HELIUS_API_KEY = "", RPC_URL = "" } = process.env;
+
+import { json } from "@sveltejs/kit"
+
+import { SOL } from "$lib/next/constants";
+
+import { Connection, LAMPORTS_PER_SOL, PublicKey } from "@solana/web3.js";
 
 // Consume a search, return what to do with it
 export async function POST({ request }) {
@@ -11,8 +17,20 @@ export async function POST({ request }) {
 
         const result = await response.json();
 
-        return new Response(JSON.stringify(result));
+        const tokens = result?.tokens?.filter(({ decimals } : { decimals: number}) => decimals > 0);
+
+        const data = [
+            ...tokens,
+            {
+                tokenAccount: "",
+                mint: SOL,
+                amount: result.nativeBalance / LAMPORTS_PER_SOL
+            }
+        ];
+
+        return new Response(JSON.stringify(data));
     } catch (err) {
+        console.log(err);
         return new Response(JSON.stringify(String(err)));
     }
 }
