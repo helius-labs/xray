@@ -14,18 +14,16 @@
 
     $: asset = $assets.data.get(address) || ASSET();
 
-    $: if (intersecting && Date.now() - lastUpdate > (1000)) {
+    $: if (intersecting && Date.now() - lastUpdate > 1000) {
         lastUpdate = Date.now();
 
-        console.log("enriching asset", address);
-        
         enrichAsset(address);
     }
 </script>
 
 <div>
     <IntersectionObserver
-        once={false}
+        once={true}
         {element}
         bind:intersecting
     >

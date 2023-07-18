@@ -1,10 +1,6 @@
 <script lang="ts">
     import "../app.postcss";
 
-    // import type { LayoutData } from "./$types";
-
-    // import { QueryClientProvider } from "@tanstack/svelte-query";
-
     import { clusterApiUrl } from "@solana/web3.js";
 
     import {
@@ -25,8 +21,6 @@
     import Footer from "$lib/components/footer.svelte";
     import Modals from "$lib/components/modals.svelte";
     import Nav from "$lib/components/nav.svelte";
-
-    // export let data: LayoutData;
 
     const localStorageKey = "walletAdapter";
     const network = clusterApiUrl("mainnet-beta");

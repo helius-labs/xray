@@ -1,4 +1,14 @@
-import type { EnrichedTransaction, Source, TransactionType } from "helius-sdk";
+import type {
+    EnrichedTransaction,
+    Source,
+    NativeTransfer,
+    TokenTransfer,
+} from "helius-sdk";
+
+import type {
+    TRANSACTION_ACTION_TYPES,
+    TRANSACTION_TYPES,
+} from "$lib/next/transaction-parser";
 
 export type Fetchable<T> = {
     data: T;
@@ -58,7 +68,7 @@ export type Asset = {
         primarySaleHappened: boolean;
         royaltyModel: string;
         target: string;
-    };
+    } | null;
     burnt: boolean;
     thumbnail: string;
     animationUrl: string;
@@ -81,6 +91,7 @@ export type Asset = {
     ownershipModel: string;
     interface: string;
     type: "token" | "asset" | null;
+    enriched: boolean;
 };
 
 export type Account = {
@@ -91,13 +102,17 @@ export type Account = {
     }[];
 };
 
+export type TransferType = "native" | "token";
+
+export type MergedTransfer = TokenTransfer | NativeTransfer;
+
 export type TransactionAction = {
     actionType: string;
     from: string;
     to: string;
-    sent?: string;
-    received?: string;
+    token: string;
     amount: number;
+    transferType?: TransferType;
 };
 
 export type Transaction = {
@@ -115,4 +130,8 @@ export type AssetsState = Fetchable<Map<string, Asset>>;
 
 export type BalancesState = Fetchable<Map<string, Balance>>;
 
-export type TransactionsState = Fetchable<Map<string, Balance>>;
+export type TransactionsState = Fetchable<Map<string, Transaction>>;
+
+export type TransactionType = keyof typeof TRANSACTION_TYPES;
+
+export type TransactionActionType = keyof typeof TRANSACTION_ACTION_TYPES;

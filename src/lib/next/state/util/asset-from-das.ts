@@ -1,13 +1,15 @@
 import { ASSET } from "$lib/next/constants";
 
-const filterMime = (filter: string = "image" | "video" | "text/html", files = []) =>
+const filterMime = (
+    filter: string = "image" | "video" | "text/html",
+    files = []
+) =>
     files
         .filter(({ mime = "" }) => mime.startsWith(filter))
         .map((file) => file.uri);
 
 export const assetFromDas = (das) => {
-
-    const str = JSON.stringify({das}, null, 2);
+    const str = JSON.stringify({ das }, null, 2);
 
     const asset: Asset = ASSET();
 
@@ -16,7 +18,10 @@ export const assetFromDas = (das) => {
     // Extract details from DAS
     asset.id = das?.id;
 
-    asset.externalUrl = das?.content?.links?.external_url || das?.content?.metadata?.external_url || "";
+    asset.externalUrl =
+        das?.content?.links?.external_url ||
+        das?.content?.metadata?.external_url ||
+        "";
     asset.name = das?.content?.metadata?.name || "";
     asset.description = das?.content?.metadata?.description || "";
     asset.jsonUri = das?.content?.jsonUri || "";
@@ -31,12 +36,15 @@ export const assetFromDas = (das) => {
 
     asset.image = asset.files.images[0] || das?.content?.metadata?.image || "";
 
-
-
-    asset.thumbnail = asset.image
-        ? `https://cdn.helius.services/cdn-cgi/image/width=100/${asset.image}`
-        : "";
-    asset.animationUrl = asset.files.videos[0] || das?.content?.metadata?.animation_url || das?.content?.metadata?.animationUrl || "";
+    asset.thumbnail =
+        asset.image && !asset.image.includes("ext=gif")
+            ? `https://cdn.helius.services/cdn-cgi/image/width=250/${asset.image}`
+            : "";
+    asset.animationUrl =
+        asset.files.videos[0] ||
+        das?.content?.metadata?.animation_url ||
+        das?.content?.metadata?.animationUrl ||
+        "";
     asset.htmlFile = asset.files.htmlFiles[0] || "";
 
     // Standardize attribute properties to camelCase
@@ -82,8 +90,5 @@ export const assetFromDas = (das) => {
     // Grouping
     asset.grouping = das?.grouping || [];
 
-    // if(str.includes("Mask On")) {
-    //     console.log(asset)
-    //   }
     return asset;
 };

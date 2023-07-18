@@ -1,6 +1,6 @@
 const { HELIUS_API_KEY = "", RPC_URL = "" } = process.env;
 
-import { json } from "@sveltejs/kit"
+import { json } from "@sveltejs/kit";
 
 import { SOL } from "$lib/next/constants";
 
@@ -17,20 +17,24 @@ export async function POST({ request }) {
 
         const result = await response.json();
 
-        const tokens = result?.tokens?.filter(({ decimals } : { decimals: number}) => decimals > 0);
+        const tokens = (result?.tokens || []).filter(
+            ({ decimals }: { decimals: number }) => decimals > 0
+        );
 
         const data = [
             ...tokens,
             {
-                tokenAccount: "",
+                amount: result.nativeBalance / LAMPORTS_PER_SOL,
                 mint: SOL,
-                amount: result.nativeBalance / LAMPORTS_PER_SOL
-            }
+                tokenAccount: "",
+            },
         ];
 
         return new Response(JSON.stringify(data));
     } catch (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
+
         return new Response(JSON.stringify(String(err)));
     }
 }

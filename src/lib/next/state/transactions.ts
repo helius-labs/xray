@@ -2,11 +2,9 @@ import { writable } from "svelte/store";
 
 import type { Transaction, TransactionsState } from "$lib/next/types";
 
-import {
-    updateItem,
-    setLoading,
-    setError,
-} from "$lib/next/state/util/update";
+import { updateItem, setLoading, setError } from "$lib/next/state/util/update";
+
+import tFetch from "$lib/util/tfetch";
 
 // List of all fetched transaction metadatas (TODO: sync with local storage)
 export const transactions = writable<TransactionsState>({
@@ -15,15 +13,13 @@ export const transactions = writable<TransactionsState>({
     loading: false,
 });
 
-// A list of transaction signatures in some order. this can get flipped, sorted, or cleared. 
+// A list of transaction signatures in some order. this can get flipped, sorted, or cleared.
 export const transactionsList = writable<string[]>([]);
 
-const fetchTransactions = (account: string) =>  fetch("/api/transactions", {
-    method: "POST",
-    body: JSON.stringify({
+const fetchTransactions = (account: string) =>
+    tFetch<Transaction[]>("/api/transactions", {
         account,
-    }),
-}).then((res) => res.json());
+    });
 
 export const loadTransactions = async (account: string) => {
     setLoading(transactions, true);
@@ -33,14 +29,14 @@ export const loadTransactions = async (account: string) => {
 
         transactionsList.update((current) => [
             ...current,
-            ..._transactions,
+            ..._transactions.map(({ id }) => id),
         ]);
 
         _transactions.forEach((transaction: Transaction) => {
             updateItem(transactions, transaction);
         });
     } catch (error) {
-        setError(transactions, error.message);
+        setError(transactions, String(error));
     } finally {
         setLoading(transactions, false);
     }
