@@ -60,7 +60,7 @@ $: assetsList = (Array.from($assets.data.keys()) || []);
                         on:click|self={() => goto($page.url.pathname + "/" + id)}
                         class="w-full rounded bg-secondary relative hover:scale-95 transition-transform hover:border-2 hover:opacity-50">
                         
-                        <ImageProvider let:image src={}>
+                        <ImageProvider let:image src={""}>
                             <img
                                 alt={asset.name}
                                 class="object-cover aspect-square w-full relative"
