@@ -171,7 +171,7 @@ export type ProtonParsers = Record<string, ProtonParser>;
 
 export const unknownProtonTransaction: ProtonTransaction = {
     accounts: [],
-    actions: [] || [],
+    actions: [],
     fee: 0,
     primaryUser: "",
     signature: "",
