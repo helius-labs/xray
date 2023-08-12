@@ -34,20 +34,22 @@ export const transactions = t.procedure
                         })
                     ),
                     actions: z.array(
-                        z.object({
-                            actionType: z.string(),
-                            amount: z.number(),
-                            from: z.string(),
-                            fromName: z.string().optional(),
-                            received: z.string().optional(),
-                            sent: z.string().optional(),
-                            to: z.string(),
-                            toName: z.string().optional(),
-                        })
+                        z
+                            .object({
+                                actionType: z.string().optional(),
+                                amount: z.number().optional(),
+                                from: z.string().nullable().optional(),
+                                fromName: z.string().optional(),
+                                received: z.string().optional(),
+                                sent: z.string().optional(),
+                                to: z.string().optional(),
+                                toName: z.string().optional(),
+                            })
+                            .optional()
                     ),
                     fee: z.number(),
-                    primaryUser: z.string(),
-                    raw: z.any(),
+                    primaryUser: z.string().optional(),
+                    raw: z.any().optional(),
                     signature: z.string(),
                     source: z.string(),
                     timestamp: z.number(),
