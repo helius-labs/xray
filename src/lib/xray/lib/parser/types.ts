@@ -138,7 +138,7 @@ export type ProtonParser = (
 
 export interface ProtonTransactionAction {
     actionType: ProtonActionType;
-    from: string;
+    from: string | null;
     to: string;
     sent?: string;
     received?: string;
