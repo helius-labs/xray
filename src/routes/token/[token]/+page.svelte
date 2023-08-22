@@ -30,8 +30,19 @@
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
+    import { downloadMedia } from "$lib/util/download";
+
+    let downloading = false;
 
     const address = $page.params.token;
+
+    const handleDownload = (url:string) => {
+        downloading = true;
+
+        setTimeout(() => {
+            downloadMedia(url);
+        }, 1000)
+    }
 </script>
 
 <TokenProvider
@@ -66,17 +77,24 @@
             </div>
         </div>
 
-        <div class="content px-3">
+        <div class="content px-3 w-full">
             <div
-                class="flex flex-col items-center justify-center"
+                class="flex flex-col items-center justify-center aspect-ratio bg-secondary rounded-lg relative"
                 in:fade={{ delay: 100, duration: 800 }}
             >
                 <img
-                    class="img m-auto my-3 h-auto w-full rounded-md object-contain"
+                    class="aspect-square w-full rounded-md object-cover"
                     alt="token symbol"
                     src={metadata.image}
                     in:fade={{ delay: 600, duration: 1000 }}
                 />
+
+                <a
+                    href={metadata.image}
+                    target="_blank"
+                    class="btn btn-sm bg-black border-0 absolute right-1 bottom-1">
+                    View Media
+                </a>
             </div>
 
             {#if metadata.description}
