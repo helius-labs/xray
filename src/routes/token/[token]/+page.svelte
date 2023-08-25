@@ -36,13 +36,13 @@
 
     const address = $page.params.token;
 
-    const handleDownload = (url:string) => {
+    const handleDownload = (url: string) => {
         downloading = true;
 
         setTimeout(() => {
             downloadMedia(url);
-        }, 1000)
-    }
+        }, 1000);
+    };
 </script>
 
 <TokenProvider
@@ -77,9 +77,9 @@
             </div>
         </div>
 
-        <div class="content px-3 w-full">
+        <div class="content w-full px-3">
             <div
-                class="flex flex-col items-center justify-center aspect-ratio bg-secondary rounded-lg relative"
+                class="aspect-ratio relative flex flex-col items-center justify-center rounded-lg bg-secondary"
                 in:fade={{ delay: 100, duration: 800 }}
             >
                 <img
@@ -92,7 +92,8 @@
                 <a
                     href={metadata.image}
                     target="_blank"
-                    class="btn btn-sm bg-black border-0 absolute right-1 bottom-1">
+                    class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
+                >
                     View Media
                 </a>
             </div>

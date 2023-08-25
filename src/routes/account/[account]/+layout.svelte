@@ -38,6 +38,12 @@
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
                     >Tokens</a
                 >
+                <a
+                    href={`/account/${account}/assets`}
+                    class="tab-bordered tab"
+                    class:tab-active={$page.url.pathname.endsWith("/assets")}
+                    >Assets</a
+                >
                 {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
                     <a
                         href={`/account/${account}/concurrent-merkle-tree`}
