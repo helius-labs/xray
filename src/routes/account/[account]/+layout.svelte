@@ -54,7 +54,7 @@
                     >
                 {/if}
             </div>
-            {#if !$page.url.pathname.endsWith("/tokens")}
+            {#if !$page.url.pathname.endsWith("/tokens") && !$page.url.pathname.endsWith("/assets")}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => showModal("TRANSACTION_FILTER")}
