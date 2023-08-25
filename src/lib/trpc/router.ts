@@ -16,6 +16,7 @@ import { tps } from "$lib/trpc/routes/tps";
 import { transaction } from "$lib/trpc/routes/transaction";
 import { transactions } from "$lib/trpc/routes/transactions";
 import { blockTransactions } from "$lib/trpc/routes/block-transactions";
+import { assets } from "$lib/trpc/routes/assets";
 
 export const t = initTRPC.context<Context>().create();
 
@@ -23,6 +24,7 @@ export const router = t.router({
     accountInfo,
     accountUsernames,
     asset,
+    assets,
     balances,
     blockTransactions,
     concurrentMerkleTree,
