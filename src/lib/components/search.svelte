@@ -240,19 +240,19 @@
 
 {#if size === "lg"}
     <div
-        class="relative z-10 grid grid-flow-dense grid-cols-1 py-2 md:grid-cols-4"
+        class="relative z-10 py-2"
     >
         <button
-            class="bg-faint btn-outline btn col-span-1 mb-4 md:ml-2"
+            class="bg-faint btn-outline btn col-span-1 mb-4 w-full"
             on:click|preventDefault={newSearch}
         >
             <span class="text-sm">Go</span>
         </button>
-        <button
+        <!-- <button
             class="bg-faint btn-outline btn col-span-3 mb-4 md:order-first"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>
-        </button>
+        </button> -->
     </div>
 {/if}
