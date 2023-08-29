@@ -3,6 +3,9 @@
 
     import { page } from "$app/stores";
     import Image from "$lib/components/image.svelte";
+    import Icon from "$lib/components/icon.svelte";
+    import shortenString from "$lib/util/shorten-string";
+
 
     const { account } = $page.params;
 
@@ -24,31 +27,53 @@
         $assets.data?.pages[$assets.data.pages.length - 1].total > 0;
 </script>
 
-<div class="grid grid-cols-3 gap-3 md:grid-cols-5">
-    {#each $assets.data?.pages || [] as page}
-        {#each page.items as asset}
-            {@const image = asset.content.files.find(
-                (file) => file.mime.startsWith("image") && file.uri
-            )}
-
-            <a href="/token/{asset.id}">
-                <Image
-                    src={image?.uri}
-                    className="aspect-square w-full rounded-lg"
-                    alt=""
-                />
+<div>
+    <div class="flex my-5 items-center justify-between">
+        <div>
+            <h2 class="text-2xl font-bold">Assets</h2>
+            <a
+                href="/account/{account}"
+                class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                >
+                {shortenString(
+                    account
+                    )}
             </a>
+        </div>
+        <a href="/account/{account}" class="btn btn-outline btn-md">
+            <Icon id="arrowLeft" size="md" />
+            <span class="ml-2">
+                Account
+            </span>
+        </a>
+    </div>
+    <div class="grid grid-cols-3 gap-3 md:grid-cols-5">
+        {#each $assets.data?.pages || [] as page}
+            {#each page.items as asset}
+                {@const image = asset.content.files.find(
+                    (file) => file.mime.startsWith("image") && file.uri
+                )}
+    
+                <a href="/token/{asset.id}">
+                    <Image
+                        src={image?.uri}
+                        className="aspect-square w-full rounded-lg"
+                        alt=""
+                    />
+                </a>
+            {/each}
         {/each}
-    {/each}
+    </div>
+    
+    {#if $assets.hasNextPage && lastPageHadAssets}
+        <div class="flex justify-center mt-5">
+            <button
+                class="btn-outline btn"
+                class:loading={$assets.isFetching}
+                class:disabled={$assets.isFetching}
+                on:click={() => $assets.fetchNextPage()}>Load More</button
+            >
+        </div>
+    {/if}
 </div>
 
-{#if $assets.hasNextPage && lastPageHadAssets}
-    <div class="flex justify-center">
-        <button
-            class="btn-outline btn"
-            class:loading={$assets.isFetching}
-            class:disabled={$assets.isFetching}
-            on:click={() => $assets.fetchNextPage()}>Load More</button
-        >
-    </div>
-{/if}

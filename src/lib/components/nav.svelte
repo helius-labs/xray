@@ -65,13 +65,25 @@
 </nav>
 
 {#if $page.url.pathname !== "/"}
-    <button
-        class="btn-secondary btn-sm btn fixed bottom-4 right-3 z-10 cursor-pointer rounded-full"
-        on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
-    >
-        <Icon
-            id="arrowUp"
-            size="sm"
-        />
-    </button>
+    <div class="flex fixed bottom-4 z-10  right-3 gap-1">
+        <button
+            class="btn-secondary btn-xs btn cursor-pointer rounded-full"
+            on:click={() => window.scrollTo({ behavior: "smooth", top: document.body.scrollHeight })}
+        >
+            <Icon
+                id="arrowDown"
+                size="sm"
+            />
+        </button>
+        <button
+            class="btn-secondary btn-xs btn cursor-pointer rounded-full"
+            on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
+        >
+            <Icon
+                id="arrowUp"
+                size="sm"
+            />
+        </button>
+        
+    </div>
 {/if}

@@ -42,66 +42,46 @@
 <div>
     <a
         href="/tx/{transaction.signature}"
-        class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
+        class="gradient relative block w-full rounded-lg border border-transparent bg-black p-2 text-left hover:border-primary"
     >
         <div
-            class="pointer-events-none relative grid grid-cols-12 gap-3 rounded-lg"
+            class="pointer-events-none relative rounded-lg"
         >
-            <div class="relative">
+            {#if transaction.type.includes("COMPRESSED")}
                 <div
-                    class="center absolute -left-5 top-3 z-10 mb-4 rounded-full border bg-black p-2"
+                    class="center absolute -top-4 left-3 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
+                    in:fade={{
+                        delay: 500,
+                        duration: 500,
+                    }}
                 >
-                    <div class="opacity-50">
+                    COMPRESSED
+                </div>
+            {/if}
+            <div class="flex justify-between w-full">
+                <div class="flex items-center">
+                    <div class="opacity-50 mr-2">
                         <Icon
                             id={metadata.icon}
                             size="md"
                         />
                     </div>
-                    {#if transaction.type.includes("COMPRESSED")}
-                        <div
-                            class="center absolute -top-5 left-8 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
-                            in:fade={{
-                                delay: 500,
-                                duration: 500,
-                            }}
-                        >
-                            COMPRESSED
-                        </div>
-                    {/if}
-                </div>
-            </div>
-            <div class="pointer-events-none col-span-12 mb-2 px-3 pl-6">
-                <div class="flex justify-between">
                     <div>
-                        <h3 class="text-xl font-semibold">
+                        <h3 class="text-sm font-semibold text-neutral">
                             {metadata.label}
                         </h3>
                         <div class="flex text-xs">
                             {#if transaction.source !== "UNKNOWN" && transaction.source !== "SOLANA_PROGRAM_LIBRARY"}
-                                <div class="mr-2 rounded">
+                                <div class="mr-2 rounded text-neutral">
                                     {formatSource(transaction.source)}
                                 </div>
                             {/if}
-                            <div class="mr-2 rounded">
-                                <a
-                                    data-sveltekit-reload
-                                    href="/tx/{transaction.signature}"
-                                    class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
-                                >
-                                    {transaction.signature
-                                        ? shortenString(
-                                              transaction.signature,
-                                              4
-                                          )
-                                        : "Unknown"}
-                                </a>
-                            </div>
                         </div>
                     </div>
-                    <h3 class="ml-2 mt-1 text-xs opacity-50">
-                        {formatDate(transaction.timestamp)}
-                    </h3>
                 </div>
+                <h3 class="ml-2 mt-1 text-xs opacity-50">
+                    {formatDate(transaction.timestamp)}
+                </h3>
             </div>
         </div>
 
@@ -164,7 +144,7 @@
                                     </div>
                                 {:else}
                                     <div
-                                        class="my-2 w-full rounded-lg text-left"
+                                        class="my-1 w-full rounded-lg text-left"
                                         in:fade={{
                                             duration: 500,
                                         }}
@@ -184,11 +164,11 @@
                                                         <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                                         <div
                                                             style="background-image: url('{metadata.image}')"
-                                                            class="aspect-square w-8 rounded-lg bg-cover"
+                                                            class="aspect-square w-7 rounded bg-cover"
                                                         />
                                                     {:else}
                                                         <div
-                                                            class="flex aspect-square w-8 items-center justify-center rounded-lg bg-secondary opacity-50"
+                                                            class="flex aspect-square w-7 items-center justify-center rounded-lg bg-secondary opacity-50"
                                                         >
                                                             <Icon
                                                                 id="image"
@@ -308,7 +288,7 @@
                                                         </div>
                                                     {/if}
                                                 </div>
-                                                <div class="mr-2">
+                                                <div class="mr-2 text-sm">
                                                     <div
                                                         class="absolute -left-3 top-1/2 h-0.5 w-3 -translate-y-1/2 rounded-full bg-secondary"
                                                     />

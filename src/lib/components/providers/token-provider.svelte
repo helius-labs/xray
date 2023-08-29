@@ -94,9 +94,9 @@
     else if ($accountInfo?.data?.value?.data?.program === "spl-token-2022") {
         // const data = $accountInfo?.data?.value;
         const data = token2022Metadata[address];
-        metadata.name = data.name || "";
-        metadata.description = data.description || "";
-        metadata.image = data.image || "";
+        metadata.name = data?.name || "";
+        metadata.description = data?.description || "";
+        metadata.image = data?.image || "";
         metadata.address = address || "";
     } else {
         // Kicks off the query

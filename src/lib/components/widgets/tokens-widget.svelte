@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
@@ -9,53 +9,46 @@
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
     import formatMoney from "$lib/util/format-money";
     import Icon from "$lib/components/icon.svelte";
-    import shortenString from "$lib/util/shorten-string";
 
-
-    const account = $page.params.account;
+    export let account: string = "";
 
     const client = trpcWithQuery($page);
 
-    const balances = client.balances.createQuery(account);
+    const balances = client.balances.createQuery(account, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
 
-    const token2022 = client.token2022.createQuery(account);
+    const token2022 = client.token2022.createQuery(account, {
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
+    });
 
     const sol = client.price.createQuery(SOL);
 
     $: sorted = $balances?.data?.tokens
         // @ts-ignore
-        ?.filter(({ decimals, amount }) => decimals && amount)
+        ?.filter(({ decimals, amount }) => decimals && amount).slice(0, $token2022.data ? 2 : 3)
         // @ts-ignore
-        .sort(({ amount: a, decimals: ad }, { amount: b, decimals: bd }) =>
-            a / 10 ** ad < b / 10 ** bd ? 1 : -1
+        .sort(({ amount: a, decimals: ad, symbol }, { amount: b, decimals: bd }) =>
+            a / 10 ** ad < b / 10 ** bd || symbol !== "SOL" || symbol !== "USDC" ? 1 : -1
         );
 </script>
 
-<div>
-    <div class="flex my-5 items-center justify-between">
-        <div>
-            <h2 class="text-2xl font-bold">Tokens</h2>
-            <a
-            href="/account/{account}"
-            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
-            >
-            {shortenString(
-                account
-                )}
-            </a>
-        </div>
-        <a href="/account/{account}" class="btn btn-outline btn-md">
-            <Icon id="arrowLeft" size="md" />
-            <span class="ml-2">
-                Account
-            </span>
+<div class="">
+    <div class="flex my-3 justify-between">
+        <h2 class="text-xl font-bold">Tokens</h2>
+
+        <a href="/account/{account}/tokens" class="btn btn-outline btn-sm">
+            <Icon id="arrowRight" size="md" />
         </a>
     </div>
+
     <a
-        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+        class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 hover:border-primary"
         href="/token/{SOL}"
     >
-        <div class="col-span-2 p-1 md:col-span-1">
+        <div class="col-span-2 p-1">
             <!-- background so that if it doesn't load you dont' get ugly no image icons -->
             <div
                 style="background-image: url(/media/tokens/solana.png)"
@@ -63,7 +56,7 @@
             />
         </div>
         <div
-            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+            class="col-span-10 flex items-center justify-between text-right"
         >
             <div>
                 <h4 class="font-semibold md:text-sm">SOL</h4>
@@ -96,10 +89,10 @@
                 let:metadata
             >
                 <a
-                    class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                    class="mb-2 grid grid-cols-12 items-center gap-3 pr-3 rounded-lg border p-1 hover:border-primary"
                     href="/token/{token.mint}"
                 >
-                    <div class="col-span-2 p-1 md:col-span-1">
+                    <div class="col-span-2 p-1">
                         <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                         <div
                             style="background-image: url('{metadata.image}')"
@@ -107,25 +100,17 @@
                         />
                     </div>
                     <div
-                        class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                        class="col-span-10 flex items-center justify-between text-right"
                     >
                         <div>
-                            <h4 class="font-semibold md:text-sm">
-                                {metadata.name || ""}
+                            <h4 class="font-semibold md:text-xs text-left">
+                                {metadata?.name || "Unknown"}
                             </h4>
                         </div>
                         <div>
                             <h4 class="font-semibold md:text-sm">
                                 {token.amount.toLocaleString()}
                             </h4>
-                            <!-- <h4 class="text-xs opacity-50">
-                            {#if metadata.price}
-                                {formatMoney(
-                                    (metadata.price * token.amount) /
-                                        10 ** token.decimals
-                                )}
-                            {/if}
-                        </h4> -->
                         </div>
                     </div>
                 </a>
@@ -140,10 +125,10 @@
                     let:metadata
                 >
                     <a
-                        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                        class="mb-2 grid grid-cols-12 items-center gap-2 rounded-lg border p-1 pr-3 hover:border-primary"
                         href="/token/{token.mint}"
                     >
-                        <div class="col-span-2 p-1 md:col-span-1">
+                        <div class="col-span-2 p-1">
                             <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                             <div
                                 style="background-image: url('{metadata.image}')"
@@ -151,10 +136,10 @@
                             />
                         </div>
                         <div
-                            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                            class="col-span-10 flex items-center justify-between text-right"
                         >
                             <div>
-                                <h4 class="font-semibold md:text-sm">
+                                <h4 class="font-semibold md:text-xs text-left">
                                     {metadata?.name || ""}
                                 </h4>
                             </div>
@@ -184,13 +169,8 @@
             <div
                 class="mb-3 grid animate-pulse grid-cols-12 items-center gap-3 rounded-lg"
             >
-                <div class="col-span-2 p-1 md:col-span-1">
-                    <div
-                        class="aspect-square w-full rounded-full bg-secondary"
-                    />
-                </div>
                 <div
-                    class="col-span-10 flex items-center justify-between md:col-span-11"
+                    class="col-span-12 flex items-center justify-between md:col-span-11"
                 >
                     <div>
                         <div

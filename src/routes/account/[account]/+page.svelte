@@ -1,34 +1,31 @@
 <script lang="ts">
-    import { trpcWithQuery } from "$lib/trpc/client";
-
-    import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-
     import { page } from "$app/stores";
+    import AssetsWidget from "$lib/components/widgets/assets-widget.svelte";
 
-    import { tweened } from "svelte/motion";
-
-    import Transactions from "$lib/components/transactions.svelte";
-    import { filterStore } from "$lib/util/stores/filter";
-
+    import TransactionsWidget from "$lib/components/widgets/transactions-widget.svelte";
+    import TokensWidget from "$lib/components/widgets/tokens-widget.svelte";    
+    import AccountWidget from "$lib/components/widgets/account-widget.svelte";
+    
     const { account } = $page.params;
-
-    const client = trpcWithQuery($page);
-
-    const balances = client.balances.createQuery(account);
-
-    const balance = tweened(0, {
-        duration: 1000,
-    });
-
-    $: if ($balances?.data?.nativeBalance) {
-        balance.set($balances.data.nativeBalance / LAMPORTS_PER_SOL);
-    }
 </script>
 
-<div class="pl-2 md:pl-0">
-    <Transactions
-        {account}
-        filter={$filterStore}
-        user={account}
-    />
+<div class="grid md:grid-cols-12 relative gap-x-5 gap-y-5 my-5">
+    <div class="md:col-span-12">
+        <AccountWidget
+            {account}
+        />
+    </div>
+    <div class="md:col-span-6 border rounded-lg px-3">
+        <AssetsWidget
+            {account} />
+    </div>
+    <div class="md:col-span-6 border rounded-lg px-3">
+        <TokensWidget
+            {account} />
+    </div>
+    <div class="md:col-span-12 border rounded-lg px-3">
+        <TransactionsWidget
+            {account}
+        />
+    </div>
 </div>

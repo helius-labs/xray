@@ -13,6 +13,7 @@
     export let account: string;
     export let user = "";
     export let filter = "";
+    export let limit: number = 0;
 
     let cachedAddress = "";
 
@@ -62,6 +63,12 @@
     $: lastPageHasTransactions = lastPage
         ? transactionPages[transactionPages.length - 1].result?.length
         : false;
+
+    const sliceList = (list: TransactionPage) => {
+        if(!limit) return list.result;
+
+        return list.result.slice(0, limit);
+    }
 </script>
 
 {#if $transactions.isLoading}
@@ -74,12 +81,12 @@
     <p class="opacity-50">No transactions</p>
 {:else}
     {#each transactionPages as transactionsList}
-        {#each transactionsList.result as transaction, idx (transaction)}
+        {#each sliceList(transactionsList) || [] as transaction, idx (transaction)}
             {#if transaction?.signature}
                 <!-- Only animate the first few intro transactions -->
                 {#if idx < 8}
                     <div
-                        class="mb-8"
+                        class="mb-4"
                         in:fly={{
                             delay: idx * 100,
                             duration: 500,
@@ -89,7 +96,7 @@
                         <Transaction {transaction} />
                     </div>
                 {:else}
-                    <div class="mb-10">
+                    <div class="mb-5">
                         <Transaction {transaction} />
                     </div>
                 {/if}
@@ -98,7 +105,7 @@
     {/each}
 {/if}
 
-{#if $transactions.hasNextPage && lastPageHasTransactions}
+{#if $transactions.hasNextPage && lastPageHasTransactions && !limit}
     <div class="flex justify-center">
         <button
             class="btn-outline btn"
