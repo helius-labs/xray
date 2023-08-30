@@ -44,9 +44,7 @@
         href="/tx/{transaction.signature}"
         class="gradient relative block w-full rounded-lg border border-transparent bg-black p-2 text-left hover:border-primary"
     >
-        <div
-            class="pointer-events-none relative rounded-lg"
-        >
+        <div class="pointer-events-none relative rounded-lg">
             {#if transaction.type.includes("COMPRESSED")}
                 <div
                     class="center absolute -top-4 left-3 z-10 bg-black px-1 text-[10px] text-[#FFD700]"
@@ -58,9 +56,9 @@
                     COMPRESSED
                 </div>
             {/if}
-            <div class="flex justify-between w-full">
+            <div class="flex w-full justify-between">
                 <div class="flex items-center">
-                    <div class="opacity-50 mr-2">
+                    <div class="mr-2 opacity-50">
                         <Icon
                             id={metadata.icon}
                             size="md"

@@ -6,7 +6,6 @@
     import Icon from "$lib/components/icon.svelte";
     import shortenString from "$lib/util/shorten-string";
 
-
     const { account } = $page.params;
 
     const client = trpcWithQuery($page);
@@ -28,23 +27,25 @@
 </script>
 
 <div>
-    <div class="flex my-5 items-center justify-between">
+    <div class="my-5 flex items-center justify-between">
         <div>
             <h2 class="text-2xl font-bold">Assets</h2>
             <a
                 href="/account/{account}"
                 class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
-                >
-                {shortenString(
-                    account
-                    )}
+            >
+                {shortenString(account)}
             </a>
         </div>
-        <a href="/account/{account}" class="btn btn-outline btn-md">
-            <Icon id="arrowLeft" size="md" />
-            <span class="ml-2">
-                Account
-            </span>
+        <a
+            href="/account/{account}"
+            class="btn btn-outline btn-md"
+        >
+            <Icon
+                id="arrowLeft"
+                size="md"
+            />
+            <span class="ml-2"> Account </span>
         </a>
     </div>
     <div class="grid grid-cols-3 gap-3 md:grid-cols-5">
@@ -53,7 +54,7 @@
                 {@const image = asset.content.files.find(
                     (file) => file.mime.startsWith("image") && file.uri
                 )}
-    
+
                 <a href="/token/{asset.id}">
                     <Image
                         src={image?.uri}
@@ -64,11 +65,11 @@
             {/each}
         {/each}
     </div>
-    
+
     {#if $assets.hasNextPage && lastPageHadAssets}
-        <div class="flex justify-center mt-5">
+        <div class="mt-5 flex justify-center">
             <button
-                class="btn-outline btn"
+                class="btn btn-outline"
                 class:loading={$assets.isFetching}
                 class:disabled={$assets.isFetching}
                 on:click={() => $assets.fetchNextPage()}>Load More</button
@@ -76,4 +77,3 @@
         </div>
     {/if}
 </div>
-

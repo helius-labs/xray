@@ -92,7 +92,7 @@
                 <a
                     href={metadata.image}
                     target="_blank"
-                    class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
+                    class="btn btn-sm absolute bottom-1 right-1 border-0 bg-black"
                 >
                     View Media
                 </a>

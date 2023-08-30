@@ -23,7 +23,7 @@
             }}
         >
             <a
-                class="btn-ghost btn px-2"
+                class="btn btn-ghost px-2"
                 href="/"
                 rel="noreferrer"
             >
@@ -43,7 +43,7 @@
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
             <button
-                class="btn-ghost btn"
+                class="btn btn-ghost"
                 on:click={() => showModal("HELP")}
             >
                 <Icon
@@ -52,7 +52,7 @@
                 />
             </button>
             <button
-                class="btn-ghost btn"
+                class="btn btn-ghost"
                 on:click={() => showModal("MENU")}
             >
                 <Icon
@@ -65,10 +65,14 @@
 </nav>
 
 {#if $page.url.pathname !== "/"}
-    <div class="flex fixed bottom-4 z-10  right-3 gap-1">
+    <div class="fixed bottom-4 right-3 z-10 flex gap-1">
         <button
-            class="btn-secondary btn-xs btn cursor-pointer rounded-full"
-            on:click={() => window.scrollTo({ behavior: "smooth", top: document.body.scrollHeight })}
+            class="btn btn-secondary btn-xs cursor-pointer rounded-full"
+            on:click={() =>
+                window.scrollTo({
+                    behavior: "smooth",
+                    top: document.body.scrollHeight,
+                })}
         >
             <Icon
                 id="arrowDown"
@@ -76,7 +80,7 @@
             />
         </button>
         <button
-            class="btn-secondary btn-xs btn cursor-pointer rounded-full"
+            class="btn btn-secondary btn-xs cursor-pointer rounded-full"
             on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
         >
             <Icon
@@ -84,6 +88,5 @@
                 size="sm"
             />
         </button>
-        
     </div>
 {/if}

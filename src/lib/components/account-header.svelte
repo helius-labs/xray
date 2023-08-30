@@ -63,11 +63,9 @@
     let:usernames
     let:usernameIsLoading
 >
-    <div class="nav sticky top-16 z-30 gap-2 bg-base-100 px-3 pt-2 mb-4">
+    <div class="nav sticky top-16 z-30 mb-4 gap-2 bg-base-100 px-3 pt-2">
         <div class="flex flex-col bg-base-100">
-            <div>
-                
-            </div>
+            <div />
             <div class="flex items-center justify-between">
                 <div class="flex items-center">
                     <h3 class="relative m-0 text-lg font-bold md:text-2xl">

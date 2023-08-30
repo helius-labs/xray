@@ -69,7 +69,7 @@
                     <div />
                     <a
                         href="/"
-                        class="tab-bordered tab tab-active"
+                        class="tab tab-active tab-bordered"
                     >
                         Transactions
                     </a>
@@ -114,7 +114,7 @@
         {#if $transactions.hasNextPage && lastPageHasTransactions}
             <div class="flex justify-center">
                 <button
-                    class="btn-outline btn"
+                    class="btn btn-outline"
                     class:loading={$transactions.isFetching}
                     class:disabled={$transactions.isFetching}
                     on:click={loadMore}>Load More</button

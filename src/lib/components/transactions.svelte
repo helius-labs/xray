@@ -65,10 +65,10 @@
         : false;
 
     const sliceList = (list: TransactionPage) => {
-        if(!limit) return list.result;
+        if (!limit) return list.result;
 
         return list.result.slice(0, limit);
-    }
+    };
 </script>
 
 {#if $transactions.isLoading}
@@ -108,7 +108,7 @@
 {#if $transactions.hasNextPage && lastPageHasTransactions && !limit}
     <div class="flex justify-center">
         <button
-            class="btn-outline btn"
+            class="btn btn-outline"
             class:loading={$transactions.isFetching}
             class:disabled={$transactions.isFetching}
             on:click={loadMore}>Load More</button

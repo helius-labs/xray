@@ -136,7 +136,7 @@
                                     This transaction has failed.
                                 </h3>
                             </div>
-                            <div class="badge-error badge mr-1">Error</div>
+                            <div class="badge badge-error mr-1">Error</div>
                         </div>
                     {:else}
                         <div class="col-span-2 p-1 md:col-span-1">
@@ -161,7 +161,7 @@
                                     This transaction has successfully processed.
                                 </h3>
                             </div>
-                            <div class="badge-success badge mr-1">Success</div>
+                            <div class="badge badge-success mr-1">Success</div>
                         </div>
                     {/if}
                 </div>

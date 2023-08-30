@@ -28,19 +28,34 @@
 
     $: sorted = $balances?.data?.tokens
         // @ts-ignore
-        ?.filter(({ decimals, amount }) => decimals && amount).slice(0, $token2022.data ? 2 : 3)
+        ?.filter(({ decimals, amount }) => decimals && amount)
+        .slice(0, $token2022.data ? 2 : 3)
         // @ts-ignore
-        .sort(({ amount: a, decimals: ad, symbol }, { amount: b, decimals: bd }) =>
-            a / 10 ** ad < b / 10 ** bd || symbol !== "SOL" || symbol !== "USDC" ? 1 : -1
+        .sort(
+            (
+                { amount: a, decimals: ad, symbol },
+                { amount: b, decimals: bd }
+            ) =>
+                a / 10 ** ad < b / 10 ** bd ||
+                symbol !== "SOL" ||
+                symbol !== "USDC"
+                    ? 1
+                    : -1
         );
 </script>
 
 <div class="">
-    <div class="flex my-3 justify-between">
+    <div class="my-3 flex justify-between">
         <h2 class="text-xl font-bold">Tokens</h2>
 
-        <a href="/account/{account}/tokens" class="btn btn-outline btn-sm">
-            <Icon id="arrowRight" size="md" />
+        <a
+            href="/account/{account}/tokens"
+            class="btn btn-outline btn-sm"
+        >
+            <Icon
+                id="arrowRight"
+                size="md"
+            />
         </a>
     </div>
 
@@ -55,9 +70,7 @@
                 class="aspect-square w-full rounded-lg bg-cover"
             />
         </div>
-        <div
-            class="col-span-10 flex items-center justify-between text-right"
-        >
+        <div class="col-span-10 flex items-center justify-between text-right">
             <div>
                 <h4 class="font-semibold md:text-sm">SOL</h4>
             </div>
@@ -89,7 +102,7 @@
                 let:metadata
             >
                 <a
-                    class="mb-2 grid grid-cols-12 items-center gap-3 pr-3 rounded-lg border p-1 hover:border-primary"
+                    class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 pr-3 hover:border-primary"
                     href="/token/{token.mint}"
                 >
                     <div class="col-span-2 p-1">
@@ -103,7 +116,7 @@
                         class="col-span-10 flex items-center justify-between text-right"
                     >
                         <div>
-                            <h4 class="font-semibold md:text-xs text-left">
+                            <h4 class="text-left font-semibold md:text-xs">
                                 {metadata?.name || "Unknown"}
                             </h4>
                         </div>
@@ -139,7 +152,7 @@
                             class="col-span-10 flex items-center justify-between text-right"
                         >
                             <div>
-                                <h4 class="font-semibold md:text-xs text-left">
+                                <h4 class="text-left font-semibold md:text-xs">
                                     {metadata?.name || ""}
                                 </h4>
                             </div>

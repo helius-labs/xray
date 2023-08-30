@@ -25,15 +25,21 @@
 </script>
 
 <div>
-    <div class="flex my-3 justify-between">
+    <div class="my-3 flex justify-between">
         <h2 class="text-xl font-bold">Assets</h2>
 
-        <a href="/account/{account}/assets" class="btn btn-outline btn-sm">
-            <Icon id="arrowRight" size="md" />
+        <a
+            href="/account/{account}/assets"
+            class="btn btn-outline btn-sm"
+        >
+            <Icon
+                id="arrowRight"
+                size="md"
+            />
         </a>
     </div>
 
-    <div class="grid grid-cols-4 gap-3 mb-3">
+    <div class="mb-3 grid grid-cols-4 gap-3">
         {#each list as asset}
             {@const image = asset.content.files.find(
                 (file) => file.mime.startsWith("image") && file.uri

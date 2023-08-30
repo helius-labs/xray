@@ -11,7 +11,6 @@
     import Icon from "$lib/components/icon.svelte";
     import shortenString from "$lib/util/shorten-string";
 
-
     const account = $page.params.account;
 
     const client = trpcWithQuery($page);
@@ -32,23 +31,25 @@
 </script>
 
 <div>
-    <div class="flex my-5 items-center justify-between">
+    <div class="my-5 flex items-center justify-between">
         <div>
             <h2 class="text-2xl font-bold">Tokens</h2>
             <a
-            href="/account/{account}"
-            class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
+                href="/account/{account}"
+                class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
             >
-            {shortenString(
-                account
-                )}
+                {shortenString(account)}
             </a>
         </div>
-        <a href="/account/{account}" class="btn btn-outline btn-md">
-            <Icon id="arrowLeft" size="md" />
-            <span class="ml-2">
-                Account
-            </span>
+        <a
+            href="/account/{account}"
+            class="btn btn-outline btn-md"
+        >
+            <Icon
+                id="arrowLeft"
+                size="md"
+            />
+            <span class="ml-2"> Account </span>
         </a>
     </div>
     <a
