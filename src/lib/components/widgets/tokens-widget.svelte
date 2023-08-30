@@ -52,10 +52,11 @@
             href="/account/{account}/tokens"
             class="btn btn-outline btn-sm"
         >
-            <Icon
+            <!-- <Icon
                 id="arrowRight"
                 size="md"
-            />
+            /> -->
+            VIEW ALL
         </a>
     </div>
 
