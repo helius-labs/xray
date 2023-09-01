@@ -125,8 +125,13 @@
                 searchFailed();
                 return;
             }
-
-            selectSearch(data);
+            // If data type is account and the url contains domain?search= do something
+            if (data.type === "bonfida-domain" && data.url.includes("/domains/?search=")) {
+                showModal("DOMAINS", { domain: data.address });
+            }
+            else{
+                selectSearch(data);
+            }
         } catch (error) {
             searchFailed();
         }
