@@ -5,7 +5,6 @@
     const client = trpcWithQuery($page);
 
     const profile = client.profileFromDomainName.createQuery(profileName);
-
 </script>
 
 <div>

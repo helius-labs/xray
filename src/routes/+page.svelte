@@ -6,7 +6,6 @@
     .transition-section {
         border-radius: 100%;
     }
-    
 </style>
 
 <script lang="ts">
@@ -24,7 +23,7 @@
     import { LottiePlayer } from "@lottiefiles/svelte-lottie-player";
 
     let searchError = "";
-    let profileName="";
+    let profileName = "";
     let exploreELement: HTMLElement;
     let heliusElement: HTMLElement;
 
@@ -38,10 +37,16 @@
             focusInput();
         }, 100);
     });
-    
+
     if (browser) {
         const urlParts = new URL(window.location.href).hostname.split(".");
-        if (urlParts.length >= 2 &&urlParts[0] !== "localhost" && urlParts[0] !== "xray") {profileName = urlParts[0];}
+        if (
+            urlParts.length >= 2 &&
+            urlParts[0] !== "localhost" &&
+            urlParts[0] !== "xray"
+        ) {
+            profileName = urlParts[0];
+        }
     }
 </script>
 
@@ -57,22 +62,22 @@
             </div>
         </div>
     {:else}
-    <div class="mx-auto w-full max-w-2xl md:-translate-y-1/4">
-        <div class="mb-10">
-            <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
-        </div>
+        <div class="mx-auto w-full max-w-2xl md:-translate-y-1/4">
+            <div class="mb-10">
+                <h1 class="text-center text-9xl font-bold opacity-80">XRAY</h1>
+            </div>
 
-        <div class="relative w-full px-3">
-            <Search
-                size="lg"
-                {searchError}
-                bind:focusInput
-                bind:clearSearch
-                on:focusin={() => (isFocused = true)}
-                on:focusout={() => (isFocused = false)}
-            />
+            <div class="relative w-full px-3">
+                <Search
+                    size="lg"
+                    {searchError}
+                    bind:focusInput
+                    bind:clearSearch
+                    on:focusin={() => (isFocused = true)}
+                    on:focusout={() => (isFocused = false)}
+                />
+            </div>
         </div>
-    </div>
     {/if}
 </div>
 
