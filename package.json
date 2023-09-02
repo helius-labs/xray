@@ -13,7 +13,7 @@
         "// Lint": "-------------------------------------------------------------",
         "test": "npm run lint",
         "lint": "eslint .",
-        "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'",
+        "format": "prettier --write {public,src}/**/*.{css,html,js,svelte}",
         "prepare": "husky install"
     },
     "lint-staged": {
@@ -77,6 +77,7 @@
         "vite": "^4.3.9"
     },
     "dependencies": {
+        "@bonfida/spl-name-service": "^1.0.10",
         "@lottiefiles/svelte-lottie-player": "^0.3.0",
         "@onsol/tldparser": "^0.5.3",
         "@solana/spl-account-compression": "^0.1.8",
