@@ -1,4 +1,8 @@
-<h1 class="text-center p-3 text-2xl font-bold mt-5"> Search Bonfida Domains</h1>
-<div class="flex p-3 w-full justify-center"> 
-<input type="text" placeholder="Type here" class="input w-2/4 input-bordered my-2 max-w-xs" />
+<h1 class="mt-5 p-3 text-center text-2xl font-bold">Search Bonfida Domains</h1>
+<div class="flex w-full justify-center p-3">
+    <input
+        type="text"
+        placeholder="Type here"
+        class="input input-bordered my-2 w-2/4 max-w-xs"
+    />
 </div>

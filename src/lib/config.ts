@@ -5,6 +5,7 @@ import Help from "$lib/components/modals/help.svelte";
 import Menu from "$lib/components/modals/menu.svelte";
 import TransactionFilter from "$lib/components/modals/transaction-filter.svelte";
 import WalletSelector from "$lib/components/modals/wallets.svelte";
+import DomainRedirect from "$lib/components/modals/domain.svelte";
 
 export const recentSearchesKey = "xray:searches";
 
@@ -24,6 +25,10 @@ export const modals: Record<string, Modal> = {
     TRANSACTION_FILTER: {
         component: TransactionFilter,
         title: "Filter",
+    },
+    DOMAINS: {
+        component: DomainRedirect,
+        title: "Register this domain",
     },
 };
 
