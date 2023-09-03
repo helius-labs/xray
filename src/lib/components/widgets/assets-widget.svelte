@@ -25,17 +25,13 @@
 </script>
 
 <div>
-    <div class="my-3 flex justify-between">
-        <h2 class="text-xl font-bold">Assets</h2>
+    <div class="my-3 flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Assets</h2>
 
         <a
             href="/account/{account}/assets"
-            class="btn btn-outline btn-sm"
+            class="btn btn-secondary btn-sm text-xs"
         >
-            <!-- <Icon
-                id="arrowRight"
-                size="md"
-            /> -->
             VIEW ALL
         </a>
     </div>
@@ -49,7 +45,7 @@
             <a href="/token/{asset.id}">
                 <Image
                     src={image?.uri}
-                    className="aspect-square w-full rounded-lg"
+                    className="aspect-square w-full rounded-lg border"
                     alt=""
                 />
             </a>

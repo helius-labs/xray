@@ -45,23 +45,19 @@
 </script>
 
 <div class="">
-    <div class="my-3 flex justify-between">
-        <h2 class="text-xl font-bold">Tokens</h2>
+    <div class="my-3 flex justify-between items-center">
+        <h2 class="text-2xl font-bold">Tokens</h2>
 
         <a
             href="/account/{account}/tokens"
-            class="btn btn-outline btn-sm"
+            class="btn btn-secondary btn-sm text-xs"
         >
-            <!-- <Icon
-                id="arrowRight"
-                size="md"
-            /> -->
             VIEW ALL
         </a>
     </div>
 
     <a
-        class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 hover:border-primary"
+        class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 hover:border-primary bg-black"
         href="/token/{SOL}"
     >
         <div class="col-span-2 p-1">
@@ -103,7 +99,7 @@
                 let:metadata
             >
                 <a
-                    class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 pr-3 hover:border-primary"
+                    class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 pr-3 hover:border-primary bg-black"
                     href="/token/{token.mint}"
                 >
                     <div class="col-span-2 p-1">
@@ -139,7 +135,7 @@
                     let:metadata
                 >
                     <a
-                        class="mb-2 grid grid-cols-12 items-center gap-2 rounded-lg border p-1 pr-3 hover:border-primary"
+                        class="mb-2 grid grid-cols-12 items-center gap-2 rounded-lg border p-1 pr-3 hover:border-primary bg-black"
                         href="/token/{token.mint}"
                     >
                         <div class="col-span-2 p-1">

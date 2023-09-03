@@ -65,7 +65,7 @@
                         />
                     </div>
                     <div>
-                        <h3 class="text-sm font-semibold text-neutral">
+                        <h3 class="text-sm font-semibold">
                             {metadata.label}
                         </h3>
                         <div class="flex text-xs">
