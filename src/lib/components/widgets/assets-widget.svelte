@@ -25,7 +25,7 @@
 </script>
 
 <div>
-    <div class="my-3 flex justify-between items-center">
+    <div class="my-3 flex items-center justify-between">
         <h2 class="text-2xl font-bold">Assets</h2>
 
         <a

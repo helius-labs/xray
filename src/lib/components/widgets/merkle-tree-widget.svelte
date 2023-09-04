@@ -25,9 +25,10 @@
             />
             <div>
                 <div class="font-semibold">Authority</div>
-                <div class="text-sm text-xs text-neutral">{$merkleTree?.data?.authority}</div>
+                <div class="text-sm text-xs text-neutral">
+                    {$merkleTree?.data?.authority}
+                </div>
             </div>
-
         </div>
     </div>
 </div>

@@ -1,13 +1,7 @@
 import {
     reverseLookup,
     getAllDomains,
-    getPicRecord,
-    getUrlRecord,
-    getDiscordRecord,
-    getEmailRecord,
-    getTwitterRecord,
-    getGithubRecord,
-    getTelegramRecord,
+    getRecord,
 } from "@bonfida/spl-name-service";
 
 import { t } from "$lib/trpc/t";
@@ -18,29 +12,35 @@ import { connect } from "$lib/xray";
 
 import { PublicKey, type Connection } from "@solana/web3.js";
 
+import { SOCIAL_BONFIDA_RECORDS, type SocialBonfidaRecord } from "$lib/types";
+
 const { HELIUS_API_KEY } = process.env;
 
-const getProfileRecords = async (connection: Connection, name: string) => {
-    const [discord, email, github, pic, twitter, url, telegram] =
-        await Promise.allSettled([
-            getDiscordRecord(connection, name),
-            getEmailRecord(connection, name),
-            getGithubRecord(connection, name),
-            getPicRecord(connection, name),
-            getTwitterRecord(connection, name),
-            getUrlRecord(connection, name),
-            getTelegramRecord(connection, name),
-        ]);
+const getSocialRecords = async (connection: Connection, name: string) => {
+    const socialRecords = Object.keys(SOCIAL_BONFIDA_RECORDS);
 
-    return {
-        discord: discord.status === "fulfilled" ? discord.value : null,
-        email: email.status === "fulfilled" ? email.value : null,
-        github: github.status === "fulfilled" ? github.value : null,
-        pic: pic.status === "fulfilled" ? pic.value : null,
-        telegram: telegram.status === "fulfilled" ? telegram.value : null,
-        twitter: twitter.status === "fulfilled" ? twitter.value : null,
-        url: url.status === "fulfilled" ? url.value : null,
+    const getRecordByType = async (record: SocialBonfidaRecord) => {
+        const resolved = await getRecord(connection, name, record, true);
+
+        return {
+            [record]: resolved,
+        };
     };
+
+    const results = await Promise.allSettled(
+        socialRecords.map((record) => getRecordByType(record))
+    );
+
+    return results.reduce((acc, result) => {
+        if (result.status === "fulfilled") {
+            return {
+                ...acc,
+                ...result.value,
+            };
+        }
+
+        return acc;
+    }, {});
 };
 
 const getDomains = async (publicKey: string) => {
@@ -55,12 +55,12 @@ const getDomains = async (publicKey: string) => {
             domains.map(async (domain) => {
                 try {
                     const name = await reverseLookup(connection, domain);
-                    const result = await getProfileRecords(connection, name);
+                    const records = await getSocialRecords(connection, name);
 
                     return {
                         name,
                         publicKey: domain,
-                        records: result,
+                        records,
                     };
                 } catch (error) {
                     // eslint-disable-next-line no-console
