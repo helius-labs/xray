@@ -45,7 +45,7 @@
 </script>
 
 <div class="">
-    <div class="my-3 flex justify-between items-center">
+    <div class="my-3 flex items-center justify-between">
         <h2 class="text-2xl font-bold">Tokens</h2>
 
         <a
@@ -57,7 +57,7 @@
     </div>
 
     <a
-        class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 hover:border-primary bg-black"
+        class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border bg-black p-1 hover:border-primary"
         href="/token/{SOL}"
     >
         <div class="col-span-2 p-1">
@@ -99,7 +99,7 @@
                 let:metadata
             >
                 <a
-                    class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border p-1 pr-3 hover:border-primary bg-black"
+                    class="mb-2 grid grid-cols-12 items-center gap-3 rounded-lg border bg-black p-1 pr-3 hover:border-primary"
                     href="/token/{token.mint}"
                 >
                     <div class="col-span-2 p-1">
@@ -135,7 +135,7 @@
                     let:metadata
                 >
                     <a
-                        class="mb-2 grid grid-cols-12 items-center gap-2 rounded-lg border p-1 pr-3 hover:border-primary bg-black"
+                        class="mb-2 grid grid-cols-12 items-center gap-2 rounded-lg border bg-black p-1 pr-3 hover:border-primary"
                         href="/token/{token.mint}"
                     >
                         <div class="col-span-2 p-1">

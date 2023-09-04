@@ -18,33 +18,41 @@
 
     $: isLoading = $accountInfo?.isLoading;
 
-    $: isMerkleTree = $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()
+    $: isMerkleTree =
+        $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58();
 
     $: domains = client.domainsFromPublicKey.createQuery(account, {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
-});
+    });
 
-    $: hasProfile = !$domains.isLoading && $domains.isFetched && $domains?.data?.length > 0;
+    $: hasProfile =
+        !$domains.isLoading && $domains.isFetched && $domains?.data?.length > 0;
 </script>
 
 <div class="relative my-5 grid gap-x-5 gap-y-5 md:grid-cols-12">
-    <div class="md:col-span-12 bg-black">
+    <div class="bg-black md:col-span-12">
         <AccountWidget {account} />
     </div>
 
     {#if isLoading}
-        <div class="rounded-lg bg-black px-3 md:col-span-12 border">
-            <div class="flex justify-between items-center py-3">
-                <div class="animate-pulse bg-secondary rounded-2xl px-10 py-3"></div>
+        <div class="rounded-lg border bg-black px-3 md:col-span-12">
+            <div class="flex items-center justify-between py-3">
+                <div
+                    class="animate-pulse rounded-2xl bg-secondary px-10 py-3"
+                />
                 <div class="flex">
-                    <div class="animate-pulse bg-secondary rounded-2xl px-10 py-2 mr-2"></div>
-                    <div class="animate-pulse bg-secondary rounded-2xl px-10 py-2"></div>
+                    <div
+                        class="mr-2 animate-pulse rounded-2xl bg-secondary px-10 py-2"
+                    />
+                    <div
+                        class="animate-pulse rounded-2xl bg-secondary px-10 py-2"
+                    />
                 </div>
             </div>
         </div>
     {:else if isMerkleTree}
-        <div class="rounded-lg bg-black px-3 md:col-span-12 border">
+        <div class="rounded-lg border bg-black px-3 md:col-span-12">
             <MerkleTreeWidget {account} />
         </div>
     {:else}
@@ -53,18 +61,22 @@
                 <ProfileWidget {account} />
             </div>
         {/if}
-        <div class="rounded-lg bg-black px-3 md:col-span-6 border">
+        <div class="rounded-lg border bg-black px-3 md:col-span-6">
             <AssetsWidget {account} />
         </div>
     {/if}
 
     {#if !isLoading}
-        <div class="rounded-lg bg-black px-3 border {isMerkleTree || isLoading ? "md:col-span-12" : "md:col-span-6"}">
+        <div
+            class="rounded-lg border bg-black px-3 {isMerkleTree || isLoading
+                ? 'md:col-span-12'
+                : 'md:col-span-6'}"
+        >
             <TokensWidget {account} />
         </div>
     {/if}
 
-    <div class="rounded-lg px-3 bg-black md:col-span-12 border">
+    <div class="rounded-lg border bg-black px-3 md:col-span-12">
         <TransactionsWidget {account} />
     </div>
 </div>

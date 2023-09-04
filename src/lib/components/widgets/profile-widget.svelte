@@ -3,8 +3,8 @@
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
-    import { IconPaths } from "$lib/types";    
-    export let account:string;
+    import { IconPaths } from "$lib/types";
+    export let account: string;
 
     import { SOCIAL_BONFIDA_RECORDS } from "$lib/config";
     import { onMount } from "svelte";
@@ -30,72 +30,94 @@
         pic: string;
         twitter: string;
         url: string;
-    }
+    };
 
-    $: if($domains?.data?.length > 0) {
+    $: if ($domains?.data?.length > 0) {
         selectedDomain = $domains?.data[0].name;
     }
 
-    $: selectedRecords = $domains.data?.find((domain) => domain.name === selectedDomain)?.records;
+    $: selectedRecords = $domains.data?.find(
+        (domain) => domain.name === selectedDomain
+    )?.records;
 
     onMount(() => {
         setTimeout(() => {
             isLoading = false;
-        }, 1000)
-    })
+        }, 1000);
+    });
 </script>
 
-
-<div class="py-2 border rounded-lg p-3">
-    <div class="flex items-center justify-between mb-3">
+<div class="rounded-lg border p-3 py-2">
+    <div class="mb-3 flex items-center justify-between">
         {#if isLoading}
-            <div class="bg-secondary rounded-2xl animate-pulse px-10 py-2">
-
-            </div>
+            <div class="animate-pulse rounded-2xl bg-secondary px-10 py-2" />
         {:else}
             <div>
-                <h2 class="text-2xl font-bold -mb-1" >Profile</h2>
+                <h2 class="-mb-1 text-2xl font-bold">Profile</h2>
             </div>
             <div class="flex gap-2">
                 {#each $domains?.data || [] as domain}
                     <button
-                        on:click={() => selectedDomain = domain.name}
+                        on:click={() => (selectedDomain = domain.name)}
                         class:bg-white={selectedDomain === domain.name}
                         class:text-secondary={selectedDomain === domain.name}
-                        class="bg-green-300 text-green-900 font-semibold p-1 rounded-2xl text-xs px-2"
-                    >{domain.name}.sol</button>
+                        class="rounded-2xl bg-green-300 p-1 px-2 text-xs font-semibold text-green-900"
+                        >{domain.name}.sol</button
+                    >
                 {/each}
             </div>
         {/if}
     </div>
 
-    <div class="flex gap-3 relative items-center">
+    <div class="relative md:flex items-center gap-3">
         {#if isLoading}
-            <div class="bg-secondary rounded-2xl animate-pulse rounded h-36 aspect-square">
-
-            </div>
+            <div
+                class="aspect-square h-36 animate-pulse rounded rounded-2xl bg-secondary"
+            />
 
             <div class="grid grid-cols-2 gap-4">
                 {#each Array(4) as x}
-                    <div class="flex items-center hover:border-white border rounded-lg p-2">
-                        <div class="bg-secondary animate-pule rounded-full p-3"></div>
+                    <div
+                        class="flex items-center rounded-lg border p-2 hover:border-white"
+                    >
+                        <div
+                            class="animate-pule rounded-full bg-secondary p-3"
+                        />
                         <div class="ml-2">
-                            <div class="bg-secondary rounded-2xl animate-pulse px-20 py-3 mb-1"></div>
-                            <div class="bg-secondary rounded-2xl animate-pulse px-10 py-2"></div>
+                            <div
+                                class="mb-1 animate-pulse rounded-2xl bg-secondary px-20 py-3"
+                            />
+                            <div
+                                class="animate-pulse rounded-2xl bg-secondary px-10 py-2"
+                            />
                         </div>
                     </div>
                 {/each}
             </div>
         {:else}
-            <img src="{selectedRecords?.pic || ""}" class="rounded h-36 aspect-square" alt="">
+            <img
+                src={selectedRecords?.pic || ""}
+                class="aspect-square w-full md:h-36 rounded my-3 md:w-auto"
+                alt=""
+            />
             <div class="grid grid-cols-2 gap-4">
                 {#each Object.keys(selectedRecords || {}) as record}
                     {#if selectedRecords[record] && record !== "pic"}
-                        <div class="flex items-center border rounded-lg p-2">
-                            <Icon id={recordIcons[record]} size="sm"/>
+                        <div class="flex items-center rounded-lg border p-2">
+                            <Icon
+                                id={recordIcons[record]}
+                                size="sm"
+                            />
                             <div class="ml-2">
                                 <p class="font-semibold">{record}</p>
-                                <p class="text-sm text-xs text-neutral">{selectedRecords[record].slice(0,20)}{selectedRecords[record].length >= 20 ? "..."  : ""}</p>
+                                <p class="text-sm text-xs text-neutral">
+                                    {selectedRecords[record].slice(
+                                        0,
+                                        20
+                                    )}{selectedRecords[record].length >= 20
+                                        ? "..."
+                                        : ""}
+                                </p>
                             </div>
                         </div>
                     {/if}
