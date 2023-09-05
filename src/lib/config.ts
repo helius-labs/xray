@@ -67,7 +67,7 @@ export const TRADITIONAL_DNS_TYPES = {
 export const modals: Record<string, Modal> = {
     DOMAINS: {
         component: DomainRedirect,
-        title: "Register this domain",
+        title: "Domain Available",
     },
     HELP: {
         component: Help,
