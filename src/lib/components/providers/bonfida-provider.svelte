@@ -1,8 +1,7 @@
 <script lang="ts">
-        import { page } from "$app/stores";
+    import { page } from "$app/stores";
 
-import { trpcWithQuery } from "$lib/trpc/client";
+    import { trpcWithQuery } from "$lib/trpc/client";
 
-const client = trpcWithQuery($page);
-
+    const client = trpcWithQuery($page);
 </script>
