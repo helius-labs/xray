@@ -10,16 +10,12 @@
 
 <div>
     <div class="my-3 flex justify-between">
-        <h2 class="text-xl font-bold">Activity</h2>
+        <h2 class="text-2xl font-bold">Activity</h2>
 
         <a
             href="/account/{account}/activity"
-            class="btn btn-outline btn-sm"
+            class="btn btn-secondary btn-sm text-xs"
         >
-            <!-- <Icon
-                id="arrowRight"
-                size="md"
-            /> -->
             VIEW ALL
         </a>
     </div>

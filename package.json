@@ -24,6 +24,7 @@
         ]
     },
     "devDependencies": {
+        "@bonfida/spl-name-service": "^1.0.10",
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
         "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
         "@playwright/test": "^1.32.1",

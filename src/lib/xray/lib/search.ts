@@ -86,6 +86,15 @@ export const search = async (
             );
 
             const { result = "" } = await resonse.json();
+            if (result === "Domain not found") {
+                return {
+                    address: query,
+                    search: query,
+                    type: "bonfida-domain",
+                    url: `/domains/?search=${query}`,
+                    valid: true,
+                };
+            }
 
             return {
                 address: result,

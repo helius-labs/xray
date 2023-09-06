@@ -8,9 +8,24 @@ import type {
     ProtonTransactionAction,
 } from "$lib/xray";
 
-import type { IconPaths, modals } from "$lib/config";
+import type {
+    IconPaths,
+    modals,
+    BONFIDA_RECORDS,
+    SOCIAL_BONFIDA_RECORDS,
+    CRYPTO_BONFIDA_RECORDS,
+    TRADITIONAL_DNS_TYPES,
+} from "$lib/config";
 
 export * from "$lib/config";
+
+export type BonfidaRecord = keyof typeof BONFIDA_RECORDS;
+
+export type SocialBonfidaRecord = keyof typeof SOCIAL_BONFIDA_RECORDS;
+
+export type CryptoBonfidaRecord = keyof typeof CRYPTO_BONFIDA_RECORDS;
+
+export type TraditionalDnsTypes = keyof typeof TRADITIONAL_DNS_TYPES;
 
 export interface UIConfig {
     dev: boolean;

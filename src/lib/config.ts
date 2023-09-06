@@ -5,10 +5,70 @@ import Help from "$lib/components/modals/help.svelte";
 import Menu from "$lib/components/modals/menu.svelte";
 import TransactionFilter from "$lib/components/modals/transaction-filter.svelte";
 import WalletSelector from "$lib/components/modals/wallets.svelte";
+import DomainRedirect from "$lib/components/modals/domain.svelte";
 
 export const recentSearchesKey = "xray:searches";
 
+export const BONFIDA_RECORDS = {
+    ARWV: "ARWV",
+    BSC: "BSC",
+    BTC: "BTC",
+    Backpack: "backpack",
+    DOGE: "DOGE",
+    Discord: "discord",
+    ETH: "ETH",
+    Email: "email",
+    Github: "github",
+    IPFS: "IPFS",
+    Injective: "INJ",
+    LTC: "LTC",
+    POINT: "POINT",
+    Pic: "pic",
+    Reddit: "reddit",
+    SHDW: "SHDW",
+    SOL: "SOL",
+    Telegram: "telegram",
+    Twitter: "twitter",
+    Url: "url",
+};
+
+export const SOCIAL_BONFIDA_RECORDS = {
+    discord: BONFIDA_RECORDS.Discord,
+    email: BONFIDA_RECORDS.Email,
+    github: BONFIDA_RECORDS.Github,
+    pic: BONFIDA_RECORDS.Pic,
+    telegram: BONFIDA_RECORDS.Telegram,
+    twitter: BONFIDA_RECORDS.Twitter,
+    url: BONFIDA_RECORDS.Url,
+};
+
+export const CRYPTO_BONFIDA_RECORDS = {
+    ARWV: BONFIDA_RECORDS.ARWV,
+    BSC: BONFIDA_RECORDS.BSC,
+    BTC: BONFIDA_RECORDS.BTC,
+    Backpack: BONFIDA_RECORDS.Backpack,
+    DOGE: BONFIDA_RECORDS.DOGE,
+    ETH: BONFIDA_RECORDS.ETH,
+    IPFS: BONFIDA_RECORDS.IPFS,
+    Injective: BONFIDA_RECORDS.Injective,
+    LTC: BONFIDA_RECORDS.LTC,
+    POINT: BONFIDA_RECORDS.POINT,
+    SHDW: BONFIDA_RECORDS.SHDW,
+    SOL: BONFIDA_RECORDS.SOL,
+};
+
+export const TRADITIONAL_DNS_TYPES = {
+    A: "Address record",
+    AAAA: "IPv6 address record",
+    CNAME: "Canonical name record",
+    TXT: "Text record",
+};
+
 export const modals: Record<string, Modal> = {
+    DOMAINS: {
+        component: DomainRedirect,
+        title: "Register this domain",
+    },
     HELP: {
         component: Help,
         title: "Help",

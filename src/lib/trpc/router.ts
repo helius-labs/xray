@@ -19,6 +19,7 @@ import { blockTransactions } from "$lib/trpc/routes/block-transactions";
 import { assets } from "$lib/trpc/routes/assets";
 import { domain } from "$lib/trpc/routes/bonfida/public-key-from-domain";
 
+
 export const t = initTRPC.context<Context>().create();
 
 export const router = t.router({
@@ -30,6 +31,7 @@ export const router = t.router({
     blockTransactions,
     concurrentMerkleTree,
     currentSlot,
+    domainsFromPublicKey,
     price,
     rawTransaction,
     token,

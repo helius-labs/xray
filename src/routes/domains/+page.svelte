@@ -42,6 +42,7 @@
     <h1 class="p-6 text-center text-6xl font-bold">Domains</h1>
     <p class="text-center">Powered by Bonfida</p>
 </div>
+
 <div class="flex w-full justify-center p-3">
     <input
         type="text"
