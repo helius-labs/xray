@@ -45,7 +45,7 @@
 {#if $assets.hasNextPage && lastPageHadAssets}
     <div class="flex justify-center">
         <button
-            class="btn-outline btn"
+            class="btn btn-outline"
             class:loading={$assets.isFetching}
             class:disabled={$assets.isFetching}
             on:click={() => $assets.fetchNextPage()}>Load More</button

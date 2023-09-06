@@ -26,7 +26,7 @@
 </script>
 
 <button
-    class="btn-xs btn {classList}"
+    class="btn btn-xs {classList}"
     class:btn-success={copied}
     class:btn-ghost={!copied}
     on:click={copy}

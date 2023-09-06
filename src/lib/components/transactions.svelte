@@ -13,6 +13,7 @@
     export let account: string;
     export let user = "";
     export let filter = "";
+    export let compressed = false;
 
     let cachedAddress = "";
 
@@ -24,11 +25,17 @@
         user: string;
         cursor?: string;
     }) =>
-        client.transactions.createInfiniteQuery(input, {
-            getNextPageParam: (lastPage) => lastPage.oldest,
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-        });
+        compressed
+            ? client.cnftTransactions.createInfiniteQuery(input, {
+                  getNextPageParam: (lastPage) => lastPage.page,
+                  refetchOnMount: false,
+                  refetchOnWindowFocus: false,
+              })
+            : client.transactions.createInfiniteQuery(input, {
+                  getNextPageParam: (lastPage) => lastPage.oldest,
+                  refetchOnMount: false,
+                  refetchOnWindowFocus: false,
+              });
 
     const loadMore = () => {
         $transactions.fetchNextPage();
@@ -101,7 +108,7 @@
 {#if $transactions.hasNextPage && lastPageHasTransactions}
     <div class="flex justify-center">
         <button
-            class="btn-outline btn"
+            class="btn btn-outline"
             class:loading={$transactions.isFetching}
             class:disabled={$transactions.isFetching}
             on:click={loadMore}>Load More</button

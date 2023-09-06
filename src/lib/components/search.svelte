@@ -162,7 +162,7 @@
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
-            class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
+            class="input input-bordered h-10 w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
             placeholder="Search Solana"
             tabindex="0"
@@ -183,7 +183,7 @@
                 <div class="flex flex-wrap items-center justify-between">
                     <p class="text-md mb-1 mt-2">Recents</p>
                     <button
-                        class="btn-xs btn border-none bg-transparent"
+                        class="btn btn-xs border-none bg-transparent"
                         on:click={clearRecents}
                     >
                         <span class="my-1">Clear all</span>
@@ -229,7 +229,7 @@
     </div>
 
     <button
-        class="btn-ghost btn-sm btn absolute bottom-1/2 right-4 translate-y-1/2 px-2"
+        class="btn btn-ghost btn-sm absolute bottom-1/2 right-4 translate-y-1/2 px-2"
         class:loading={isSearching}
     >
         {#if !isSearching}
@@ -239,11 +239,9 @@
 </div>
 
 {#if size === "lg"}
-    <div
-        class="relative z-10 py-2"
-    >
+    <div class="relative z-10 py-2">
         <button
-            class="bg-faint btn-outline btn col-span-1 mb-4 w-full"
+            class="bg-faint btn btn-outline col-span-1 mb-4 w-full"
             on:click|preventDefault={newSearch}
         >
             <span class="text-sm">Go</span>

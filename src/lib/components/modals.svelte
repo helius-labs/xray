@@ -27,7 +27,7 @@
                 <h3 class="ml-3 text-xl font-bold">{$modalsStore.title}</h3>
                 <div>
                     <button
-                        class="btn-ghost btn-md btn"
+                        class="btn btn-ghost btn-md"
                         on:click={hideModal}
                     >
                         <Icon

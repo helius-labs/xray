@@ -28,26 +28,26 @@
                 <div />
                 <a
                     href={`/account/${account}`}
-                    class="tab-bordered tab"
+                    class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith(`${account}`)}
                     >Transactions</a
                 >
                 <a
                     href={`/account/${account}/tokens`}
-                    class="tab-bordered tab"
+                    class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
                     >Tokens</a
                 >
                 <a
                     href={`/account/${account}/assets`}
-                    class="tab-bordered tab"
+                    class="tab tab-bordered"
                     class:tab-active={$page.url.pathname.endsWith("/assets")}
                     >Assets</a
                 >
                 {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
                     <a
                         href={`/account/${account}/concurrent-merkle-tree`}
-                        class="tab-bordered tab"
+                        class="tab tab-bordered"
                         class:tab-active={$page.url.pathname.endsWith(
                             "concurrent-merkle-tree"
                         )}>Concurrent Merkle Tree</a
@@ -56,7 +56,7 @@
             </div>
             {#if !$page.url.pathname.endsWith("/tokens") && !$page.url.pathname.endsWith("/assets")}
                 <button
-                    class="btn-ghost btn-sm btn"
+                    class="btn btn-ghost btn-sm"
                     on:click={() => showModal("TRANSACTION_FILTER")}
                 >
                     <Icon id="settings" />

@@ -92,7 +92,7 @@
                 <a
                     href={metadata.image}
                     target="_blank"
-                    class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
+                    class="btn btn-sm absolute bottom-1 right-1 border-0 bg-black"
                 >
                     View Media
                 </a>
@@ -413,7 +413,10 @@
                 </div>
             {/if}
             <div class="mt-3 pl-2 md:pl-0">
-                <Transactions account={address} />
+                <Transactions
+                    account={address}
+                    compressed={metadata.compressed}
+                />
             </div>
             <div class="mt-3">
                 <JSON

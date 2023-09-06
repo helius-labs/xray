@@ -10,6 +10,6 @@
     <a
         href="/account/{address}"
         data-sveltekit-reload
-        class="btn-ghost btn w-full">{shortenString(address, 8)}</a
+        class="btn btn-ghost w-full">{shortenString(address, 8)}</a
     >
 {/each}
