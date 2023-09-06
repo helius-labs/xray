@@ -6,6 +6,7 @@
 
 <div class="rounded-lg border p-3">
     <div class="flex justify-between">
+
         <div class="flex items-center">
             <h2 class="text-2xl font-bold">Account</h2>
         </div>
