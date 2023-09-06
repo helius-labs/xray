@@ -16,13 +16,6 @@
         "format": "prettier --write '{public,src}/**/*.{css,html,js,svelte}'",
         "prepare": "husky install"
     },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "npm run lint",
-            "npm run format",
-            "git add"
-        ]
-    },
     "devDependencies": {
         "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
         "@esbuild-plugins/node-modules-polyfill": "^0.2.2",

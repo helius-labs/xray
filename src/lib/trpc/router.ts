@@ -28,6 +28,7 @@ export const router = t.router({
     assets,
     balances,
     blockTransactions,
+    cnftTransactions,
     concurrentMerkleTree,
     currentSlot,
     price,
@@ -37,7 +38,6 @@ export const router = t.router({
     tps,
     transaction,
     transactions,
-    cnftTransactions,
 });
 
 export type Router = typeof router;

@@ -44,20 +44,20 @@ export const cnftTransactions = t.procedure
             method: "POST",
         }).then((res) => res.json());
 
-        const signatures = response.result.items.map(([signature]) => signature);
+        const signatures = response.result.items.map(
+            ([signature]) => signature
+        );
 
         const transactionUrl = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_API_KEY}`;
-        
-        const transactions: EnrichedTransaction[] = await fetch(
-            transactionUrl,
-            {
+
+        const transactions: EnrichedTransaction[] =
+            (await fetch(transactionUrl, {
                 body: JSON.stringify({
                     transactions: signatures,
                 }),
                 method: "POST",
-            }
-        ).then((res) => res.json()) || [];
-            
+            }).then((res) => res.json())) || [];
+
         const result = transactions.map((tx) => parseTransaction(tx)) || [];
 
         return {
