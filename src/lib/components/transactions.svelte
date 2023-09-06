@@ -27,15 +27,15 @@
     }) =>
         compressed
             ? client.cnftTransactions.createInfiniteQuery(input, {
-                  getNextPageParam: (lastPage) => lastPage.page,
-                  refetchOnMount: false,
-                  refetchOnWindowFocus: false,
-              })
+                getNextPageParam: (lastPage) => lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            })
             : client.transactions.createInfiniteQuery(input, {
-                  getNextPageParam: (lastPage) => lastPage.oldest,
-                  refetchOnMount: false,
-                  refetchOnWindowFocus: false,
-              });
+                getNextPageParam: (lastPage) => lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            });
 
     const loadMore = () => {
         $transactions.fetchNextPage();

@@ -61,7 +61,7 @@ export const cnftTransactions = t.procedure
         const result = transactions.map((tx) => parseTransaction(tx)) || [];
 
         return {
-            page: input.cursor + 1,
+            oldest: signatures[signatures.length - 1],
             result,
         };
     });

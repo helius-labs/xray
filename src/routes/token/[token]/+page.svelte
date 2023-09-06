@@ -412,12 +412,16 @@
                     </Collapse>
                 </div>
             {/if}
-            <div class="mt-3 pl-2 md:pl-0">
-                <Transactions
-                    account={address}
-                    compressed={metadata.compressed}
-                />
-            </div>
+
+            {#key metadata.compressed}
+                <div class="mt-3 pl-2 md:pl-0">
+                    <Transactions
+                        account={address}
+                        compressed={metadata.compressed}
+                    />
+                </div>
+            {/key}
+            
             <div class="mt-3">
                 <JSON
                     data={metadata}
