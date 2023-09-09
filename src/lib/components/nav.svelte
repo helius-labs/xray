@@ -23,7 +23,7 @@
             }}
         >
             <a
-                class="btn-ghost btn px-2"
+                class="btn btn-ghost px-2"
                 href="/"
                 rel="noreferrer"
             >
@@ -43,7 +43,7 @@
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
             <button
-                class="btn-ghost btn"
+                class="btn btn-ghost"
                 on:click={() => showModal("HELP")}
             >
                 <Icon
@@ -52,7 +52,7 @@
                 />
             </button>
             <button
-                class="btn-ghost btn"
+                class="btn btn-ghost"
                 on:click={() => showModal("MENU")}
             >
                 <Icon
@@ -66,7 +66,7 @@
 
 {#if $page.url.pathname !== "/"}
     <button
-        class="btn-secondary btn-sm btn fixed bottom-4 right-3 z-10 cursor-pointer rounded-full"
+        class="btn btn-secondary btn-sm fixed bottom-4 right-3 z-10 cursor-pointer rounded-full"
         on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
     >
         <Icon

@@ -2,6 +2,6 @@
     <a
         href={url}
         data-sveltekit-reload
-        class="btn-ghost btn w-full">{name}</a
+        class="btn btn-ghost w-full">{name}</a
     >
 {/each}
