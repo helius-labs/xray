@@ -5,8 +5,6 @@
 </style>
 
 <script lang="ts">
-    import { type SearchResult, search, connect } from "$lib/xray";
-
     type SearchResultType =
         | "token"
         | "account"
@@ -27,8 +25,6 @@
     import { onMount, createEventDispatcher } from "svelte";
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
-
-    import { showConnectWallet } from "$lib/state/stores/connect-wallet";
 
     import { showModal } from "$lib/state/stores/modals";
 
@@ -57,14 +53,7 @@
     let connected = false;
     let isBackpack = false;
     let recent = [] as SearchResult[];
-
     const dispatch = createEventDispatcher();
-
-    const connectWallet = () => {
-        connected = false;
-
-        showConnectWallet();
-    };
 
     const searchFailed = () => {
         isSearching = false;
@@ -105,7 +94,8 @@
     };
 
     const loadSearch = ({ url }: SearchResult) =>
-        (window.location.href = url || "/");
+        (window.location.href =
+            `${url}?network=${isMainnetValue ? "mainnet" : "devnet"}` || `/`);
 
     const selectSearch = (data: SearchResult) => {
         addRecent(data);
@@ -113,56 +103,70 @@
     };
 
     const newSearch = async () => {
-        searchError = "";
-        isSearching = true;
+    searchError = "";
+    isSearching = true;
 
-        try {
-            const response = await fetch(`/api/search/${inputValue}`);
+    try {
+        const response = await fetch(
+            `/api/search/${inputValue}?network=${
+                isMainnetValue ? "mainnet" : "devnet"
+            }`
+        );
 
-            const data = await response.json();
+        const data = await response.json();
 
-            if (!data.valid) {
-                searchFailed();
-                return;
-            }
-
-            selectSearch(data);
-        } catch (error) {
+        if (!data.valid) {
             searchFailed();
+            return;
         }
-    };
 
-    onMount(() => {
-        recent = getRecentSearches();
+        selectSearch(data);
+    } catch (error) {
+        searchFailed();
+    }
+};
 
-        isBackpack =
-            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
+    let isMainnetValue = true;
+
+onMount(() => {
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    if (network !== null) {
+        isMainnetValue = network === "mainnet";
+    }
+    recent = getRecentSearches();
+
+    isBackpack =
+        window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
+});
+
+$: if ($walletStore.connected && !connected) {
+    focusInput();
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    isMainnetValue = network !== "devnet";
+    inputValue = $walletStore.publicKey?.toBase58() || "";
+    addRecent({
+        address: inputValue,
+        search: inputValue,
+        type: "account",
+        url: `/account/${inputValue}?network=${
+            isMainnetValue ? "mainnet" : "devnet"
+        }`,
+        valid: true,
     });
 
-    $: if ($walletStore.connected && !connected) {
-        focusInput();
+    window.location.href = `/account/${inputValue}`;
 
-        inputValue = $walletStore.publicKey?.toBase58() || "";
-
-        addRecent({
-            address: inputValue,
-            search: inputValue,
-            type: "account",
-            url: `/account/${inputValue}`,
-            valid: true,
-        });
-
-        window.location.href = `/account/${inputValue}`;
-
-        connected = true;
-    }
+    connected = true;
+}
 </script>
 
 <div class="relative z-30 my-2 w-full">
     <div class="dropdown w-full">
         <input
             bind:this={inputEl}
-            class="input input-bordered h-10 w-full rounded-lg focus:input-primary"
+            class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
             placeholder="Search Solana"
             tabindex="0"
@@ -183,7 +187,7 @@
                 <div class="flex flex-wrap items-center justify-between">
                     <p class="text-md mb-1 mt-2">Recents</p>
                     <button
-                        class="btn btn-xs border-none bg-transparent"
+                        class="btn-xs btn border-none bg-transparent"
                         on:click={clearRecents}
                     >
                         <span class="my-1">Clear all</span>
@@ -198,7 +202,9 @@
                                 <a
                                     class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
                                     data-sveltekit-reload
-                                    href={recentSearch.url}
+                                    href={`${recentSearch.url}?network=${
+                                        isMainnetValue ? "mainnet" : "devnet"
+                                    }`}
                                 >
                                     <div class="flex">
                                         <div />
@@ -229,7 +235,7 @@
     </div>
 
     <button
-        class="btn btn-ghost btn-sm absolute bottom-1/2 right-4 translate-y-1/2 px-2"
+        class="btn-ghost btn-sm btn absolute bottom-1/2 right-4 translate-y-1/2 px-2"
         class:loading={isSearching}
     >
         {#if !isSearching}
@@ -241,7 +247,7 @@
 {#if size === "lg"}
     <div class="relative z-10 py-2">
         <button
-            class="bg-faint btn btn-outline col-span-1 mb-4 w-full"
+            class="bg-faint btn-outline btn col-span-1 mb-4 w-full"
             on:click|preventDefault={newSearch}
         >
             <span class="text-sm">Go</span>

@@ -1,8 +1,10 @@
 import { t } from "$lib/trpc/t";
 import { parseTransaction } from "$lib/xray";
 import type { EnrichedTransaction } from "helius-sdk";
-
+import {Connection} from '@solana/web3.js'
 import { z } from "zod";
+import { getAPIUrl } from "$lib/util/get-api-url";
+import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 const { HELIUS_API_KEY } = process.env;
 
@@ -21,12 +23,12 @@ export const cnftTransactions = t.procedure
     .input(
         z.object({
             account: z.string(),
+            isMainnet: z.boolean(),
             cursor: z.number().optional().default(1),
         })
     )
     .query(async ({ input }) => {
-        const url = `https://rpc.helius.xyz/?api-key=${HELIUS_API_KEY}`;
-
+        const url = getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet)
         const response: SignaturesResponse = await fetch(url, {
             body: JSON.stringify({
                 id: "signatures",
@@ -48,7 +50,7 @@ export const cnftTransactions = t.procedure
             ([signature]) => signature
         );
 
-        const transactionUrl = `https://api.helius.xyz/v0/transactions/?api-key=${HELIUS_API_KEY}`;
+        const transactionUrl = getAPIUrl(`/v0/transactions/?api-key=${HELIUS_API_KEY}`, input.isMainnet)
 
         const transactions: EnrichedTransaction[] =
             (await fetch(transactionUrl, {

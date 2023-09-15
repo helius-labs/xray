@@ -1,4 +1,5 @@
 <script lang="ts">
+    //@ts-nocheck
     import { page } from "$app/stores";
 
     import type { TransactionPage } from "$lib/types";
@@ -13,8 +14,15 @@
     let cachedSlot = "";
 
     const client = trpcWithQuery($page);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
 
-    const createTransactionQuery = (input: { slot: number; cursor?: string }) =>
+    const createTransactionQuery = (input: {
+        slot: number;
+        cursor?: string;
+        isMainnet: boolean;
+    }) =>
         client.blockTransactions.createInfiniteQuery(input, {
             getNextPageParam: (lastPage: { oldest: number }) => lastPage.oldest,
             refetchOnMount: false,
@@ -27,6 +35,7 @@
 
     $: transactions = createTransactionQuery({
         slot: parseInt($page.params.slot),
+        isMainnet: isMainnetValue,
     });
 
     $: transactionPages =
@@ -37,6 +46,7 @@
 
         transactions = createTransactionQuery({
             slot: parseInt($page.params.slot),
+            isMainnet: isMainnetValue,
         });
     }
 
@@ -69,7 +79,7 @@
                     <div />
                     <a
                         href="/"
-                        class="tab tab-active tab-bordered"
+                        class="tab-bordered tab tab-active"
                     >
                         Transactions
                     </a>
@@ -114,7 +124,7 @@
         {#if $transactions.hasNextPage && lastPageHasTransactions}
             <div class="flex justify-center">
                 <button
-                    class="btn btn-outline"
+                    class="btn-outline btn"
                     class:loading={$transactions.isFetching}
                     class:disabled={$transactions.isFetching}
                     on:click={loadMore}>Load More</button

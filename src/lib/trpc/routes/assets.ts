@@ -1,6 +1,8 @@
 import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
+import { isMainnet } from '../../util/stores/network';
+import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 const { HELIUS_API_KEY } = process.env;
 
@@ -9,13 +11,13 @@ export const assets = t.procedure
         z.object({
             account: z.string(),
             cursor: z.number().optional(),
+            isMainnet: z.boolean(),
         })
     )
     .query(async ({ input }) => {
         const { cursor = 1, account } = input;
-
-        const response = await fetch(
-            `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`,
+        const url = getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet)
+        const response = await fetch( url,
             {
                 body: JSON.stringify({
                     id: "get-assets-" + account,

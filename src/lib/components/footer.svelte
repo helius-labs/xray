@@ -14,7 +14,7 @@
         <div class="mr-12">
             <a
                 href="https://discord.gg/mV3dNPwDnZ"
-                class="btn btn-ghost"
+                class="btn-ghost btn"
             >
                 <Icon
                     id="discord"
@@ -23,7 +23,7 @@
             </a>
             <a
                 href="https://twitter.com/heliuslabs"
-                class="btn btn-ghost"
+                class="btn-ghost btn"
             >
                 <Icon
                     id="twitter"

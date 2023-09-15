@@ -4,18 +4,19 @@ import { z } from "zod";
 
 const { HELIUS_API_KEY } = process.env;
 
-import { connect } from "$lib/xray";
+import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 // TODO: add output validation once this merges with the token endpoint
-export const asset = t.procedure.input(z.string()).query(async ({ input }) => {
-    const url = `https://mainnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
+export const asset = t.procedure.input(z.tuple([z.string(), z.boolean()])).query(async ({ input }) => {
+    const [asset, isMainnet] = input;
+    const url = getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet);
 
     const response = await fetch(url, {
         body: JSON.stringify({
             id: "asset",
             jsonrpc: "2.0",
             method: "getAsset",
-            params: [input],
+            params: [asset],
         }),
         headers: {
             "Content-Type": "application/json",

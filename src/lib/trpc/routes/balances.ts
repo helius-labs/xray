@@ -1,13 +1,15 @@
 import { t } from "$lib/trpc/t";
+import { getAPIUrl } from "$lib/util/get-api-url";
 
 import { z } from "zod";
 
 const { HELIUS_API_KEY } = process.env;
 
 export const balances = t.procedure
-    .input(z.string())
+    .input(z.tuple([z.string(), z.boolean()]))
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v0/addresses/${input}/balances?api-key=${HELIUS_API_KEY}`;
+        const [account, isMainnet] = input;
+        const url = getAPIUrl(`/v0/addresses/${account}/balances?api-key=${HELIUS_API_KEY}`, isMainnet)
 
         const response = await fetch(url);
 

@@ -7,7 +7,6 @@ const { HELIUS_API_KEY } = process.env;
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {
     const conection = connect("mainnet", HELIUS_API_KEY);
-
     const result = await search(params?.query || "", conection);
 
     return json(result);

@@ -4,7 +4,6 @@
     import { ProtonCustomActionLabelTypes } from "$lib/xray";
 
     import { fade, fly } from "svelte/transition";
-
     import { transactionActionsMetadata } from "$lib/types";
 
     import formatDate from "$lib/util/format-date";
@@ -18,7 +17,9 @@
 
     let element: HTMLDivElement;
     let intersecting = false;
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const supported = Object.keys(transactionActionsMetadata).includes(
         transaction.type
     );
@@ -41,7 +42,9 @@
 
 <div>
     <a
-        href="/tx/{transaction.signature}"
+        href="/tx/{transaction.signature}?network={isMainnetValue
+            ? 'mainnet'
+            : 'devnet'}"
         class="gradient relative block w-full rounded-lg border border-transparent bg-black pb-1 text-left hover:border-primary"
     >
         <div
@@ -85,7 +88,9 @@
                             <div class="mr-2 rounded">
                                 <a
                                     data-sveltekit-reload
-                                    href="/tx/{transaction.signature}"
+                                    href="/tx/{transaction.signature}?network={isMainnetValue
+                                        ? 'mainnet'
+                                        : 'devnet'}"
                                     class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted text-xs hover:link-success"
                                 >
                                     {transaction.signature
@@ -177,7 +182,9 @@
                                             >
                                                 <a
                                                     data-sveltekit-reload
-                                                    href="/token/{metadata.address}"
+                                                    href="/token/{metadata.address}?network={isMainnetValue
+                                                        ? 'mainnet'
+                                                        : 'devnet'}"
                                                     class="pointer-events-auto mx-2 w-full transition-transform hover:scale-125"
                                                 >
                                                     {#if metadata?.image}
@@ -236,7 +243,9 @@
                                                                 >
                                                                     <a
                                                                         data-sveltekit-reload
-                                                                        href="/account/{action.to}"
+                                                                        href="/account/{action.to}?network={isMainnetValue
+                                                                            ? 'mainnet'
+                                                                            : 'devnet'}"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
                                                                         {shortenString(
@@ -256,7 +265,9 @@
                                                                     class="text-xs"
                                                                 >
                                                                     <a
-                                                                        href="/account/{action.from}"
+                                                                        href="/account/{action.from}?network={isMainnetValue
+                                                                            ? 'mainnet'
+                                                                            : 'devnet'}"
                                                                         class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                     >
                                                                         {shortenString(
@@ -271,7 +282,9 @@
                                                                     >
                                                                         <a
                                                                             data-sveltekit-reload
-                                                                            href="/account/{action.from}"
+                                                                            href="/account/{action.from}?network={isMainnetValue
+                                                                                ? 'mainnet'
+                                                                                : 'devnet'}"
                                                                             class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
                                                                             {shortenString(
@@ -295,7 +308,9 @@
                                                                     >
                                                                         <a
                                                                             data-sveltekit-reload
-                                                                            href="/account/{action.to}"
+                                                                            href="/account/{action.to}?network={isMainnetValue
+                                                                                ? 'mainnet'
+                                                                                : 'devnet'}"
                                                                             class="link-neutral pointer-events-auto border border-x-0 border-t-0 border-dotted hover:link-success"
                                                                         >
                                                                             {shortenString(

@@ -1,24 +1,25 @@
 import { t } from "$lib/trpc/t";
+import { getAPIUrl } from "$lib/util/get-api-url";
 
 import { z } from "zod";
 
 const { HELIUS_API_KEY } = process.env;
 
 export const token = t.procedure
-    .input(z.array(z.string()))
+    .input(z.tuple([z.string(), z.boolean()]))
     .query(async ({ input }) => {
+        const [token, isMainnet] = input;
+        const url = getAPIUrl(`/v0/token-metadata/?api-key=${HELIUS_API_KEY}`, isMainnet)
         const response = await fetch(
-            `https://api.helius.xyz/v0/token-metadata/?api-key=${HELIUS_API_KEY}`,
+            url,
             {
                 body: JSON.stringify({
                     includeOffChain: true,
-                    mintAccounts: input,
+                    mintAccounts: [token],
                 }),
                 method: "POST",
             }
         );
-
         const json = await response.json();
-
         return json;
     });

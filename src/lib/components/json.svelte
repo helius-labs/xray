@@ -65,7 +65,7 @@
                     success="copied json"
                 />
                 <button
-                    class="btn btn-ghost btn-sm"
+                    class="btn-ghost btn-sm btn"
                     on:click={() => (showCode = !showCode)}
                 >
                     {#if showCode}

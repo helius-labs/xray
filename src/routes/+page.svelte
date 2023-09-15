@@ -17,14 +17,9 @@
     import Search from "$lib/components/search.svelte";
     import IntersectionObserver from "svelte-intersection-observer";
 
-    import { browser } from "$app/environment";
-    // @ts-ignore
-    import { LottiePlayer } from "@lottiefiles/svelte-lottie-player";
-
     let searchError = "";
 
     let exploreELement: HTMLElement;
-    let heliusElement: HTMLElement;
 
     let isFocused = false;
 
