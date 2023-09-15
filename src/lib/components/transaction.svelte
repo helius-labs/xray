@@ -4,7 +4,6 @@
     import { ProtonCustomActionLabelTypes } from "$lib/xray";
 
     import { fade, fly } from "svelte/transition";
-
     import { transactionActionsMetadata } from "$lib/types";
 
     import formatDate from "$lib/util/format-date";
