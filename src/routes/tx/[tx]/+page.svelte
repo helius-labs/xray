@@ -19,6 +19,7 @@
     import LogMessages from "$lib/components/log-messages.svelte";
     import Transaction from "$lib/components/transaction.svelte";
     import Collapse from "$lib/components/collapse.svelte";
+    import Network from "$lib/components/network.svelte";
 
     let animate = false;
 
@@ -341,4 +342,5 @@
     <h2 class="mt-20 text-center text-lg opacity-90">
         Transaction not found. Try selecting another network.
     </h2>
+    <Network/>
 {/if}
