@@ -339,7 +339,7 @@
         </div>
     {/if}
 {:else}
-    <h2 class="mt-20 text-center text-lg opacity-90">
+    <h2 class="mt-20 text-center text-lg opacity-90 mb-6">
         Transaction not found. Try selecting another network.
     </h2>
     <Network/>
