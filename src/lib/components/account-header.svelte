@@ -40,7 +40,7 @@
 
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
-    const isMainnetValue = network !== "devnet";
+    let isMainnetValue = network !== "devnet";
     const accountInfo = client.accountInfo.createQuery([
         account,
         isMainnetValue,
@@ -60,6 +60,14 @@
     $: if ($accountInfo?.data?.balance) {
         balance.set($accountInfo.data.balance);
     }
+    function toggleNetwork() {
+    isMainnetValue = !isMainnetValue;
+    localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
+    const params = new URLSearchParams(window.location.search);
+    params.set("network", isMainnetValue ? "mainnet" : "devnet");
+    history.replaceState({}, "", "?" + params.toString());
+    history.go(0);
+}
 
     $: worth = $balance * $price?.data;
 </script>
@@ -69,6 +77,7 @@
     let:usernames
     let:usernameIsLoading
 >
+
     <div class="nav sticky top-16 z-30 gap-2 bg-base-100 px-3 pt-2">
         <div class="flex flex-col bg-base-100">
             <div class="flex items-center justify-between">
@@ -85,6 +94,13 @@
                             />
                         </div>
                     </div>
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <div 
+                    class="badge cursor-default badge-outline py-2 px-4 flex relative mx-2 opacity-90"
+                    on:click={toggleNetwork}
+                >
+                    {isMainnetValue ? "mainnet" : "devnet"}
+                </div>
                 </div>
                 <div class="relative text-right">
                     <h1 class="text-md md:block">

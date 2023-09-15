@@ -25,7 +25,7 @@
     }
 </script>
 
-<div class="toggle-container m-auto mt-2 flex w-full flex-col justify-center">
+<div class="toggle-container m-auto p-4 mt-2 flex w-full flex-col justify-center">
     <label class="toggle-label m-auto flex flex-col">
         <input
             type="checkbox"
@@ -35,7 +35,7 @@
         />
         <span class="toggle-mark" />
     </label>
-    <span class="network-text m-auto my-1 flex flex-col font-bold"
+    <span class="network-text m-auto my-1 flex font-bold"
         >{isMainnetValue ? "Mainnet" : "Devnet"}</span
     >
 </div>
