@@ -14,7 +14,7 @@
         const network = params.get("network");
     });
     function toggleNetwork(event: Event) {
-        const isMainnetValue = (event.target as HTMLInputElement).checked;
+        isMainnetValue = (event.target as HTMLInputElement).checked;
         localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
         const params = new URLSearchParams(window.location.search);
         params.set("network", isMainnetValue ? "mainnet" : "devnet");
