@@ -4,7 +4,7 @@
 </script>
 
 <footer
-    class="footer mt-20 grid w-full grid-cols-2 items-center border bg-black p-3"
+    class="footer mt-0 grid w-full grid-cols-2 items-center border bg-black p-3"
 >
     <div class="col-span-1 flex items-center">
         <PoweredByHelius />
@@ -13,7 +13,7 @@
     <div class="col-span-1 flex w-full justify-end">
         <div class="mr-12">
             <a
-                href="https://discord.gg/mV3dNPwDnZ"
+                href="https://discord.gg/nSkq35VUf5"
                 class="btn-ghost btn"
             >
                 <Icon

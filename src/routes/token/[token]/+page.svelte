@@ -9,9 +9,7 @@
         transform: translate(-50%, 0);
         background-color: black;
     }
-    .img {
-        max-height: 25vh;
-    }
+
 </style>
 
 <script lang="ts">

@@ -41,6 +41,5 @@
             </div>
         </div>
     </main>
+    <Footer />
 </QueryClientProvider>
-
-<Footer />

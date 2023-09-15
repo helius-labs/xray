@@ -168,7 +168,7 @@ $: if ($walletStore.connected && !connected) {
             bind:this={inputEl}
             class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
-            placeholder="Search Solana"
+            placeholder="Input a Solana address, transaction signature, or domain..."
             tabindex="0"
             type="text"
             on:focusin={() => dispatch("focusin")}
@@ -250,7 +250,7 @@ $: if ($walletStore.connected && !connected) {
             class="bg-faint btn-outline btn col-span-1 mb-4 w-full"
             on:click|preventDefault={newSearch}
         >
-            <span class="text-sm">Go</span>
+            <span class="text-sm">Explore</span>
         </button>
         <!-- <button
             class="bg-faint btn-outline btn col-span-3 mb-4 md:order-first"
