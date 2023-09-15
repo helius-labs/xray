@@ -10,9 +10,11 @@
         }
     });
     onMount(() => {
-        const params = new URLSearchParams(window.location.search);
-        const network = params.get("network");
-    });
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    isMainnetValue = network !== "devnet";
+    localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
+});
     function toggleNetwork(event: Event) {
         isMainnetValue = (event.target as HTMLInputElement).checked;
         localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
