@@ -32,7 +32,6 @@
     import Icon from "$lib/components/icon.svelte";
     import Username from "$lib/components/providers/username-provider.svelte";
     import ShortenAddress from "./shorten-address.svelte";
-    import { isMainnet } from "$lib/util/stores/network";
 
     const client = trpcWithQuery($page);
 

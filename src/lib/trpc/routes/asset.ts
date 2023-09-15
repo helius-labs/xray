@@ -4,7 +4,6 @@ import { z } from "zod";
 
 const { HELIUS_API_KEY } = process.env;
 
-import { connect } from "$lib/xray";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 // TODO: add output validation once this merges with the token endpoint

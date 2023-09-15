@@ -1,6 +1,5 @@
 import { t } from "$lib/trpc/t";
 import { getAPIUrl } from "$lib/util/get-api-url";
-import { isMainnet } from "$lib/util/stores/network";
 
 import { z } from "zod";
 
@@ -16,13 +15,11 @@ export const token = t.procedure
             {
                 body: JSON.stringify({
                     includeOffChain: true,
-                    mintAccounts: token,
+                    mintAccounts: [token],
                 }),
                 method: "POST",
             }
         );
-
         const json = await response.json();
-
         return json;
     });
