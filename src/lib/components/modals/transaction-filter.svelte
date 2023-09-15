@@ -16,12 +16,12 @@
 </script>
 
 <button
-    class="btn btn-ghost w-full"
+    class="btn-ghost btn w-full"
     on:click={() => handleClick("")}>All Transactions</button
 >
 {#each filterList as [key, value]}
     <button
-        class="btn btn-ghost w-full"
+        class="btn-ghost btn w-full"
         on:click={() => handleClick(key)}
     >
         {value.filterLabel}

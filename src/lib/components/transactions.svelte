@@ -1,4 +1,5 @@
 <script lang="ts">
+    //@ts-nocheck
     import { page } from "$app/stores";
 
     import type { TransactionPage } from "$lib/types";
@@ -18,24 +19,27 @@
     let cachedAddress = "";
 
     const client = trpcWithQuery($page);
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const createTransactionQuery = (input: {
         account: string;
         filter: string;
         user: string;
         cursor?: string;
+        isMainnet: boolean;
     }) =>
         compressed
             ? client.cnftTransactions.createInfiniteQuery(input, {
-                getNextPageParam: (lastPage) => lastPage.oldest,
-                refetchOnMount: false,
-                refetchOnWindowFocus: false,
-            })
+                  getNextPageParam: (lastPage) => lastPage.oldest,
+                  refetchOnMount: false,
+                  refetchOnWindowFocus: false,
+              })
             : client.transactions.createInfiniteQuery(input, {
-                getNextPageParam: (lastPage) => lastPage.oldest,
-                refetchOnMount: false,
-                refetchOnWindowFocus: false,
-            });
+                  getNextPageParam: (lastPage) => lastPage.oldest,
+                  refetchOnMount: false,
+                  refetchOnWindowFocus: false,
+              });
 
     const loadMore = () => {
         $transactions.fetchNextPage();
@@ -45,6 +49,7 @@
         account,
         filter,
         user,
+        isMainnet: isMainnetValue,
     });
 
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
@@ -61,6 +66,7 @@
             account,
             filter,
             user,
+            isMainnet: isMainnetValue,
         });
     }
 
@@ -108,7 +114,7 @@
 {#if $transactions.hasNextPage && lastPageHasTransactions}
     <div class="flex justify-center">
         <button
-            class="btn btn-outline"
+            class="btn-outline btn"
             class:loading={$transactions.isFetching}
             class:disabled={$transactions.isFetching}
             on:click={loadMore}>Load More</button

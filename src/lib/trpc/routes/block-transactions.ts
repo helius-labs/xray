@@ -1,3 +1,4 @@
+//@ts-nocheck
 import type { EnrichedTransaction } from "helius-sdk";
 
 import { t } from "$lib/trpc/t";
@@ -5,13 +6,13 @@ import { z } from "zod";
 
 import { parseTransaction } from "$lib/xray";
 
-import { connect } from "$lib/xray";
-
 import {
     VOTE_PROGRAM_ID,
     type ConfirmedTransactionMeta,
     type TransactionSignature,
+    Connection
 } from "@solana/web3.js";
+import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 const { HELIUS_API_KEY } = process.env;
 
@@ -30,6 +31,7 @@ export const blockTransactions = t.procedure
             cursor: z.string().optional(),
             limit: z.number().min(1).max(100).optional(),
             slot: z.number(),
+            isMainnet: z.boolean(),
         })
     )
     .output(
@@ -75,7 +77,7 @@ export const blockTransactions = t.procedure
         const limit = input.limit ?? 100;
         const invokedPrograms = new Map<string, number>();
 
-        const connection = connect("mainnet", HELIUS_API_KEY);
+        const connection = new Connection(getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet), "confirmed");
 
         const block = await connection.getBlock(input.slot, {
             maxSupportedTransactionVersion: 0,

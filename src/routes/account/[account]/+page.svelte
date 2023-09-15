@@ -13,8 +13,10 @@
     const { account } = $page.params;
 
     const client = trpcWithQuery($page);
-
-    const balances = client.balances.createQuery(account);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
+    const balances = client.balances.createQuery([account, isMainnetValue]);
 
     const balance = tweened(0, {
         duration: 1000,

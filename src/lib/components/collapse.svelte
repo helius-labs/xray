@@ -9,7 +9,7 @@
     export let showDetails = false;
 </script>
 
-<div class="collapse collapse-arrow rounded-md border">
+<div class="collapse-arrow collapse rounded-md border">
     <input
         type="checkbox"
         bind:checked={showDetails}

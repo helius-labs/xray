@@ -1,4 +1,5 @@
 <script lang="ts">
+    //@ts-nocheck
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
@@ -7,8 +8,14 @@
     const { account } = $page.params;
 
     const client = trpcWithQuery($page);
-
-    const createAssetsQuery = (input: { account: string; cursor: number }) =>
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
+    const createAssetsQuery = (input: {
+        account: string;
+        cursor: number;
+        isMainnet: boolean;
+    }) =>
         client.assets.createInfiniteQuery(input, {
             getNextPageParam: (lastPage) => lastPage.page + 1,
             refetchOnMount: false,
@@ -18,6 +25,7 @@
     $: assets = createAssetsQuery({
         account,
         cursor: 1,
+        isMainnet: isMainnetValue,
     });
 
     $: lastPageHadAssets =
@@ -31,7 +39,11 @@
                 (file) => file.mime.startsWith("image") && file.uri
             )}
 
-            <a href="/token/{asset.id}">
+            <a
+                href="/token/{asset.id}?network={isMainnetValue
+                    ? 'mainnet'
+                    : 'devnet'}"
+            >
                 <Image
                     src={image?.uri}
                     className="aspect-square w-full rounded-lg"
@@ -45,7 +57,7 @@
 {#if $assets.hasNextPage && lastPageHadAssets}
     <div class="flex justify-center">
         <button
-            class="btn btn-outline"
+            class="btn-outline btn"
             class:loading={$assets.isFetching}
             class:disabled={$assets.isFetching}
             on:click={() => $assets.fetchNextPage()}>Load More</button

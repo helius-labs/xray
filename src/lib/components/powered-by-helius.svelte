@@ -3,7 +3,7 @@
 </script>
 
 <a
-    class="btn btn-ghost flex items-center text-left"
+    class="btn-ghost btn flex items-center text-left"
     href="https://helius.xyz/"
     rel="noreferrer"
     target="_blank"

@@ -27,28 +27,9 @@
     import Nav from "$lib/components/nav.svelte";
 
     export let data: LayoutData;
-
-    const localStorageKey = "walletAdapter";
-    const network = clusterApiUrl("mainnet-beta");
 </script>
 
 <Modals />
-
-{#if $isConnectingWallet}
-    <WalletModal
-        maxNumberOfWallets="6"
-        on:connect={connectWallet}
-        on:close={hideConnectWallet}
-    />
-{/if}
-
-<WalletProvider
-    autoConnect={false}
-    {localStorageKey}
-    {wallets}
-/>
-
-<ConnectionProvider {network} />
 
 <QueryClientProvider client={data.queryClient}>
     <main class="min-h-screen">

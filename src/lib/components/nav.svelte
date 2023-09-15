@@ -8,6 +8,9 @@
     import Stats from "$lib/components/stats.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
 </script>
 
 <Stats />
@@ -23,8 +26,8 @@
             }}
         >
             <a
-                class="btn btn-ghost px-2"
-                href="/"
+                class="btn-ghost btn px-2"
+                href="/?network={isMainnetValue ? 'mainnet' : 'devnet'}"
                 rel="noreferrer"
             >
                 <span class="text-3xl">XRAY</span>
@@ -43,7 +46,7 @@
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
             <button
-                class="btn btn-ghost"
+                class="btn-ghost btn"
                 on:click={() => showModal("HELP")}
             >
                 <Icon
@@ -52,7 +55,7 @@
                 />
             </button>
             <button
-                class="btn btn-ghost"
+                class="btn-ghost btn"
                 on:click={() => showModal("MENU")}
             >
                 <Icon
@@ -66,7 +69,7 @@
 
 {#if $page.url.pathname !== "/"}
     <button
-        class="btn btn-secondary btn-sm fixed bottom-4 right-3 z-10 cursor-pointer rounded-full"
+        class="btn-secondary btn-sm btn fixed bottom-4 right-3 z-10 cursor-pointer rounded-full"
         on:click={() => window.scrollTo({ behavior: "smooth", top: 0 })}
     >
         <Icon

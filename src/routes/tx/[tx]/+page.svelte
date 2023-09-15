@@ -25,8 +25,11 @@
     const signature = $page.params.tx;
 
     const client = trpcWithQuery($page);
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const transaction = client.transaction.createQuery({
+        isMainnet: isMainnetValue,
         account: $page.url.searchParams
             .get("ref")
             ?.split("@")
@@ -38,7 +41,10 @@
         transaction: signature || "",
     });
 
-    const rawTransaction = client.rawTransaction.createQuery(signature || "");
+    const rawTransaction = client.rawTransaction.createQuery([
+        signature || "",
+        isMainnetValue,
+    ]);
 
     onMount(() => {
         animate = true;
@@ -136,7 +142,7 @@
                                     This transaction has failed.
                                 </h3>
                             </div>
-                            <div class="badge badge-error mr-1">Error</div>
+                            <div class="badge-error badge mr-1">Error</div>
                         </div>
                     {:else}
                         <div class="col-span-2 p-1 md:col-span-1">
@@ -161,7 +167,7 @@
                                     This transaction has successfully processed.
                                 </h3>
                             </div>
-                            <div class="badge badge-success mr-1">Success</div>
+                            <div class="badge-success badge mr-1">Success</div>
                         </div>
                     {/if}
                 </div>
@@ -223,7 +229,10 @@
                         </div>
                         <a
                             data-sveltekit-reload
-                            href="/block/{data?.raw?.slot}"
+                            href="/block/{data?.raw
+                                ?.slot}?network={isMainnetValue
+                                ? 'mainnet'
+                                : 'devnet'}"
                             class="pointer-events-auto text-xs hover:link-success md:text-sm"
                         >
                             {data?.raw?.slot?.toLocaleString()}

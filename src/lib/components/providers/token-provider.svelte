@@ -11,18 +11,23 @@
     export let address: string;
 
     let intersecting = false;
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const client = trpcWithQuery($page);
 
-    const token = client.token.createQuery([address], {
+    const token = client.token.createQuery([address, isMainnetValue], {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
 
-    const accountInfo = client.accountInfo.createQuery(address, {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
+    const accountInfo = client.accountInfo.createQuery(
+        [address, isMainnetValue],
+        {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+        }
+    );
 
     const token2022Metadata: {
         [key: string]: {
@@ -57,7 +62,7 @@
         sellerFeeBasisPoints: 0,
     };
 
-    const asset = client.asset.createQuery(address, {
+    const asset = client.asset.createQuery([address, isMainnetValue], {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });

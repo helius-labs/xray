@@ -32,13 +32,20 @@
     import Icon from "$lib/components/icon.svelte";
     import Username from "$lib/components/providers/username-provider.svelte";
     import ShortenAddress from "./shorten-address.svelte";
+    import { isMainnet } from "$lib/util/stores/network";
 
     const client = trpcWithQuery($page);
 
     export let account: string = "";
     export let link: string = "";
 
-    const accountInfo = client.accountInfo.createQuery(account);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
+    const accountInfo = client.accountInfo.createQuery([
+        account,
+        isMainnetValue,
+    ]);
     const price = client.price.createQuery(SOL);
 
     const balance = tweened(0, {

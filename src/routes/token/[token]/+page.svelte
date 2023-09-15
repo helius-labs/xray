@@ -9,10 +9,6 @@
         transform: translate(-50%, 0);
         background-color: black;
     }
-
-    .img {
-        max-height: 25vh;
-    }
 </style>
 
 <script lang="ts">
@@ -35,7 +31,9 @@
     let downloading = false;
 
     const address = $page.params.token;
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const handleDownload = (url: string) => {
         downloading = true;
 
@@ -92,7 +90,7 @@
                 <a
                     href={metadata.image}
                     target="_blank"
-                    class="btn btn-sm absolute bottom-1 right-1 border-0 bg-black"
+                    class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
                 >
                     View Media
                 </a>
@@ -217,7 +215,9 @@
                         <div class="flex flex-wrap gap-2">
                             <a
                                 class="card p-0"
-                                href="/account/{metadata.owner}"
+                                href="/account/{metadata.owner}?network={isMainnetValue
+                                    ? 'mainnet'
+                                    : 'devnet'}"
                             >
                                 <header
                                     class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
@@ -251,7 +251,9 @@
                             {#if metadata.delegate}
                                 <a
                                     class="card p-0"
-                                    href="/account/{metadata.owner}"
+                                    href="/account/{metadata.owner}?network={isMainnetValue
+                                        ? 'mainnet'
+                                        : 'devnet'}"
                                 >
                                     <header
                                         class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
@@ -294,7 +296,9 @@
                             {#each metadata.creators as creator, idx}
                                 <a
                                     class="card p-0"
-                                    href="/account/{creator.address}"
+                                    href="/account/{creator.address}?network={isMainnetValue
+                                        ? 'mainnet'
+                                        : 'devnet'}"
                                 >
                                     <header
                                         class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
@@ -337,7 +341,9 @@
                         <div class="flex flex-wrap gap-2">
                             <a
                                 class="card p-0"
-                                href="/account/{metadata.tree}/concurrent-merkle-tree"
+                                href="/account/{metadata.tree}/concurrent-merkle-tree?network={isMainnetValue
+                                    ? 'mainnet'
+                                    : 'devnet'}"
                             >
                                 <header
                                     class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
@@ -421,7 +427,7 @@
                     />
                 </div>
             {/key}
-            
+
             <div class="mt-3">
                 <JSON
                     data={metadata}
