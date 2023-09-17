@@ -48,7 +48,7 @@
             <a href="https://docs.helius.dev/welcome/what-is-helius" rel="noreferrer" target="_blank"
                 class="btn-ghost btn"
             >
-                <img class="h-6" src="docs.svg" alt="">
+                <img class="h-6 opacity-90" src="docs.svg" alt="">
         </a>
             <button
                 class="btn-ghost btn"
