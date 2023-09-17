@@ -20,7 +20,7 @@
     const slot = client.currentSlot.createQuery([isMainnetValue]);
 </script>
 
-<div class="flex h-8 w-full items-center justify-center text-xs">
+<div class="flex h-10 w-full items-center justify-center text-sm">
     <div class="mr-4">
         {#if !$tps.isLoading}
             <div
