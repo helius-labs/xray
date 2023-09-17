@@ -2,7 +2,6 @@
     import type { Icon as IconType } from "src/lib/types";
     import Icon from "$lib/components/icon.svelte";
     const supportedSearches: Array<[IconType, string]> = [
-        ["backpack", "xNFT Backpack usernames like @username"],
         ["globe", ".sol, .abc, .poor, .bonk domains"],
         ["person", "Wallet/Account addresses"],
         ["coins", "Token addresses"],
