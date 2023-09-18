@@ -45,11 +45,14 @@
 
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
+            <div class="tooltip" data-tip="Docs">
             <a href="https://docs.helius.dev/welcome/what-is-helius" rel="noreferrer" target="_blank"
                 class="btn-ghost btn"
             >
                 <img class="h-6 opacity-90" src="docs.svg" alt="">
         </a>
+        </div>
+        <div class="tooltip" data-tip="Help">
             <button
                 class="btn-ghost btn"
                 on:click={() => showModal("HELP")}
@@ -59,6 +62,8 @@
                     size="md"
                 />
             </button>
+        </div>
+        <div class="tooltip" data-tip="Menu">
             <button
                 class="btn-ghost btn"
                 on:click={() => showModal("MENU")}
@@ -68,6 +73,7 @@
                     size="lg"
                 />
             </button>
+            </div>
         </div>
     </div>
 </nav>
