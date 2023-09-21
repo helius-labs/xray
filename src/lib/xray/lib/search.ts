@@ -6,6 +6,8 @@ import { PublicKey } from "@solana/web3.js";
 
 import { TldParser } from "@onsol/tldparser";
 
+import getJupiterTokens from "$lib/util/get-tokens";
+
 export interface SearchResult {
     url: string;
     address: string;
@@ -44,6 +46,9 @@ export const search = async (
     const probablyAnsDomain = query.length > 4 && query.includes(".");
 
     const probablyBackpackName = query.startsWith("@") && query.length > 1;
+
+    // For token symbols
+    const tokenSymbols = await getJupiterTokens();
 
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
@@ -129,6 +134,14 @@ export const search = async (
             search: query,
             type: "ans-domain",
             url: `/account/${owner}`,
+            valid: true,
+        };
+    } else if (tokenSymbols.hasOwnProperty(query)) {
+        return {
+            address: tokenSymbols[query],
+            search: query,
+            type: "token",
+            url: `/token/${tokenSymbols[query]}`,
             valid: true,
         };
     }
