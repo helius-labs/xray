@@ -87,6 +87,7 @@
         metadata.frozen = data?.frozen || false;
         metadata.mutable = data?.mutable || false;
         metadata.compressed = data?.compressed || false;
+        metadata.sellerFeeBasisPoints = data?.sellerFeeBasisPoints || 0;
         metadata.dataHash = data?.dataHash || "";
         metadata.creatorHash = data?.creatorHash || "";
         metadata.assetHash = data?.assetHash || "";
@@ -106,7 +107,6 @@
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};
-
         metadata.address = data?.account;
         metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
         metadata.sellerFeeBasisPoints =

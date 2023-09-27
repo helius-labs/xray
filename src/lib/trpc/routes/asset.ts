@@ -70,10 +70,11 @@ export const asset = t.procedure.input(z.tuple([z.string(), z.boolean()])).query
             mutable: data?.result?.mutable,
             name: returnAssetData?.name || "",
             owner: data?.result?.ownership?.owner || "",
-            sellerFeeBasisPoints: data?.result?.sellerFeeBasisPoints || 0,
+            sellerFeeBasisPoints: data?.result?.royalty.basis_points || 0,
             seq: data?.result?.compression?.seq,
             tree: data?.result?.compression?.tree,
         };
+        console.log(metadata.sellerFeeBasisPoints)
     }
     return metadata;
 });
