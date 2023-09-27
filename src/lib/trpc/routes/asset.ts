@@ -74,7 +74,6 @@ export const asset = t.procedure.input(z.tuple([z.string(), z.boolean()])).query
             seq: data?.result?.compression?.seq,
             tree: data?.result?.compression?.tree,
         };
-        console.log(metadata.sellerFeeBasisPoints)
     }
     return metadata;
 });
