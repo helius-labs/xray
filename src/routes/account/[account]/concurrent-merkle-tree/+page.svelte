@@ -238,7 +238,7 @@
                     </h3>
                 </div>
                 <p class="text-xs md:text-sm">
-                    {$cmt.data.rightMostIndex.toLocaleString()}
+                    {($cmt.data.rightMostIndex).toLocaleString()}
                 </p>
             </div>
         </div>

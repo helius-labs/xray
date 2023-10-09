@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import type { JupiterToken, TokenMap } from "$lib/types";
 
 const getJupiterTokens = async (): Promise<TokenMap> => {
