@@ -1,4 +1,5 @@
 import type { JupiterToken, TokenMap } from "$lib/types";
+import { recognizedTokens } from "./recognized-tokens";
 
 const getJupiterTokens = async (): Promise<TokenMap> => {
     try {
@@ -11,13 +12,21 @@ const getJupiterTokens = async (): Promise<TokenMap> => {
 
         const tokens: JupiterToken[] = jsonData as JupiterToken[];
         const tokenMap = tokens.reduce((acc: TokenMap, token: JupiterToken) => {
-            acc[token.symbol] = token.address;
+            if (
+                (recognizedTokens[token.symbol] &&
+                    recognizedTokens[token.symbol] === token.address) ||
+                !recognizedTokens[token.symbol]
+            ) {
+                acc[token.symbol] = token.address;
+            }
             return acc;
         }, {});
 
         return tokenMap;
     } catch (error: any) {
-        throw new Error("Failed to fetch tokens from Jupiter");
+        throw new Error(
+            `Failed to fetch tokens from Jupiter with error: ${error}`
+        );
     }
 };
 

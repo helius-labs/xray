@@ -111,3 +111,7 @@ export interface JupiterToken {
 export interface TokenMap {
     [symbol: string]: string;
 }
+
+export type RecognizedTokens = {
+    [key: string]: string;
+};

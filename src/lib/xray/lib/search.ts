@@ -136,7 +136,10 @@ export const search = async (
             url: `/account/${owner}`,
             valid: true,
         };
-    } else if (tokenSymbols.hasOwnProperty(query)) {
+    } else if (Object.keys(tokenSymbols).find((key) => key === query)) {
+        //eslint-disable-next-line
+        // There's an issue with USDC having the same symbol as the wormhole USDC shit - check that out
+        //console.log(tokenSymbols[query]);
         return {
             address: tokenSymbols[query],
             search: query,
