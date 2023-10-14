@@ -11,7 +11,7 @@
     }
 
     .img {
-        max-height: 25vh;
+        max-height: 65vh;
     }
 </style>
 
@@ -30,6 +30,8 @@
 
     import CopyButton from "$lib/components/copy-button.svelte";
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
+
+    import getMimeType from "$lib/util/get-mime-type";
 
     const address = $page.params.token;
 </script>
@@ -71,12 +73,35 @@
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
             >
-                <img
-                    class="img m-auto my-3 h-auto w-full rounded-md object-contain"
-                    alt="token symbol"
-                    src={metadata.image}
-                    in:fade={{ delay: 600, duration: 1000 }}
-                />
+                {#await getMimeType(metadata.image)}
+                    <div>Loading...</div>
+                {:then mimeType}
+                    {#if mimeType && mimeType.startsWith("video")}
+                        <video
+                            class="m-auto my-3 h-auto w-full rounded-md object-contain"
+                            controls
+                            autoplay
+                            loop
+                            muted
+                            in:fade={{ delay: 600, duration: 1000 }}
+                        >
+                            <source
+                                src={metadata.image}
+                                type={mimeType}
+                            />
+                            Your browser does not support the video tag.
+                        </video>
+                    {:else}
+                        <img
+                            class="img m-auto my-3 h-auto w-full rounded-md object-contain"
+                            alt="token symbol"
+                            src={metadata.image}
+                            in:fade={{ delay: 600, duration: 1000 }}
+                        />
+                    {/if}
+                {:catch error}
+                    <div>Error loading MIME type: {error.message}</div>
+                {/await}
             </div>
 
             {#if metadata.description}
