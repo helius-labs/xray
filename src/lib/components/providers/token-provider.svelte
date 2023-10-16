@@ -44,7 +44,7 @@
         },
     };
 
-    const metadata: UITokenMetadata = {
+    export const metadata: UITokenMetadata = {
         address: "",
         attributes: [],
         collectionKey: "",

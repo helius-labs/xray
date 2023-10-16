@@ -33,11 +33,13 @@
 
     import getMimeType from "$lib/util/get-mime-type";
     import { metadataStore } from "$lib/util/stores/metadata";
+    import type { UITokenMetadata } from "$lib/types";
 
     const address = $page.params.token;
 
     let mimeType: string | null = null;
     let loadingMimeType: boolean = true;
+    let metadata: UITokenMetadata;
 
     metadataStore.subscribe((value) => {
         if (value && value.image) {
@@ -53,11 +55,15 @@
                 });
         }
     });
+
+    $: if (metadata) {
+        metadataStore.set(metadata);
+    }
 </script>
 
 <TokenProvider
     {address}
-    let:metadata
+    bind:metadata={metadata}
     let:tokenIsLoading
 >
     {#if tokenIsLoading}
