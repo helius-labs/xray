@@ -39,20 +39,20 @@
     let mimeType: string | null = null;
     let loadingMimeType: boolean = true;
 
-    metadataStore.subscribe(value => {
+    metadataStore.subscribe((value) => {
         if (value && value.image) {
             loadingMimeType = true;
             getMimeType(value.image)
                 // eslint-disable-next-line promise/always-return
-                .then(type => {
+                .then((type) => {
                     mimeType = type;
                     loadingMimeType = false;
                 })
                 .catch(() => {
                     loadingMimeType = false;
-                })
+                });
         }
-    })
+    });
 </script>
 
 <TokenProvider
@@ -93,10 +93,9 @@
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
             >
-            {#if loadingMimeType}
-                <div>Loading...</div>
-            {:else}
-                {#if mimeType && mimeType.startsWith("video")}
+                {#if loadingMimeType}
+                    <div>Loading...</div>
+                {:else if mimeType && mimeType.startsWith("video")}
                     <!-- Video tag -->
                     <video
                         class="m-auto my-3 h-auto w-full rounded-md object-contain"
@@ -105,13 +104,8 @@
                         loop
                         muted
                         in:fade={{ delay: 600, duration: 1000 }}
-                    >
-                        <source
-                            src={metadata.image}
-                            type={mimeType}
-                        />
-                        Your browser does not support the video tag.
-                    </video>
+                        src={metadata.image}
+                    />
                 {:else}
                     <!-- Image tag -->
                     <img
@@ -121,7 +115,6 @@
                         in:fade={{ delay: 600, duration: 1000 }}
                     />
                 {/if}
-            {/if}
             </div>
 
             {#if metadata.description}
