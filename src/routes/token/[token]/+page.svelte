@@ -32,8 +32,27 @@
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
     import getMimeType from "$lib/util/get-mime-type";
+    import { metadataStore } from "$lib/util/stores/metadata";
 
     const address = $page.params.token;
+
+    let mimeType: string | null = null;
+    let loadingMimeType: boolean = true;
+
+    metadataStore.subscribe(value => {
+        if (value && value.image) {
+            loadingMimeType = true;
+            getMimeType(value.image)
+                // eslint-disable-next-line promise/always-return
+                .then(type => {
+                    mimeType = type;
+                    loadingMimeType = false;
+                })
+                .catch(() => {
+                    loadingMimeType = false;
+                })
+        }
+    })
 </script>
 
 <TokenProvider
@@ -46,6 +65,7 @@
             <PageLoader />
         </div>
     {:else}
+        {metadataStore.set(metadata)}
         <div class="nav content sticky top-14 z-30 bg-base-100 px-3 py-2">
             <div
                 class="relative flex flex-wrap items-center justify-between bg-base-100"
@@ -73,35 +93,35 @@
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
             >
-            {#await getMimeType(metadata.image)}
-            <div>Loading...</div>
-        {:then mimeType}
-            {#if mimeType && mimeType.startsWith("video")}
-                <video
-                    class="m-auto my-3 h-auto w-full rounded-md object-contain"
-                    controls
-                    autoplay
-                    loop
-                    muted
-                    in:fade={{ delay: 600, duration: 1000 }}
-                >
-                    <source
-                        src={metadata.image}
-                        type={mimeType}
-                    />
-                    Your browser does not support the video tag.
-                </video>
+            {#if loadingMimeType}
+                <div>Loading...</div>
             {:else}
-                <img
-                    class="img m-auto my-3 h-auto w-full rounded-md object-contain"
-                    alt="token symbol"
-                    src={metadata.image}
-                    in:fade={{ delay: 600, duration: 1000 }}
-                />
+                {#if mimeType && mimeType.startsWith("video")}
+                    <!-- Video tag -->
+                    <video
+                        class="m-auto my-3 h-auto w-full rounded-md object-contain"
+                        controls
+                        autoplay
+                        loop
+                        muted
+                        in:fade={{ delay: 600, duration: 1000 }}
+                    >
+                        <source
+                            src={metadata.image}
+                            type={mimeType}
+                        />
+                        Your browser does not support the video tag.
+                    </video>
+                {:else}
+                    <!-- Image tag -->
+                    <img
+                        class="img m-auto my-3 h-auto w-full rounded-md object-contain"
+                        alt="token symbol"
+                        src={metadata.image}
+                        in:fade={{ delay: 600, duration: 1000 }}
+                    />
+                {/if}
             {/if}
-        {:catch error}
-            <div>Error loading MIME type: {error.message}</div>
-        {/await}
             </div>
 
             {#if metadata.description}
