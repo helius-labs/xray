@@ -41,19 +41,48 @@
     let loadingMimeType: boolean = true;
     let metadata: UITokenMetadata;
 
-    metadataStore.subscribe((value) => {
-        if (value && value.image) {
-            loadingMimeType = true;
-            getMimeType(value.image)
-                // eslint-disable-next-line promise/always-return
-                .then((type) => {
-                    mimeType = type;
-                    loadingMimeType = false;
-                })
-                .catch(() => {
-                    loadingMimeType = false;
-                });
+    let mediaUrl: string | null = null;
+    let mediaType: string | null = null;
+
+    const setMedia = async (metadata: UITokenMetadata) => {
+        if (metadata.image) {
+            const mimeType = await getMimeType(metadata.image);
+            if (mimeType && mimeType.startsWith("video/")) {
+                mediaUrl = metadata.image;
+                mediaType = "video";
+                return;
+            }
+
+            if (metadata.video_uri) {
+                mediaUrl = metadata.video_uri;
+                mediaType = "video";
+                return;
+            }
+
+            if (metadata.image) {
+                mediaUrl = metadata.image;
+                mediaType = "image";
+            }
         }
+    };
+
+    // metadataStore.subscribe((value) => {
+    //     if (value && value.image) {
+    //         loadingMimeType = true;
+    //         getMimeType(value.image)
+    //             // eslint-disable-next-line promise/always-return
+    //             .then((type) => {
+    //                 mimeType = type;
+    //                 loadingMimeType = false;
+    //             })
+    //             .catch(() => {
+    //                 loadingMimeType = false;
+    //             });
+    //     }
+    // });
+
+    metadataStore.subscribe((metadata) => {
+        if (metadata) setMedia(metadata);
     });
 
     $: if (metadata) {
@@ -63,7 +92,7 @@
 
 <TokenProvider
     {address}
-    bind:metadata={metadata}
+    bind:metadata
     let:tokenIsLoading
 >
     {#if tokenIsLoading}
@@ -98,9 +127,7 @@
                 class="flex flex-col items-center justify-center"
                 in:fade={{ delay: 100, duration: 800 }}
             >
-                {#if loadingMimeType}
-                    <div>Loading...</div>
-                {:else if mimeType && mimeType.startsWith("video")}
+                {#if mediaType === "video"}
                     <!-- Video tag -->
                     <video
                         class="m-auto my-3 h-auto w-full rounded-md object-contain"
@@ -109,9 +136,9 @@
                         loop
                         muted
                         in:fade={{ delay: 600, duration: 1000 }}
-                        src={metadata.image}
+                        src={mediaUrl}
                     />
-                {:else}
+                {:else if mediaType === "image"}
                     <!-- Image tag -->
                     <img
                         class="img m-auto my-3 h-auto w-full rounded-md object-contain"
@@ -119,6 +146,9 @@
                         src={metadata.image}
                         in:fade={{ delay: 600, duration: 1000 }}
                     />
+                {:else}
+                    <!--Loading-->
+                    <div>Loading...</div>
                 {/if}
             </div>
 

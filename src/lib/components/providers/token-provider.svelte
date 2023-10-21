@@ -118,6 +118,11 @@
             data?.offChainMetadata?.metadata?.name ||
             data?.legacyMetadata?.name ||
             data?.onChainMetadata?.metadata?.data.name;
+        metadata.files = data?.offChainMetadata?.metadata?.properties?.files;
+        metadata.video_uri =
+            data?.offChainMetadata?.metadata?.properties?.files?.find(
+                (file: any) => file.type.startsWith("video/")
+            )?.uri;
     }
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;
