@@ -11,7 +11,7 @@
     }
 
     .img {
-        max-height: 65vh;
+        max-height: 55vh;
     }
 </style>
 
@@ -37,8 +37,6 @@
 
     const address = $page.params.token;
 
-    let mimeType: string | null = null;
-    let loadingMimeType: boolean = true;
     let metadata: UITokenMetadata;
 
     let mediaUrl: string | null = null;
@@ -65,21 +63,6 @@
             }
         }
     };
-
-    // metadataStore.subscribe((value) => {
-    //     if (value && value.image) {
-    //         loadingMimeType = true;
-    //         getMimeType(value.image)
-    //             // eslint-disable-next-line promise/always-return
-    //             .then((type) => {
-    //                 mimeType = type;
-    //                 loadingMimeType = false;
-    //             })
-    //             .catch(() => {
-    //                 loadingMimeType = false;
-    //             });
-    //     }
-    // });
 
     metadataStore.subscribe((metadata) => {
         if (metadata) setMedia(metadata);
@@ -143,7 +126,7 @@
                     <img
                         class="img m-auto my-3 h-auto w-full rounded-md object-contain"
                         alt="token symbol"
-                        src={metadata.image}
+                        src={mediaUrl}
                         in:fade={{ delay: 600, duration: 1000 }}
                     />
                 {:else}

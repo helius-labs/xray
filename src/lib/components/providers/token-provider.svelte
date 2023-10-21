@@ -119,6 +119,7 @@
             data?.legacyMetadata?.name ||
             data?.onChainMetadata?.metadata?.data.name;
         metadata.files = data?.offChainMetadata?.metadata?.properties?.files;
+        // Checking all files to see if a video exists
         metadata.video_uri =
             data?.offChainMetadata?.metadata?.properties?.files?.find(
                 (file: any) => file.type.startsWith("video/")
