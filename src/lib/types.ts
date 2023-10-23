@@ -39,6 +39,12 @@ export interface UITokenMetadataCreators {
     share: number;
     verified: boolean;
 }
+
+export interface FileProperties {
+    type: string;
+    uri: string;
+}
+
 export interface UITokenMetadata {
     address: string;
     image: string;
@@ -60,6 +66,8 @@ export interface UITokenMetadata {
     tree?: string;
     seq?: number;
     leafId?: number;
+    files?: FileProperties[];
+    video_uri?: string;
 }
 
 export type Icon = keyof typeof IconPaths;
