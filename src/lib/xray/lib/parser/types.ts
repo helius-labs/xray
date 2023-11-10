@@ -1,5 +1,5 @@
-import { EnrichedTransaction, Source, TransactionType } from "helius-sdk";
-
+import type { EnrichedTransaction } from "helius-sdk";
+import { Source, TransactionType } from "helius-sdk";
 import * as parser from "./parsers";
 
 export const SOL = "So11111111111111111111111111111111111111112";
@@ -138,7 +138,7 @@ export type ProtonParser = (
 
 export interface ProtonTransactionAction {
     actionType: ProtonActionType;
-    from: string;
+    from: string | null;
     to: string;
     sent?: string;
     received?: string;

@@ -37,7 +37,7 @@ export const transactions = t.procedure
                         z.object({
                             actionType: z.string(),
                             amount: z.number(),
-                            from: z.string(),
+                            from: z.string().nullable().optional(),
                             fromName: z.string().optional(),
                             received: z.string().optional(),
                             sent: z.string().optional(),
