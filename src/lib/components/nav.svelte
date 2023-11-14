@@ -8,6 +8,9 @@
     import Stats from "$lib/components/stats.svelte";
 
     import { showModal } from "$lib/state/stores/modals";
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
 </script>
 
 <Stats />
@@ -24,7 +27,7 @@
         >
             <a
                 class="btn-ghost btn px-2"
-                href="/"
+                href="/?network={isMainnetValue ? 'mainnet' : 'devnet'}"
                 rel="noreferrer"
             >
                 <span class="text-3xl">XRAY</span>
@@ -42,6 +45,14 @@
 
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
+            <div class="tooltip" data-tip="Docs">
+            <a href="https://docs.helius.dev/welcome/what-is-helius" rel="noreferrer" target="_blank"
+                class="btn-ghost btn"
+            >
+                <img class="h-6 opacity-90" src="docs.svg" alt="">
+        </a>
+        </div>
+        <div class="tooltip" data-tip="Help">
             <button
                 class="btn-ghost btn"
                 on:click={() => showModal("HELP")}
@@ -51,6 +62,8 @@
                     size="md"
                 />
             </button>
+        </div>
+        <div class="tooltip" data-tip="Menu">
             <button
                 class="btn-ghost btn"
                 on:click={() => showModal("MENU")}
@@ -60,6 +73,7 @@
                     size="lg"
                 />
             </button>
+            </div>
         </div>
     </div>
 </nav>

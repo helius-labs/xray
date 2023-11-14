@@ -8,9 +8,15 @@
     import { PublicKey } from "@solana/web3.js";
 
     const client = trpcWithQuery($page);
-    const account = $page.params.account;
 
-    const cmt = client.concurrentMerkleTree.createQuery(account);
+    const account = $page.params.account;
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
+    const cmt = client.concurrentMerkleTree.createQuery({
+        address: account,
+        isMainnet: isMainnetValue,
+    });
 
     $: currentRoot = new PublicKey($cmt.data?.root.data || []);
 </script>
@@ -41,7 +47,10 @@
                     <CopyButton text={$cmt.data?.authority} />
                     <a
                         data-sveltekit-reload
-                        href="/account/{$cmt.data?.authority}"
+                        href="/account/{$cmt.data
+                            ?.authority}?network=${isMainnetValue
+                            ? 'mainnet'
+                            : 'devnet'}"
                         class="pointer-events-auto text-xs hover:link-success md:text-sm"
                     >
                         {shortenString($cmt.data?.authority)}
@@ -75,7 +84,10 @@
                         </h3>
                     </div>
                     <a
-                        href="/block/{$cmt.data?.creationSlot}"
+                        href="/block/{$cmt.data
+                            ?.creationSlot}?network=${isMainnetValue
+                            ? 'mainnet'
+                            : 'devnet'}"
                         class="pointer-events-auto text-xs hover:link-success md:text-sm"
                     >
                         {$cmt.data?.creationSlot.toLocaleString()}

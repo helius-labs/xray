@@ -1,4 +1,5 @@
 <script lang="ts">
+    //@ts-nocheck
     import { page } from "$app/stores";
 
     import type { TransactionPage } from "$lib/types";
@@ -13,22 +14,32 @@
     export let account: string;
     export let user = "";
     export let filter = "";
+    export let compressed = false;
 
     let cachedAddress = "";
 
     const client = trpcWithQuery($page);
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const createTransactionQuery = (input: {
         account: string;
         filter: string;
         user: string;
         cursor?: string;
+        isMainnet: boolean;
     }) =>
-        client.transactions.createInfiniteQuery(input, {
-            getNextPageParam: (lastPage) => lastPage.oldest,
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-        });
+        compressed
+            ? client.cnftTransactions.createInfiniteQuery(input, {
+                getNextPageParam: (lastPage) => lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            })
+            : client.transactions.createInfiniteQuery(input, {
+                getNextPageParam: (lastPage) => lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            });
 
     const loadMore = () => {
         $transactions.fetchNextPage();
@@ -37,6 +48,7 @@
     $: transactions = createTransactionQuery({
         account,
         filter,
+        isMainnet: isMainnetValue,
         user,
     });
 
@@ -53,6 +65,7 @@
         transactions = createTransactionQuery({
             account,
             filter,
+            isMainnet: isMainnetValue,
             user,
         });
     }

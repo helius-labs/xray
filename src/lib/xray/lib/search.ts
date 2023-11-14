@@ -1,10 +1,11 @@
 import { isValidPublicKey } from "../index";
 
-import { Connection } from "@solana/web3.js";
+import type { Connection } from "@solana/web3.js";
 
 import { PublicKey } from "@solana/web3.js";
 
 import { TldParser } from "@onsol/tldparser";
+import { browser } from "$app/environment";
 
 export interface SearchResult {
     url: string;
@@ -36,15 +37,22 @@ export const search = async (
     connection: Connection
 ): Promise<SearchResult> => {
     const ans = new TldParser(connection);
-
     // If it's long, assume it's a tx.
     // They will present with an error on the tx page if it's not.
     const probablyTransactionSignature = query.length > 50;
     const probablyBonfidaName = query.length > 4 && query.slice(-4) === ".sol";
     const probablyAnsDomain = query.length > 4 && query.includes(".");
-
+    let network;
+    let params;
+    if (browser) {
+        params = new URLSearchParams(window.location.search);
+        network = params.get("network");
+    } else {
+        // handle server-side logic, or set a default value
+        network = "mainnet";
+    }
+    const isMainnetValue = network !== "devnet";
     const probablyBackpackName = query.startsWith("@") && query.length > 1;
-
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
         const account = await connection.getParsedAccountInfo(pubkey);

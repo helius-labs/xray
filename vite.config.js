@@ -36,4 +36,9 @@ export default defineConfig(({ mode }) => ({
             process: true,
         }),
     ],
+    resolve: {
+        alias: {
+            $lib: path.resolve("./src/lib"), // Add this line
+        },
+    },
 }));

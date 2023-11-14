@@ -5,8 +5,6 @@
 </style>
 
 <script lang="ts">
-    import { type SearchResult, search, connect } from "$lib/xray";
-
     type SearchResultType =
         | "token"
         | "account"
@@ -27,8 +25,6 @@
     import { onMount, createEventDispatcher } from "svelte";
 
     import { walletStore } from "@svelte-on-solana/wallet-adapter-core";
-
-    import { showConnectWallet } from "$lib/state/stores/connect-wallet";
 
     import { showModal } from "$lib/state/stores/modals";
 
@@ -57,14 +53,7 @@
     let connected = false;
     let isBackpack = false;
     let recent = [] as SearchResult[];
-
     const dispatch = createEventDispatcher();
-
-    const connectWallet = () => {
-        connected = false;
-
-        showConnectWallet();
-    };
 
     const searchFailed = () => {
         isSearching = false;
@@ -105,7 +94,8 @@
     };
 
     const loadSearch = ({ url }: SearchResult) =>
-        (window.location.href = url || "/");
+        (window.location.href =
+            `${url}?network=${isMainnetValue ? "mainnet" : "devnet"}` || `/`);
 
     const selectSearch = (data: SearchResult) => {
         addRecent(data);
@@ -117,7 +107,11 @@
         isSearching = true;
 
         try {
-            const response = await fetch(`/api/search/${inputValue}`);
+            const response = await fetch(
+                `/api/search/${inputValue}?network=${
+                    isMainnetValue ? "mainnet" : "devnet"
+                }`
+            );
 
             const data = await response.json();
 
@@ -130,32 +124,42 @@
         } catch (error) {
             searchFailed();
         }
-    };
+};
 
-    onMount(() => {
+    let isMainnetValue = true;
+
+onMount(() => {
+        const params = new URLSearchParams(window.location.search);
+        const network = params.get("network");
+        if (network !== null) {
+            isMainnetValue = network === "mainnet";
+        }
         recent = getRecentSearches();
 
         isBackpack =
-            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
-    });
+        window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
+});
 
-    $: if ($walletStore.connected && !connected) {
+$: if ($walletStore.connected && !connected) {
         focusInput();
-
+        const params = new URLSearchParams(window.location.search);
+        const network = params.get("network");
+        isMainnetValue = network !== "devnet";
         inputValue = $walletStore.publicKey?.toBase58() || "";
-
         addRecent({
             address: inputValue,
             search: inputValue,
             type: "account",
-            url: `/account/${inputValue}`,
+            url: `/account/${inputValue}?network=${
+                isMainnetValue ? "mainnet" : "devnet"
+            }`,
             valid: true,
         });
 
         window.location.href = `/account/${inputValue}`;
 
         connected = true;
-    }
+}
 </script>
 
 <div class="relative z-30 my-2 w-full">
@@ -164,7 +168,7 @@
             bind:this={inputEl}
             class="input-bordered input h-10 w-full rounded-lg focus:input-primary"
             class:h-14={size === "lg"}
-            placeholder="Search Solana"
+            placeholder="Input a Solana address, transaction signature, or domain..."
             tabindex="0"
             type="text"
             on:focusin={() => dispatch("focusin")}
@@ -198,7 +202,9 @@
                                 <a
                                     class="block w-full max-w-full text-ellipsis rounded-lg px-1 py-2 text-left hover:bg-secondary"
                                     data-sveltekit-reload
-                                    href={recentSearch.url}
+                                    href={`${recentSearch.url}?network=${
+                                        isMainnetValue ? "mainnet" : "devnet"
+                                    }`}
                                 >
                                     <div class="flex">
                                         <div />
@@ -239,20 +245,18 @@
 </div>
 
 {#if size === "lg"}
-    <div
-        class="relative z-10 grid grid-flow-dense grid-cols-1 py-2 md:grid-cols-4"
-    >
+    <div class="relative z-10 py-2">
         <button
-            class="bg-faint btn-outline btn col-span-1 mb-4 md:ml-2"
+            class="bg-faint btn-outline btn col-span-1 mb-4 w-full"
             on:click|preventDefault={newSearch}
         >
-            <span class="text-sm">Go</span>
+            <span class="text-sm">Explore</span>
         </button>
-        <button
+        <!-- <button
             class="bg-faint btn-outline btn col-span-3 mb-4 md:order-first"
             on:click|preventDefault={connectWallet}
         >
             <span class="text-sm">{isBackpack ? "🎒" : ""}Connect Wallet</span>
-        </button>
+        </button> -->
     </div>
 {/if}

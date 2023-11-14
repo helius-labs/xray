@@ -1,18 +1,23 @@
 // https://github.com/solana-labs/explorer/blob/master/app/components/account/ConcurrentMerkleTreeCard.tsx
 
 import { t } from "$lib/trpc/t";
+import { getRPCUrl } from "$lib/util/get-rpc-url";
 import { connect } from "$lib/xray";
 import { ConcurrentMerkleTreeAccount } from "@solana/spl-account-compression";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, Connection } from "@solana/web3.js";
 import { z } from "zod";
 
 const { HELIUS_API_KEY } = process.env;
 
 export const concurrentMerkleTree = t.procedure
-    .input(z.string())
-    .query(async ({ input: address }) => {
-        const connection = connect("mainnet", HELIUS_API_KEY);
-        const pubkey = new PublicKey(address);
+    .input(z.object({ address: z.string(), isMainnet: z.boolean() }))
+    .query(async ({ input }) => {
+        const connection = new Connection(
+            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet),
+            "confirmed"
+        );
+
+        const pubkey = new PublicKey(input.address);
         const cmt = await ConcurrentMerkleTreeAccount.fromAccountAddress(
             connection,
             pubkey

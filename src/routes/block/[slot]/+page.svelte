@@ -1,4 +1,5 @@
 <script lang="ts">
+    //@ts-nocheck
     import { page } from "$app/stores";
 
     import type { TransactionPage } from "$lib/types";
@@ -13,8 +14,15 @@
     let cachedSlot = "";
 
     const client = trpcWithQuery($page);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
 
-    const createTransactionQuery = (input: { slot: number; cursor?: string }) =>
+    const createTransactionQuery = (input: {
+        slot: number;
+        cursor?: string;
+        isMainnet: boolean;
+    }) =>
         client.blockTransactions.createInfiniteQuery(input, {
             getNextPageParam: (lastPage: { oldest: number }) => lastPage.oldest,
             refetchOnMount: false,
@@ -26,6 +34,7 @@
     };
 
     $: transactions = createTransactionQuery({
+        isMainnet: isMainnetValue,
         slot: parseInt($page.params.slot),
     });
 
@@ -36,6 +45,7 @@
         cachedSlot = $page.params.slot;
 
         transactions = createTransactionQuery({
+            isMainnet: isMainnetValue,
             slot: parseInt($page.params.slot),
         });
     }

@@ -1,9 +1,5 @@
 import type { TokenTransfer } from "helius-sdk";
-import {
-    type ProtonActionType,
-    type ProtonTransactionAction,
-    SOL,
-} from "../types";
+import type { ProtonTransactionAction } from "../types";
 
 interface TempTokenTransfer extends TokenTransfer {
     tokenAmount: number;
