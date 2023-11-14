@@ -1,3 +1,4 @@
+/* eslint-disable */
 <script lang="ts">
     //@ts-nocheck
     import { page } from "$app/stores";
