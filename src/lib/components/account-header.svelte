@@ -63,14 +63,14 @@
     function toggleNetwork() {
         isMainnetValue = !isMainnetValue;
         localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
-        
+
         const params = new URLSearchParams(window.location.search);
-        
+
         params.set("network", isMainnetValue ? "mainnet" : "devnet");
-        
+
         history.replaceState({}, "", "?" + params.toString());
         history.go(0);
-}
+    }
 
     $: worth = $balance * $price?.data;
 </script>
@@ -97,12 +97,12 @@
                         </div>
                     </div>
                     <!-- svelte-ignore a11y-click-events-have-key-events -->
-                    <div 
-                    class="badge cursor-default badge-outline py-2 px-4 flex relative mx-2 opacity-90"
-                    on:click={toggleNetwork}
-                >
-                    {isMainnetValue ? "mainnet" : "devnet"}
-                </div>
+                    <div
+                        class="badge-outline badge relative mx-2 flex cursor-default px-4 py-2 opacity-90"
+                        on:click={toggleNetwork}
+                    >
+                        {isMainnetValue ? "mainnet" : "devnet"}
+                    </div>
                 </div>
                 <div class="relative text-right">
                     <h1 class="text-md md:block">

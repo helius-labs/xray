@@ -124,11 +124,11 @@
         } catch (error) {
             searchFailed();
         }
-};
+    };
 
     let isMainnetValue = true;
 
-onMount(() => {
+    onMount(() => {
         const params = new URLSearchParams(window.location.search);
         const network = params.get("network");
         if (network !== null) {
@@ -137,10 +137,10 @@ onMount(() => {
         recent = getRecentSearches();
 
         isBackpack =
-        window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
-});
+            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
+    });
 
-$: if ($walletStore.connected && !connected) {
+    $: if ($walletStore.connected && !connected) {
         focusInput();
         const params = new URLSearchParams(window.location.search);
         const network = params.get("network");
@@ -159,7 +159,7 @@ $: if ($walletStore.connected && !connected) {
         window.location.href = `/account/${inputValue}`;
 
         connected = true;
-}
+    }
 </script>
 
 <div class="relative z-30 my-2 w-full">
