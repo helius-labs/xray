@@ -1,6 +1,6 @@
 export function getAPIUrl(path: string, isMainnet: boolean) {
     const baseUrl = isMainnet
-        ? "https://api.helius.xyz"
-        : "https://api-devnet.helius.xyz";
+        ? "https://api-mainnet.helius-rpc.com"
+        : "https://api-devnet.helius-rpc.com";
     return `${baseUrl}${path}`;
 }
