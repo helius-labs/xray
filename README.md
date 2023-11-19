@@ -75,7 +75,12 @@ This is a TurboRepo monorepo that can run and build all apps/packages in paralle
 
 ### Setup Environment
 
-In the root of the project, create a `.env` file with the values mentioned in `.env.template`.
+In the root of the project, create a `.env` file with these values:
+
+```
+HELIUS_KEY = ""
+BIRDEYE_API_KEY = ""
+```
 
 ### Install
 
