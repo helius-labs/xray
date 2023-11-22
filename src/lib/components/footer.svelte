@@ -13,7 +13,7 @@
     <div class="col-span-1 flex w-full justify-end">
         <div class="mr-12">
             <a
-                href="https://discord.gg/nSkq35VUf5"
+                href="https://discord.gg/mV3dNPwDnZ"
                 class="btn-ghost btn"
             >
                 <Icon

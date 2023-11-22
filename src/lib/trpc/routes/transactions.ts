@@ -15,8 +15,8 @@ export const transactions = t.procedure
             account: z.string(),
             cursor: z.string().optional(),
             filter: z.string().optional(),
-            user: z.string().optional(),
             isMainnet: z.boolean(),
+            user: z.string().optional(),
         })
     )
     .output(
@@ -39,7 +39,7 @@ export const transactions = t.procedure
                         z.object({
                             actionType: z.string(),
                             amount: z.number(),
-                            from: z.string().nullable(),
+                            from: z.string().nullable().optional(),
                             fromName: z.string().optional(),
                             received: z.string().optional(),
                             sent: z.string().optional(),
@@ -59,11 +59,14 @@ export const transactions = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = getAPIUrl(`/v0/addresses/${
-            input.account
-        }/transactions?api-key=${HELIUS_API_KEY}${
-            input.filter ? `&type=${input.filter}` : ""
-        }${input.cursor ? `&before=${input.cursor}` : ""}`, input.isMainnet);
+        const url = getAPIUrl(
+            `/v0/addresses/${
+                input.account
+            }/transactions?api-key=${HELIUS_API_KEY}${
+                input.filter ? `&type=${input.filter}` : ""
+            }${input.cursor ? `&before=${input.cursor}` : ""}`,
+            input.isMainnet
+        );
 
         const response = await fetch(url);
 

@@ -5,7 +5,7 @@ import type { Connection } from "@solana/web3.js";
 import { PublicKey } from "@solana/web3.js";
 
 import { TldParser } from "@onsol/tldparser";
-import { browser } from '$app/environment';
+import { browser } from "$app/environment";
 
 export interface SearchResult {
     url: string;
@@ -34,9 +34,8 @@ const searchDefaults: SearchResult = {
 
 export const search = async (
     query: string,
-    connection: Connection,
+    connection: Connection
 ): Promise<SearchResult> => {
-    
     const ans = new TldParser(connection);
     // If it's long, assume it's a tx.
     // They will present with an error on the tx page if it's not.

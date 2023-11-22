@@ -49,7 +49,7 @@
         },
     };
 
-    const metadata: UITokenMetadata = {
+    export const metadata: UITokenMetadata = {
         address: "",
         attributes: [],
         collectionKey: "",
@@ -123,6 +123,12 @@
             data?.offChainMetadata?.metadata?.name ||
             data?.legacyMetadata?.name ||
             data?.onChainMetadata?.metadata?.data.name;
+        metadata.files = data?.offChainMetadata?.metadata?.properties?.files;
+        // Checking all files to see if a video exists
+        metadata.video_uri =
+            data?.offChainMetadata?.metadata?.properties?.files?.find(
+                (file: any) => file.type.startsWith("video/")
+            )?.uri;
     }
 
     $: tokenIsLoading = address !== SOL && $token.isLoading;

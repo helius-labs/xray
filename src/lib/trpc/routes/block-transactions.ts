@@ -10,7 +10,7 @@ import {
     VOTE_PROGRAM_ID,
     type ConfirmedTransactionMeta,
     type TransactionSignature,
-    Connection
+    Connection,
 } from "@solana/web3.js";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
@@ -29,9 +29,9 @@ export const blockTransactions = t.procedure
     .input(
         z.object({
             cursor: z.string().optional(),
+            isMainnet: z.boolean(),
             limit: z.number().min(1).max(100).optional(),
             slot: z.number(),
-            isMainnet: z.boolean(),
         })
     )
     .output(
@@ -77,7 +77,10 @@ export const blockTransactions = t.procedure
         const limit = input.limit ?? 100;
         const invokedPrograms = new Map<string, number>();
 
-        const connection = new Connection(getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet), "confirmed");
+        const connection = new Connection(
+            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet),
+            "confirmed"
+        );
 
         const block = await connection.getBlock(input.slot, {
             maxSupportedTransactionVersion: 0,

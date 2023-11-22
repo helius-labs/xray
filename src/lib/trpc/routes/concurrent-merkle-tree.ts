@@ -10,9 +10,12 @@ import { z } from "zod";
 const { HELIUS_API_KEY } = process.env;
 
 export const concurrentMerkleTree = t.procedure
-.input(z.object({ address: z.string(), isMainnet: z.boolean()}))
-.query(async ({ input }) => {
-        const connection = new Connection(getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet), "confirmed")
+    .input(z.object({ address: z.string(), isMainnet: z.boolean() }))
+    .query(async ({ input }) => {
+        const connection = new Connection(
+            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet),
+            "confirmed"
+        );
 
         const pubkey = new PublicKey(input.address);
         const cmt = await ConcurrentMerkleTreeAccount.fromAccountAddress(

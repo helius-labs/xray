@@ -10,11 +10,11 @@
         }
     });
     onMount(() => {
-    const params = new URLSearchParams(window.location.search);
-    const network = params.get("network");
-    isMainnetValue = network !== "devnet";
-    localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
-});
+        const params = new URLSearchParams(window.location.search);
+        const network = params.get("network");
+        isMainnetValue = network !== "devnet";
+        localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
+    });
     function toggleNetwork(event: Event) {
         isMainnetValue = (event.target as HTMLInputElement).checked;
         localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
@@ -25,7 +25,9 @@
     }
 </script>
 
-<div class="toggle-container m-auto p-4 mt-2 flex w-full flex-col justify-center">
+<div
+    class="toggle-container m-auto mt-2 flex w-full flex-col justify-center p-4"
+>
     <label class="toggle-label m-auto flex flex-col">
         <input
             type="checkbox"

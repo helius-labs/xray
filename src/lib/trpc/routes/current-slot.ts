@@ -7,13 +7,16 @@ import { getRPCUrl } from "$lib/util/get-rpc-url";
 const { HELIUS_API_KEY } = process.env;
 
 export const currentSlot = t.procedure
-.input(z.tuple([z.boolean()]))
-.query(async ({input}) => {
-    const [isMainnet] = input;
+    .input(z.tuple([z.boolean()]))
+    .query(async ({ input }) => {
+        const [isMainnet] = input;
 
-    const connection = new Connection(getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet), "confirmed");
+        const connection = new Connection(
+            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet),
+            "confirmed"
+        );
 
-    const slot = await connection.getSlot();
+        const slot = await connection.getSlot();
 
-    return slot;
-});
+        return slot;
+    });

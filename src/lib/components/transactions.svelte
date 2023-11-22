@@ -1,4 +1,5 @@
 <script lang="ts">
+    /* eslint-disable */
     //@ts-nocheck
     import { page } from "$app/stores";
 
@@ -31,15 +32,15 @@
     }) =>
         compressed
             ? client.cnftTransactions.createInfiniteQuery(input, {
-                  getNextPageParam: (lastPage) => lastPage.oldest,
-                  refetchOnMount: false,
-                  refetchOnWindowFocus: false,
-              })
+                getNextPageParam: (lastPage) => lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            })
             : client.transactions.createInfiniteQuery(input, {
-                  getNextPageParam: (lastPage) => lastPage.oldest,
-                  refetchOnMount: false,
-                  refetchOnWindowFocus: false,
-              });
+                getNextPageParam: (lastPage) => lastPage.oldest,
+                refetchOnMount: false,
+                refetchOnWindowFocus: false,
+            });
 
     const loadMore = () => {
         $transactions.fetchNextPage();
@@ -48,8 +49,8 @@
     $: transactions = createTransactionQuery({
         account,
         filter,
-        user,
         isMainnet: isMainnetValue,
+        user,
     });
 
     // TODO: Janky casting because the query resykt comes back super nested and not the right type.
@@ -65,8 +66,8 @@
         transactions = createTransactionQuery({
             account,
             filter,
-            user,
             isMainnet: isMainnetValue,
+            user,
         });
     }
 

@@ -1,10 +1,10 @@
 <style>
     .text-sky {
-        @apply text-info-content;
+        color: text-info-content;
     }
 
     .text-tangerine {
-        @apply text-[#e8a034];
+        color: text-#e8a034;
     }
 </style>
 

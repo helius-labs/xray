@@ -30,7 +30,6 @@
     const network = params.get("network");
     const isMainnetValue = network !== "devnet";
     const transaction = client.transaction.createQuery({
-        isMainnet: isMainnetValue,
         account: $page.url.searchParams
             .get("ref")
             ?.split("@")
@@ -39,6 +38,7 @@
                     ref.startsWith("wallet") ? ref.split(":")[1] : acc,
                 ""
             ),
+        isMainnet: isMainnetValue,
         transaction: signature || "",
     });
 
@@ -145,7 +145,7 @@
                                         This transaction has failed.
                                     </h3>
                                 </div>
-                                <div class="badge-error badge mr-1">Error</div>
+                                <div class="badge badge-error mr-1">Error</div>
                             </div>
                         {:else}
                             <div class="col-span-2 p-1 md:col-span-1">
@@ -173,7 +173,7 @@
                                         processed.
                                     </h3>
                                 </div>
-                                <div class="badge-success badge mr-1">
+                                <div class="badge badge-success mr-1">
                                     Success
                                 </div>
                             </div>
@@ -339,8 +339,8 @@
         </div>
     {/if}
 {:else}
-    <h2 class="mt-20 text-center text-lg opacity-90 mb-6">
+    <h2 class="mb-6 mt-20 text-center text-lg opacity-90">
         Transaction not found. Try selecting another network.
     </h2>
-    <Network/>
+    <Network />
 {/if}

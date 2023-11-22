@@ -3,17 +3,20 @@ import { z } from "zod";
 import { t } from "$lib/trpc/t";
 
 import { connect } from "$lib/xray";
-import { LAMPORTS_PER_SOL, PublicKey, Connection } from '@solana/web3.js';
+import { LAMPORTS_PER_SOL, PublicKey, Connection } from "@solana/web3.js";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 const { HELIUS_API_KEY } = process.env;
 
 export const accountInfo = t.procedure
-  .input(z.tuple([z.string(), z.boolean()]))
-  .query(async ({ input }) => {
-    const [address, isMainnet] = input;
-    const connection = new Connection(getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet), "confirmed");
-    
+    .input(z.tuple([z.string(), z.boolean()]))
+    .query(async ({ input }) => {
+        const [address, isMainnet] = input;
+        const connection = new Connection(
+            getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet),
+            "confirmed"
+        );
+
         const pubKey = new PublicKey(address);
 
         const accountInfo = await connection.getParsedAccountInfo(pubKey);

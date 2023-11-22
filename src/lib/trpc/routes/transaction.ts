@@ -13,12 +13,15 @@ export const transaction = t.procedure
     .input(
         z.object({
             account: z.string().optional(),
-            transaction: z.string(),
             isMainnet: z.boolean(),
+            transaction: z.string(),
         })
     )
     .query(async ({ input }) => {
-        const url = getAPIUrl(`/v0/transactions/?api-key=${HELIUS_API_KEY}`, input.isMainnet)
+        const url = getAPIUrl(
+            `/v0/transactions/?api-key=${HELIUS_API_KEY}`,
+            input.isMainnet
+        );
         const response = await fetch(url, {
             body: JSON.stringify({
                 transactions: [input?.transaction],

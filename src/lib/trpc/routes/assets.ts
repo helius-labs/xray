@@ -1,7 +1,7 @@
 import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
-import { isMainnet } from '../../util/stores/network';
+import { isMainnet } from "../../util/stores/network";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
 const { HELIUS_API_KEY } = process.env;
@@ -16,29 +16,27 @@ export const assets = t.procedure
     )
     .query(async ({ input }) => {
         const { cursor = 1, account } = input;
-        const url = getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet)
-        const response = await fetch( url,
-            {
-                body: JSON.stringify({
-                    id: "get-assets-" + account,
-                    jsonrpc: "2.0",
-                    method: "getAssetsByOwner",
-                    params: {
-                        limit: 1000,
-                        ownerAddress: account,
-                        page: cursor,
-                        sortBy: {
-                            sortBy: "created",
-                            sortDirection: "desc",
-                        },
+        const url = getRPCUrl(`?api-key=${HELIUS_API_KEY}`, input.isMainnet);
+        const response = await fetch(url, {
+            body: JSON.stringify({
+                id: "get-assets-" + account,
+                jsonrpc: "2.0",
+                method: "getAssetsByOwner",
+                params: {
+                    limit: 1000,
+                    ownerAddress: account,
+                    page: cursor,
+                    sortBy: {
+                        sortBy: "created",
+                        sortDirection: "desc",
                     },
-                }),
-                headers: {
-                    "Content-Type": "application/json",
                 },
-                method: "POST",
-            }
-        );
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+            method: "POST",
+        });
 
         const result = await response.json();
 

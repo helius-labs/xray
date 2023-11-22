@@ -34,8 +34,8 @@
     };
 
     $: transactions = createTransactionQuery({
-        slot: parseInt($page.params.slot),
         isMainnet: isMainnetValue,
+        slot: parseInt($page.params.slot),
     });
 
     $: transactionPages =
@@ -45,8 +45,8 @@
         cachedSlot = $page.params.slot;
 
         transactions = createTransactionQuery({
-            slot: parseInt($page.params.slot),
             isMainnet: isMainnetValue,
+            slot: parseInt($page.params.slot),
         });
     }
 

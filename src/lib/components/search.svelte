@@ -103,63 +103,63 @@
     };
 
     const newSearch = async () => {
-    searchError = "";
-    isSearching = true;
+        searchError = "";
+        isSearching = true;
 
-    try {
-        const response = await fetch(
-            `/api/search/${inputValue}?network=${
-                isMainnetValue ? "mainnet" : "devnet"
-            }`
-        );
+        try {
+            const response = await fetch(
+                `/api/search/${inputValue}?network=${
+                    isMainnetValue ? "mainnet" : "devnet"
+                }`
+            );
 
-        const data = await response.json();
+            const data = await response.json();
 
-        if (!data.valid) {
+            if (!data.valid) {
+                searchFailed();
+                return;
+            }
+
+            selectSearch(data);
+        } catch (error) {
             searchFailed();
-            return;
         }
-
-        selectSearch(data);
-    } catch (error) {
-        searchFailed();
-    }
-};
+    };
 
     let isMainnetValue = true;
 
-onMount(() => {
-    const params = new URLSearchParams(window.location.search);
-    const network = params.get("network");
-    if (network !== null) {
-        isMainnetValue = network === "mainnet";
-    }
-    recent = getRecentSearches();
+    onMount(() => {
+        const params = new URLSearchParams(window.location.search);
+        const network = params.get("network");
+        if (network !== null) {
+            isMainnetValue = network === "mainnet";
+        }
+        recent = getRecentSearches();
 
-    isBackpack =
-        window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
-});
-
-$: if ($walletStore.connected && !connected) {
-    focusInput();
-    const params = new URLSearchParams(window.location.search);
-    const network = params.get("network");
-    isMainnetValue = network !== "devnet";
-    inputValue = $walletStore.publicKey?.toBase58() || "";
-    addRecent({
-        address: inputValue,
-        search: inputValue,
-        type: "account",
-        url: `/account/${inputValue}?network=${
-            isMainnetValue ? "mainnet" : "devnet"
-        }`,
-        valid: true,
+        isBackpack =
+            window?.localStorage?.getItem("walletAdapter") === '"Backpack"';
     });
 
-    window.location.href = `/account/${inputValue}`;
+    $: if ($walletStore.connected && !connected) {
+        focusInput();
+        const params = new URLSearchParams(window.location.search);
+        const network = params.get("network");
+        isMainnetValue = network !== "devnet";
+        inputValue = $walletStore.publicKey?.toBase58() || "";
+        addRecent({
+            address: inputValue,
+            search: inputValue,
+            type: "account",
+            url: `/account/${inputValue}?network=${
+                isMainnetValue ? "mainnet" : "devnet"
+            }`,
+            valid: true,
+        });
 
-    connected = true;
-}
+        window.location.href = `/account/${inputValue}`;
+
+        connected = true;
+    }
 </script>
 
 <div class="relative z-30 my-2 w-full">
