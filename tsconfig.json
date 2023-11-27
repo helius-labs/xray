@@ -5,8 +5,8 @@
         "checkJs": true,
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
-        // "ignoreDeprecations": "5.0",
-        // "importsNotUsedAsValues": "error",
+        "ignoreDeprecations": "5.0",
+        "importsNotUsedAsValues": "error",
         "resolveJsonModule": true,
         "strict": true
     },
