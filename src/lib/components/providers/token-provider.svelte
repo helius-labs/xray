@@ -11,18 +11,23 @@
     export let address: string;
 
     let intersecting = false;
-
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
     const client = trpcWithQuery($page);
 
-    const token = client.token.createQuery([address], {
+    const token = client.token.createQuery([address, isMainnetValue], {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
 
-    const accountInfo = client.accountInfo.createQuery(address, {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
+    const accountInfo = client.accountInfo.createQuery(
+        [address, isMainnetValue],
+        {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+        }
+    );
 
     const token2022Metadata: {
         [key: string]: {
@@ -57,7 +62,7 @@
         sellerFeeBasisPoints: 0,
     };
 
-    const asset = client.asset.createQuery(address, {
+    const asset = client.asset.createQuery([address, isMainnetValue], {
         refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
@@ -82,6 +87,7 @@
         metadata.frozen = data?.frozen || false;
         metadata.mutable = data?.mutable || false;
         metadata.compressed = data?.compressed || false;
+        metadata.sellerFeeBasisPoints = data?.sellerFeeBasisPoints || 0;
         metadata.dataHash = data?.dataHash || "";
         metadata.creatorHash = data?.creatorHash || "";
         metadata.assetHash = data?.assetHash || "";
@@ -101,7 +107,6 @@
     } else {
         // Kicks off the query
         const data = $token?.data?.length ? $token.data[0] : {};
-
         metadata.address = data?.account;
         metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
         metadata.sellerFeeBasisPoints =

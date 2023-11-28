@@ -5,6 +5,7 @@ import { parseTransaction } from "$lib/xray";
 import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
+import { getAPIUrl } from "$lib/util/get-api-url";
 
 const { HELIUS_API_KEY } = process.env;
 
@@ -14,6 +15,7 @@ export const transactions = t.procedure
             account: z.string(),
             cursor: z.string().optional(),
             filter: z.string().optional(),
+            isMainnet: z.boolean(),
             user: z.string().optional(),
         })
     )
@@ -57,11 +59,14 @@ export const transactions = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = `https://api.helius.xyz/v0/addresses/${
-            input.account
-        }/transactions?api-key=${HELIUS_API_KEY}${
-            input.filter ? `&type=${input.filter}` : ""
-        }${input.cursor ? `&before=${input.cursor}` : ""}`;
+        const url = getAPIUrl(
+            `/v0/addresses/${
+                input.account
+            }/transactions?api-key=${HELIUS_API_KEY}${
+                input.filter ? `&type=${input.filter}` : ""
+            }${input.cursor ? `&before=${input.cursor}` : ""}`,
+            input.isMainnet
+        );
 
         const response = await fetch(url);
 

@@ -1,19 +1,20 @@
 import { t } from "$lib/trpc/t";
+import { getRPCUrl } from "$lib/util/get-rpc-url";
 import { PublicKey } from "@solana/web3.js";
 import { z } from "zod";
 
 const { HELIUS_API_KEY } = process.env;
 
 export const token2022 = t.procedure
-    .input(z.string())
+    .input(z.tuple([z.string(), z.boolean()]))
     .query(async ({ input }) => {
+        const [wallet, isMainnet] = input;
         const TOKEN_2022_PROGRAM_ID = new PublicKey(
             "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
         );
 
-        const walletPublicKey = new PublicKey(input);
-        const url = `https://icarus.helius.xyz/?api-key=${HELIUS_API_KEY}`;
-
+        const walletPublicKey = new PublicKey(wallet);
+        const url = getRPCUrl(`?api-key=${HELIUS_API_KEY}`, isMainnet);
         const response = await fetch(url, {
             body: JSON.stringify({
                 id: "accounts",

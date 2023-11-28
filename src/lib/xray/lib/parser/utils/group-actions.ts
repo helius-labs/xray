@@ -1,4 +1,4 @@
-import { ProtonTransactionAction } from "../types";
+import type { ProtonTransactionAction } from "../types";
 
 export const groupActions = (actions: ProtonTransactionAction[]) => {
     const match = (a: ProtonTransactionAction, b: ProtonTransactionAction) =>

@@ -11,7 +11,13 @@
     const client = trpcWithQuery($page);
 
     const account = $page.params.account;
-    const accountInfo = client.accountInfo.createQuery(account);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network === "mainnet";
+    const accountInfo = client.accountInfo.createQuery([
+        account,
+        isMainnetValue,
+    ]);
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
@@ -27,20 +33,34 @@
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />
                 <a
-                    href={`/account/${account}`}
+                    href={`/account/${account}?network=${
+                        isMainnetValue ? "mainnet" : "devnet"
+                    }`}
                     class="tab-bordered tab"
                     class:tab-active={$page.url.pathname.endsWith(`${account}`)}
                     >Transactions</a
                 >
                 <a
-                    href={`/account/${account}/tokens`}
+                    href={`/account/${account}/tokens?network=${
+                        isMainnetValue ? "mainnet" : "devnet"
+                    }`}
                     class="tab-bordered tab"
                     class:tab-active={$page.url.pathname.endsWith("/tokens")}
                     >Tokens</a
                 >
+                <a
+                    href={`/account/${account}/assets?network=${
+                        isMainnetValue ? "mainnet" : "devnet"
+                    }`}
+                    class="tab-bordered tab"
+                    class:tab-active={$page.url.pathname.endsWith("/assets")}
+                    >Assets</a
+                >
                 {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
                     <a
-                        href={`/account/${account}/concurrent-merkle-tree`}
+                        href={`/account/${account}/concurrent-merkle-tree?network=${
+                            isMainnetValue ? "mainnet" : "devnet"
+                        }`}
                         class="tab-bordered tab"
                         class:tab-active={$page.url.pathname.endsWith(
                             "concurrent-merkle-tree"
@@ -48,7 +68,7 @@
                     >
                 {/if}
             </div>
-            {#if !$page.url.pathname.endsWith("/tokens")}
+            {#if !$page.url.pathname.endsWith("/tokens") && !$page.url.pathname.endsWith("/assets")}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => showModal("TRANSACTION_FILTER")}

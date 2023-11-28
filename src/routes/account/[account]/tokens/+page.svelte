@@ -12,10 +12,12 @@
     const account = $page.params.account;
 
     const client = trpcWithQuery($page);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
+    const balances = client.balances.createQuery([account, isMainnetValue]);
 
-    const balances = client.balances.createQuery(account);
-
-    const token2022 = client.token2022.createQuery(account);
+    const token2022 = client.token2022.createQuery([account, isMainnetValue]);
 
     const sol = client.price.createQuery(SOL);
 

@@ -1,5 +1,5 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { NativeTransfer } from "helius-sdk";
+import type { NativeTransfer } from "helius-sdk";
 import { type ProtonTransactionAction, SOL } from "../types";
 import { rentTransferCheck } from "./rent-transfer-check";
 

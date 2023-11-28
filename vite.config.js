@@ -6,6 +6,7 @@ import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfil
 import { NodeModulesPolyfillPlugin } from "@esbuild-plugins/node-modules-polyfill";
 
 import pkg from "./package.json";
+import path from "path";
 
 const heliusKey = process.env.HELIUS_API_KEY;
 
@@ -36,4 +37,9 @@ export default defineConfig(({ mode }) => ({
             process: true,
         }),
     ],
+    resolve: {
+        alias: {
+            $lib: path.resolve("./src/lib"), // Add this line
+        },
+    },
 }));

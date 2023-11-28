@@ -38,7 +38,13 @@
     export let account: string = "";
     export let link: string = "";
 
-    const accountInfo = client.accountInfo.createQuery(account);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    let isMainnetValue = network !== "devnet";
+    const accountInfo = client.accountInfo.createQuery([
+        account,
+        isMainnetValue,
+    ]);
     const price = client.price.createQuery(SOL);
 
     const balance = tweened(0, {
@@ -53,6 +59,17 @@
 
     $: if ($accountInfo?.data?.balance) {
         balance.set($accountInfo.data.balance);
+    }
+    function toggleNetwork() {
+        isMainnetValue = !isMainnetValue;
+        localStorage.setItem("isMainnet", JSON.stringify(isMainnetValue));
+
+        const params = new URLSearchParams(window.location.search);
+
+        params.set("network", isMainnetValue ? "mainnet" : "devnet");
+
+        history.replaceState({}, "", "?" + params.toString());
+        history.go(0);
     }
 
     $: worth = $balance * $price?.data;
@@ -78,6 +95,13 @@
                                 icon="link"
                             />
                         </div>
+                    </div>
+                    <!-- svelte-ignore a11y-click-events-have-key-events -->
+                    <div
+                        class="badge-outline badge relative mx-2 flex cursor-default px-4 py-2 opacity-90"
+                        on:click={toggleNetwork}
+                    >
+                        {isMainnetValue ? "mainnet" : "devnet"}
                     </div>
                 </div>
                 <div class="relative text-right">
