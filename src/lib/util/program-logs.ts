@@ -119,7 +119,8 @@ export const parseProgramLogs = (logs: string[]) => {
                 log = log.replace(
                     /Program \w* consumed (\d*) (.*)/g,
                     (match, p1, p2) => {
-                        // Only aggregate compute units consumed from top-level tx instructions
+                        // eslint-disable-next-line write-good-comments/write-good-comments
+                        // Aggregate compute units consumed from top-level tx instructions
                         // because they include inner ix compute units as well.
                         if (depth === 1) {
                             parsedLogs[parsedLogs.length - 1].computeUnits +=

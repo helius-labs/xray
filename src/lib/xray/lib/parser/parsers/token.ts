@@ -1,5 +1,5 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { EnrichedTransaction, TokenTransfer } from "helius-sdk";
+import type { EnrichedTransaction } from "helius-sdk";
 import type {
     ProtonAccount,
     ProtonParser,

@@ -3,8 +3,6 @@
     import { transactionActionsMetadata } from "$lib/types";
     import { filterStore } from "$lib/util/stores/filter";
 
-    import Icon from "../icon.svelte";
-
     const handleClick = (key: string) => {
         $filterStore = key;
         hideModal();

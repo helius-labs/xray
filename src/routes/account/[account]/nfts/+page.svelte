@@ -8,8 +8,12 @@
     const account = $page.params.search;
 
     const client = trpcWithQuery($page);
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
 
-    const balances = client.balances.createQuery(account);
+    // Check for mainnet
+    const balances = client.balances.createQuery([account, isMainnetValue]);
 </script>
 
 <div class="content grid grid-cols-4 gap-3">

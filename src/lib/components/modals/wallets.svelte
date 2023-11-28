@@ -3,7 +3,7 @@
 
     import shortenString from "$lib/util/shorten-string";
 
-    import { hideModal } from "$lib/state/stores/modals";
+    // import { hideModal } from "$lib/state/stores/modals";
 </script>
 
 {#each addresses as address}
