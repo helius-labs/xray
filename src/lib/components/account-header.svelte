@@ -25,9 +25,7 @@
     import { SOL } from "$lib/xray";
     import { onMount } from "svelte";
     import { tweened } from "svelte/motion";
-
     import formatMoney from "$lib/util/format-money";
-
     import CopyButton from "$lib/components/copy-button.svelte";
     import Icon from "$lib/components/icon.svelte";
     import Username from "$lib/components/providers/username-provider.svelte";
@@ -72,7 +70,70 @@
         history.go(0);
     }
 
-    $: worth = $balance * $price?.data;
+    $: worth = totalTokensBalance + $balance * $price?.data;
+
+    const url = import.meta.env.VITE_HELIUS_URL;
+
+    let totalTokensBalance = 0; // Variable to hold the total tokens balance
+
+    const getAssetsWithNativeBalance = async () => {
+        try {
+            const response = await fetch(url, {
+                body: JSON.stringify({
+                    id: 'my-id',
+                    jsonrpc: '2.0',
+                    method: 'searchAssets',
+                    params: {
+                        displayOptions: {
+                            showNativeBalance: true,
+                        },
+                        ownerAddress: account,
+                        tokenType: 'fungible',
+                    },
+                }),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+            });
+
+            const { result } = await response.json();
+            // console.log(result); // Entire assets result
+
+            if (result && result.items && Array.isArray(result.items)) {
+                const pricedAssets = result.items.filter(
+                    (asset) => asset.token_info && asset.token_info.price_info
+                );
+
+                if (pricedAssets.length > 0) {
+                    pricedAssets.forEach((asset) => {
+                        const { symbol, price_info } = asset.token_info;
+                        const { total_price } = price_info;
+                        const formattedPrice = `$${total_price.toFixed(2)}`;
+                    });
+                } else {
+                }
+
+                totalTokensBalance = calculateTotalTokens(pricedAssets); 
+                return totalTokensBalance;
+            } else {
+
+            }
+        } catch (error) {
+        }
+};
+const calculateTotalTokens = (pricedAssets) => {
+        if (pricedAssets && pricedAssets.length > 0) {
+            return pricedAssets.reduce((total, asset) => {
+                const { price_info } = asset.token_info;
+                const { total_price } = price_info;
+                return total + total_price;
+            }, 0);
+        }
+        return 0;
+};
+getAssetsWithNativeBalance();
+
 </script>
 
 <Username
@@ -105,16 +166,13 @@
                     </div>
                 </div>
                 <div class="relative text-right">
-                    <h1 class="text-md md:block">
-                        <span class="">{$balance.toFixed(6)}</span>
-                        <span class="opacity-50">SOL</span>
-                    </h1>
-
                     {#if !$price?.isLoading}
-                        <span class="ml-1 text-xs opacity-50 md:block"
-                            >{formatMoney(worth)} USD</span
-                        >
-                    {/if}
+                    <h1 class="text-md md:block">
+                        <span class="">{formatMoney(worth)}</span
+                            >
+                        <span class="opacity-50">USD</span>
+                    </h1>
+                    {/if} 
                 </div>
             </div>
             {#if usernameIsLoading}

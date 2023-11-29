@@ -35,6 +35,7 @@ export default defineConfig(({ mode }) => ({
             buffer: true,
             define: {},
             process: true,
+            source: true,
         }),
     ],
     resolve: {
