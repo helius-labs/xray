@@ -36,6 +36,9 @@
     import type { UITokenMetadata } from "$lib/types";
 
     const address = $page.params.token;
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
 
     let metadata: UITokenMetadata;
 
@@ -121,6 +124,13 @@
                         in:fade={{ delay: 600, duration: 1000 }}
                         src={mediaUrl}
                     />
+                    <a
+                        href={metadata.image}
+                        target="_blank"
+                        class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
+                    >
+                        View Media
+                    </a>
                 {:else if mediaType === "image"}
                     <!-- Image tag -->
                     <img
@@ -129,6 +139,13 @@
                         src={mediaUrl}
                         in:fade={{ delay: 600, duration: 1000 }}
                     />
+                    <a
+                        href={metadata.image}
+                        target="_blank"
+                        class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
+                    >
+                        View Media
+                    </a>
                 {:else}
                     <!--Loading-->
                     <div>Loading...</div>
@@ -254,7 +271,9 @@
                         <div class="flex flex-wrap gap-2">
                             <a
                                 class="card p-0"
-                                href="/account/{metadata.owner}"
+                                href="/account/{metadata.owner}?network={isMainnetValue
+                                    ? 'mainnet'
+                                    : 'devnet'}"
                             >
                                 <header
                                     class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
@@ -288,7 +307,9 @@
                             {#if metadata.delegate}
                                 <a
                                     class="card p-0"
-                                    href="/account/{metadata.owner}"
+                                    href="/account/{metadata.owner}?network={isMainnetValue
+                                        ? 'mainnet'
+                                        : 'devnet'}"
                                 >
                                     <header
                                         class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
@@ -331,7 +352,9 @@
                             {#each metadata.creators as creator, idx}
                                 <a
                                     class="card p-0"
-                                    href="/account/{creator.address}"
+                                    href="/account/{creator.address}?network={isMainnetValue
+                                        ? 'mainnet'
+                                        : 'devnet'}"
                                 >
                                     <header
                                         class="flex items-center justify-between gap-6 text-sm font-medium text-gray-500"
@@ -374,7 +397,9 @@
                         <div class="flex flex-wrap gap-2">
                             <a
                                 class="card p-0"
-                                href="/account/{metadata.tree}/concurrent-merkle-tree"
+                                href="/account/{metadata.tree}/concurrent-merkle-tree?network={isMainnetValue
+                                    ? 'mainnet'
+                                    : 'devnet'}"
                             >
                                 <header
                                     class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
@@ -449,9 +474,16 @@
                     </Collapse>
                 </div>
             {/if}
-            <div class="mt-3 pl-2 md:pl-0">
-                <Transactions account={address} />
-            </div>
+
+            {#key metadata.compressed}
+                <div class="mt-3 pl-2 md:pl-0">
+                    <Transactions
+                        account={address}
+                        compressed={metadata.compressed}
+                    />
+                </div>
+            {/key}
+
             <div class="mt-3">
                 <JSON
                     data={metadata}

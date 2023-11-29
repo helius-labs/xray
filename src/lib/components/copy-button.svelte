@@ -1,5 +1,5 @@
 <script lang="ts">
-    import type { Icon as IconType } from "src/lib/types";
+    import type { Icon as IconType } from "$lib/types";
 
     import { copyToClipboard } from "$lib/util/clipboard";
 

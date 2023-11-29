@@ -10,15 +10,17 @@
     import { fade } from "svelte/transition";
 
     const client = trpcWithQuery($page);
-
-    const tps = client.tps.createQuery();
+    const params = new URLSearchParams(window.location.search);
+    const network = params.get("network");
+    const isMainnetValue = network !== "devnet";
+    const tps = client.tps.createQuery(isMainnetValue);
 
     const price = client.price.createQuery(SOL);
 
-    const slot = client.currentSlot.createQuery();
+    const slot = client.currentSlot.createQuery([isMainnetValue]);
 </script>
 
-<div class="flex h-8 w-full items-center justify-center text-xs">
+<div class="flex h-10 w-full items-center justify-center text-sm">
     <div class="mr-4">
         {#if !$tps.isLoading}
             <div
@@ -57,7 +59,9 @@
             <span class="opacity-50 hover:opacity-100">
                 <a
                     data-sveltekit-reload
-                    href="/block/{$slot?.data}"
+                    href="/block/{$slot?.data}?network={isMainnetValue
+                        ? 'mainnet'
+                        : 'devnet'}"
                     class="pointer-events-auto hover:link-success"
                     >{$slot?.data?.toLocaleString()}</a
                 >
