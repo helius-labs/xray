@@ -70,7 +70,7 @@
         aria-label="Loading spinner"
     >
         <Circle
-            size="60"
+            size="50"
             color="#FFFFFF"
             unit="px"
             duration="1s"
