@@ -97,6 +97,7 @@
         "json-viewer-js": "^1.0.8",
         "svelte-highlight": "^7.1.2",
         "svelte-intersection-observer": "^0.10.0",
+        "svelte-loading-spinners": "^0.3.4",
         "trpc-svelte-query-adapter": "^2.0.0",
         "trpc-sveltekit": "^3.3.1",
         "zod": "^3.20.6"
