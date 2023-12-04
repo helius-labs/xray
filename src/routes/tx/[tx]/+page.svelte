@@ -11,7 +11,6 @@
 
     import Account from "$lib/components/account-data.svelte";
     import shortenAddress from "$lib/util/shorten-string";
-    import { txn } from "$lib/state/stores/txn";
     import CopyButton from "$lib/components/copy-button.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";

@@ -9,21 +9,10 @@
 </style>
 
 <script lang="ts">
-    import { txn } from "$lib/state/stores/txn";
     import { parseProgramLogs } from "$lib/util/program-logs";
-    import { onMount } from "svelte";
     export let logs: string[];
 
     const parsedLogs = parseProgramLogs(logs);
-
-    onMount(() => {
-        //@ts-ignore
-        if (parsedLogs == "") {
-            txn.set(false);
-        } else {
-            txn.set(true);
-        }
-    });
 
     const totalComputeUnits = parsedLogs.reduce(
         (sum, log) => sum + log.computeUnits,
