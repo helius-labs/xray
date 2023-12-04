@@ -7,6 +7,8 @@
 
     import { fly } from "svelte/transition";
 
+    import { Circle } from "svelte-loading-spinners";
+
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import Account from "$lib/components/account-data.svelte";
@@ -21,6 +23,7 @@
     import Network from "$lib/components/network.svelte";
 
     let animate = false;
+    let isLoading = true;
 
     const signature = $page.params.tx;
 
@@ -57,9 +60,23 @@
     $: rawData = $rawTransaction?.data;
 
     $: ({ raw, ...rest } = data || { raw: null });
-</script>
 
-{#if $transaction?.data?.signature}
+    $: isLoading = !$transaction || $transaction.data === undefined;
+
+</script>
+{#if isLoading}
+    <div 
+        class="flex content-center justify-center pt-4"
+        aria-label="Loading spinner"
+    >
+        <Circle
+            size="60"
+            color="#FFFFFF"
+            unit="px"
+            duration="1s"
+        />
+    </div>
+{:else if $transaction?.data?.signature}
     <div class="content mb-4 mt-4 flex justify-between px-3">
         <h1 class="text-xl font-bold">Transaction</h1>
         <div
