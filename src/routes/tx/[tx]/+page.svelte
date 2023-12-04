@@ -60,7 +60,7 @@
     $: ({ raw, ...rest } = data || { raw: null });
 </script>
 
-{#if $txn == true}
+{#if $transaction?.data?.signature}
     <div class="content mb-4 mt-4 flex justify-between px-3">
         <h1 class="text-xl font-bold">Transaction</h1>
         <div
