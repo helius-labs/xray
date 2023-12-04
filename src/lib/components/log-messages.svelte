@@ -9,59 +9,54 @@
 </style>
 
 <script lang="ts">
-    import { txn } from "$lib/state/stores/txn";
     import { parseProgramLogs } from "$lib/util/program-logs";
-    import { onMount } from "svelte";
     export let logs: string[];
 
     const parsedLogs = parseProgramLogs(logs);
-
-    onMount(() => {
-        //@ts-ignore
-        if (parsedLogs == "") {
-            txn.set(false);
-        } else {
-            txn.set(true);
-        }
-    });
 
     const totalComputeUnits = parsedLogs.reduce(
         (sum, log) => sum + log.computeUnits,
         0
     );
+
+    // Check if there is at least one entry with non-empty logs
+    const hasNonEmptyLogs = parsedLogs.some(instruction => instruction.logs.length > 0);
 </script>
 
 <div class="pt-0">
-    {#each parsedLogs as instruction, idx}
-        {#if idx === 0}
-            <p class="px-3">
-                <span class="mb-1">
-                    {`#${idx + 1} - `}
-                </span>
+    {#if hasNonEmptyLogs}
+        {#each parsedLogs as instruction, idx}
+            {#if idx === 0}
+                <p class="px-3">
+                    <span class="mb-1">
+                        {`#${idx + 1} - `}
+                    </span>
 
-                <span>
-                    {`${instruction.invokedProgram} Instruction`}
-                </span>
-            </p>
-        {:else}
-            <p class="px-3 pb-1 pt-3">
-                <span class="mb-1">
-                    {`#${idx + 1} - `}
-                </span>
+                    <span>
+                        {`${instruction.invokedProgram} Instruction`}
+                    </span>
+                </p>
+            {:else}
+                <p class="px-3 pb-1 pt-3">
+                    <span class="mb-1">
+                        {`#${idx + 1} - `}
+                    </span>
 
-                <span>
-                    {`${instruction.invokedProgram} Instruction`}
-                </span>
-            </p>
-        {/if}
-        {#each instruction.logs as log}
-            <p class={`px-3 pb-1 text-sm text-${log.style}`}>
-                <span class={`mr-1 text-${log.style}`}>{log.prefix}</span><span
-                    class={``}>{log.text}</span
-                >
-            </p>
+                    <span>
+                        {`${instruction.invokedProgram} Instruction`}
+                    </span>
+                </p>
+            {/if}
+            {#each instruction.logs as log}
+                <p class={`px-3 pb-1 text-sm text-${log.style}`}>
+                    <span class={`mr-1 text-${log.style}`}>{log.prefix}</span
+                    ><span class={``}>{log.text}</span>
+                </p>
+            {/each}
         {/each}
-    {/each}
+    {:else}
+        <p class="px-3 pb-1 text-sm">This transaction does not have any logs</p>
+    {/if}
 </div>
 
 {#if totalComputeUnits > 0}
