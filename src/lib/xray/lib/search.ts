@@ -21,7 +21,6 @@ type SearchResultType =
     | "transaction"
     | "bonfida-domain"
     | "ans-domain"
-    | "backpack-username"
     | null;
 
 const searchDefaults: SearchResult = {
@@ -52,7 +51,7 @@ export const search = async (
         network = "mainnet";
     }
     const isMainnetValue = network !== "devnet";
-    const probablyBackpackName = query.startsWith("@") && query.length > 1;
+
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
         const account = await connection.getParsedAccountInfo(pubkey);
@@ -105,26 +104,6 @@ export const search = async (
         } catch (error) {
             return searchDefaults;
         }
-    } else if (probablyBackpackName) {
-        const username = query?.slice(1)?.toLowerCase();
-
-        const url = `https://backpack-api.xnfts.dev/users/primarySolPubkey/${username}`;
-
-        const response = await fetch(url);
-
-        const { publicKey = "" } = await response.json();
-
-        if (!publicKey) {
-            return searchDefaults;
-        }
-
-        return {
-            address: query || "",
-            search: query,
-            type: "backpack-username",
-            url: `/account/${publicKey}`,
-            valid: true,
-        };
     } else if (probablyAnsDomain) {
         const owner = await ans.getOwnerFromDomainTld(query);
 

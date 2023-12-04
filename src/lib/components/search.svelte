@@ -11,7 +11,6 @@
         | "transaction"
         | "bonfida-domain"
         | "ans-domain"
-        | "backpack-username"
         | null;
 
     interface SearchResult {
