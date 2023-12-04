@@ -161,14 +161,6 @@
                     >
                         <h1>🎒</h1>
                     </div>
-
-                    <div>
-                        <h1 class="text-xl font-bold">xNFT Backpack Support</h1>
-                        <p class="opacity-50">
-                            You can Lookup Backpack usernames by searching
-                            "@yourname", like "@xray".
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>
