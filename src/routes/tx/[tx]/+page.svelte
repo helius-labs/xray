@@ -62,10 +62,10 @@
     $: ({ raw, ...rest } = data || { raw: null });
 
     $: isLoading = !$transaction || $transaction.data === undefined;
-
 </script>
+
 {#if isLoading}
-    <div 
+    <div
         class="flex content-center justify-center pt-4"
         aria-label="Loading spinner"
     >
