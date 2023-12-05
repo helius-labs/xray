@@ -2,7 +2,7 @@ import { t } from "$lib/trpc/t";
 
 import { z } from "zod";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 

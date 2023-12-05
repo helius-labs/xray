@@ -4,7 +4,7 @@ import { z } from "zod";
 import { Connection } from "@solana/web3.js";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const currentSlot = t.procedure
     .input(z.tuple([z.boolean()]))

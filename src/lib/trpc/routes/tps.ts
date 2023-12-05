@@ -3,7 +3,7 @@ import { Helius } from "helius-sdk";
 import { t } from "$lib/trpc/t";
 import { z } from "zod";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const tps = t.procedure.input(z.boolean()).query(async ({ input }) => {
     let helius;
