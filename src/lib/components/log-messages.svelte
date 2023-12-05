@@ -20,7 +20,9 @@
     );
 
     // Check if there is at least one entry with non-empty logs
-    const hasNonEmptyLogs = parsedLogs.some(instruction => instruction.logs.length > 0);
+    const hasNonEmptyLogs = parsedLogs.some(
+        (instruction) => instruction.logs.length > 0
+    );
 </script>
 
 <div class="pt-0">
