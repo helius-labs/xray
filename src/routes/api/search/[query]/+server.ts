@@ -2,7 +2,7 @@ import { json, type RequestEvent } from "@sveltejs/kit";
 
 import { search, connect } from "$lib/xray";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 // Consume a search, return what to do with it
 export async function GET({ params }: RequestEvent) {

@@ -4,7 +4,7 @@ import { z } from "zod";
 import { isMainnet } from "../../util/stores/network";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const assets = t.procedure
     .input(

@@ -6,7 +6,7 @@ import { connect } from "$lib/xray";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 import { Connection } from "@solana/web3.js";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const rawTransaction = t.procedure
     .input(z.tuple([z.string(), z.boolean()]))

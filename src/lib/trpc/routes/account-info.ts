@@ -6,7 +6,7 @@ import { connect } from "$lib/xray";
 import { LAMPORTS_PER_SOL, PublicKey, Connection } from "@solana/web3.js";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const accountInfo = t.procedure
     .input(z.tuple([z.string(), z.boolean()]))
