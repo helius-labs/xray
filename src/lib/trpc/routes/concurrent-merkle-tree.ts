@@ -7,7 +7,7 @@ import { ConcurrentMerkleTreeAccount } from "@solana/spl-account-compression";
 import { PublicKey, Connection } from "@solana/web3.js";
 import { z } from "zod";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const concurrentMerkleTree = t.procedure
     .input(z.object({ address: z.string(), isMainnet: z.boolean() }))

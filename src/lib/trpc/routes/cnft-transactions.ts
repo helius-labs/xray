@@ -5,7 +5,7 @@ import { z } from "zod";
 import { getAPIUrl } from "$lib/util/get-api-url";
 import { getRPCUrl } from "$lib/util/get-rpc-url";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 type SignaturesResponse = {
     jsonrpc: string;

@@ -3,7 +3,7 @@ import { getAPIUrl } from "$lib/util/get-api-url";
 
 import { z } from "zod";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const balances = t.procedure
     .input(z.tuple([z.string(), z.boolean()]))

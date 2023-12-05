@@ -3,7 +3,7 @@ import { getRPCUrl } from "$lib/util/get-rpc-url";
 import { PublicKey } from "@solana/web3.js";
 import { z } from "zod";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const token2022 = t.procedure
     .input(z.tuple([z.string(), z.boolean()]))
