@@ -7,7 +7,7 @@ import { t } from "$lib/trpc/t";
 import { z } from "zod";
 import { getAPIUrl } from "$lib/util/get-api-url";
 
-const { HELIUS_API_KEY } = process.env;
+import { HELIUS_API_KEY } from "$env/static/private";
 
 export const transaction = t.procedure
     .input(

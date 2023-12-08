@@ -128,31 +128,11 @@
             {:else if usernames && usernames?.length > 0}
                 <div class="flex flex-wrap gap-2 pt-2">
                     {#each usernames as username}
-                        {#if username.type === "backpack"}
-                            <div
-                                class="inline-block rounded-full bg-red-200/90 px-3 py-1 text-xs font-extrabold text-red-600/90"
-                            >
-                                <div
-                                    class="flex items-center justify-center gap-1"
-                                >
-                                    <Icon
-                                        id="backpack"
-                                        size="sm"
-                                    />
-                                    <!-- <span
-                                            class="flex items-center justify-center"
-                                        > -->
-                                    {username.username}
-                                    <!-- </span> -->
-                                </div>
-                            </div>
-                        {:else}
-                            <div
-                                class="username-block inline-block rounded-full px-3 py-1 text-xs font-extrabold"
-                            >
-                                {username.username}
-                            </div>
-                        {/if}
+                        <div
+                            class="username-block inline-block rounded-full px-3 py-1 text-xs font-extrabold"
+                        >
+                            {username.username}
+                        </div>
                     {/each}
                 </div>
             {/if}
