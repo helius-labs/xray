@@ -97,7 +97,16 @@
                 </div>
 
                 <div>
-                    <div class="my-2">
+                    <div class="flex items-center space-x-2">
+                        {#if metadata.image}
+                            <a
+                                href={metadata.image}
+                                target="_blank"
+                                class="btn-sm btn border-0 bg-black"
+                            >
+                                View Media
+                            </a>
+                        {/if}
                         <CopyButton text={$page.params.search} />
                         <CopyButton
                             text={$page.url.href}
@@ -115,37 +124,27 @@
             >
                 {#if mediaType === "video"}
                     <!-- Video tag -->
-                    <video
-                        class="m-auto my-3 h-auto w-full rounded-md object-contain"
-                        controls
-                        autoplay
-                        loop
-                        muted
-                        in:fade={{ delay: 600, duration: 1000 }}
-                        src={mediaUrl}
-                    />
-                    <a
-                        href={metadata.image}
-                        target="_blank"
-                        class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
-                    >
-                        View Media
-                    </a>
+                    <div class="relative">
+                        <video
+                            class="m-auto my-3 h-auto w-full rounded-md object-contain"
+                            controls
+                            autoplay
+                            loop
+                            muted
+                            in:fade={{ delay: 600, duration: 1000 }}
+                            src={mediaUrl}
+                        />
+                    </div>
                 {:else if mediaType === "image"}
                     <!-- Image tag -->
-                    <img
-                        class="img m-auto my-3 h-auto w-full rounded-md object-contain"
-                        alt="token symbol"
-                        src={mediaUrl}
-                        in:fade={{ delay: 600, duration: 1000 }}
-                    />
-                    <a
-                        href={metadata.image}
-                        target="_blank"
-                        class="btn-sm btn absolute bottom-1 right-1 border-0 bg-black"
-                    >
-                        View Media
-                    </a>
+                    <div class="relative">
+                        <img
+                            class="img m-auto my-3 h-auto w-full rounded-md object-contain"
+                            alt="token symbol"
+                            src={mediaUrl}
+                            in:fade={{ delay: 600, duration: 1000 }}
+                        />
+                    </div>
                 {:else}
                     <!--Loading-->
                     <div>Loading...</div>
