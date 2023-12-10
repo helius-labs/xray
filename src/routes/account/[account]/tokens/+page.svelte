@@ -79,7 +79,7 @@
                 >
                     <a
                         class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
-                        href="/token/{token.mint}"
+                        href="/token/{token.id}"
                     >
                         <div class="col-span-2 p-1 md:col-span-1">
                             <!-- background so that if it doesn't load you dont' get ugly no image icons -->
