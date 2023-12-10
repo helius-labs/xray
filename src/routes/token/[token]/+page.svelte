@@ -76,6 +76,8 @@
     }
 </script>
 
+<button class="pl-5 pt-3 text-3xl" on:click={() => window.history.back()}>⬅</button>
+
 <TokenProvider
     {address}
     bind:metadata
