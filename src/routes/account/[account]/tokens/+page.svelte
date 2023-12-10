@@ -113,7 +113,7 @@
         {/each}
     {/if}
     {#if sorted}
-        {#each sorted as token (token.mint)}
+        {#each sorted as token}
             {#if token.decimals > 0 && token.mint !== SOL}
                 <TokenProvider
                     address={token.mint}
