@@ -8,7 +8,12 @@
 
     import IntersectionObserver from "svelte-intersection-observer";
 
-    export let address: string;
+    export let address: string | undefined = undefined;
+
+    export let token: any | undefined = undefined;
+
+    export let status: { isLoading: boolean; isError: boolean } | undefined =
+        undefined;
 
     let intersecting = false;
     const params = new URLSearchParams(window.location.search);
@@ -29,10 +34,16 @@
         sellerFeeBasisPoints: 0,
     };
 
-    const asset = client.asset.createQuery([address, isMainnetValue], {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
+    let asset: any | undefined;
+
+    if (address) {
+        asset = client.asset.createQuery([address, isMainnetValue], {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+        });
+    }
+
+    $: data = $asset?.data || token;
 
     let element: HTMLDivElement;
 
@@ -40,8 +51,7 @@
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
         metadata.address = SOL;
-    } else if ($asset?.data?.compressed) {
-        const data = $asset?.data;
+    } else if (data?.compressed) {
         metadata.address = data?.address || "";
         metadata.attributes = data?.attributes || [];
         metadata.creators = data?.creators || [];
@@ -61,9 +71,7 @@
         metadata.tree = data?.tree || "";
         metadata.seq = data?.seq || 0;
         metadata.leafId = data?.leafId || 0;
-    } else if ($asset?.data?.result.compression.compressed == false) {
-        const data = $asset?.data.result;
-
+    } else if (data?.compression.compressed == false) {
         metadata.address = data?.id;
         // metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
         metadata.sellerFeeBasisPoints = data?.royalty.basis_points || 0;
@@ -84,8 +92,10 @@
         )?.uri;
     }
 
-    $: assetIsLoading = address !== SOL && $asset.isLoading;
-    $: assetFailed = $asset.isError;
+    $: tokenIsLoading =
+        (address !== SOL && $asset?.isLoading) ||
+        (address !== SOL && status?.isLoading);
+    $: tokenFailed = $asset?.isError || status?.isError;
 
     // This could be better
     $: isNFT = metadata?.attributes && metadata?.attributes?.length > 0;
@@ -102,8 +112,8 @@
         {#if intersecting}
             <slot
                 {metadata}
-                {assetIsLoading}
-                {assetFailed}
+                {tokenIsLoading}
+                {tokenFailed}
                 {isNFT}
             />
         {/if}

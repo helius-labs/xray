@@ -64,5 +64,5 @@ export const asset = t.procedure
                 tree: data?.result?.compression?.tree,
             };
         }
-        return metadata ?? data;
+        return metadata ?? data?.result;
     });

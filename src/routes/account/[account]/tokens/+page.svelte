@@ -15,19 +15,15 @@
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network !== "devnet";
-    const balances = client.balances.createQuery([account, isMainnetValue]);
 
-    const token2022 = client.token2022.createQuery([account, isMainnetValue]);
+    const tokens = client.searchAssets.createQuery({
+        account,
+        isMainnet: isMainnetValue,
+        nativeBalance: true,
+        tokenType: "fungible",
+    });
 
     const sol = client.price.createQuery(SOL);
-
-    $: sorted = $balances?.data?.tokens
-        // @ts-ignore
-        ?.filter(({ decimals, amount }) => decimals && amount)
-        // @ts-ignore
-        .sort(({ amount: a, decimals: ad }, { amount: b, decimals: bd }) =>
-            a / 10 ** ad < b / 10 ** bd ? 1 : -1
-        );
 </script>
 
 <div>
@@ -49,10 +45,11 @@
                 <h4 class="font-semibold md:text-sm">SOL</h4>
             </div>
             <div>
-                {#if $balances.data?.nativeBalance}
+                {#if $tokens.data?.nativeBalance.lamports}
                     <h4 class="font-semibold md:text-sm">
                         {(
-                            $balances.data?.nativeBalance / LAMPORTS_PER_SOL
+                            $tokens.data?.nativeBalance.lamports /
+                            LAMPORTS_PER_SOL
                         ).toLocaleString()}
                     </h4>
                 {/if}
@@ -60,7 +57,7 @@
                 <h4 class="text-xs opacity-50">
                     {#if $sol.data}
                         {formatMoney(
-                            ($sol.data * $balances.data?.nativeBalance) /
+                            ($sol.data * $tokens.data?.nativeBalance.lamports) /
                                 LAMPORTS_PER_SOL
                         )}
                     {/if}
@@ -69,54 +66,15 @@
         </div>
     </a>
 
-    {#if $token2022.data}
-        {#each $token2022.data as token}
-            <TokenProvider
-                address={token.mint}
-                let:metadata
-            >
-                <a
-                    class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
-                    href="/token/{token.mint}"
-                >
-                    <div class="col-span-2 p-1 md:col-span-1">
-                        <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-                        <div
-                            style="background-image: url('{metadata.image}')"
-                            class="aspect-square w-full rounded-lg bg-cover"
-                        />
-                    </div>
-                    <div
-                        class="col-span-10 flex items-center justify-between text-right md:col-span-11"
-                    >
-                        <div>
-                            <h4 class="font-semibold md:text-sm">
-                                {metadata.name || ""}
-                            </h4>
-                        </div>
-                        <div>
-                            <h4 class="font-semibold md:text-sm">
-                                {token.amount.toLocaleString()}
-                            </h4>
-                            <!-- <h4 class="text-xs opacity-50">
-                            {#if metadata.price}
-                                {formatMoney(
-                                    (metadata.price * token.amount) /
-                                        10 ** token.decimals
-                                )}
-                            {/if}
-                        </h4> -->
-                        </div>
-                    </div>
-                </a>
-            </TokenProvider>
-        {/each}
-    {/if}
-    {#if sorted}
-        {#each sorted as token}
-            {#if token.decimals > 0 && token.mint !== SOL}
+    {#if $tokens.data}
+        {#each $tokens.data.items as token}
+            {#if token.token_info.decimals > 0 && token.id !== SOL}
                 <TokenProvider
-                    address={token.mint}
+                    {token}
+                    status={{
+                        isError: $tokens.isError,
+                        isLoading: $tokens.isLoading,
+                    }}
                     let:metadata
                 >
                     <a
@@ -141,15 +99,17 @@
                             <div>
                                 <h4 class="font-semibold md:text-sm">
                                     {(
-                                        token.amount /
-                                        10 ** token.decimals
+                                        token.token_info.balance /
+                                        10 ** token.token_info.decimals
                                     ).toLocaleString()}
                                 </h4>
                                 <h4 class="text-xs opacity-50">
-                                    {#if metadata.price}
+                                    {#if token.token_info.price_info}
                                         {formatMoney(
-                                            (metadata.price * token.amount) /
-                                                10 ** token.decimals
+                                            (token.token_info?.price_info
+                                                ?.price_per_token *
+                                                token.token_info.balance) /
+                                                10 ** token.token_info.decimals
                                         )}
                                     {/if}
                                 </h4>
