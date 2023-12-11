@@ -34,6 +34,7 @@
     import getMimeType from "$lib/util/get-mime-type";
     import { metadataStore } from "$lib/util/stores/metadata";
     import type { UITokenMetadata } from "$lib/types";
+    import Icon from "$lib/components/icon.svelte";
 
     const address = $page.params.token;
     const params = new URLSearchParams(window.location.search);
@@ -76,7 +77,15 @@
     }
 </script>
 
-<button class="pl-5 pt-3 text-3xl" on:click={() => window.history.back()}>⬅</button>
+<button
+    class="btn-ghost btn float-right mr-10 mt-1"
+    on:click={() => window.history.back()}
+>
+    <Icon
+        id="arrowLeft"
+        size="lg"
+    />
+</button>
 
 <TokenProvider
     {address}
