@@ -36,6 +36,8 @@
 
     let asset: any | undefined;
 
+    let deprecatedImage: any;
+
     if (address) {
         asset = client.asset.createQuery([address, isMainnetValue], {
             refetchOnMount: false,
@@ -90,6 +92,12 @@
         metadata.video_uri = data?.content.files?.find((file: any) =>
             file.mime?.startsWith("video/")
         )?.uri;
+    }
+
+    $: if (data?.id && !metadata.image) {
+        deprecatedImage = client.deprecatedImage.createQuery(data?.id);
+
+        metadata.image = $deprecatedImage?.data;
     }
 
     $: tokenIsLoading =

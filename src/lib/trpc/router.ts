@@ -8,6 +8,7 @@ import { asset } from "$lib/trpc/routes/asset";
 import { balances } from "$lib/trpc/routes/balances";
 import { concurrentMerkleTree } from "$lib/trpc/routes/concurrent-merkle-tree";
 import { currentSlot } from "$lib/trpc/routes/current-slot";
+import { deprecatedImage } from "./routes/deprecated-image";
 import { price } from "$lib/trpc/routes/price";
 import { rawTransaction } from "$lib/trpc/routes/raw-transaction";
 import { searchAssets } from "./routes/search-assets";
@@ -31,6 +32,7 @@ export const router = t.router({
     cnftTransactions,
     concurrentMerkleTree,
     currentSlot,
+    deprecatedImage,
     price,
     rawTransaction,
     searchAssets,
