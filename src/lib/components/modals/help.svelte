@@ -5,11 +5,12 @@
         ["globe", ".sol, .abc, .poor, .bonk domains"],
         ["person", "Wallet/Account addresses"],
         ["coins", "Token addresses"],
+        ["dots", "Token symbols (case sensitive)"],
         ["lightning", "Transaction signatures"],
     ];
 </script>
 
-<p class="mb-3">Use the search bar to look up any of the following.</p>
+<p class="mb-3">Use the search bar to look up any of the following:</p>
 
 <strong class="uppercase">Supported Searches</strong>
 
