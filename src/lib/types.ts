@@ -107,3 +107,19 @@ export interface Modal {
 export type Modals = keyof typeof modals;
 
 export type NullableProp<T> = T | null | undefined;
+
+export interface JupiterToken {
+    name: string;
+    symbol: string;
+    address: string;
+    decimals: number;
+    logoURI: string;
+}
+
+export interface TokenMap {
+    [symbol: string]: string;
+}
+
+export type RecognizedTokens = {
+    [key: string]: string;
+};
