@@ -45,23 +45,41 @@
 
     <div class="col-span-2 flex items-center justify-end">
         <div class="flex justify-end pr-2">
-            <div
-                class="tooltip"
-                data-tip="Docs"
-            >
-                <a
-                    href="https://docs.helius.dev/welcome/what-is-helius"
-                    rel="noreferrer"
-                    target="_blank"
-                    class="btn-ghost btn"
+            {#if $page.url.pathname == "/"}
+                <div
+                    class="tooltip"
+                    data-tip="Docs"
                 >
-                    <img
-                        class="h-6 opacity-90"
-                        src="docs.svg"
-                        alt=""
-                    />
-                </a>
-            </div>
+                    <a
+                        href="https://docs.helius.dev/welcome/what-is-helius"
+                        rel="noreferrer"
+                        target="_blank"
+                        class="btn-ghost btn"
+                    >
+                        <img
+                            class="h-6 opacity-90"
+                            src="docs.svg"
+                            alt=""
+                        />
+                    </a>
+                </div>
+            {/if}
+            {#if $page.url.pathname !== "/"}
+                <div
+                    class="tooltip"
+                    data-tip="Back"
+                >
+                    <button
+                        class="btn-ghost btn"
+                        on:click={() => window.history.back()}
+                    >
+                        <Icon
+                            id="arrowLeft"
+                            size="lg"
+                        />
+                    </button>
+                </div>
+            {/if}
             <div
                 class="tooltip"
                 data-tip="Help"

@@ -34,6 +34,7 @@
     import getMimeType from "$lib/util/get-mime-type";
     import { metadataStore } from "$lib/util/stores/metadata";
     import type { UITokenMetadata } from "$lib/types";
+    import Icon from "$lib/components/icon.svelte";
 
     const address = $page.params.token;
     const params = new URLSearchParams(window.location.search);
