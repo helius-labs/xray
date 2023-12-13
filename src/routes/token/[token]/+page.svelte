@@ -77,16 +77,6 @@
     }
 </script>
 
-<button
-    class="btn-ghost btn float-right mr-10 mt-1"
-    on:click={() => window.history.back()}
->
-    <Icon
-        id="arrowLeft"
-        size="lg"
-    />
-</button>
-
 <TokenProvider
     {address}
     bind:metadata

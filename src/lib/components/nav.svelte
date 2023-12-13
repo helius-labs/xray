@@ -62,6 +62,22 @@
                     />
                 </a>
             </div>
+            {#if $page.url.pathname !== "/"}
+                <div
+                    class="tooltip"
+                    data-tip="Back"
+                >
+                    <button
+                        class="btn-ghost btn"
+                        on:click={() => window.history.back()}
+                    >
+                        <Icon
+                            id="arrowLeft"
+                            size="lg"
+                        />
+                    </button>
+                </div>
+            {/if}
             <div
                 class="tooltip"
                 data-tip="Help"
