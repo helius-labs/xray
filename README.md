@@ -8,7 +8,7 @@
 
 🐤 **Twitter**: https://twitter.com/xray_explorer
 
-💬 **Discord**: https://discord.gg/8Qxk7PmArt
+💬 **Discord**: https://discord.gg/HjummjUXgq
 
 ## Support
 
