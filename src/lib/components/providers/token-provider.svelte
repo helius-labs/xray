@@ -8,46 +8,18 @@
 
     import IntersectionObserver from "svelte-intersection-observer";
 
-    export let address: string;
+    export let address: string | undefined = undefined;
+
+    export let token: any | undefined = undefined;
+
+    export let status: { isLoading: boolean; isError: boolean } | undefined =
+        undefined;
 
     let intersecting = false;
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network !== "devnet";
     const client = trpcWithQuery($page);
-
-    const token = client.token.createQuery([address, isMainnetValue], {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
-
-    const accountInfo = client.accountInfo.createQuery(
-        [address, isMainnetValue],
-        {
-            refetchOnMount: false,
-            refetchOnWindowFocus: false,
-        }
-    );
-
-    const token2022Metadata: {
-        [key: string]: {
-            description: string;
-            image: string;
-            name: string;
-        };
-    } = {
-        "2kMpEJCZL8vEDZe7YPLMCS9Y3WKSAMedXBn7xHPvsWvi": {
-            description: "Solana's 1 true moonshot. TW: @SolarMoonSol",
-            image: "https://gateway.ipfscdn.io/ipfs/bafkreifwdwgcv6fnh5icz3wkefokatsemsojck4hftsnuf4xcfjcvagsva/",
-            name: "SolarMoon (MOON)",
-        },
-        CKfatsPMUf8SkiURsDXs7eK6GWb4Jsd6UDbs7twMCWxo: {
-            description:
-                "BonkEarn is the first of many experiments on the Token2022 standard, Bernzy sends his regards",
-            image: "https://i.imgur.com/nd9AVZ4.jpeg",
-            name: "BonkEarn (BERN)",
-        },
-    };
 
     export const metadata: UITokenMetadata = {
         address: "",
@@ -62,10 +34,18 @@
         sellerFeeBasisPoints: 0,
     };
 
-    const asset = client.asset.createQuery([address, isMainnetValue], {
-        refetchOnMount: false,
-        refetchOnWindowFocus: false,
-    });
+    let asset: any | undefined;
+
+    let deprecatedImage: any;
+
+    if (address) {
+        asset = client.asset.createQuery([address, isMainnetValue], {
+            refetchOnMount: false,
+            refetchOnWindowFocus: false,
+        });
+    }
+
+    $: data = $asset?.data || token;
 
     let element: HTMLDivElement;
 
@@ -73,8 +53,7 @@
         metadata.name = "SOL";
         metadata.image = "/media/tokens/solana.png";
         metadata.address = SOL;
-    } else if ($asset?.data?.compressed) {
-        const data = $asset?.data;
+    } else if (data?.compressed) {
         metadata.address = data?.address || "";
         metadata.attributes = data?.attributes || [];
         metadata.creators = data?.creators || [];
@@ -94,45 +73,37 @@
         metadata.tree = data?.tree || "";
         metadata.seq = data?.seq || 0;
         metadata.leafId = data?.leafId || 0;
-    }
-    // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
-    // @ts-ignore
-    else if ($accountInfo?.data?.value?.data?.program === "spl-token-2022") {
-        // const data = $accountInfo?.data?.value;
-        const data = token2022Metadata[address];
-        metadata.name = data.name || "";
-        metadata.description = data.description || "";
-        metadata.image = data.image || "";
-        metadata.address = address || "";
-    } else {
-        // Kicks off the query
-        const data = $token?.data?.length ? $token.data[0] : {};
-        metadata.address = data?.account;
-        metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
-        metadata.sellerFeeBasisPoints =
-            data?.onChainMetadata?.metadata?.data?.sellerFeeBasisPoints || 0;
-        metadata.creators = data?.onChainMetadata?.metadata?.data?.creators;
-        metadata.description = data?.offChainMetadata?.metadata?.description;
-        metadata.collectionKey =
-            data?.onChainMetadata?.metadata?.collection?.key;
+    } else if (data?.compression.compressed == false) {
+        metadata.address = data?.id;
+        // metadata.attributes = data?.offChainMetadata?.metadata?.attributes;
+        metadata.sellerFeeBasisPoints = data?.royalty.basis_points || 0;
+        metadata.creators = data?.creators;
+        metadata.description = data?.content.metadata?.description;
+        // metadata.collectionKey =
+        //     data?.onChainMetadata?.metadata?.collection?.key;
         metadata.image =
-            data?.offChainMetadata?.metadata?.image ||
-            data?.onChainMetadata?.metadata?.data.image ||
-            data?.legacyMetadata?.logoURI;
-        metadata.name =
-            data?.offChainMetadata?.metadata?.name ||
-            data?.legacyMetadata?.name ||
-            data?.onChainMetadata?.metadata?.data.name;
-        metadata.files = data?.offChainMetadata?.metadata?.properties?.files;
-        // Checking all files to see if a video exists
-        metadata.video_uri =
-            data?.offChainMetadata?.metadata?.properties?.files?.find(
-                (file: any) => file.type.startsWith("video/")
+            data?.content.links?.image ||
+            data?.content.files?.find((file: any) =>
+                file.mime?.startsWith("image/")
             )?.uri;
+        metadata.name = data?.content.metadata?.name;
+        metadata.files = data?.content.files;
+        // Checking all files to see if a video exists
+        metadata.video_uri = data?.content.files?.find((file: any) =>
+            file.mime?.startsWith("video/")
+        )?.uri;
     }
 
-    $: tokenIsLoading = address !== SOL && $token.isLoading;
-    $: tokenFailed = $token.isError;
+    $: if (data?.id && !metadata.image) {
+        deprecatedImage = client.deprecatedImage.createQuery(data?.id);
+
+        metadata.image = $deprecatedImage?.data;
+    }
+
+    $: tokenIsLoading =
+        (address !== SOL && $asset?.isLoading) ||
+        (address !== SOL && status?.isLoading);
+    $: tokenFailed = $asset?.isError || status?.isError;
 
     // This could be better
     $: isNFT = metadata?.attributes && metadata?.attributes?.length > 0;
