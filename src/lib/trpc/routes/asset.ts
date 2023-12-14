@@ -5,6 +5,7 @@ import { z } from "zod";
 import { HELIUS_API_KEY } from "$env/static/private";
 
 import { getRPCUrl } from "$lib/util/get-rpc-url";
+import type { UITokenMetadata } from "$lib/types";
 
 // TODO: add output validation once this merges with the token endpoint
 export const asset = t.procedure
@@ -18,7 +19,12 @@ export const asset = t.procedure
                 id: "asset",
                 jsonrpc: "2.0",
                 method: "getAsset",
-                params: [asset],
+                params: {
+                    displayOptions: {
+                        showFungible: true,
+                    },
+                    id: asset,
+                },
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -27,27 +33,7 @@ export const asset = t.procedure
         });
 
         const data = await response.json();
-        let metadata = {
-            address: "",
-            assetHash: "",
-            attributes: [],
-            collectionKey: "",
-            compressed: false,
-            creatorHash: "",
-            creators: [],
-            dataHash: "",
-            delegate: "",
-            description: "",
-            frozen: false,
-            image: "",
-            leafId: 0,
-            mutable: false,
-            name: "",
-            owner: "",
-            sellerFeeBasisPoints: 0,
-            seq: 0,
-            tree: "",
-        };
+        let metadata: UITokenMetadata | undefined;
 
         if (data?.result?.compression?.compressed === true) {
             const assetData = await fetch(data.result.content.json_uri);
@@ -78,5 +64,5 @@ export const asset = t.procedure
                 tree: data?.result?.compression?.tree,
             };
         }
-        return metadata;
+        return metadata ?? data?.result;
     });
