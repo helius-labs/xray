@@ -236,6 +236,7 @@
     <button
         class="btn-ghost btn-sm btn absolute bottom-1/2 right-4 translate-y-1/2 px-2"
         class:loading={isSearching}
+        on:click={newSearch}
     >
         {#if !isSearching}
             <Icon id="search" />
