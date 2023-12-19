@@ -8,6 +8,7 @@
     import { SOL } from "$lib/xray";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
     import formatMoney from "$lib/util/format-money";
+    import formatTokens from "$lib/util/format-tokens";
 
     const account = $page.params.account;
 
@@ -27,48 +28,9 @@
 </script>
 
 <div>
-    <a
-        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
-        href="/token/{SOL}"
-    >
-        <div class="col-span-2 p-1 md:col-span-1">
-            <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-            <div
-                style="background-image: url(/media/tokens/solana.png)"
-                class="aspect-square w-full rounded-lg bg-cover"
-            />
-        </div>
-        <div
-            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
-        >
-            <div>
-                <h4 class="font-semibold md:text-sm">SOL</h4>
-            </div>
-            <div>
-                {#if $tokens.data?.nativeBalance.lamports}
-                    <h4 class="font-semibold md:text-sm">
-                        {(
-                            $tokens.data?.nativeBalance.lamports /
-                            LAMPORTS_PER_SOL
-                        ).toLocaleString()}
-                    </h4>
-                {/if}
-
-                <h4 class="text-xs opacity-50">
-                    {#if $sol.data}
-                        {formatMoney(
-                            ($sol.data * $tokens.data?.nativeBalance.lamports) /
-                                LAMPORTS_PER_SOL
-                        )}
-                    {/if}
-                </h4>
-            </div>
-        </div>
-    </a>
-
     {#if $tokens.data}
-        {#each $tokens.data.items as token}
-            {#if token.token_info.decimals > 0 && token.id !== SOL}
+        {#each formatTokens($tokens.data.items, $sol.data, $tokens.data?.nativeBalance.lamports) as token}
+            {#if token.id !== SOL}
                 <TokenProvider
                     {token}
                     status={{
@@ -117,6 +79,47 @@
                         </div>
                     </a>
                 </TokenProvider>
+            {:else}
+                <a
+                    class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                    href="/token/{SOL}"
+                >
+                    <div class="col-span-2 p-1 md:col-span-1">
+                        <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                        <div
+                            style="background-image: url(/media/tokens/solana.png)"
+                            class="aspect-square w-full rounded-lg bg-cover"
+                        />
+                    </div>
+                    <div
+                        class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="font-semibold md:text-sm">SOL</h4>
+                        </div>
+                        <div>
+                            {#if $tokens.data?.nativeBalance.lamports}
+                                <h4 class="font-semibold md:text-sm">
+                                    {(
+                                        $tokens.data?.nativeBalance.lamports /
+                                        LAMPORTS_PER_SOL
+                                    ).toLocaleString()}
+                                </h4>
+                            {/if}
+
+                            <h4 class="text-xs opacity-50">
+                                {#if $sol.data}
+                                    {formatMoney(
+                                        ($sol.data *
+                                            $tokens.data?.nativeBalance
+                                                .lamports) /
+                                            LAMPORTS_PER_SOL
+                                    )}
+                                {/if}
+                            </h4>
+                        </div>
+                    </div>
+                </a>
             {/if}
         {/each}
     {:else}
