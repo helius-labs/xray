@@ -24,17 +24,9 @@ let getTokenValue = (
 };
 
 export default (tokens: any[], solData: any, lamports: any): any[] => {
-    //add individual SOL entry for edge case handling
-    tokens.push({ id: SOL });
-
     return tokens.sort((a, b) => {
         const valueA = getTokenValue(a, solData, lamports);
         const valueB = getTokenValue(b, solData, lamports);
-
-        if (a.id === SOL || b.id === SOL) {
-            // eslint-disable-next-line no-console
-            console.log(valueA, valueB);
-        }
 
         if (valueA === undefined) {
             return 1;

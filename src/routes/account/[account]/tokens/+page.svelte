@@ -29,7 +29,7 @@
 
 <div>
     {#if $tokens.data}
-        {#each formatTokens($tokens.data.items, $sol.data, $tokens.data?.nativeBalance.lamports) as token}
+        {#each formatTokens($tokens.data.items.concat( { id: SOL } ), $sol.data, $tokens.data?.nativeBalance.lamports) as token}
             {#if token.id !== SOL}
                 <TokenProvider
                     {token}
