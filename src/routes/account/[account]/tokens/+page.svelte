@@ -5,10 +5,10 @@
 
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
+    import type { UIAccountToken, UISolAccountToken } from "$lib/types";
     import formatMoney from "$lib/util/format-money";
     import { SOL } from "$lib/xray";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-    import type { UIAccountToken } from "$lib/types";
 
     const account = $page.params.account;
 
@@ -31,6 +31,24 @@
         };
     };
 
+    const toUISolAccountToken = (
+        lamports: number,
+        price: number = 0
+    ): UISolAccountToken => {
+        const balance = lamports / LAMPORTS_PER_SOL;
+
+        return {
+            balance,
+            balanceInUSD: price * balance,
+            id: SOL,
+            price,
+        };
+    };
+
+    const isSol = (
+        t: UIAccountToken | UISolAccountToken
+    ): t is UISolAccountToken => t.id === SOL;
+
     const getTokensRequest = client.searchAssets.createQuery({
         account,
         isMainnet: isMainnetValue,
@@ -38,102 +56,95 @@
         tokenType: "fungible",
     });
 
-    const sol = client.price.createQuery(SOL);
+    const getSolPrice = client.price.createQuery(SOL);
 
     $: getTokensRequestItems = ($getTokensRequest?.data?.items ?? []) as [];
-    $: tokens = getTokensRequestItems
-        .map(toUIAccountToken)
-        .toSorted((a, b) => b.balanceInUSD - a.balanceInUSD);
+    $: lamports = $getTokensRequest?.data?.nativeBalance?.lamports ?? 0;
+    $: solToken = toUISolAccountToken(lamports, $getSolPrice.data);
+    $: partialTokens = getTokensRequestItems.map(toUIAccountToken);
+    $: tokens = [solToken, ...partialTokens].toSorted(
+        (a, b) => b.balanceInUSD - a.balanceInUSD
+    );
 </script>
 
 <div>
-    <a
-        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
-        href="/token/{SOL}"
-    >
-        <div class="col-span-2 p-1 md:col-span-1">
-            <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-            <div
-                style="background-image: url(/media/tokens/solana.png)"
-                class="aspect-square w-full rounded-lg bg-cover"
-            />
-        </div>
-        <div
-            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
-        >
-            <div>
-                <h4 class="font-semibold md:text-sm">SOL</h4>
-            </div>
-            <div>
-                {#if $getTokensRequest.data?.nativeBalance.lamports}
-                    <h4 class="font-semibold md:text-sm">
-                        {(
-                            $getTokensRequest.data?.nativeBalance.lamports /
-                            LAMPORTS_PER_SOL
-                        ).toLocaleString()}
-                    </h4>
-                {/if}
-
-                <h4 class="text-xs opacity-50">
-                    {#if $sol.data}
-                        {formatMoney(
-                            ($sol.data *
-                                $getTokensRequest.data?.nativeBalance
-                                    .lamports) /
-                                LAMPORTS_PER_SOL
-                        )}
-                    {/if}
-                </h4>
-            </div>
-        </div>
-    </a>
-
-    {#if tokens}
+    {#if $getTokensRequest}
         {#each tokens as token}
-            {#if token.decimals > 0}
-                <TokenProvider
-                    token={token.fullMetadata}
-                    status={{
-                        isError: $getTokensRequest.isError,
-                        isLoading: $getTokensRequest.isLoading,
-                    }}
-                    let:metadata
-                >
-                    <a
-                        class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
-                        href="/token/{token.id}"
+            {#if !isSol(token)}
+                {#if token.decimals > 0}
+                    <TokenProvider
+                        token={token.fullMetadata}
+                        status={{
+                            isError: $getTokensRequest.isError,
+                            isLoading: $getTokensRequest.isLoading,
+                        }}
+                        let:metadata
                     >
-                        <div class="col-span-2 p-1 md:col-span-1">
-                            <!-- background so that if it doesn't load you dont' get ugly no image icons -->
-                            <div
-                                style="background-image: url('{metadata.image}')"
-                                class="aspect-square w-full rounded-lg bg-cover"
-                            />
-                        </div>
-                        <div
-                            class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                        <a
+                            class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                            href="/token/{token.id}"
                         >
-                            <div>
-                                <h4 class="font-semibold md:text-sm">
-                                    {metadata?.name || ""}
-                                </h4>
+                            <div class="col-span-2 p-1 md:col-span-1">
+                                <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                                <div
+                                    style="background-image: url('{metadata.image}')"
+                                    class="aspect-square w-full rounded-lg bg-cover"
+                                />
                             </div>
-                            <div>
-                                <h4 class="font-semibold md:text-sm">
-                                    {(
-                                        token.balance /
-                                        10 ** token.decimals
-                                    ).toLocaleString()}
-                                </h4>
-                                <h4 class="text-xs opacity-50">
-                                    {#if token.price}
-                                        {formatMoney(token.balanceInUSD)}
-                                    {/if}
-                                </h4>
+                            <div
+                                class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                            >
+                                <div>
+                                    <h4 class="font-semibold md:text-sm">
+                                        {metadata?.name || ""}
+                                    </h4>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold md:text-sm">
+                                        {(
+                                            token.balance /
+                                            10 ** token.decimals
+                                        ).toLocaleString()}
+                                    </h4>
+                                    <h4 class="text-xs opacity-50">
+                                        {#if token.price}
+                                            {formatMoney(token.balanceInUSD)}
+                                        {/if}
+                                    </h4>
+                                </div>
                             </div>
+                        </a>
+                    </TokenProvider>
+                {/if}
+            {:else}
+                <a
+                    class="mb-4 grid grid-cols-12 items-center gap-3 rounded-lg border px-3 py-2 hover:border-primary"
+                    href="/token/{token.id}"
+                >
+                    <div class="col-span-2 p-1 md:col-span-1">
+                        <!-- background so that if it doesn't load you dont' get ugly no image icons -->
+                        <div
+                            style="background-image: url(/media/tokens/solana.png)"
+                            class="aspect-square w-full rounded-lg bg-cover"
+                        />
+                    </div>
+                    <div
+                        class="col-span-10 flex items-center justify-between text-right md:col-span-11"
+                    >
+                        <div>
+                            <h4 class="font-semibold md:text-sm">SOL</h4>
                         </div>
-                    </a>
-                </TokenProvider>
+                        <div>
+                            <h4 class="font-semibold md:text-sm">
+                                {token.balance.toLocaleString()}
+                            </h4>
+
+                            <h4 class="text-xs opacity-50">
+                                {formatMoney(token.balanceInUSD)}
+                            </h4>
+                        </div>
+                    </div>
+                </a>
             {/if}
         {/each}
     {:else}
