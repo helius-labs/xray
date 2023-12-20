@@ -2,13 +2,10 @@ import type { ComponentType } from "svelte";
 
 import type { EnrichedTransaction } from "helius-sdk";
 
-import type {
-    ProtonActionType,
-    ProtonTransaction,
-    ProtonTransactionAction,
-} from "$lib/xray";
+import type { ProtonTransaction, ProtonTransactionAction } from "$lib/xray";
 
 import type { IconPaths, modals } from "$lib/config";
+import type { SOL } from "$lib/xray";
 
 export * from "$lib/config";
 
@@ -122,4 +119,25 @@ export interface TokenMap {
 
 export type RecognizedTokens = {
     [key: string]: string;
+};
+
+/** Used in the account/tokens page */
+export type UIAccountToken = {
+    id: string;
+    decimals: number;
+    balance: number;
+    balanceInUSD: number;
+    price: number;
+    fullMetadata: any;
+};
+
+/**
+ * Used in the account/tokens page. A special case for SOL is necessary because
+ * it's not structed like other tokens
+ */
+export type UISolAccountToken = {
+    id: typeof SOL;
+    balance: number;
+    balanceInUSD: number;
+    price: number;
 };

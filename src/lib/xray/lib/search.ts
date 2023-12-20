@@ -52,7 +52,6 @@ export const search = async (
         // handle server-side logic, or set a default value
         network = "mainnet";
     }
-    const isMainnetValue = network !== "devnet";
 
     // For token symbols
     const tokenSymbols = await getJupiterTokens();
@@ -60,21 +59,27 @@ export const search = async (
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
         const account = await connection.getParsedAccountInfo(pubkey);
-
         // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
+        // @ts-ignore
+        const program = account?.value?.data?.program;
+        // @ts-ignore
+        const parsedType = account?.value?.data?.parsed?.type;
+
         /*
          * spl-token      -> spl token
          * spl-token-2022 -> token 2022
          * null           -> compressed nft
          */
-        const isToken =
-            // @ts-ignore
-            account?.value?.data?.program === "spl-token" ||
-            // @ts-ignore
-            account?.value?.data?.program === "spl-token-2022" ||
+        const probablyToken =
+            program === "spl-token" ||
+            program === "spl-token-2022" ||
             account?.value === null;
 
-        const addressType = isToken ? "token" : "account";
+        let addressType!: "token" | "account";
+        if (probablyToken) {
+            addressType = parsedType === "account" ? "account" : "token";
+        }
+        addressType ??= "account";
 
         return {
             address: query,
