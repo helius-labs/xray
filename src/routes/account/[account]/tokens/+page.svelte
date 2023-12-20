@@ -1,13 +1,14 @@
-<script>
+<script lang="ts">
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import { page } from "$app/stores";
 
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
+    import formatMoney from "$lib/util/format-money";
     import { SOL } from "$lib/xray";
     import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-    import formatMoney from "$lib/util/format-money";
+    import type { UIAccountToken } from "$lib/types";
 
     const account = $page.params.account;
 
@@ -16,7 +17,21 @@
     const network = params.get("network");
     const isMainnetValue = network !== "devnet";
 
-    const tokens = client.searchAssets.createQuery({
+    const toUIAccountToken = (tokenData: any): UIAccountToken => {
+        const balance = tokenData.token_info.balance;
+        const price = tokenData.token_info.price_info?.price_per_token ?? 0;
+        const decimals = tokenData.token_info.decimals;
+        return {
+            balance,
+            balanceInUSD: (price * balance) / 10 ** decimals,
+            decimals,
+            fullMetadata: tokenData,
+            id: tokenData.id,
+            price,
+        };
+    };
+
+    const getTokensRequest = client.searchAssets.createQuery({
         account,
         isMainnet: isMainnetValue,
         nativeBalance: true,
@@ -24,6 +39,11 @@
     });
 
     const sol = client.price.createQuery(SOL);
+
+    $: getTokensRequestItems = ($getTokensRequest?.data?.items ?? []) as [];
+    $: tokens = getTokensRequestItems
+        .map(toUIAccountToken)
+        .toSorted((a, b) => b.balanceInUSD - a.balanceInUSD);
 </script>
 
 <div>
@@ -45,10 +65,10 @@
                 <h4 class="font-semibold md:text-sm">SOL</h4>
             </div>
             <div>
-                {#if $tokens.data?.nativeBalance.lamports}
+                {#if $getTokensRequest.data?.nativeBalance.lamports}
                     <h4 class="font-semibold md:text-sm">
                         {(
-                            $tokens.data?.nativeBalance.lamports /
+                            $getTokensRequest.data?.nativeBalance.lamports /
                             LAMPORTS_PER_SOL
                         ).toLocaleString()}
                     </h4>
@@ -57,7 +77,9 @@
                 <h4 class="text-xs opacity-50">
                     {#if $sol.data}
                         {formatMoney(
-                            ($sol.data * $tokens.data?.nativeBalance.lamports) /
+                            ($sol.data *
+                                $getTokensRequest.data?.nativeBalance
+                                    .lamports) /
                                 LAMPORTS_PER_SOL
                         )}
                     {/if}
@@ -66,14 +88,14 @@
         </div>
     </a>
 
-    {#if $tokens.data}
-        {#each $tokens.data.items as token}
-            {#if token.token_info.decimals > 0 && token.id !== SOL}
+    {#if tokens}
+        {#each tokens as token}
+            {#if token.decimals > 0}
                 <TokenProvider
-                    {token}
+                    token={token.fullMetadata}
                     status={{
-                        isError: $tokens.isError,
-                        isLoading: $tokens.isLoading,
+                        isError: $getTokensRequest.isError,
+                        isLoading: $getTokensRequest.isLoading,
                     }}
                     let:metadata
                 >
@@ -99,18 +121,13 @@
                             <div>
                                 <h4 class="font-semibold md:text-sm">
                                     {(
-                                        token.token_info.balance /
-                                        10 ** token.token_info.decimals
+                                        token.balance /
+                                        10 ** token.decimals
                                     ).toLocaleString()}
                                 </h4>
                                 <h4 class="text-xs opacity-50">
-                                    {#if token.token_info.price_info}
-                                        {formatMoney(
-                                            (token.token_info?.price_info
-                                                ?.price_per_token *
-                                                token.token_info.balance) /
-                                                10 ** token.token_info.decimals
-                                        )}
+                                    {#if token.price}
+                                        {formatMoney(token.balanceInUSD)}
                                     {/if}
                                 </h4>
                             </div>

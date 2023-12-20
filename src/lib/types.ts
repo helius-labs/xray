@@ -2,11 +2,7 @@ import type { ComponentType } from "svelte";
 
 import type { EnrichedTransaction } from "helius-sdk";
 
-import type {
-    ProtonActionType,
-    ProtonTransaction,
-    ProtonTransactionAction,
-} from "$lib/xray";
+import type { ProtonTransaction, ProtonTransactionAction } from "$lib/xray";
 
 import type { IconPaths, modals } from "$lib/config";
 
@@ -122,4 +118,13 @@ export interface TokenMap {
 
 export type RecognizedTokens = {
     [key: string]: string;
+};
+
+export type UIAccountToken = {
+    id: string;
+    decimals: number;
+    balance: number;
+    balanceInUSD: number;
+    price: number;
+    fullMetadata: any;
 };
