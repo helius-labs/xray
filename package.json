@@ -100,6 +100,6 @@
         "svelte-loading-spinners": "^0.3.4",
         "trpc-svelte-query-adapter": "^2.0.0",
         "trpc-sveltekit": "^3.3.1",
-        "zod": "^3.20.6"
+        "zod": "^3.22.3"
     }
 }
