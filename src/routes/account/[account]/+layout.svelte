@@ -1,12 +1,22 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    // @ts-ignore
+    import { idlStore, grabIdl } from "$lib/util/stores/idl";
+
+
+    import type { Idl } from "@coral-xyz/anchor";
+
+
+    import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
+
 
     import Icon from "$lib/components/icon.svelte";
-
     import AccountHeader from "$lib/components/account-header.svelte";
     import { showModal } from "$lib/state/stores/modals";
     import { trpcWithQuery } from "$lib/trpc/client";
-    import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
+    import { onMount } from "svelte";
+
+    const api = import.meta.env.VITE_HELIUS_API_KEY;
 
     const client = trpcWithQuery($page);
 
@@ -27,6 +37,18 @@
 
     $: endsWith = (str: string) => $page.url.pathname.endsWith(str);
     $: hasAssets = $assets?.data?.total > 0;
+
+    let programIDL: Idl | null = null;
+
+    onMount(() => {
+        if (account) {
+            grabIdl(account, isMainnetValue, api);
+            // Subscribe to idlStore to update programIDL
+            idlStore.subscribe((idl) => {
+                programIDL = idl;
+            });
+        }
+    });
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
@@ -74,6 +96,13 @@
                 >
                     <Icon id="settings" />
                 </button>
+            {/if}
+            {#if programIDL}
+                <a
+                    href={`/account/${account}/assets?${selectedNetwork}`}
+                    class="tab-bordered tab"
+                    class:tab-active={endsWith("/idl")}>IDL</a
+                >
             {/if}
         </div>
     </div>
