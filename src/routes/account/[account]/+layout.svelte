@@ -1,14 +1,12 @@
 <script lang="ts">
     import { page } from "$app/stores";
     // @ts-ignore
-    import { idlStore, grabIdl } from "$lib/util/stores/idl";
-
+    import { idlStore } from "$lib/util/stores/idl";
+    import { grabIdl } from "$lib/util/grab-idl";
 
     import type { Idl } from "@coral-xyz/anchor";
 
-
     import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
-
 
     import Icon from "$lib/components/icon.svelte";
     import AccountHeader from "$lib/components/account-header.svelte";
@@ -88,6 +86,13 @@
                         >Concurrent Merkle Tree
                     </a>
                 {/if}
+                {#if programIDL}
+                    <a
+                        href={`/account/${account}/idl?${selectedNetwork}`}
+                        class="tab-bordered tab"
+                        class:tab-active={endsWith("/idl")}>IDL</a
+                    >
+                {/if}
             </div>
             {#if !endsWith("/tokens") && !endsWith("/assets")}
                 <button
@@ -96,13 +101,6 @@
                 >
                     <Icon id="settings" />
                 </button>
-            {/if}
-            {#if programIDL}
-                <a
-                    href={`/account/${account}/assets?${selectedNetwork}`}
-                    class="tab-bordered tab"
-                    class:tab-active={endsWith("/idl")}>IDL</a
-                >
             {/if}
         </div>
     </div>
