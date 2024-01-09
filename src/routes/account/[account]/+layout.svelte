@@ -94,7 +94,7 @@
                     >
                 {/if}
             </div>
-            {#if !endsWith("/tokens") && !endsWith("/assets")}
+            {#if !endsWith("/tokens") && !endsWith("/assets") && !endsWith("/idl")}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => showModal("TRANSACTION_FILTER")}
