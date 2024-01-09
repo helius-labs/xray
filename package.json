@@ -78,6 +78,7 @@
         "vite": "^4.3.9"
     },
     "dependencies": {
+        "@coral-xyz/anchor": "^0.29.0",
         "@lottiefiles/svelte-lottie-player": "^0.3.0",
         "@onsol/tldparser": "^0.5.3",
         "@solana/spl-account-compression": "^0.1.8",
