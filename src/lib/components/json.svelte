@@ -25,12 +25,14 @@
 >
     <div class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1">
         <div class="col-span-2 p-1 md:col-span-1">
+            {#if label !== "token"}
             <div class="center h-10 w-10 rounded-full bg-secondary">
                 <Icon
                     id="json"
                     size="sm"
                 />
             </div>
+            {/if}
         </div>
         <div
             class="col-span-10 flex items-center justify-between pr-1 md:col-span-11"
@@ -43,8 +45,6 @@
                         Medium
                     {:else if label === "raw"}
                         Advanced
-                    {:else if label === "token"}
-                        JSON Metadata
                     {/if}
                 </h4>
                 <h3 class="mr-2 text-xs opacity-50">
@@ -54,16 +54,17 @@
                         Enriched transaction data from the Helius API
                     {:else if label === "raw"}
                         Raw transaction data from the Solana RPC
-                    {:else if label === "token"}
-                        View the metadata for this NFT
                     {/if}
                 </h3>
             </div>
             <div class="flex items-center">
+                {#if label === "token"}
+                <h3 class="text-xs mr-2">Copy JSON</h3>
+                {/if}
                 <CopyButton
                     text={JSON.stringify(data, null, 2)}
-                    success="copied json"
                 />
+                {#if label !== "token"}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => (showCode = !showCode)}
@@ -80,9 +81,10 @@
                         />
                     {/if}
                 </button>
+                {/if}
             </div>
         </div>
-        {#if showCode}
+        {#if showCode || label === "token"}
             <div class="code col-span-12 w-full overflow-hidden px-3">
                 <pre><code class="text-xs">{@html metadataHTML}</code></pre>
             </div>

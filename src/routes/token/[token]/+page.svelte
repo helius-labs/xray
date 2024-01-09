@@ -475,6 +475,19 @@
                 </div>
             {/if}
 
+            <div class="mt-6 mb-6">
+                <Collapse
+                sectionTitle="JSON Metadata"
+                iconId="json"
+                showDetails={false}
+                >
+                    <JSON
+                        data={metadata}
+                        label="token"
+                    />
+                </Collapse>
+            </div>
+
             {#key metadata.compressed}
                 <div class="mt-3 pl-2 md:pl-0">
                     <Transactions
@@ -483,13 +496,6 @@
                     />
                 </div>
             {/key}
-
-            <div class="mt-3">
-                <JSON
-                    data={metadata}
-                    label="token"
-                />
-            </div>
         </div>
     {/if}
 </TokenProvider>
