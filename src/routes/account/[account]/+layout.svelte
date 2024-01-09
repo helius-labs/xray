@@ -12,7 +12,7 @@
     import AccountHeader from "$lib/components/account-header.svelte";
     import { showModal } from "$lib/state/stores/modals";
     import { trpcWithQuery } from "$lib/trpc/client";
-    import { onMount } from "svelte";
+    import { onMount, onDestroy } from "svelte";
 
     const api = import.meta.env.VITE_HELIUS_API_KEY;
 
@@ -38,15 +38,31 @@
 
     let programIDL: Idl | null = null;
 
-    onMount(() => {
-        if (account) {
-            grabIdl(account, isMainnetValue, api);
-            // Subscribe to idlStore to update programIDL
-            idlStore.subscribe((idl) => {
-                programIDL = idl;
-            });
+    const unsubscribe = idlStore.subscribe(value => {
+        programIDL = value;
+    });
+
+    onMount(async () => {
+        const response = await fetch(`/api/fetchIdl?account=${account}&isMainnetValue=${isMainnetValue}`);
+
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data.idl) {
+                idlStore.set(data.idl);
+            } else {
+                // eslint-disable-next-line no-console
+                console.error("IDL not found for the provided account");
+            }
+        } else {
+            // eslint-disable-next-line no-console
+            console.error(`Failed to fetch IDL: ${response.status}`);
         }
     });
+
+    onDestroy(() => {
+        unsubscribe();
+    })
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">

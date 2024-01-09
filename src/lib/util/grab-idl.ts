@@ -49,9 +49,8 @@ export async function grabIdl(
             provider
         )) as Idl | null;
 
-        // Directly use the idlStore instance to set the IDL
-        idlStore.set(idl);
+        return idl;
     } catch (error) {
-        idlStore.set(null);
+        return null;
     }
 }
