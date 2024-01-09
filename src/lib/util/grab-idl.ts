@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable this/no-this */
 import {
     PublicKey,
     Keypair,
@@ -53,11 +51,7 @@ export async function grabIdl(
 
         // Directly use the idlStore instance to set the IDL
         idlStore.set(idl);
-        idlStore.subscribe((value) => {
-            console.log("Store updated:", value);
-        });
     } catch (error) {
-        console.error("Error fetching IDL:", error);
         idlStore.set(null);
     }
 }
