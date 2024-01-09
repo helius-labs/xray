@@ -32,7 +32,6 @@
         $assets.data?.pages[$assets.data.pages.length - 1].total > 0;
 
     $: isOnePage = $assets.data?.pages.length == 1;
-
 </script>
 
 <div class="grid grid-cols-3 gap-3 md:grid-cols-5">
@@ -57,7 +56,7 @@
     {/each}
 </div>
 
-{#if $assets.hasNextPage && lastPageHadAssets &&!isOnePage}
+{#if $assets.hasNextPage && lastPageHadAssets && !isOnePage}
     <div class="flex justify-center">
         <button
             class="btn-outline btn"
