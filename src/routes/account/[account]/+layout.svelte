@@ -2,8 +2,6 @@
     import { page } from "$app/stores";
     // @ts-ignore
     import { idlStore } from "$lib/util/stores/idl";
-    import { grabIdl } from "$lib/util/grab-idl";
-
     import type { Idl } from "@coral-xyz/anchor";
 
     import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
@@ -13,8 +11,6 @@
     import { showModal } from "$lib/state/stores/modals";
     import { trpcWithQuery } from "$lib/trpc/client";
     import { onMount, onDestroy } from "svelte";
-
-    const api = import.meta.env.VITE_HELIUS_API_KEY;
 
     const client = trpcWithQuery($page);
 
