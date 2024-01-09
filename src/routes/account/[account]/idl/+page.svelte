@@ -30,15 +30,20 @@
 <div class="relative mx-auto w-full max-w-2xl pb-32">
     {#if $idlStore}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="flex flex-col justify-between items-center">
+        <div class="flex flex-col items-center justify-between">
             <div
-                class="code col-span-12 w-full rounded-lg border px-3 py-2 hover:border-primary cursor-pointer"
+                class="code col-span-12 w-full cursor-pointer rounded-lg border px-3 py-2 hover:border-primary"
                 class:cursor-copy={isCopying}
                 on:click={handleCopyClick}
             >
                 <pre><code class="text-xs">{@html formattedIdl}</code></pre>
             </div>
-            <CopyButton text={idlText} classList="btn-sm mt-4" label="Copy IDL" success="Copied!" />
+            <CopyButton
+                text={idlText}
+                classList="btn-sm mt-4"
+                label="Copy IDL"
+                success="Copied!"
+            />
         </div>
     {:else}
         <p>No IDL data available.</p>

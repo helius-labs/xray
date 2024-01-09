@@ -38,12 +38,14 @@
 
     let programIDL: Idl | null = null;
 
-    const unsubscribe = idlStore.subscribe(value => {
+    const unsubscribe = idlStore.subscribe((value) => {
         programIDL = value;
     });
 
     onMount(async () => {
-        const response = await fetch(`/api/fetchIdl?account=${account}&isMainnetValue=${isMainnetValue}`);
+        const response = await fetch(
+            `/api/fetchIdl?account=${account}&isMainnetValue=${isMainnetValue}`
+        );
 
         if (response.ok) {
             const data = await response.json();
@@ -62,7 +64,7 @@
 
     onDestroy(() => {
         unsubscribe();
-    })
+    });
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
