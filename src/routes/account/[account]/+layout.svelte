@@ -1,12 +1,16 @@
 <script lang="ts">
     import { page } from "$app/stores";
+    // @ts-ignore
+    import { idlStore } from "$lib/util/stores/idl";
+    import type { Idl } from "@coral-xyz/anchor";
+
+    import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
 
     import Icon from "$lib/components/icon.svelte";
-
     import AccountHeader from "$lib/components/account-header.svelte";
     import { showModal } from "$lib/state/stores/modals";
     import { trpcWithQuery } from "$lib/trpc/client";
-    import { PROGRAM_ID as ACCOUNT_COMPRESSION_ID } from "@solana/spl-account-compression";
+    import { onMount, onDestroy } from "svelte";
 
     const client = trpcWithQuery($page);
 
@@ -14,10 +18,49 @@
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network === "mainnet";
+    const selectedNetwork = `network=${isMainnetValue ? "mainnet" : "devnet"}`;
     const accountInfo = client.accountInfo.createQuery([
         account,
         isMainnetValue,
     ]);
+
+    const assets = client.assets.createQuery({
+        account,
+        isMainnet: isMainnetValue,
+    });
+
+    $: endsWith = (str: string) => $page.url.pathname.endsWith(str);
+    $: hasAssets = $assets?.data?.total > 0;
+
+    let programIDL: Idl | null = null;
+
+    const unsubscribe = idlStore.subscribe((value) => {
+        programIDL = value;
+    });
+
+    onMount(async () => {
+        const response = await fetch(
+            `/api/fetchIdl?account=${account}&isMainnetValue=${isMainnetValue}`
+        );
+
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data.idl) {
+                idlStore.set(data.idl);
+            } else {
+                // eslint-disable-next-line no-console
+                console.error("IDL not found for the provided account");
+            }
+        } else {
+            // eslint-disable-next-line no-console
+            console.error(`Failed to fetch IDL: ${response.status}`);
+        }
+    });
+
+    onDestroy(() => {
+        unsubscribe();
+    });
 </script>
 
 <div class="relative mx-auto w-full max-w-2xl pb-32">
@@ -33,42 +76,39 @@
             <div class="tabs w-full pt-1 md:w-auto">
                 <div />
                 <a
-                    href={`/account/${account}?network=${
-                        isMainnetValue ? "mainnet" : "devnet"
-                    }`}
+                    href={`/account/${account}?${selectedNetwork}`}
                     class="tab-bordered tab"
-                    class:tab-active={$page.url.pathname.endsWith(`${account}`)}
-                    >Transactions</a
+                    class:tab-active={endsWith(`${account}`)}>Transactions</a
                 >
                 <a
-                    href={`/account/${account}/tokens?network=${
-                        isMainnetValue ? "mainnet" : "devnet"
-                    }`}
+                    href={`/account/${account}/tokens?${selectedNetwork}`}
                     class="tab-bordered tab"
-                    class:tab-active={$page.url.pathname.endsWith("/tokens")}
-                    >Tokens</a
+                    class:tab-active={endsWith("/tokens")}>Tokens</a
                 >
-                <a
-                    href={`/account/${account}/assets?network=${
-                        isMainnetValue ? "mainnet" : "devnet"
-                    }`}
-                    class="tab-bordered tab"
-                    class:tab-active={$page.url.pathname.endsWith("/assets")}
-                    >Assets</a
-                >
+                {#if hasAssets}
+                    <a
+                        href={`/account/${account}/assets?${selectedNetwork}`}
+                        class="tab-bordered tab"
+                        class:tab-active={endsWith("/assets")}>Assets</a
+                    >
+                {/if}
                 {#if $accountInfo?.data?.value?.owner === ACCOUNT_COMPRESSION_ID.toBase58()}
                     <a
-                        href={`/account/${account}/concurrent-merkle-tree?network=${
-                            isMainnetValue ? "mainnet" : "devnet"
-                        }`}
+                        href={`/account/${account}/concurrent-merkle-tree?${selectedNetwork}`}
                         class="tab-bordered tab"
-                        class:tab-active={$page.url.pathname.endsWith(
-                            "concurrent-merkle-tree"
-                        )}>Concurrent Merkle Tree</a
+                        class:tab-active={endsWith("concurrent-merkle-tree")}
+                        >Concurrent Merkle Tree
+                    </a>
+                {/if}
+                {#if programIDL}
+                    <a
+                        href={`/account/${account}/idl?${selectedNetwork}`}
+                        class="tab-bordered tab"
+                        class:tab-active={endsWith("/idl")}>IDL</a
                     >
                 {/if}
             </div>
-            {#if !$page.url.pathname.endsWith("/tokens") && !$page.url.pathname.endsWith("/assets")}
+            {#if !endsWith("/tokens") && !endsWith("/assets") && !endsWith("/idl")}
                 <button
                     class="btn-ghost btn-sm btn"
                     on:click={() => showModal("TRANSACTION_FILTER")}
