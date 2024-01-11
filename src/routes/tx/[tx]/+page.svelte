@@ -47,7 +47,7 @@
     async function executeQuery() {
         isLoading = true;
         try {
-            const result = await fetchTransactionData(); 
+            const result = await fetchTransactionData();
             transaction = result;
             error = null;
         } catch (e) {
@@ -73,7 +73,7 @@
         });
         return result;
     }
-            
+
     onMount(() => {
         animate = true;
     });
@@ -90,7 +90,7 @@
 </script>
 
 {#if error}
-<div>"FART"</div>
+    <div>"FART"</div>
 {:else if isLoading}
     <div
         class="flex content-center justify-center pt-4"
