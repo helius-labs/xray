@@ -3,7 +3,7 @@ import type { EnrichedTransaction } from "helius-sdk";
 import { parseTransaction } from "$lib/xray";
 
 import { t } from "$lib/trpc/t";
-
+import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { getAPIUrl } from "$lib/util/get-api-url";
 
@@ -18,23 +18,41 @@ export const transaction = t.procedure
         })
     )
     .query(async ({ input }) => {
-        const url = getAPIUrl(
-            `/v0/transactions/?api-key=${HELIUS_API_KEY}`,
-            input.isMainnet
-        );
-        const response = await fetch(url, {
-            body: JSON.stringify({
-                transactions: [input?.transaction],
-            }),
+        try {
+            const url = getAPIUrl(
+                `/v0/transactions/?api-key=${HELIUS_API_KEY}`,
+                input.isMainnet
+            );
 
-            method: "POST",
-        });
+            const response = await fetch(url, {
+                body: JSON.stringify({
+                    transactions: [input?.transaction],
+                }),
 
-        const [tx]: EnrichedTransaction[] = await response.json();
+                method: "POST",
+            });
 
-        const parsed = parseTransaction(tx, input?.account);
+            if (!response.ok) {
+                return { data: null, error: "Transaction not found" };
+            }
 
-        parsed.raw = tx;
+            const [tx]: EnrichedTransaction[] = await response.json();
 
-        return parsed;
+            const parsed = parseTransaction(tx, input?.account);
+
+            if (parsed === undefined) {
+                return { data: null, error: "Transaction not found" };
+            }
+
+            parsed.raw = tx;
+
+            return parsed;
+        } catch (error) {
+            return { data: null, error: "Server error" };
+            // throw new TRPCError({
+            //     cause: error,
+            //     code: "NOT_FOUND",
+            //     message: "Failed to fetch transaction",
+            // });
+        }
     });

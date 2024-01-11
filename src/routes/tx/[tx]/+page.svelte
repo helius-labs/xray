@@ -31,24 +31,49 @@
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network !== "devnet";
-    const transaction = client.transaction.createQuery({
-        account: $page.url.searchParams
-            .get("ref")
-            ?.split("@")
-            .reduce(
-                (acc, ref) =>
-                    ref.startsWith("wallet") ? ref.split(":")[1] : acc,
-                ""
-            ),
-        isMainnet: isMainnetValue,
-        transaction: signature || "",
-    });
+    let transaction: object | null = null;
 
     const rawTransaction = client.rawTransaction.createQuery([
         signature || "",
         isMainnetValue,
     ]);
 
+    let error: any = null;
+
+    $: if (signature) {
+        executeQuery();
+    }
+
+    async function executeQuery() {
+        isLoading = true;
+        try {
+            const result = await fetchTransactionData(); 
+            transaction = result;
+            error = null;
+        } catch (e) {
+            error = e;
+            transaction = null;
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    async function fetchTransactionData() {
+        const result = client.transaction.createQuery({
+            account: $page.url.searchParams
+                .get("ref")
+                ?.split("@")
+                .reduce(
+                    (acc, ref) =>
+                        ref.startsWith("wallet") ? ref.split(":")[1] : acc,
+                    ""
+                ),
+            isMainnet: isMainnetValue,
+            transaction: signature || "",
+        });
+        return result;
+    }
+            
     onMount(() => {
         animate = true;
     });
@@ -64,7 +89,9 @@
     $: isLoading = !$transaction || $transaction.data === undefined;
 </script>
 
-{#if isLoading}
+{#if error}
+<div>"FART"</div>
+{:else if isLoading}
     <div
         class="flex content-center justify-center pt-4"
         aria-label="Loading spinner"
