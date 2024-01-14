@@ -1,4 +1,5 @@
 <script lang="ts">
+    // @ts-nocheck
     import type { ProtonTransaction } from "$lib/xray";
 
     import { onMount } from "svelte";
@@ -24,6 +25,7 @@
 
     let animate = false;
     let isLoading = true;
+    let isMounted = false;
 
     const signature = $page.params.tx;
 
@@ -39,15 +41,23 @@
     ]);
 
     let error: any = null;
+    let currentAbortController: any = null;
 
-    $: if (signature) {
+    $: if (signature && isMounted) {
         executeQuery();
     }
 
     async function executeQuery() {
+        // Abort previous request if it exists
+        if (currentAbortController) {
+            currentAbortController.abort();
+        }
+
+        currentAbortController = new AbortController();
         isLoading = true;
+
         try {
-            const result = await fetchTransactionData();
+            const result = await fetchTransactionData(currentAbortController.signal);
             transaction = result;
             error = null;
         } catch (e) {
@@ -58,7 +68,7 @@
         }
     }
 
-    async function fetchTransactionData() {
+    async function fetchTransactionData(signal) {
         const result = client.transaction.createQuery({
             account: $page.url.searchParams
                 .get("ref")
@@ -70,12 +80,17 @@
                 ),
             isMainnet: isMainnetValue,
             transaction: signature || "",
-        });
+        }, { signal });
         return result;
     }
 
     onMount(() => {
         animate = true;
+        isMounted = true;
+
+        return () => {
+            isMounted = false;
+        };
     });
 
     $: data = $transaction?.data
@@ -89,9 +104,7 @@
     $: isLoading = !$transaction || $transaction.data === undefined;
 </script>
 
-{#if error}
-    <div>"FART"</div>
-{:else if isLoading}
+{#if isLoading}
     <div
         class="flex content-center justify-center pt-4"
         aria-label="Loading spinner"
