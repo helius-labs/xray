@@ -3,7 +3,6 @@ import type { EnrichedTransaction } from "helius-sdk";
 import { parseTransaction } from "$lib/xray";
 
 import { t } from "$lib/trpc/t";
-import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 import { getAPIUrl } from "$lib/util/get-api-url";
 
@@ -49,10 +48,5 @@ export const transaction = t.procedure
             return parsed;
         } catch (error) {
             return { data: null, error: "Server error" };
-            // throw new TRPCError({
-            //     cause: error,
-            //     code: "NOT_FOUND",
-            //     message: "Failed to fetch transaction",
-            // });
         }
     });
