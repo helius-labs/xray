@@ -41,7 +41,7 @@
     ]);
 
     let error: any = null;
-    let currentAbortController: any = null;
+    //let currentAbortController: any = null;
 
     $: if (signature && isMounted) {
         executeQuery();
@@ -49,15 +49,15 @@
 
     async function executeQuery() {
         // Abort previous request if it exists
-        if (currentAbortController) {
-            currentAbortController.abort();
-        }
+        // if (currentAbortController) {
+        //     currentAbortController.abort();
+        // }
 
-        currentAbortController = new AbortController();
+        // currentAbortController = new AbortController();
         isLoading = true;
 
         try {
-            const result = await fetchTransactionData(currentAbortController.signal);
+            const result = await fetchTransactionData();
             transaction = result;
             error = null;
         } catch (e) {
@@ -68,7 +68,7 @@
         }
     }
 
-    async function fetchTransactionData(signal) {
+    async function fetchTransactionData() {
         const result = client.transaction.createQuery({
             account: $page.url.searchParams
                 .get("ref")
@@ -80,7 +80,7 @@
                 ),
             isMainnet: isMainnetValue,
             transaction: signature || "",
-        }, { signal });
+        });
         return result;
     }
 
