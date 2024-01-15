@@ -9,7 +9,16 @@ export async function GET({ url }) {
     const { HELIUS_API_KEY } = process.env;
 
     if (!HELIUS_API_KEY || !account) {
-        throw error(500, "API key not set");
+        return new Response(
+            JSON.stringify({
+                error: "API key or account parameter not set",
+                success: false,
+            }),
+            {
+                headers: { "Content-Type": "application/json " },
+                status: 400,
+            }
+        );
     }
 
     try {
@@ -24,9 +33,27 @@ export async function GET({ url }) {
                 headers: { "Content-Type": "application/json" },
             });
         } else {
-            throw error(404, "IDL not found");
+            return new Response(
+                JSON.stringify({
+                    error: "IDL not found",
+                    success: false,
+                }),
+                {
+                    headers: { "Content-Type": "application/json " },
+                    status: 404,
+                }
+            );
         }
     } catch (err) {
-        throw error(500, "Failed to fetch IDL");
+        return new Response(
+            JSON.stringify({
+                error: "Failed to fetch IDL",
+                success: false,
+            }),
+            {
+                headers: { "Content-Type": "application/json " },
+                status: 500,
+            }
+        );
     }
 }
