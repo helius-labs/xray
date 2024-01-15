@@ -475,11 +475,11 @@
                 </div>
             {/if}
 
-            <div class="mt-6 mb-6">
+            <div class="mb-6 mt-6">
                 <Collapse
-                sectionTitle="JSON Metadata"
-                iconId="json"
-                showDetails={false}
+                    sectionTitle="JSON Metadata"
+                    iconId="json"
+                    showDetails={false}
                 >
                     <JSON
                         data={metadata}

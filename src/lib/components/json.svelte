@@ -26,12 +26,12 @@
     <div class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1">
         <div class="col-span-2 p-1 md:col-span-1">
             {#if label !== "token"}
-            <div class="center h-10 w-10 rounded-full bg-secondary">
-                <Icon
-                    id="json"
-                    size="sm"
-                />
-            </div>
+                <div class="center h-10 w-10 rounded-full bg-secondary">
+                    <Icon
+                        id="json"
+                        size="sm"
+                    />
+                </div>
             {/if}
         </div>
         <div
@@ -59,28 +59,26 @@
             </div>
             <div class="flex items-center">
                 {#if label === "token"}
-                <h3 class="text-xs mr-2">Copy JSON</h3>
+                    <h3 class="mr-2 text-xs">Copy JSON</h3>
                 {/if}
-                <CopyButton
-                    text={JSON.stringify(data, null, 2)}
-                />
+                <CopyButton text={JSON.stringify(data, null, 2)} />
                 {#if label !== "token"}
-                <button
-                    class="btn-ghost btn-sm btn"
-                    on:click={() => (showCode = !showCode)}
-                >
-                    {#if showCode}
-                        <Icon
-                            id="cancel"
-                            size="md"
-                        />
-                    {:else}
-                        <Icon
-                            id="fullscreen"
-                            size="sm"
-                        />
-                    {/if}
-                </button>
+                    <button
+                        class="btn-ghost btn-sm btn"
+                        on:click={() => (showCode = !showCode)}
+                    >
+                        {#if showCode}
+                            <Icon
+                                id="cancel"
+                                size="md"
+                            />
+                        {:else}
+                            <Icon
+                                id="fullscreen"
+                                size="sm"
+                            />
+                        {/if}
+                    </button>
                 {/if}
             </div>
         </div>
