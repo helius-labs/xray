@@ -101,6 +101,10 @@ export const transactionActionsMetadata: Record<
         icon: "lightning",
         label: "Transfer",
     },
+    COMPRESSED_NFT_UPDATE_METADATA: {
+        icon: "arrowUp",
+        label: "Metadata Updated",
+    },
     CREATE_ORDER: {
         icon: "plus",
         label: "Create Order",
