@@ -157,6 +157,7 @@ export interface ProtonTransaction {
     actions: ProtonTransactionAction[];
     accounts: ProtonAccount[];
     raw?: EnrichedTransaction;
+    metadata?: { [key: string]: any };
 }
 
 export interface ProtonAccount {

@@ -103,7 +103,7 @@ export const transactionActionsMetadata: Record<
     },
     COMPRESSED_NFT_UPDATE_METADATA: {
         icon: "arrowUp",
-        label: "Metadata Updated",
+        label: "Update NFT Metadata",
     },
     CREATE_ORDER: {
         icon: "plus",
