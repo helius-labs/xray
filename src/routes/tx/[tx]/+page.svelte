@@ -166,30 +166,31 @@
                 {/if}
 
                 {#if $transaction.data?.type === "COMPRESSED_NFT_UPDATE_METADATA"}
-                <div class="px-3 pt-3">
-                    <Collapse
-                        sectionTitle="Old Metadata"
-                        showDetails={false}
-                        hideIcon={true}
-                    >
-                    <JSON
-                        data={data.raw?.events?.compressed[0]?.metadata}
-                        label={"update-cNFT"}
-                    />
-                    </Collapse>
-                </div>
-                <div class="mb-3 px-3 pt-3">
-                    <Collapse
-                        sectionTitle="Metadata Changes"
-                        showDetails={false}
-                        hideIcon={true}
-                    >
-                    <JSON
-                        data={data.raw?.events?.compressed[0]?.updateArgs}
-                        label={"update-cNFT"}
-                    />
-                    </Collapse>
-                </div>
+                    <div class="px-3 pt-3">
+                        <Collapse
+                            sectionTitle="Old Metadata"
+                            showDetails={false}
+                            hideIcon={true}
+                        >
+                            <JSON
+                                data={data.raw?.events?.compressed[0]?.metadata}
+                                label={"update-cNFT"}
+                            />
+                        </Collapse>
+                    </div>
+                    <div class="mb-3 px-3 pt-3">
+                        <Collapse
+                            sectionTitle="Metadata Changes"
+                            showDetails={false}
+                            hideIcon={true}
+                        >
+                            <JSON
+                                data={data.raw?.events?.compressed[0]
+                                    ?.updateArgs}
+                                label={"update-cNFT"}
+                            />
+                        </Collapse>
+                    </div>
                 {/if}
 
                 <div class="mb-3 px-3">
