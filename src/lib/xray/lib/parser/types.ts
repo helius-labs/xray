@@ -22,6 +22,7 @@ export enum ProtonSupportedType {
     EXECUTE_TRANSACTION,
     COMPRESSED_NFT_MINT,
     COMPRESSED_NFT_TRANSFER,
+    COMPRESSED_NFT_UPDATE_METADATA,
     APPROVE_TRANSACTION,
     STAKE_SOL,
     SFT_MINT,
@@ -87,6 +88,7 @@ export enum ProtonSupportedActionType {
     "XNFT_UNINSTALL",
     "COMPRESSED_NFT_MINT",
     "COMPRESSED_NFT_TRANSFER",
+    "COMPRESSED_NFT_UPDATE_METADATA",
     "APPROVE_TRANSACTION",
     "STAKE_SOL",
     "SFT_MINT",
@@ -155,6 +157,7 @@ export interface ProtonTransaction {
     actions: ProtonTransactionAction[];
     accounts: ProtonAccount[];
     raw?: EnrichedTransaction;
+    metadata?: { [key: string]: any };
 }
 
 export interface ProtonAccount {
