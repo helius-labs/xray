@@ -39,22 +39,24 @@
     });
 
     onMount(async () => {
-        const response = await fetch(
-            `/api/fetchIdl?account=${account}&isMainnetValue=${isMainnetValue}`
-        );
+        try {
+            const response = await fetch(
+                `/api/fetchIdl?account=${account}&isMainnetValue=${isMainnetValue}`
+            );
 
-        if (response.ok) {
-            const data = await response.json();
+            if (response.ok) {
+                const data = await response.json();
 
-            if (data.idl) {
-                idlStore.set(data.idl);
+                if (data.idl) {
+                    idlStore.set(data.idl);
+                } else {
+                    programIDL = null;
+                }
             } else {
-                // eslint-disable-next-line no-console
-                console.error("IDL not found for the provided account");
+                programIDL = null;
             }
-        } else {
-            // eslint-disable-next-line no-console
-            console.error(`Failed to fetch IDL: ${response.status}`);
+        } catch (e) {
+            programIDL = null;
         }
     });
 

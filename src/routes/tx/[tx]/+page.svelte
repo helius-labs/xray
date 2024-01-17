@@ -1,4 +1,5 @@
 <script lang="ts">
+    // @ts-nocheck
     import type { ProtonTransaction } from "$lib/xray";
 
     import { onMount } from "svelte";
@@ -12,7 +13,6 @@
     import { trpcWithQuery } from "$lib/trpc/client";
 
     import Account from "$lib/components/account-data.svelte";
-    import shortenAddress from "$lib/util/shorten-string";
     import CopyButton from "$lib/components/copy-button.svelte";
     import IconCard from "$lib/components/icon-card.svelte";
     import Icon from "$lib/components/icon.svelte";
@@ -24,6 +24,8 @@
 
     let animate = false;
     let isLoading = true;
+    let isMounted = false;
+    let updatedMetadata;
 
     const signature = $page.params.tx;
 
@@ -31,26 +33,57 @@
     const params = new URLSearchParams(window.location.search);
     const network = params.get("network");
     const isMainnetValue = network !== "devnet";
-    const transaction = client.transaction.createQuery({
-        account: $page.url.searchParams
-            .get("ref")
-            ?.split("@")
-            .reduce(
-                (acc, ref) =>
-                    ref.startsWith("wallet") ? ref.split(":")[1] : acc,
-                ""
-            ),
-        isMainnet: isMainnetValue,
-        transaction: signature || "",
-    });
+    let transaction: object | null = null;
 
     const rawTransaction = client.rawTransaction.createQuery([
         signature || "",
         isMainnetValue,
     ]);
 
+    let error: any = null;
+
+    $: if (signature && isMounted) {
+        executeQuery();
+    }
+
+    async function executeQuery() {
+        isLoading = true;
+
+        try {
+            const result = await fetchTransactionData();
+            transaction = result;
+            error = null;
+        } catch (e) {
+            error = e;
+            transaction = null;
+        } finally {
+            isLoading = false;
+        }
+    }
+
+    async function fetchTransactionData() {
+        const result = client.transaction.createQuery({
+            account: $page.url.searchParams
+                .get("ref")
+                ?.split("@")
+                .reduce(
+                    (acc, ref) =>
+                        ref.startsWith("wallet") ? ref.split(":")[1] : acc,
+                    ""
+                ),
+            isMainnet: isMainnetValue,
+            transaction: signature || "",
+        });
+        return result;
+    }
+
     onMount(() => {
         animate = true;
+        isMounted = true;
+
+        return () => {
+            isMounted = false;
+        };
     });
 
     $: data = $transaction?.data
@@ -128,6 +161,34 @@
                             {#each data.accounts as account}
                                 <Account data={account} />
                             {/each}
+                        </Collapse>
+                    </div>
+                {/if}
+
+                {#if $transaction.data?.type === "COMPRESSED_NFT_UPDATE_METADATA"}
+                    <div class="px-3 pt-3">
+                        <Collapse
+                            sectionTitle="Old Metadata"
+                            showDetails={false}
+                            hideIcon={true}
+                        >
+                            <JSON
+                                data={data.raw?.events?.compressed[0]?.metadata}
+                                label={"update-cNFT"}
+                            />
+                        </Collapse>
+                    </div>
+                    <div class="mb-3 px-3 pt-3">
+                        <Collapse
+                            sectionTitle="Metadata Changes"
+                            showDetails={false}
+                            hideIcon={true}
+                        >
+                            <JSON
+                                data={data.raw?.events?.compressed[0]
+                                    ?.updateArgs}
+                                label={"update-cNFT"}
+                            />
                         </Collapse>
                     </div>
                 {/if}
