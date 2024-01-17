@@ -25,6 +25,7 @@
     let animate = false;
     let isLoading = true;
     let isMounted = false;
+    let updatedMetadata;
 
     const signature = $page.params.tx;
 
@@ -160,6 +161,34 @@
                             {#each data.accounts as account}
                                 <Account data={account} />
                             {/each}
+                        </Collapse>
+                    </div>
+                {/if}
+
+                {#if $transaction.data?.type === "COMPRESSED_NFT_UPDATE_METADATA"}
+                    <div class="px-3 pt-3">
+                        <Collapse
+                            sectionTitle="Old Metadata"
+                            showDetails={false}
+                            hideIcon={true}
+                        >
+                            <JSON
+                                data={data.raw?.events?.compressed[0]?.metadata}
+                                label={"update-cNFT"}
+                            />
+                        </Collapse>
+                    </div>
+                    <div class="mb-3 px-3 pt-3">
+                        <Collapse
+                            sectionTitle="Metadata Changes"
+                            showDetails={false}
+                            hideIcon={true}
+                        >
+                            <JSON
+                                data={data.raw?.events?.compressed[0]
+                                    ?.updateArgs}
+                                label={"update-cNFT"}
+                            />
                         </Collapse>
                     </div>
                 {/if}

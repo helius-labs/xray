@@ -25,7 +25,7 @@
 >
     <div class="mt-3 grid grid-cols-12 items-center gap-3 rounded-lg p-1">
         <div class="col-span-2 p-1 md:col-span-1">
-            {#if label !== "token"}
+            {#if label !== "token" && label !== "update-cNFT"}
                 <div class="center h-10 w-10 rounded-full bg-secondary">
                     <Icon
                         id="json"
@@ -58,11 +58,11 @@
                 </h3>
             </div>
             <div class="flex items-center">
-                {#if label === "token"}
+                {#if label === "token" || label === "update-cNFT"}
                     <h3 class="mr-2 text-xs">Copy JSON</h3>
                 {/if}
                 <CopyButton text={JSON.stringify(data, null, 2)} />
-                {#if label !== "token"}
+                {#if label !== "token" && label !== "update-cNFT"}
                     <button
                         class="btn-ghost btn-sm btn"
                         on:click={() => (showCode = !showCode)}
@@ -82,7 +82,7 @@
                 {/if}
             </div>
         </div>
-        {#if showCode || label === "token"}
+        {#if showCode || label === "token" || label === "update-cNFT"}
             <div class="code col-span-12 w-full overflow-hidden px-3">
                 <pre><code class="text-xs">{@html metadataHTML}</code></pre>
             </div>
