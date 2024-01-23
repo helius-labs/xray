@@ -35,7 +35,7 @@
     import { metadataStore } from "$lib/util/stores/metadata";
     import type { UITokenMetadata } from "$lib/types";
 
-    import {formatKey, formatObject } from "$lib/util/format-object"
+    import { formatKey, formatObject } from "$lib/util/format-object";
 
     const address = $page.params.token;
     const params = new URLSearchParams(window.location.search);
@@ -77,7 +77,9 @@
         metadataStore.set(metadata);
     }
 
-    $: formattedMintExtensions = metadata?.mintExtensions ? formatObject(metadata.mintExtensions) : "";
+    $: formattedMintExtensions = metadata?.mintExtensions
+        ? formatObject(metadata.mintExtensions)
+        : "";
 </script>
 
 <TokenProvider
@@ -498,7 +500,9 @@
                         iconId="codeFork"
                         showDetails={false}
                     >
-                        <div class="overflow-x-auto text-sm whitespace-pre-wrap">
+                        <div
+                            class="overflow-x-auto whitespace-pre-wrap text-sm"
+                        >
                             {@html formattedMintExtensions}
                         </div>
                     </Collapse>
