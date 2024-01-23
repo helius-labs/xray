@@ -93,6 +93,7 @@
             file.mime?.startsWith("video/")
         )?.uri;
         metadata.burnt = data?.burnt;
+        metadata.mintExtensions = data?.mint_extensions;
     }
 
     $: if (data?.id && !metadata.image) {
