@@ -92,6 +92,7 @@
         metadata.video_uri = data?.content.files?.find((file: any) =>
             file.mime?.startsWith("video/")
         )?.uri;
+        metadata.burnt = data?.burnt;
     }
 
     $: if (data?.id && !metadata.image) {
