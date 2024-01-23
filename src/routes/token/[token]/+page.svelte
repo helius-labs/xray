@@ -34,7 +34,8 @@
     import getMimeType from "$lib/util/get-mime-type";
     import { metadataStore } from "$lib/util/stores/metadata";
     import type { UITokenMetadata } from "$lib/types";
-    import Icon from "$lib/components/icon.svelte";
+
+    import {formatKey, formatObject } from "$lib/util/format-object"
 
     const address = $page.params.token;
     const params = new URLSearchParams(window.location.search);
@@ -75,6 +76,8 @@
     $: if (metadata) {
         metadataStore.set(metadata);
     }
+
+    $: formattedMintExtensions = metadata?.mintExtensions ? formatObject(metadata.mintExtensions) : "";
 </script>
 
 <TokenProvider
@@ -487,6 +490,20 @@
                     />
                 </Collapse>
             </div>
+
+            {#if formattedMintExtensions}
+                <div class="mb-6 mt-6">
+                    <Collapse
+                        sectionTitle="Mint Extensions"
+                        iconId="codeFork"
+                        showDetails={false}
+                    >
+                        <div class="overflow-x-auto text-sm whitespace-pre-wrap">
+                            {@html formattedMintExtensions}
+                        </div>
+                    </Collapse>
+                </div>
+            {/if}
 
             {#key metadata.compressed}
                 <div class="mt-3 pl-2 md:pl-0">
