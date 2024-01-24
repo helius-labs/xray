@@ -20,10 +20,10 @@ export const asset = t.procedure
                 jsonrpc: "2.0",
                 method: "getAsset",
                 params: {
-                    displayOptions: {
+                    id: asset,
+                    options: {
                         showFungible: true,
                     },
-                    id: asset,
                 },
             }),
             headers: {
@@ -43,6 +43,7 @@ export const asset = t.procedure
                 address: data?.result?.id || "",
                 assetHash: data?.result?.compression?.asset_hash,
                 attributes: returnAssetData?.attributes || [],
+                burnt: data?.result?.burnt,
                 collectionKey: data?.result?.grouping[0]?.group_value || "",
                 compressed: true,
                 creatorHash: data?.result?.compression?.creator_hash,
@@ -55,6 +56,7 @@ export const asset = t.procedure
                 frozen: data?.result?.ownership?.frozen,
                 image: returnAssetData?.image || "",
                 leafId: data?.result?.compression?.leaf_id,
+                mintExtensions: data?.result?.mint_extensions || "",
                 mutable: data?.result?.mutable,
                 name: returnAssetData?.name || "",
                 owner: data?.result?.ownership?.owner || "",

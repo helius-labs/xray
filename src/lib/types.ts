@@ -65,6 +65,8 @@ export interface UITokenMetadata {
     leafId?: number;
     files?: FileProperties[];
     video_uri?: string;
+    burnt?: boolean;
+    mintExtensions?: object;
 }
 
 export type Icon = keyof typeof IconPaths;
