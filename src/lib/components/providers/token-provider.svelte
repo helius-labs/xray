@@ -102,30 +102,44 @@
         metadata.image = $deprecatedImage?.data;
     }
 
-    $: if (metadata.mintExtensions) {
-        metadata.name = data.mint_extensions.metadata.name ?? metadata.name;
-        const jsonUri = data.mint_extensions.metadata.uri ?? "";
+    const fetchJsonMetadata = async (jsonUri: string) => {
+        try {
+            const response = await fetch(jsonUri);
+            if (!response.ok) {
+                throw new Error(`Status ${response.status}`);
+            }
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new TypeError('Received non-JSON content type');
+            }
+            const jsonData = await response.json();
+            return jsonData.image;
+        } catch (error) {
+            console.error('Error fetching or parsing JSON metadata:', error);
+            return '';
+        }
+    };
 
-        if (jsonUri.endsWith('.json')) {
-            fetch(jsonUri)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error(`Network response was not ok, status: ${response.status}`);
+    $: if (metadata.mintExtensions) {
+        const name = metadata.mintExtensions?.metadata?.name;
+        const jsonUri = metadata.mintExtensions?.metadata?.uri;
+
+        if (name) {
+            metadata.name = name;
+        }
+
+        if (jsonUri && jsonUri.endsWith('.json')) {
+            (async () => {
+                try {
+                    const imageUrl = await fetchJsonMetadata(jsonUri);
+                    if (imageUrl) {
+                        metadata.image = imageUrl;
                     }
-                    const contentType = response.headers.get('content-type');
-                    if (!contentType || !contentType.includes('application/json')) {
-                        throw new TypeError('Received non-JSON content type');
-                    }
-                    return response.json();
-                })
-                .then(jsonData => {
-                    metadata.image = jsonData.image;
-                    return null;
-                })
-                .catch(error => {
-                    return null;
-                });
-        } else {
+                } catch (error) {
+                    console.error('Error in fetchJsonMetadata:', error);
+                }
+            })();
+        } else if (jsonUri) {
             metadata.image = jsonUri;
         }
 }
