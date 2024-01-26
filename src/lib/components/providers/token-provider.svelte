@@ -115,6 +115,7 @@
             const jsonData = await response.json();
             return jsonData.image;
         } catch (error) {
+            // eslint-disable-next-line no-console
             console.error('Error fetching or parsing JSON metadata:', error);
             return '';
         }
@@ -136,6 +137,7 @@
                         metadata.image = imageUrl;
                     }
                 } catch (error) {
+                    // eslint-disable-next-line no-console
                     console.error('Error in fetchJsonMetadata:', error);
                 }
             })();
