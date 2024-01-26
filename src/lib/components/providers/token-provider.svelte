@@ -102,6 +102,35 @@
         metadata.image = $deprecatedImage?.data;
     }
 
+    $: if (metadata.mintExtensions) {
+        metadata.name = data.mint_extensions.metadata.name ?? metadata.name;
+        const jsonUri = data.mint_extensions.metadata.uri ?? "";
+
+        if (jsonUri.endsWith('.json')) {
+            fetch(jsonUri)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Network response was not ok, status: ${response.status}`);
+                    }
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        throw new TypeError('Received non-JSON content type');
+                    }
+                    return response.json();
+                })
+                .then(jsonData => {
+                    metadata.image = jsonData.image;
+                    return null;
+                })
+                .catch(error => {
+                    return null;
+                });
+        } else {
+            metadata.image = jsonUri;
+        }
+}
+
+
     $: tokenIsLoading =
         (address !== SOL && $asset?.isLoading) ||
         (address !== SOL && status?.isLoading);
