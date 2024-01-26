@@ -102,6 +102,51 @@
         metadata.image = $deprecatedImage?.data;
     }
 
+    const fetchJsonMetadata = async (jsonUri: string) => {
+        try {
+            const response = await fetch(jsonUri);
+            if (!response.ok) {
+                throw new Error(`Status ${response.status}`);
+            }
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new TypeError('Received non-JSON content type');
+            }
+            const jsonData = await response.json();
+            return jsonData.image;
+        } catch (error) {
+            // eslint-disable-next-line no-console
+            console.error('Error fetching or parsing JSON metadata:', error);
+            return '';
+        }
+    };
+
+    $: if (metadata.mintExtensions) {
+        const name = metadata.mintExtensions?.metadata?.name;
+        const jsonUri = metadata.mintExtensions?.metadata?.uri;
+
+        if (name) {
+            metadata.name = name;
+        }
+
+        if (jsonUri && jsonUri.endsWith('.json')) {
+            (async () => {
+                try {
+                    const imageUrl = await fetchJsonMetadata(jsonUri);
+                    if (imageUrl) {
+                        metadata.image = imageUrl;
+                    }
+                } catch (error) {
+                    // eslint-disable-next-line no-console
+                    console.error('Error in fetchJsonMetadata:', error);
+                }
+            })();
+        } else if (jsonUri) {
+            metadata.image = jsonUri;
+        }
+}
+
+
     $: tokenIsLoading =
         (address !== SOL && $asset?.isLoading) ||
         (address !== SOL && status?.isLoading);
