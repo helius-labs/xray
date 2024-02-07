@@ -108,16 +108,16 @@
             if (!response.ok) {
                 throw new Error(`Status ${response.status}`);
             }
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new TypeError('Received non-JSON content type');
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new TypeError("Received non-JSON content type");
             }
             const jsonData = await response.json();
             return jsonData.image;
         } catch (error) {
             // eslint-disable-next-line no-console
-            console.error('Error fetching or parsing JSON metadata:', error);
-            return '';
+            console.error("Error fetching or parsing JSON metadata:", error);
+            return "";
         }
     };
 
@@ -129,7 +129,7 @@
             metadata.name = name;
         }
 
-        if (jsonUri && jsonUri.endsWith('.json')) {
+        if (jsonUri && jsonUri.endsWith(".json")) {
             (async () => {
                 try {
                     const imageUrl = await fetchJsonMetadata(jsonUri);
@@ -138,14 +138,13 @@
                     }
                 } catch (error) {
                     // eslint-disable-next-line no-console
-                    console.error('Error in fetchJsonMetadata:', error);
+                    console.error("Error in fetchJsonMetadata:", error);
                 }
             })();
         } else if (jsonUri) {
             metadata.image = jsonUri;
         }
-}
-
+    }
 
     $: tokenIsLoading =
         (address !== SOL && $asset?.isLoading) ||
