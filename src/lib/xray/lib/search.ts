@@ -58,7 +58,7 @@ export const search = async (
 
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
-        const account = await connection.getParsedAccountInfo(pubkey);
+        const account = await connection.getAccountInfo(pubkey);
         // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
         // @ts-ignore
         const program = account?.value?.data?.program;
