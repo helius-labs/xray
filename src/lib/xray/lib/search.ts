@@ -59,13 +59,11 @@ export const search = async (
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
         const account = await connection.getAccountInfo(pubkey);
+        const program = account?.owner.toString();
 
-        const program = account?.owner;
         const probablyToken =
-            program ===
-                new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") ||
-            program ===
-                new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb") ||
+            program === "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" ||
+            program === "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb" ||
             account === null;
 
         let addressType!: "token" | "account";
