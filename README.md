@@ -52,7 +52,7 @@ For now we are auto deploying everything in main to staging.
 
 This is a TurboRepo monorepo that can run and build all apps/packages in parallel. Apps like the UI are located in `/apps`. Packages used across apps are located in `/packages`.
 
-### Reccomended VSCode Extensions
+### Recommended VSCode Extensions
 
 -   [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
 -   [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode)
@@ -95,7 +95,7 @@ npm run dev
 
 ### Lint
 
-It's reccomended you use VSCode beacuase if you do, ESLint is setup to auto fix/format as you're working.
+It's recommended you use VSCode beacuase if you do, ESLint is setup to auto fix/format as you're working.
 
 ```sh
 npm run lint
