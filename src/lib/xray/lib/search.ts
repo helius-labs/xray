@@ -58,26 +58,19 @@ export const search = async (
 
     if (isValidPublicKey(query)) {
         const pubkey = new PublicKey(query);
-        const account = await connection.getParsedAccountInfo(pubkey);
-        // TODO Property 'program' does not exist on type 'Buffer | ParsedAccountData'.
-        // @ts-ignore
-        const program = account?.value?.data?.program;
-        // @ts-ignore
-        const parsedType = account?.value?.data?.parsed?.type;
+        const account = await connection.getAccountInfo(pubkey);
 
-        /*
-         * spl-token      -> spl token
-         * spl-token-2022 -> token 2022
-         * null           -> compressed nft
-         */
+        const program = account?.owner;
         const probablyToken =
-            program === "spl-token" ||
-            program === "spl-token-2022" ||
-            account?.value === null;
+            program ===
+                new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA") ||
+            program ===
+                new PublicKey("TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb") ||
+            account === null;
 
         let addressType!: "token" | "account";
         if (probablyToken) {
-            addressType = parsedType === "account" ? "account" : "token";
+            addressType = "token";
         }
         addressType ??= "account";
 
