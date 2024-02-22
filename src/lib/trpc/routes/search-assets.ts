@@ -32,6 +32,9 @@ export const searchAssets = t.procedure
                 jsonrpc: "2.0",
                 method: "searchAssets",
                 params: {
+                    displayOptions: {
+                        showNativeBalance: nativeBalance,
+                    },
                     limit: 1000,
                     ownerAddress: account,
                     page: cursor,
