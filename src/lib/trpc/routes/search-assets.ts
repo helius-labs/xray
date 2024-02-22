@@ -33,7 +33,6 @@ export const searchAssets = t.procedure
                 method: "searchAssets",
                 params: {
                     displayOptions: {
-                        showFungible: true,
                         showNativeBalance: nativeBalance,
                     },
                     limit: 1000,
