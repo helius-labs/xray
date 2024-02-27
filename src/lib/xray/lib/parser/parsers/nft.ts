@@ -1,9 +1,10 @@
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 
-import type {
-    EnrichedTransaction,
-    NFTEvent,
+import {
     TransactionType,
+    type CompressedNftEvent,
+    type EnrichedTransaction,
+    type NFTEvent,
 } from "helius-sdk";
 
 import { SOL, unknownProtonTransaction } from "../types";
@@ -382,9 +383,20 @@ export const parseNftMint: ProtonParser = (transaction, address) => {
     });
 };
 
+function returnCompressedNftEventArray(value: CompressedNftEvent | null) {
+    if (Array.isArray(value)) {
+        return value;
+    } else if (value) {
+        return [value];
+    } else {
+        return [];
+    }
+}
+
 export const parseCompressedNftMint: ProtonParser = (transaction, address) => {
-    // @ts-ignore
-    const nftEvent = transaction.events.compressed;
+    const nftEvent = returnCompressedNftEventArray(
+        transaction.events.compressed
+    );
     const { signature, timestamp, accountData, type, source } = transaction;
 
     const fee = transaction.fee / LAMPORTS_PER_SOL;
@@ -444,8 +456,9 @@ export const parseCompressedNftTransfer: ProtonParser = (
     transaction,
     address
 ) => {
-    // @ts-ignore
-    const nftEvent = transaction.events.compressed;
+    const nftEvent = returnCompressedNftEventArray(
+        transaction.events.compressed
+    );
     const { signature, timestamp, accountData, type, source } = transaction;
 
     const fee = transaction.fee / LAMPORTS_PER_SOL;
@@ -504,8 +517,14 @@ export const parseCompressedNftTransfer: ProtonParser = (
 };
 
 export const parseCompressedNftBurn: ProtonParser = (transaction, address) => {
-    // @ts-ignore
-    const nftEvent = transaction.events.compressed;
+    const nftEvent = returnCompressedNftEventArray(
+        transaction.events.compressed
+    );
+    // const nftEvent = Array.isArray(transaction.events.compressed)
+    //     ? transaction.events.compressed
+    //     : transaction.events.compressed
+    //     ? [transaction.events.compressed]
+    //     : [];
     const { signature, timestamp, accountData, type, source } = transaction;
 
     const fee = transaction.fee / LAMPORTS_PER_SOL;
@@ -522,13 +541,33 @@ export const parseCompressedNftBurn: ProtonParser = (transaction, address) => {
 
     for (let i = 0; i < nftEvent.length; i++) {
         const nftEventAction = nftEvent[i];
-        actions.push({
-            actionType: "BURN_NFT",
-            amount: 1,
-            from: nftEventAction.oldLeafOwner,
-            sent: nftEventAction.assetId,
-            to: "",
-        });
+        if (nftEventAction.type === TransactionType.COMPRESSED_NFT_BURN) {
+            actions.push({
+                actionType: "BURN_NFT",
+                amount: 1,
+                from: nftEventAction.oldLeafOwner,
+                sent: nftEventAction.assetId,
+                to: "",
+            });
+        } else if (
+            nftEventAction.type === TransactionType.COMPRESSED_NFT_MINT
+        ) {
+            actions.push({
+                actionType: "COMPRESSED_NFT_MINT",
+                amount: 1,
+                from: "",
+                sent: nftEventAction.assetId,
+                to: nftEventAction.newLeafOwner,
+            });
+        } else {
+            actions.push({
+                actionType: "COMPRESSED_NFT_TRANSFER",
+                amount: 1,
+                from: nftEventAction.oldLeafOwner,
+                sent: nftEventAction.assetId,
+                to: nftEventAction.newLeafOwner,
+            });
+        }
     }
 
     return {
