@@ -3,14 +3,15 @@
 
     import { ProtonCustomActionLabelTypes } from "$lib/xray";
 
-    import { fade, fly } from "svelte/transition";
     import { transactionActionsMetadata } from "$lib/types";
+    import { fade, fly } from "svelte/transition";
 
     import formatDate from "$lib/util/format-date";
 
     export let transaction: ProtonTransaction;
 
     import Icon from "$lib/components/icon.svelte";
+    import { TransactionType } from "helius-sdk";
     import IntersectionObserver from "svelte-intersection-observer";
     import shortenString from "../util/shorten-string";
     import TokenProvider from "./providers/token-provider.svelte";
@@ -229,7 +230,7 @@
                                                                 ].label}
                                                             </p>
                                                         </h3>
-                                                    {:else if !action?.actionType?.includes("NFT")}
+                                                    {:else if !action?.actionType?.includes("NFT") || action?.actionType === TransactionType.COMPRESSED_NFT_MINT}
                                                         <div class="flex">
                                                             {#if action?.actionType?.includes("SENT") && action.to}
                                                                 <p
@@ -327,7 +328,7 @@
                                                     <div
                                                         class="absolute -left-3 top-1/2 h-0.5 w-3 -translate-y-1/2 rounded-full bg-secondary"
                                                     />
-                                                    {#if action?.actionType?.includes("RECEIVED") || action?.actionType?.includes("NFT_SELL") || action?.actionType?.includes("AIRDROP")}
+                                                    {#if action?.actionType?.includes("RECEIVED") || action?.actionType?.includes("NFT_SELL") || action?.actionType?.includes("AIRDROP") || action?.actionType === TransactionType.COMPRESSED_NFT_MINT}
                                                         <h3
                                                             class="text-bold text-success"
                                                         >
