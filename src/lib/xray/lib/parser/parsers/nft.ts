@@ -520,11 +520,6 @@ export const parseCompressedNftBurn: ProtonParser = (transaction, address) => {
     const nftEvent = returnCompressedNftEventArray(
         transaction.events.compressed
     );
-    // const nftEvent = Array.isArray(transaction.events.compressed)
-    //     ? transaction.events.compressed
-    //     : transaction.events.compressed
-    //     ? [transaction.events.compressed]
-    //     : [];
     const { signature, timestamp, accountData, type, source } = transaction;
 
     const fee = transaction.fee / LAMPORTS_PER_SOL;
