@@ -49,7 +49,6 @@
                         className="aspect-square w-full rounded-lg"
                         alt=""
                     />
-                    <p class="text-center">{asset.burnt}</p>
                 </a>
                 {/if}
         {/each}
