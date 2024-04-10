@@ -39,6 +39,7 @@
         type Metadata,
         type Proxy,
         type Royalties,
+        DelegateRole,
     } from "@nifty-oss/asset";
     import { cubicOut } from "svelte/easing";
     import { fade, fly } from "svelte/transition";
@@ -165,16 +166,19 @@
                 class="relative flex flex-wrap items-center justify-between bg-base-100"
             >
                 <div class="flex items-center space-x-2">
-                    <div class="badge badge-outline uppercase">
+                    <div class="badge-outline badge uppercase">
                         {asset.mutable ? "mutable" : "immutable"}
                     </div>
                     {#if mediaType === "onchain"}
-                        <div class="badge badge-outline uppercase">
+                        <div class="badge-outline badge uppercase">
                             on-chain media
                         </div>
                     {/if}
+                    {#if grouping}
+                        <div class="badge-outline badge uppercase">group</div>
+                    {/if}
                     {#if asset.standard !== Standard.NonFungible}
-                        <div class="badge badge-outline uppercase">
+                        <div class="badge-outline badge uppercase">
                             {Standard[asset.standard]}
                         </div>
                     {/if}
@@ -309,9 +313,16 @@
                                         : 'devnet'}"
                                 >
                                     <header
-                                        class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                        class="flex gap-2 text-sm font-medium uppercase text-gray-500"
                                     >
                                         <h4>Delegate</h4>
+                                        {#each asset.delegate.roles as role}
+                                            <div
+                                                class="badge-outline badge uppercase"
+                                            >
+                                                {DelegateRole[role]}
+                                            </div>
+                                        {/each}
                                     </header>
                                     <p class="text-sm">
                                         {asset.delegate}
@@ -667,9 +678,16 @@
                                             : 'devnet'}"
                                     >
                                         <header
-                                            class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                            class="flex gap-2 text-sm font-medium uppercase text-gray-500"
                                         >
                                             <h4>Delegate</h4>
+                                            {#each manager.delegate.roles as role}
+                                                <div
+                                                    class="badge-outline badge uppercase"
+                                                >
+                                                    {DelegateRole[role]}
+                                                </div>
+                                            {/each}
                                         </header>
                                         <p class="text-sm">
                                             {manager.delegate}
