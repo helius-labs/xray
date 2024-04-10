@@ -5,7 +5,10 @@ import type { EnrichedTransaction } from "helius-sdk";
 import type { ProtonTransaction, ProtonTransactionAction } from "$lib/xray";
 
 import type { IconPaths, modals } from "$lib/config";
+
 import type { SOL } from "$lib/xray";
+
+import type { Asset } from "@nifty-oss/asset";
 
 export * from "$lib/config";
 
@@ -143,3 +146,6 @@ export type UISolAccountToken = {
     balanceInUSD: number;
     price: number;
 };
+
+/** Used in the Nifty Asset pages. */
+export type UINiftyAsset = Asset & { json: any };
