@@ -635,6 +635,32 @@
                                                 {grouping.maxSize}
                                             </p>
                                         </div>
+                                        {#if grouping.delegate}
+                                            <a
+                                                class="card p-0"
+                                                href="/account/{grouping.delegate}?network={isMainnetValue
+                                                    ? 'mainnet'
+                                                    : 'devnet'}"
+                                            >
+                                                <header
+                                                    class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                                >
+                                                    <h4>Delegate</h4>
+                                                </header>
+                                                <p class="text-sm">
+                                                    {grouping.delegate}
+                                                </p>
+                                            </a>
+                                        {:else}
+                                            <div class="card p-0">
+                                                <header
+                                                    class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                                >
+                                                    <h4>Delegate</h4>
+                                                </header>
+                                                <p class="text-sm">None</p>
+                                            </div>
+                                        {/if}
                                     </div>
                                 </Collapse>
                             </div>
@@ -796,19 +822,32 @@
                                         </header>
                                         <p class="text-sm">{proxy.bump}</p>
                                     </div>
-                                    <a
-                                        class="card p-0"
-                                        href={proxy.authority}
-                                    >
-                                        <header
-                                            class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                    {#if proxy.authority}
+                                        <a
+                                            class="card p-0"
+                                            href="/account/{proxy.authority}?network={isMainnetValue
+                                                ? 'mainnet'
+                                                : 'devnet'}"
                                         >
-                                            <h4>Authority</h4>
-                                        </header>
-                                        <p class="text-sm">
-                                            {proxy.authority}
-                                        </p>
-                                    </a>
+                                            <header
+                                                class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                            >
+                                                <h4>Authority</h4>
+                                            </header>
+                                            <p class="text-sm">
+                                                {proxy.authority}
+                                            </p>
+                                        </a>
+                                    {:else}
+                                        <div class="card p-0">
+                                            <header
+                                                class="flex items-center justify-between gap-6 text-sm font-medium uppercase text-gray-500"
+                                            >
+                                                <h4>Authority</h4>
+                                            </header>
+                                            <p class="text-sm">None</p>
+                                        </div>
+                                    {/if}
                                 </Collapse>
                             </div>
                         {/if}
