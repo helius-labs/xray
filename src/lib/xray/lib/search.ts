@@ -62,18 +62,19 @@ export const search = async (
         const pubkey = new PublicKey(query);
         const account = await connection.getAccountInfo(pubkey);
         const program = account?.owner.toString();
-
-        const probablyToken =
-            program === "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" ||
-            program === "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb" ||
-            account === null;
-
         let addressType!: "token" | "account" | "nifty-asset";
-        if (probablyToken) {
-            addressType = "token";
-        } else if (program && program === ASSET_PROGRAM_ID) {
-            addressType = "nifty-asset";
+
+        if (account) {
+            if (
+                program === "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA" ||
+                program === "TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb"
+            ) {
+                addressType = "token";
+            } else if (program === ASSET_PROGRAM_ID) {
+                addressType = "nifty-asset";
+            }
         }
+
         addressType ??= "account";
 
         return {
