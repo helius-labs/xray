@@ -166,19 +166,19 @@
                 class="relative flex flex-wrap items-center justify-between bg-base-100"
             >
                 <div class="flex items-center space-x-2">
-                    <div class="badge-outline badge uppercase">
+                    <div class="badge badge-outline uppercase">
                         {asset.mutable ? "mutable" : "immutable"}
                     </div>
                     {#if mediaType === "onchain"}
-                        <div class="badge-outline badge uppercase">
+                        <div class="badge badge-outline uppercase">
                             on-chain media
                         </div>
                     {/if}
                     {#if grouping}
-                        <div class="badge-outline badge uppercase">group</div>
+                        <div class="badge badge-outline uppercase">group</div>
                     {/if}
                     {#if asset.standard !== Standard.NonFungible}
-                        <div class="badge-outline badge uppercase">
+                        <div class="badge badge-outline uppercase">
                             {Standard[asset.standard]}
                         </div>
                     {/if}
@@ -318,7 +318,7 @@
                                         <h4>Delegate</h4>
                                         {#each asset.delegate.roles as role}
                                             <div
-                                                class="badge-outline badge uppercase"
+                                                class="badge badge-outline uppercase"
                                             >
                                                 {DelegateRole[role]}
                                             </div>
@@ -709,7 +709,7 @@
                                             <h4>Delegate</h4>
                                             {#each manager.delegate.roles as role}
                                                 <div
-                                                    class="badge-outline badge uppercase"
+                                                    class="badge badge-outline uppercase"
                                                 >
                                                     {DelegateRole[role]}
                                                 </div>
