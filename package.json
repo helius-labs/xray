@@ -80,6 +80,7 @@
     "dependencies": {
         "@coral-xyz/anchor": "^0.29.0",
         "@lottiefiles/svelte-lottie-player": "^0.3.0",
+        "@nifty-oss/asset": "^0.3.0",
         "@onsol/tldparser": "^0.5.3",
         "@solana/spl-account-compression": "^0.1.8",
         "@solana/spl-token-registry": "^0.2.4574",
