@@ -42,7 +42,9 @@
 
             {#if asset.burnt !== true}
                 <a
-                    href="/token/{asset.id}?network={isMainnetValue ? 'mainnet' : 'devnet'}"
+                    href="/token/{asset.id}?network={isMainnetValue
+                        ? 'mainnet'
+                        : 'devnet'}"
                 >
                     <Image
                         src={image?.uri}
@@ -50,7 +52,7 @@
                         alt=""
                     />
                 </a>
-                {/if}
+            {/if}
         {/each}
     {/each}
 </div>
