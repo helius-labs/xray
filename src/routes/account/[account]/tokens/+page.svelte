@@ -5,6 +5,7 @@
 
     import TokenProvider from "$lib/components/providers/token-provider.svelte";
 
+    import fallback from "./fallback_image.svg";
     import type { UIAccountToken, UISolAccountToken } from "$lib/types";
     import formatMoney from "$lib/util/format-money";
     import { SOL } from "$lib/xray";
@@ -87,8 +88,8 @@
                             <div class="col-span-2 p-1 md:col-span-1">
                                 <!-- background so that if it doesn't load you dont' get ugly no image icons -->
                                 <div
-                                    style="background-image: url('{metadata.image}')"
-                                    class="aspect-square w-full rounded-lg bg-cover"
+                                    style="background-image: url('{metadata.image}'), url({fallback})"
+                                    class="aspect-square w-full rounded-lg bg-cover bg-no-repeat"
                                 />
                             </div>
                             <div
@@ -96,7 +97,8 @@
                             >
                                 <div>
                                     <h4 class="font-semibold md:text-sm">
-                                        {metadata?.name || ""}
+                                        {metadata?.name ||
+                                            "Unrecognised Token  "}
                                     </h4>
                                 </div>
                                 <div>

@@ -1,7 +1,6 @@
 <script lang="ts">
     //@ts-nocheck
     import { trpcWithQuery } from "$lib/trpc/client";
-
     import { page } from "$app/stores";
     import Image from "$lib/components/image.svelte";
 
@@ -41,17 +40,19 @@
                 (file) => file.mime.startsWith("image") && file.uri
             )}
 
-            <a
-                href="/token/{asset.id}?network={isMainnetValue
-                    ? 'mainnet'
-                    : 'devnet'}"
-            >
-                <Image
-                    src={image?.uri}
-                    className="aspect-square w-full rounded-lg"
-                    alt=""
-                />
-            </a>
+            {#if asset.burnt !== true}
+                <a
+                    href="/token/{asset.id}?network={isMainnetValue
+                        ? 'mainnet'
+                        : 'devnet'}"
+                >
+                    <Image
+                        src={image?.uri}
+                        className="aspect-square w-full rounded-lg"
+                        alt=""
+                    />
+                </a>
+            {/if}
         {/each}
     {/each}
 </div>
