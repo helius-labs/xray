@@ -6,7 +6,7 @@
     "scripts": {
         "// Dev/Build": "-------------------------------------------------------------",
         "dev": "dotenv -- vite dev",
-        "build": "vite build",
+        "build": "npm install --no-omit=optional && vite build",
         "preview": "vite preview",
         "// Typescript": "-------------------------------------------------------------",
         "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
