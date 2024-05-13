@@ -4,8 +4,8 @@
     "outputDirectory": ".svelte-kit",
     "redirects": [
         { 
-            "source": "/tx/:tx*", 
-            "destination": "https://explorer.solana.com/tx/:tx*?cluster=devnet", 
+            "source": "/tx/:tx", 
+            "destination": "https://explorer.solana.com/tx/:tx?cluster=devnet", 
             "has": [
                 {
                   "type": "query",
@@ -16,13 +16,8 @@
             "permanent": false 
         },
         { 
-            "source": "/tx/:tx*", 
-            "destination": "https://explorer.solana.com/tx/:tx*", 
-            "permanent": false 
-        },
-        { 
-            "source": "/account/:address*", 
-            "destination": "https://explorer.solana.com/address/:address*?cluster=devnet", 
+            "source": "/account/:address", 
+            "destination": "https://explorer.solana.com/address/:address?cluster=devnet", 
             "has": [
                 {
                   "type": "query",
@@ -30,11 +25,6 @@
                   "value": "devnet"
                 }
               ],
-            "permanent": false 
-        },
-        { 
-            "source": "/account/:address/tokens", 
-            "destination": "https://explorer.solana.com/address/:address/tokens", 
             "permanent": false 
         },
         { 
@@ -48,12 +38,7 @@
                 }
               ],
             "permanent": false 
-        },
-        { 
-            "source": "/account/:address/assets", 
-            "destination": "https://explorer.solana.com/address/:address", 
-            "permanent": false 
-        },
+        }, 
         { 
             "source": "/token/:address/assets", 
             "destination": "https://explorer.solana.com/address/:address?cluster=devnet", 
@@ -67,13 +52,8 @@
             "permanent": false 
         },
         { 
-            "source": "/account/:address*", 
-            "destination": "https://explorer.solana.com/address/:address*", 
-            "permanent": false 
-        },
-        { 
-            "source": "/token/:address*", 
-            "destination": "https://explorer.solana.com/address/:address*?cluster=devnet", 
+            "source": "/token/:address", 
+            "destination": "https://explorer.solana.com/address/:address?cluster=devnet", 
             "has": [
                 {
                   "type": "query",
@@ -84,13 +64,8 @@
             "permanent": false 
         },
         { 
-            "source": "/token/:address*", 
-            "destination": "https://explorer.solana.com/address/:address*", 
-            "permanent": false 
-        },
-        { 
-            "source": "/block/:slot*", 
-            "destination": "https://explorer.solana.com/block/:slot*?cluster=devnet", 
+            "source": "/block/:slot", 
+            "destination": "https://explorer.solana.com/block/:slot?cluster=devnet", 
             "has": [
                 {
                   "type": "query",
@@ -98,11 +73,6 @@
                   "value": "devnet"
                 }
               ],
-            "permanent": false 
-        },
-        { 
-            "source": "/block/:slot*", 
-            "destination": "https://explorer.solana.com/block/:slot*", 
             "permanent": false 
         },
         { 
@@ -118,9 +88,39 @@
             "permanent": false 
         },
         { 
+            "source": "/tx/:tx", 
+            "destination": "https://explorer.solana.com/tx/:tx", 
+            "permanent": false 
+        },
+        { 
+            "source": "/account/:address", 
+            "destination": "https://explorer.solana.com/address/:address", 
+            "permanent": false 
+        },
+        { 
+            "source": "/account/:address/tokens", 
+            "destination": "https://explorer.solana.com/address/:address/tokens", 
+            "permanent": false 
+        },
+        { 
+            "source": "/account/:address/assets", 
+            "destination": "https://explorer.solana.com/address/:address", 
+            "permanent": false 
+        },
+        { 
+            "source": "/token/:address", 
+            "destination": "https://explorer.solana.com/address/:address", 
+            "permanent": false 
+        },
+        { 
+            "source": "/block/:slot", 
+            "destination": "https://explorer.solana.com/block/:slot", 
+            "permanent": false 
+        },
+        { 
             "source": "/", 
             "destination": "https://explorer.solana.com", 
             "permanent": false 
         }
-      ]
+    ]
 }
