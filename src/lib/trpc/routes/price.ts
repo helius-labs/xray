@@ -8,7 +8,7 @@ export const price = t.procedure
     .input(z.string())
     .query(async ({ input: token }) => {
         const response = await fetch(
-            `https://public-api.birdeye.so/public/price/?address=${token}`,
+            `https://public-api.birdeye.so/defi/price/?address=${token}`,
             {
                 headers: {
                     Accept: "application/json",
