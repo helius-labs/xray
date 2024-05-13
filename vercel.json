@@ -1,7 +1,4 @@
 {
-    "buildCommand": "npm run build",
-    "installCommand": "npm install",
-    "outputDirectory": ".svelte-kit",
     "redirects": [
         { 
             "source": "/tx/:tx", 

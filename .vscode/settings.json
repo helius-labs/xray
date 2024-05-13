@@ -1,9 +1,0 @@
-{
-    "cSpell.words": ["HELIUS", "lamports", "solana"],
-    "editor.codeActionsOnSave": {
-        "source.fixAll.stylelint": "explicit",
-        "source.fixAll.eslint": "explicit"
-    },
-    "editor.tabSize": 4,
-    "eslint.validate": ["javascript", "javascriptreact", "html", "svelte"]
-}

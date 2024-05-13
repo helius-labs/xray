@@ -1,5 +1,0 @@
-.eslint/**/*
-packages/**/dist/**/*
-apps/**/.sveltekit/**/*
-tsconfig.json
-packages
