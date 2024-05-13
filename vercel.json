@@ -33,6 +33,40 @@
             "permanent": false 
         },
         { 
+            "source": "/account/:address/tokens", 
+            "destination": "https://explorer.solana.com/address/:address/tokens", 
+            "permanent": false 
+        },
+        { 
+            "source": "/token/:address/tokens", 
+            "destination": "https://explorer.solana.com/address/:address/tokens?cluster=devnet", 
+            "has": [
+                {
+                  "type": "query",
+                  "key": "network",
+                  "value": "devnet"
+                }
+              ],
+            "permanent": false 
+        },
+        { 
+            "source": "/account/:address/assets", 
+            "destination": "https://explorer.solana.com/address/:address", 
+            "permanent": false 
+        },
+        { 
+            "source": "/token/:address/assets", 
+            "destination": "https://explorer.solana.com/address/:address?cluster=devnet", 
+            "has": [
+                {
+                  "type": "query",
+                  "key": "network",
+                  "value": "devnet"
+                }
+              ],
+            "permanent": false 
+        },
+        { 
             "source": "/account/:address*", 
             "destination": "https://explorer.solana.com/address/:address*", 
             "permanent": false 
