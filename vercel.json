@@ -1,5 +1,24 @@
 {
     "buildCommand": "npm run build",
     "installCommand": "npm install",
-    "outputDirectory": ".svelte-kit"
+    "outputDirectory": ".svelte-kit",
+    "redirects": [
+        { 
+            "source": "/tx/:tx*", 
+            "destination": "https://explorer.solana.com/tx/:tx*?cluster=devnet", 
+            "has": [
+                {
+                  "type": "query",
+                  "key": "network",
+                  "value": "devnet"
+                }
+              ],
+            "permanent": false 
+        },
+        { 
+            "source": "/tx/:tx*", 
+            "destination": "https://explorer.solana.com/tx/:tx*", 
+            "permanent": false 
+        }
+      ]
 }
