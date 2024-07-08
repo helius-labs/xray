@@ -165,7 +165,7 @@ A SvelteKit app that contains the main XRAY UI.
 | 📁`./src/routes`          | Any `+page` or `+server` file in this directory becomes a page or an endpoint based on the folder structure.                                                                                                |
 | 📁`./static`              | A place to put any static assets. The files in this directory are hosted at the root of the domain. When using images, try to import them in the `<script>` vs put them in `./static` when you can help it. |
 | 📄`./app.postcss`         | Initialize/config Tailwind + global styles.                                                                                                                                                                 |
-| 📄`./app.html`            | The top level HTML template that wraps all pages. Routes are injected into the `%sveltekit.body%` tag.                                                                                                     |
+| 📄`./app.html`            | The top level HTML template that wraps all pages. Routes are injected into the `%sveltekit.body%` tag.                                                                                                      |
 
 ## Routes
 
