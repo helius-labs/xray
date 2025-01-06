@@ -3,7 +3,7 @@
   "redirects": [
     {
       "source": "/tx/:tx",
-      "destination": "https://explorer.solana.com/tx/:tx?cluster=devnet",
+      "destination": "https://xray.helius.dev/tx/:tx?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -15,7 +15,7 @@
     },
     {
       "source": "/account/:address",
-      "destination": "https://explorer.solana.com/address/:address?cluster=devnet",
+      "destination": "https://xray.helius.dev/address/:address/history?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -27,7 +27,7 @@
     },
     {
       "source": "/token/:address/tokens",
-      "destination": "https://explorer.solana.com/address/:address/tokens?cluster=devnet",
+      "destination": "https://xray.helius.dev/address/:address/tokens?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -39,7 +39,7 @@
     },
     {
       "source": "/token/:address/assets",
-      "destination": "https://explorer.solana.com/address/:address?cluster=devnet",
+      "destination": "https://xray.helius.dev/address/:address/nfts?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -51,7 +51,7 @@
     },
     {
       "source": "/token/:address",
-      "destination": "https://explorer.solana.com/address/:address?cluster=devnet",
+      "destination": "https://xray.helius.dev/address/:address/history?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -63,7 +63,7 @@
     },
     {
       "source": "/block/:slot",
-      "destination": "https://explorer.solana.com/block/:slot?cluster=devnet",
+      "destination": "https://xray.helius.dev/block/:slot?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -75,7 +75,7 @@
     },
     {
       "source": "/",
-      "destination": "https://explorer.solana.com?cluster=devnet",
+      "destination": "https://xray.helius.dev?cluster=devnet",
       "has": [
         {
           "type": "query",
@@ -87,37 +87,37 @@
     },
     {
       "source": "/tx/:tx",
-      "destination": "https://explorer.solana.com/tx/:tx",
+      "destination": "https://xray.helius.dev/tx/:tx?cluster=mainnet-beta",
       "permanent": false
     },
     {
       "source": "/account/:address",
-      "destination": "https://explorer.solana.com/address/:address",
+      "destination": "https://xray.helius.dev/address/:address/history?cluster=mainnet-beta",
       "permanent": false
     },
     {
       "source": "/account/:address/tokens",
-      "destination": "https://explorer.solana.com/address/:address/tokens",
+      "destination": "https://xray.helius.dev/address/:address/tokens?cluster=mainnet-beta",
       "permanent": false
     },
     {
       "source": "/account/:address/assets",
-      "destination": "https://explorer.solana.com/address/:address",
+      "destination": "https://xray.helius.dev/address/:address/nfts?cluster=mainnet-beta",
       "permanent": false
     },
     {
       "source": "/token/:address",
-      "destination": "https://explorer.solana.com/address/:address",
+      "destination": "https://xray.helius.dev/address/:address/history?cluster=mainnet-beta",
       "permanent": false
     },
     {
       "source": "/block/:slot",
-      "destination": "https://explorer.solana.com/block/:slot",
+      "destination": "https://xray.helius.dev/block/:slot?cluster=mainnet-beta",
       "permanent": false
     },
     {
       "source": "/",
-      "destination": "https://explorer.solana.com",
+      "destination": "https://xray.helius.dev?cluster=mainnet-beta",
       "permanent": false
     }
   ]
