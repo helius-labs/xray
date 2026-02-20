@@ -49,15 +49,24 @@ export const traverseAccountData = (
 
                     let amount;
                     if (tokenBalanceData.rawTokenAmount.decimals === 0) {
-                        amount = parseInt(
-                            tokenBalanceData.rawTokenAmount.tokenAmount
+                        amount = Number(
+                            BigInt(
+                                tokenBalanceData.rawTokenAmount.tokenAmount
+                            )
                         );
                     } else {
+                        const raw = BigInt(
+                            tokenBalanceData.rawTokenAmount.tokenAmount
+                        );
+                        const divisor = BigInt(
+                            10 ** tokenBalanceData.rawTokenAmount.decimals
+                        );
+                        const whole = raw / divisor;
+                        const remainder = raw % divisor;
                         amount =
-                            parseInt(
-                                tokenBalanceData.rawTokenAmount.tokenAmount
-                            ) /
-                            10 ** tokenBalanceData.rawTokenAmount.decimals;
+                            Number(whole) +
+                            Number(remainder) /
+                                10 ** tokenBalanceData.rawTokenAmount.decimals;
                     }
 
                     if (
